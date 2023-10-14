@@ -5,7 +5,6 @@ import hunternif.mc.impl.atlas.network.AntiqueAtlasNetworking;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.client.MinecraftClient;
-import net.minecraft.item.ItemStack;
 
 @Environment(EnvType.CLIENT)
 public class AntiqueAtlasModClient {
@@ -18,10 +17,6 @@ public class AntiqueAtlasModClient {
             guiAtlas.setMapScale(AntiqueAtlasMod.CONFIG.defaultScale);
         }
         return guiAtlas;
-    }
-
-    public static void openAtlasGUI(ItemStack stack) {
-        openAtlasGUI(getAtlasGUI().prepareToOpen(stack));
     }
 
     public static void openAtlasGUI() {

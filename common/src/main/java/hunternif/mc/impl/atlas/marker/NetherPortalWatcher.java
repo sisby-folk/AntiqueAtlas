@@ -2,12 +2,10 @@ package hunternif.mc.impl.atlas.marker;
 
 import hunternif.mc.impl.atlas.AntiqueAtlasMod;
 import hunternif.mc.api.AtlasAPI;
-import hunternif.mc.impl.atlas.item.AtlasItem;
 import hunternif.mc.impl.atlas.mixinhooks.EntityHooksAA;
 import hunternif.mc.impl.atlas.registry.MarkerType;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.ItemStack;
 import net.minecraft.text.Text;
 import net.minecraft.world.World;
 import net.minecraft.world.dimension.DimensionType;
@@ -93,16 +91,7 @@ public class NetherPortalWatcher {
 		// We need the very specific dimension each time.
 		World world = player.getEntityWorld();
 
-		if (!AntiqueAtlasMod.CONFIG.itemNeeded) {
-			addPortalMarkerIfNone(player, world, player.getUuid().hashCode());
-			return;
-		}
-
-		for (ItemStack stack : player.getInventory().main) {
-			if (stack == null || !(stack.getItem() instanceof AtlasItem)) continue;
-
-			addPortalMarkerIfNone(player, world, AtlasItem.getAtlasID(stack));
-		}
+		addPortalMarkerIfNone(player, world, AtlasAPI.getPlayerAtlasId(player));
 	}
 
 	private void addPortalMarkerIfNone(PlayerEntity player, World world, int atlasID) {

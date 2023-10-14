@@ -1,6 +1,7 @@
 package hunternif.mc.impl.atlas.client.gui;
 
 import com.mojang.blaze3d.systems.RenderSystem;
+import hunternif.mc.api.AtlasAPI;
 import hunternif.mc.api.client.AtlasClientAPI;
 import hunternif.mc.impl.atlas.AntiqueAtlasMod;
 import hunternif.mc.impl.atlas.client.*;
@@ -12,22 +13,20 @@ import hunternif.mc.impl.atlas.client.texture.TileTexture;
 import hunternif.mc.impl.atlas.core.WorldData;
 import hunternif.mc.impl.atlas.event.MarkerClickedCallback;
 import hunternif.mc.impl.atlas.event.MarkerHoveredCallback;
-import hunternif.mc.impl.atlas.item.AtlasItem;
 import hunternif.mc.impl.atlas.marker.DimensionMarkersData;
 import hunternif.mc.impl.atlas.marker.Marker;
 import hunternif.mc.impl.atlas.marker.MarkersData;
 import hunternif.mc.impl.atlas.network.packet.c2s.play.PutBrowsingPositionC2SPacket;
 import hunternif.mc.impl.atlas.registry.MarkerRenderInfo;
 import hunternif.mc.impl.atlas.registry.MarkerType;
-import hunternif.mc.impl.atlas.util.*;
+import hunternif.mc.impl.atlas.util.MathUtil;
+import hunternif.mc.impl.atlas.util.Rect;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.option.KeyBinding;
-import net.minecraft.client.resource.language.I18n;
 import net.minecraft.client.sound.PositionedSoundInstance;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.ItemStack;
 import net.minecraft.sound.SoundCategory;
 import net.minecraft.sound.SoundEvents;
 import net.minecraft.text.Text;
@@ -38,12 +37,10 @@ import net.minecraft.util.math.MathHelper;
 import org.lwjgl.glfw.GLFW;
 import org.lwjgl.opengl.GL11;
 
-import java.io.File;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Arrays;
 import java.util.Collections;
-import java.util.Date;
 import java.util.List;
 
 public class GuiAtlas extends GuiComponent {
@@ -60,8 +57,6 @@ public class GuiAtlas extends GuiComponent {
     private static final int PLAYER_ICON_HEIGHT = 8;
 
     public static final int MARKER_SIZE = 32;
-
-    private static final DateFormat DATE_FORMAT = new SimpleDateFormat("yyyy-MM-dd_HH.mm.ss");
 
     /**
      * If the map scale goes below this value, the tiles will not scale down
@@ -138,29 +133,12 @@ public class GuiAtlas extends GuiComponent {
     };
     private final GuiCursor eraser = new GuiCursor();
 
-    private final IState EXPORTING_IMAGE = new IState() {
-        @Override
-        public void onEnterState() {
-            btnExportPng.setSelected(true);
-        }
-
-        @Override
-        public void onExitState() {
-            btnExportPng.setSelected(false);
-        }
-    };
-
     // Buttons =================================================================
 
     /**
      * Arrow buttons for navigating the map view via mouse clicks.
      */
     private final GuiArrowButton btnUp, btnDown, btnLeft, btnRight;
-
-    /**
-     * Button for exporting PNG image of the Atlas's contents.
-     */
-    private final GuiBookmarkButton btnExportPng;
 
     /**
      * Button for placing a marker at current position, local to this Atlas instance.
@@ -278,7 +256,6 @@ public class GuiAtlas extends GuiComponent {
     // Misc stuff ==============================================================
 
     private PlayerEntity player;
-    private ItemStack stack;
     private WorldData biomeData;
 
     /**
@@ -286,19 +263,12 @@ public class GuiAtlas extends GuiComponent {
      */
     private double screenScale;
 
-    /**
-     * Progress bar for exporting images.
-     */
-    private final ProgressBarOverlay progressBar = new ProgressBarOverlay(100, 2);
-
     private long lastUpdateMillis = System.currentTimeMillis();
     private int scaleAlpha = 255;
     private int scaleClipIndex = 0;
     private final int zoomLevelOne = 8;
     private int zoomLevel = zoomLevelOne;
     private final String[] zoomNames = new String[]{"256", "128", "64", "32", "16", "8", "4", "2", "1", "1/2", "1/4", "1/8", "1/16", "1/32", "1/64", "1/128", "1/256"};
-
-    private Thread exportThread;
 
     @SuppressWarnings("rawtypes")
     public GuiAtlas() {
@@ -337,27 +307,13 @@ public class GuiAtlas extends GuiComponent {
         btnRight.addListener(positionListener);
         btnPosition.addListener(positionListener);
 
-        btnExportPng = new GuiBookmarkButton(1, Textures.ICON_EXPORT, Text.translatable("gui.antiqueatlas.exportImage")) {
-            @Override
-            public boolean isEnabled() {
-                return !ExportImageUtil.isExporting;
-            }
-        };
-        addChild(btnExportPng).offsetGuiCoords(300, 75);
-        btnExportPng.addListener(button -> {
-            if (stack != null || !AntiqueAtlasMod.CONFIG.itemNeeded) {
-                exportThread = new Thread(() -> exportImage(getAtlasID()), "Atlas file export thread");
-                exportThread.start();
-            }
-        });
-
         btnMarker = new GuiBookmarkButton(0, Textures.ICON_ADD_MARKER, Text.translatable("gui.antiqueatlas.addMarker"));
         addChild(btnMarker).offsetGuiCoords(300, 14);
         btnMarker.addListener(button -> {
             if (state.is(PLACING_MARKER)) {
                 selectedButton = null;
                 state.switchTo(NORMAL);
-            } else if (stack != null || !AntiqueAtlasMod.CONFIG.itemNeeded) {
+            } else {
                 selectedButton = button;
                 state.switchTo(PLACING_MARKER);
 
@@ -391,7 +347,7 @@ public class GuiAtlas extends GuiComponent {
             if (state.is(DELETING_MARKER)) {
                 selectedButton = null;
                 state.switchTo(NORMAL);
-            } else if (stack != null || !AntiqueAtlasMod.CONFIG.itemNeeded) {
+            } else {
                 selectedButton = button;
                 state.switchTo(DELETING_MARKER);
             }
@@ -402,7 +358,7 @@ public class GuiAtlas extends GuiComponent {
             selectedButton = null;
             if (state.is(HIDING_MARKERS)) {
                 state.switchTo(NORMAL);
-            } else if (stack != null || !AntiqueAtlasMod.CONFIG.itemNeeded) {
+            } else {
                 selectedButton = null;
                 state.switchTo(HIDING_MARKERS);
             }
@@ -419,38 +375,6 @@ public class GuiAtlas extends GuiComponent {
 
         eraser.setTexture(Textures.ERASER, 12, 14, 2, 11);
 
-        state.switchTo(NORMAL);
-    }
-
-    public GuiAtlas prepareToOpen(ItemStack stack) {
-        this.stack = stack;
-
-        return prepareToOpen();
-    }
-
-    public void openMarkerFinalizer(Text name) {
-        markerFinalizer.setMarkerData(player.getEntityWorld(),
-                getAtlasID(),
-                (int) player.getX(), (int) player.getZ());
-        addChild(markerFinalizer);
-
-        if (name != null) {
-            markerFinalizer.setMarkerName(name);
-        }
-
-        blinkingIcon.setTexture(markerFinalizer.selectedType.getTexture(),
-                MARKER_SIZE, MARKER_SIZE);
-        addChildBehind(markerFinalizer, blinkingIcon)
-                .setRelativeCoords(worldXToScreenX((int) player.getX()) - getGuiX() - MARKER_SIZE / 2,
-                        worldZToScreenY((int) player.getZ()) - getGuiY() - MARKER_SIZE / 2);
-
-        // Need to intercept keyboard events to type in the label:
-        setInterceptKeyboard(true);
-
-        // Un-press all keys to prevent player from walking infinitely:
-        KeyBinding.unpressAll();
-
-        selectedButton = null;
         state.switchTo(NORMAL);
     }
 
@@ -477,9 +401,6 @@ public class GuiAtlas extends GuiComponent {
     @Override
     public void init() {
         super.init();
-        if (state.is(EXPORTING_IMAGE)) {
-            state.switchTo(NORMAL); //TODO: his causes the Export PNG progress bar to disappear when resizing game window
-        }
 
         screenScale = MinecraftClient.getInstance().getWindow().getScaleFactor();
         setCentered();
@@ -524,9 +445,6 @@ public class GuiAtlas extends GuiComponent {
     @Override
     public boolean mouseClicked(double mouseX, double mouseY, int mouseState) {
         boolean result = super.mouseClicked(mouseX, mouseY, mouseState);
-        if (state.is(EXPORTING_IMAGE)) {
-            return result;
-        }
 
         if (result) {
             return true;
@@ -584,54 +502,6 @@ public class GuiAtlas extends GuiComponent {
         }
 
         return false;
-    }
-
-    /**
-     * Opens a dialog window to select which file to save to, then performs
-     * rendering of the map of current dimension into a PNG image.
-     */
-    private void exportImage(int atlasID) {
-        boolean showMarkers = !state.is(HIDING_MARKERS);
-        state.switchTo(EXPORTING_IMAGE);
-        // Default file name is "Atlas <N>.png"
-        ExportImageUtil.isExporting = true;
-
-        File screenshot_folder = new File(MinecraftClient.getInstance().runDirectory, "screenshots");
-        if (!screenshot_folder.isDirectory()) {
-            screenshot_folder.mkdir();
-        }
-
-        String outputname = "atlas-" + DATE_FORMAT.format(new Date());
-
-        File file = new File(screenshot_folder, outputname + ".png");
-        for (int i = 1; file.exists(); i++) {
-            file = new File(screenshot_folder, outputname + "_" + i + ".png");
-        }
-
-        try {
-            Log.info("Exporting image from Atlas #%d to file %s", atlasID, file.getAbsolutePath());
-            ExportImageUtil.exportPngImage(biomeData, globalMarkersData, localMarkersData, file, showMarkers);
-            Log.info("Finished exporting image");
-        } catch (OutOfMemoryError e) {
-            Log.warn(e, "Image is too large, trying to export in strips");
-            try {
-                ExportImageUtil.exportPngImageTooLarge(biomeData, globalMarkersData, localMarkersData, file, showMarkers);
-            } catch (OutOfMemoryError e2) {
-                int minX = (biomeData.getScope().minX - 1) * ExportImageUtil.TILE_SIZE;
-                int minY = (biomeData.getScope().minY - 1) * ExportImageUtil.TILE_SIZE;
-                int outWidth = (biomeData.getScope().maxX + 2) * ExportImageUtil.TILE_SIZE - minX;
-                int outHeight = (biomeData.getScope().maxY + 2) * ExportImageUtil.TILE_SIZE - minY;
-
-                Log.error(e2, "Image is STILL too large, how massive is this map?! Answer: (%dx%d)", outWidth, outHeight);
-
-                ExportUpdateListener.INSTANCE.setStatusString(I18n.translate("gui.antiqueatlas.export.tooLarge"));
-                ExportImageUtil.isExporting = false;
-                return; //Don't switch to normal state yet so that the error message can be read.
-            }
-        }
-
-        ExportImageUtil.isExporting = false;
-        state.switchTo(showMarkers ? NORMAL : HIDING_MARKERS);
     }
 
     @Override
@@ -911,8 +781,7 @@ public class GuiAtlas extends GuiComponent {
 //        RenderSystem.alphaFunc(GL11.GL_GREATER, 0); // So light detail on tiles is visible
         Textures.BOOK.draw(context, getGuiX(), getGuiY());
 
-        if ((stack == null && AntiqueAtlasMod.CONFIG.itemNeeded) || biomeData == null)
-            return;
+        if (biomeData == null) return;
 
         if (state.is(DELETING_MARKER)) {
             RenderSystem.setShaderColor(1, 1, 1, 0.5f);
@@ -945,8 +814,7 @@ public class GuiAtlas extends GuiComponent {
             for (SubTile subtile : subtiles) {
                 if (subtile == null || subtile.tile == null) continue;
                 ITexture texture = TileTextureMap.instance().getTexture(subtile);
-                if (texture instanceof TileTexture) {
-                    TileTexture tileTexture = (TileTexture) texture;
+                if (texture instanceof TileTexture tileTexture) {
                     tileTexture.bind();
                     tileTexture.drawSubTile(context, subtile, tileHalfSize);
                 }
@@ -1018,12 +886,6 @@ public class GuiAtlas extends GuiComponent {
                                 Text.literal("TSet: " + texture_set)),
                         textRenderer);
             }
-        }
-
-        // Draw progress overlay:
-        if (state.is(EXPORTING_IMAGE)) {
-            renderBackground(context);
-            progressBar.draw(context, (width - 100) / 2, height / 2 - 34);
         }
     }
 
@@ -1223,7 +1085,6 @@ public class GuiAtlas extends GuiComponent {
      * Update all text labels to current localization.
      */
     public void updateL18n() {
-        btnExportPng.setTitle(Text.translatable("gui.antiqueatlas.exportImage"));
         btnMarker.setTitle(Text.translatable("gui.antiqueatlas.addMarker"));
     }
 
@@ -1239,9 +1100,9 @@ public class GuiAtlas extends GuiComponent {
     }
 
     /**
-     * Returns atlas id based on "itemNeeded" option
+     * Returns atlas id
      */
     private int getAtlasID() {
-        return AntiqueAtlasMod.CONFIG.itemNeeded ? AtlasItem.getAtlasID(stack) : player.getUuid().hashCode();
+        return AtlasAPI.getPlayerAtlasId(player);
     }
 }

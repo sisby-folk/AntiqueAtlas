@@ -48,11 +48,8 @@ public class ClientProxy implements ResourceReloader {
             type.initMips();
         }
 
-        if (!AntiqueAtlasMod.CONFIG.itemNeeded) {
-            KeyHandler.registerBindings();
-            ClientTickEvent.CLIENT_POST.register(KeyHandler::onClientTick);
-        }
-
+        KeyHandler.registerBindings();
+        ClientTickEvent.CLIENT_POST.register(KeyHandler::onClientTick);
     }
 
     /**

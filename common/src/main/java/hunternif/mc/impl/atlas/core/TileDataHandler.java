@@ -1,7 +1,5 @@
 package hunternif.mc.impl.atlas.core;
 
-import hunternif.mc.impl.atlas.item.AtlasItem;
-import net.minecraft.item.ItemStack;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.world.PersistentStateManager;
 import net.minecraft.world.World;
@@ -20,17 +18,6 @@ public class TileDataHandler {
     private static final String ATLAS_DATA_PREFIX = "aAtlas_";
 
     private final Map<String, AtlasData> atlasDataClientCache = new ConcurrentHashMap<>();
-
-    /**
-     * Loads data for the given atlas ID or creates a new one.
-     */
-    public AtlasData getData(ItemStack stack, World world) {
-        if (stack.getItem() instanceof AtlasItem) {
-            return getData(AtlasItem.getAtlasID(stack), world);
-        } else {
-            return null;
-        }
-    }
 
     /**
      * Loads data for the given atlas or creates a new one.

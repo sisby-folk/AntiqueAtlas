@@ -25,10 +25,6 @@ public class AntiqueAtlasConfig implements ConfigData {
     @Comment("Whether to add global markers for Nether Portals.")
     public boolean autoNetherPortalMarkers = true;
 
-    @ConfigEntry.Category("gameplay")
-    @Comment("Player will need to craft atlas item to use atlas.")
-    public boolean itemNeeded = true;
-
     //============ Interface settings =============
     @ConfigEntry.Category("userInterface")
     public boolean doScaleMarkers = false;

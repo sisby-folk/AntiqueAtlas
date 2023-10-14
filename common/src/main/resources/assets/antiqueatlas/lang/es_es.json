@@ -49,7 +49,6 @@
   "text.autoconfig.antiqueatlas.option.autoDeathMarker": "Marcador de muerte",
   "text.autoconfig.antiqueatlas.option.autoVillageMarkers": "Marcador de aldea",
   "text.autoconfig.antiqueatlas.option.autoNetherPortalMarkers": "Marcador de portal del Nether",
-  "text.autoconfig.antiqueatlas.option.itemNeeded": "Requerir el Atlas para su uso",
 
   "text.autoconfig.antiqueatlas.option.doScaleMarkers": "Escala de marcadores",
   "text.autoconfig.antiqueatlas.option.defaultScale": "Nivel de zum predeterminado",

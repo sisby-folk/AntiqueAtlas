@@ -36,7 +36,7 @@ public class PutTileC2SPacket extends C2SPacket {
 		Identifier tile = buf.readIdentifier();
 
 		context.queue(() -> {
-			if (AntiqueAtlasMod.CONFIG.itemNeeded && !AtlasAPI.getPlayerAtlases(context.getPlayer()).contains(atlasID)) {
+			if (AtlasAPI.getPlayerAtlasId(context.getPlayer()) != atlasID) {
 				Log.warn("Player %s attempted to modify someone else's Atlas #%d",
 						context.getPlayer().getName(), atlasID);
 				return;

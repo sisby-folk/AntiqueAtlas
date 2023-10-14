@@ -27,8 +27,7 @@ public interface MarkerAPI {
      * @param world
      * @param visibleAhead whether the marker should appear visible even if
      *                     the player hasn't yet discovered that area.
-     * @param atlasID      the ID of the atlas you want to put marker in. Equal
-     *                     to ItemStack damage for ItemAtlas.
+     * @param atlasID      the ID of the atlas you want to put marker in.
      * @param marker       name of your custom marker type.
      * @param label        text label to be displayed on mouseover.
      * @param x            block coordinate

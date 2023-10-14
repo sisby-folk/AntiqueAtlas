@@ -40,7 +40,7 @@ public class PutBrowsingPositionC2SPacket extends C2SPacket {
 		double zoom = buf.readDouble();
 
 		context.queue(() -> {
-			if (AntiqueAtlasMod.CONFIG.itemNeeded && !AtlasAPI.getPlayerAtlases(context.getPlayer()).contains(atlasID)) {
+			if (AtlasAPI.getPlayerAtlasId(context.getPlayer()) != atlasID) {
 				Log.warn("Player %s attempted to put position marker into someone else's Atlas #%d",
 						context.getPlayer().getCommandSource().getName(), atlasID);
 				return;

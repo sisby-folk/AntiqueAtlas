@@ -152,8 +152,7 @@ public class AtlasData extends PersistentState {
     }
 
     /**
-     * Send all data to the player in several zipped packets. Called once
-     * during the first run of ItemAtlas.onUpdate().
+     * Send all data to the player in several zipped packets. Called once on login.
      */
     public void syncToPlayer(int atlasID, PlayerEntity player) {
         NbtCompound data = new NbtCompound();

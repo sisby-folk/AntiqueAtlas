@@ -40,7 +40,7 @@ public class PutMarkerC2SPacket extends C2SPacket {
 		Text label = buf.readText();
 
 		context.queue(() -> {
-			if (!AtlasAPI.getPlayerAtlases(context.getPlayer()).contains(atlasID)) {
+			if (AtlasAPI.getPlayerAtlasId(context.getPlayer()) != atlasID) {
 				AntiqueAtlasMod.LOG.warn(
 								"Player {} attempted to put marker into someone else's Atlas #{}}",
 						context.getPlayer().getName(), atlasID);

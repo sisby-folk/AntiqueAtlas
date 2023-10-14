@@ -4,7 +4,6 @@ import hunternif.mc.impl.atlas.AntiqueAtlasMod;
 import hunternif.mc.impl.atlas.client.texture.ITexture;
 import hunternif.mc.impl.atlas.client.texture.IconTexture;
 import hunternif.mc.impl.atlas.client.texture.Texture;
-import hunternif.mc.impl.atlas.client.texture.TileTexture;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.util.Identifier;
@@ -48,10 +47,7 @@ public class Textures {
             ICON_ADD_MARKER = icon("add_marker.png"),
             ICON_DELETE_MARKER = icon("del_marker.png"),
             ICON_SHOW_MARKERS = icon("show_markers.png"),
-            ICON_HIDE_MARKERS = icon("hide_markers.png"),
-            ICON_EXPORT = icon("export.png");
-
-    public static final Identifier EXPORTED_BG = new Identifier(GUI + "exported_bg.png");
+            ICON_HIDE_MARKERS = icon("hide_markers.png");
 
     // Constructor helpers:
     private static ITexture gui(String fileName, int width, int height) {

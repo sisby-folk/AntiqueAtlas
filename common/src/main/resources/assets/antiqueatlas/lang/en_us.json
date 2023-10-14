@@ -49,7 +49,6 @@
   "text.autoconfig.antiqueatlas.option.autoDeathMarker": "Death marker",
   "text.autoconfig.antiqueatlas.option.autoVillageMarkers": "Village marker",
   "text.autoconfig.antiqueatlas.option.autoNetherPortalMarkers": "Nether portal marker",
-  "text.autoconfig.antiqueatlas.option.itemNeeded": "Atlas required for usage",
 
   "text.autoconfig.antiqueatlas.option.doScaleMarkers": "Scale markers",
   "text.autoconfig.antiqueatlas.option.defaultScale": "Default zoom level",

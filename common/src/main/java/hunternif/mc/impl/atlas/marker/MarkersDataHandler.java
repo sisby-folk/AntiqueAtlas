@@ -1,7 +1,5 @@
 package hunternif.mc.impl.atlas.marker;
 
-import hunternif.mc.impl.atlas.item.AtlasItem;
-import net.minecraft.item.ItemStack;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.registry.RegistryKey;
 import net.minecraft.world.PersistentStateManager;
@@ -21,17 +19,6 @@ public class MarkersDataHandler {
     private static final String MARKERS_DATA_PREFIX = "aaMarkers_";
 
     private final Map<String, MarkersData> markersDataClientCache = new ConcurrentHashMap<>();
-
-    /**
-     * Loads data for the given atlas or creates a new one.
-     */
-    public MarkersData getMarkersData(ItemStack stack, World world) {
-        if (stack.getItem() instanceof AtlasItem) {
-            return getMarkersData(AtlasItem.getAtlasID(stack), world);
-        } else {
-            return null;
-        }
-    }
 
     /**
      * Loads data for the given atlas ID or creates a new one.

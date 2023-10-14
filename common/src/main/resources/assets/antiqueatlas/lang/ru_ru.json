@@ -49,7 +49,6 @@
   "text.autoconfig.antiqueatlas.option.autoDeathMarker": "Метка смерти",
   "text.autoconfig.antiqueatlas.option.autoVillageMarkers": "Метка деревни",
   "text.autoconfig.antiqueatlas.option.autoNetherPortalMarkers": "Метка портала в Нижний Мир",
-  "text.autoconfig.antiqueatlas.option.itemNeeded": "Для использования необходим атлас",
 
   "text.autoconfig.antiqueatlas.option.doScaleMarkers": "Маркеры масштаба",
   "text.autoconfig.antiqueatlas.option.defaultScale": "Уровень приближения по умолчанию",

@@ -4,23 +4,15 @@
   "compatibilityLevel": "JAVA_17",
   "plugin": "hunternif.mc.impl.atlas.mixin.VolatileMixinPlugin",
   "mixins": [
-    "MixinCraftingResultSlot",
     "MixinEntity",
     "MixinPlayerEntity",
     "MixinPlayerEntityDeath",
     "MixinPlayerManager",
-    "structure.StructureStartMixin",
-    "MixinCartographyTableScreenHandler",
-    "dev.MixinCartographyTableScreenHandlerSlot",
-    "prod.MixinCartographyTableScreenHandlerSlot",
-    "dev.MixinCartographyTableScreenHandlerResultSlot",
-    "prod.MixinCartographyTableScreenHandlerResultSlot"
+    "structure.StructureStartMixin"
   ],
   "client": [
     "MixinClientPlayNetworkHandler",
-    "MixinInGameHud",
-    "MixinMinecraftClient",
-    "HeldItemRendererMixin"
+    "MixinMinecraftClient"
   ],
   "injectors": {
     "defaultRequire": 1

@@ -7,9 +7,6 @@ import hunternif.mc.impl.atlas.core.GlobalTileDataHandler;
 import hunternif.mc.impl.atlas.core.PlayerEventHandler;
 import hunternif.mc.impl.atlas.core.TileDataHandler;
 import hunternif.mc.impl.atlas.core.scanning.WorldScanner;
-import hunternif.mc.impl.atlas.event.RecipeCraftedCallback;
-import hunternif.mc.impl.atlas.event.RecipeCraftedHandler;
-import hunternif.mc.impl.atlas.item.AntiqueAtlasItems;
 import hunternif.mc.impl.atlas.marker.GlobalMarkersDataHandler;
 import hunternif.mc.impl.atlas.marker.MarkersDataHandler;
 import hunternif.mc.impl.atlas.mixinhooks.NewPlayerConnectionCallback;
@@ -57,8 +54,6 @@ public class AntiqueAtlasMod {
         AutoConfig.register(AntiqueAtlasConfig.class, JanksonConfigSerializer::new);
         CONFIG = AutoConfig.getConfigHolder(AntiqueAtlasConfig.class).getConfig();
 
-        AntiqueAtlasItems.register();
-
         AntiqueAtlasNetworking.registerC2SListeners();
 
         NewServerConnectionCallback.EVENT.register(tileData::onClientConnectedToServer);
@@ -71,8 +66,6 @@ public class AntiqueAtlasMod {
 
         LifecycleEvent.SERVER_LEVEL_LOAD.register(globalMarkersData::onWorldLoad);
         LifecycleEvent.SERVER_LEVEL_LOAD.register(globalTileData::onWorldLoad);
-
-        RecipeCraftedCallback.EVENT.register(new RecipeCraftedHandler());
 
         StructurePieceAddedCallback.EVENT.register(StructureHandler::resolve);
         StructureAddedCallback.EVENT.register(StructureHandler::resolve);

@@ -33,7 +33,7 @@ public class DeleteMarkerC2SPacket extends C2SPacket {
 		int markerID = buf.readVarInt();
 
 		context.queue(() -> {
-			if (AntiqueAtlasMod.CONFIG.itemNeeded && !AtlasAPI.getPlayerAtlases(context.getPlayer()).contains(atlasID)) {
+			if (AtlasAPI.getPlayerAtlasId(context.getPlayer()) != atlasID) {
 				Log.warn("Player %s attempted to delete marker from someone else's Atlas #%d",
 						context.getPlayer().getName(), atlasID);
 				return;

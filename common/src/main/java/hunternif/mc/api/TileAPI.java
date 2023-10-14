@@ -25,8 +25,7 @@ public interface TileAPI {
      * </p>
      *
      * @param world   dimension the chunk is located in.
-     * @param atlasID the ID of the atlas you want to put marker in. Equal
-     *                to ItemStack damage for ItemAtlas.
+     * @param atlasID the ID of the atlas you want to put marker in.
      * @param tile    the identifier of the new tile
      * @param chunkX  x chunk coordinate. (block coordinate >> 4)
      * @param chunkZ  z chunk coordinate. (block coordinate >> 4)
@@ -42,8 +41,7 @@ public interface TileAPI {
      * </p>
      *
      * @param world   dimension the chunk is located in.
-     * @param atlasID the ID of the atlas you want to put marker in. Equal
-     *                to ItemStack damage for ItemAtlas.
+     * @param atlasID the ID of the atlas you want to put marker in.
      * @param chunkX  x chunk coordinate. (block coordinate >> 4)
      * @param chunkZ  z chunk coordinate. (block coordinate >> 4)
      * @return the identifier of the requested tile
