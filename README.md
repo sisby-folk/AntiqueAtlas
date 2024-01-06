@@ -4,6 +4,7 @@
 <center>
 An always-accessible abstract world map.<br/>
 A shredded up port of <a href="https://modrinth.com/mod/antique-atlas">Antique Atlas</a> by hunternif, as continued by kenkron, asiekierkierka, and tyra314.<br/>
+<i>Colloquially: Tinkerer's Antique Atlas (or antique-atlas)</i>
 </center>
 
 ---
