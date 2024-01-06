@@ -1,5 +1,5 @@
 <!--suppress HtmlDeprecatedTag, XmlDeprecatedElement -->
-<center><img alt="mod preview" src="https://github.com/sisby-folk/AntiqueAtlas/assets/55819817/9cc6f498-fedc-4665-b8ac-22797e5c4832" /></center>
+<center><img alt="mod preview" src="https://cdn.modrinth.com/data/Y5Ve4Ui4/images/2196fd4a24aad1d58bd282c6d8e09bdfe0d102e8.png" /></center>
 
 <center>
 An always-accessible abstract world map.<br/>
