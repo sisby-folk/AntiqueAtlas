@@ -1,6 +1,8 @@
 package folk.sisby.antique_atlas.core;
 
-import net.minecraft.server.network.ServerPlayerEntity;
+import net.fabricmc.fabric.api.networking.v1.PacketSender;
+import net.minecraft.server.MinecraftServer;
+import net.minecraft.server.network.ServerPlayNetworkHandler;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.util.registry.RegistryKey;
 import net.minecraft.world.World;
@@ -20,7 +22,7 @@ public class GlobalTileDataHandler {
     private final Map<RegistryKey<World>, TileDataStorage> globalTileData =
             new ConcurrentHashMap<>(2, 0.75f, 2);
 
-    public void onWorldLoad(ServerWorld world) {
+    public void onWorldLoad(MinecraftServer server, ServerWorld world) {
         globalTileData.put(world.getRegistryKey(), world.getPersistentStateManager().getOrCreate(TileDataStorage::readNbt, () -> {
             TileDataStorage data = new TileDataStorage();
             data.markDirty();
@@ -37,8 +39,8 @@ public class GlobalTileDataHandler {
                 k -> new TileDataStorage());
     }
 
-    public void onPlayerLogin(ServerPlayerEntity player) {
-        globalTileData.forEach((world, tileData) -> tileData.syncToPlayer(player, world));
+    public void onPlayerLogin(ServerPlayNetworkHandler handler, PacketSender sender, MinecraftServer server) {
+        globalTileData.forEach((world, tileData) -> tileData.syncToPlayer(handler.getPlayer(), world));
     }
 
 }

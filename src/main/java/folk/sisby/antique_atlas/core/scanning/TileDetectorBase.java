@@ -3,9 +3,9 @@ package folk.sisby.antique_atlas.core.scanning;
 import com.google.common.collect.HashMultiset;
 import com.google.common.collect.Multiset;
 import com.google.common.collect.Ordering;
-import dev.architectury.injectables.annotations.ExpectPlatform;
 import folk.sisby.antique_atlas.AntiqueAtlas;
 import folk.sisby.antique_atlas.core.TileIdMap;
+import net.fabricmc.fabric.api.tag.convention.v1.ConventionalBiomeTags;
 import net.minecraft.block.Block;
 import net.minecraft.block.Blocks;
 import net.minecraft.tag.BiomeTags;
@@ -45,9 +45,8 @@ public class TileDetectorBase implements ITileDetector {
      */
     private static final int ravineMinDepth = 7;
 
-    @ExpectPlatform
-    static private boolean hasSwampWater(RegistryEntry<Biome> biomeTag) {
-        throw new AssertionError("Not implemented");
+    public static boolean hasSwampWater(RegistryEntry<Biome> biomeTag) {
+        return biomeTag.isIn(ConventionalBiomeTags.SWAMP);
     }
 
     static int priorityForBiome(RegistryEntry<Biome> biomeTag) {

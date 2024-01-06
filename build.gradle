@@ -23,7 +23,7 @@ repositories {
 
 dependencies {
     minecraft libs.mc
-    mappings libs.yarn
+    mappings variantOf(libs.yarn) { classifier "v2" }
     modImplementation libs.fl
     modImplementation libs.fapi
     modImplementation libs.kaleidoConfig

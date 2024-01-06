@@ -1,5 +1,8 @@
 package folk.sisby.antique_atlas.marker;
 
+import net.fabricmc.fabric.api.networking.v1.PacketSender;
+import net.minecraft.client.MinecraftClient;
+import net.minecraft.client.network.ClientPlayNetworkHandler;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.util.registry.RegistryKey;
 import net.minecraft.world.PersistentStateManager;
@@ -55,7 +58,7 @@ public class MarkersDataHandler {
      * form post, the latter event isn't actually fired on the client.
      * </p>
      */
-    public void onClientConnectedToServer(boolean ignoredIsRemote) {
+    public void onClientConnectedToServer(ClientPlayNetworkHandler handler, PacketSender sender, MinecraftClient client) {
         markersDataClientCache.clear();
     }
 }

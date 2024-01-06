@@ -11,8 +11,6 @@ import folk.sisby.antique_atlas.client.gui.core.GuiStates.SimpleState;
 import folk.sisby.antique_atlas.client.texture.ITexture;
 import folk.sisby.antique_atlas.client.texture.TileTexture;
 import folk.sisby.antique_atlas.core.WorldData;
-import folk.sisby.antique_atlas.event.MarkerClickedCallback;
-import folk.sisby.antique_atlas.event.MarkerHoveredCallback;
 import folk.sisby.antique_atlas.marker.DimensionMarkersData;
 import folk.sisby.antique_atlas.marker.Marker;
 import folk.sisby.antique_atlas.marker.MarkersData;
@@ -494,7 +492,7 @@ public class GuiAtlas extends GuiComponent {
             }
             state.switchTo(NORMAL);
         } else if (isMouseOverMap && selectedButton == null) {
-            if (hoveredMarker == null || !MarkerClickedCallback.EVENT.invoker().onClicked(player, hoveredMarker, mouseState).interruptsFurtherEvaluation()) {
+            if (hoveredMarker == null /* API: Marker Clicked Event */) {
                 isDragging = true;
                 return true;
             }
@@ -990,7 +988,7 @@ public class GuiAtlas extends GuiComponent {
         if (mouseIsOverMarker) {
             RenderSystem.setShaderColor(0.5f, 0.5f, 0.5f, 1);
             hoveredMarker = marker;
-            MarkerHoveredCallback.EVENT.invoker().onHovered(player, marker);
+            // API: Marker Hovered Callback?
         } else {
             RenderSystem.setShaderColor(1, 1, 1, 1);
             if (hoveredMarker == marker) {

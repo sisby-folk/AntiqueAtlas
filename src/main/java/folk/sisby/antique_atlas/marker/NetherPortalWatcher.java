@@ -2,9 +2,7 @@ package folk.sisby.antique_atlas.marker;
 
 import folk.sisby.antique_atlas.AntiqueAtlas;
 import folk.sisby.antique_atlas.api.AtlasAPI;
-import folk.sisby.antique_atlas.mixinhooks.EntityHooksAA;
 import folk.sisby.antique_atlas.registry.MarkerType;
-import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.text.Text;
 import net.minecraft.world.World;
@@ -120,9 +118,5 @@ public class NetherPortalWatcher {
 
 		// Marker not found, place new one:
 		AtlasAPI.getMarkerAPI().putMarker(world, false, atlasID, MarkerType.REGISTRY.getId(netherPortalType), Text.translatable("gui.antique_atlas.marker.netherPortal"), x, z);
-	}
-
-	private static boolean isEntityInPortal(Entity entity) {
-		return ((EntityHooksAA) entity).antiqueAtlas_isInPortal();
 	}
 }

@@ -1,11 +1,13 @@
 package folk.sisby.antique_atlas.network.packet.s2c.play;
 
-import dev.architectury.networking.NetworkManager;
 import folk.sisby.antique_atlas.AntiqueAtlas;
 import folk.sisby.antique_atlas.core.TileDataStorage;
 import folk.sisby.antique_atlas.network.packet.s2c.S2CPacket;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
+import net.fabricmc.fabric.api.networking.v1.PacketSender;
+import net.minecraft.client.MinecraftClient;
+import net.minecraft.client.network.ClientPlayNetworkHandler;
 import net.minecraft.network.PacketByteBuf;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.math.ChunkPos;
@@ -22,7 +24,7 @@ import java.util.Map;
  * @author Haven King
  */
 public class PutGlobalTileS2CPacket extends S2CPacket {
-	public static final Identifier ID = AntiqueAtlas.id("packet", "s2c", "global_tile", "put");
+	public static final Identifier ID = AntiqueAtlas.id("packet.s2c.global_tile.put");
 
 	public PutGlobalTileS2CPacket(RegistryKey<World> world, List<Map.Entry<ChunkPos, Identifier>> tiles) {
 		this.writeIdentifier(world.getValue());
@@ -49,7 +51,7 @@ public class PutGlobalTileS2CPacket extends S2CPacket {
 	}
 
 	@Environment(EnvType.CLIENT)
-	public static void apply(PacketByteBuf buf, NetworkManager.PacketContext context) {
+	public static void apply(MinecraftClient client, ClientPlayNetworkHandler handler, PacketByteBuf buf, PacketSender sender) {
 		RegistryKey<World> world = RegistryKey.of(Registry.WORLD_KEY, buf.readIdentifier());
 		int tileCount = buf.readVarInt();
 

@@ -1,14 +1,18 @@
 package folk.sisby.antique_atlas.core;
 
-import folk.sisby.antique_atlas.api.AtlasAPI;
 import folk.sisby.antique_atlas.AntiqueAtlas;
+import folk.sisby.antique_atlas.api.AtlasAPI;
 import folk.sisby.antique_atlas.marker.MarkersData;
+import net.fabricmc.fabric.api.networking.v1.PacketSender;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.server.MinecraftServer;
+import net.minecraft.server.network.ServerPlayNetworkHandler;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.world.World;
 
 public class PlayerEventHandler {
-    public static void onPlayerLogin(ServerPlayerEntity player) {
+    public static void onPlayerLogin(ServerPlayNetworkHandler handler, PacketSender sender, MinecraftServer server) {
+        ServerPlayerEntity player = handler.getPlayer();
         World world = player.world;
         int atlasID = AtlasAPI.getPlayerAtlasId(player);
 

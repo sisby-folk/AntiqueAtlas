@@ -1,24 +1,25 @@
 package folk.sisby.antique_atlas;
 
-import dev.architectury.event.events.common.LifecycleEvent;
-import dev.architectury.registry.ReloadListenerRegistry;
-import folk.sisby.antique_atlas.core.AtlasIdData;
 import folk.sisby.antique_atlas.core.GlobalTileDataHandler;
 import folk.sisby.antique_atlas.core.PlayerEventHandler;
 import folk.sisby.antique_atlas.core.TileDataHandler;
 import folk.sisby.antique_atlas.core.scanning.WorldScanner;
 import folk.sisby.antique_atlas.marker.GlobalMarkersDataHandler;
 import folk.sisby.antique_atlas.marker.MarkersDataHandler;
-import folk.sisby.antique_atlas.mixinhooks.NewPlayerConnectionCallback;
-import folk.sisby.antique_atlas.mixinhooks.NewServerConnectionCallback;
 import folk.sisby.antique_atlas.network.AntiqueAtlasNetworking;
-import folk.sisby.antique_atlas.structure.*;
+import folk.sisby.antique_atlas.structure.EndCity;
+import folk.sisby.antique_atlas.structure.JigsawConfig;
+import folk.sisby.antique_atlas.structure.NetherFortress;
+import folk.sisby.antique_atlas.structure.Overworld;
+import folk.sisby.antique_atlas.structure.Village;
 import net.fabricmc.api.ModInitializer;
+import net.fabricmc.fabric.api.client.networking.v1.ClientPlayConnectionEvents;
+import net.fabricmc.fabric.api.event.lifecycle.v1.ServerWorldEvents;
+import net.fabricmc.fabric.api.networking.v1.ServerPlayConnectionEvents;
+import net.fabricmc.fabric.api.resource.ResourceManagerHelper;
 import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.resource.ResourceType;
-import net.minecraft.server.world.ServerWorld;
 import net.minecraft.util.Identifier;
-import net.minecraft.world.World;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -37,43 +38,30 @@ public class AntiqueAtlas implements ModInitializer {
 
     public static AntiqueAtlasConfig CONFIG = AntiqueAtlasConfig.createToml(FabricLoader.getInstance().getConfigDir(), "", "antique-atlas", AntiqueAtlasConfig.class);
 
-    public static Identifier id(String... path) {
-        return path[0].contains(":") ? new Identifier(String.join(".", path)) : new Identifier(ID, String.join(".", path));
-    }
-
-    public static AtlasIdData getAtlasIdData(World world) {
-        if (world.isClient()) {
-            LOG.warn("Tried to access server only data from client.");
-            return null;
-        }
-
-        return ((ServerWorld) world).getPersistentStateManager().getOrCreate(AtlasIdData::fromNbt, AtlasIdData::new, "antique_atlas:global_atlas_data");
+    public static Identifier id(String path) {
+        return new Identifier(ID, String.join(".", path));
     }
 
     @Override
     public void onInitialize() {
         AntiqueAtlasNetworking.registerC2SListeners();
 
-        NewServerConnectionCallback.EVENT.register(tileData::onClientConnectedToServer);
-        NewServerConnectionCallback.EVENT.register(markersData::onClientConnectedToServer);
-        NewServerConnectionCallback.EVENT.register(globalMarkersData::onClientConnectedToServer);
+        ClientPlayConnectionEvents.JOIN.register(tileData::onClientConnectedToServer);
+        ClientPlayConnectionEvents.JOIN.register(markersData::onClientConnectedToServer);
+        ClientPlayConnectionEvents.JOIN.register(globalMarkersData::onClientConnectedToServer);
 
-        NewPlayerConnectionCallback.EVENT.register(globalMarkersData::onPlayerLogin);
-        NewPlayerConnectionCallback.EVENT.register(globalTileData::onPlayerLogin);
-        NewPlayerConnectionCallback.EVENT.register(PlayerEventHandler::onPlayerLogin);
+        ServerPlayConnectionEvents.JOIN.register(globalMarkersData::onPlayerLogin);
+        ServerPlayConnectionEvents.JOIN.register(globalTileData::onPlayerLogin);
+        ServerPlayConnectionEvents.JOIN.register(PlayerEventHandler::onPlayerLogin);
 
-        LifecycleEvent.SERVER_LEVEL_LOAD.register(globalMarkersData::onWorldLoad);
-        LifecycleEvent.SERVER_LEVEL_LOAD.register(globalTileData::onWorldLoad);
-
-        StructurePieceAddedCallback.EVENT.register(StructureHandler::resolve);
-        StructureAddedCallback.EVENT.register(StructureHandler::resolve);
+        ServerWorldEvents.LOAD.register(globalMarkersData::onWorldLoad);
+        ServerWorldEvents.LOAD.register(globalTileData::onWorldLoad);
 
         NetherFortress.registerPieces();
         EndCity.registerMarkers();
         Village.registerMarkers();
         Overworld.registerPieces();
 
-        JigsawConfig jigsawConfig = new JigsawConfig();
-        ReloadListenerRegistry.register(ResourceType.SERVER_DATA, jigsawConfig, jigsawConfig.getId());
+        ResourceManagerHelper.get(ResourceType.SERVER_DATA).registerReloadListener(new JigsawConfig());
     }
 }

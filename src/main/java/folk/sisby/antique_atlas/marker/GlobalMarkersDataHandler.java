@@ -1,6 +1,10 @@
 package folk.sisby.antique_atlas.marker;
 
-import net.minecraft.server.network.ServerPlayerEntity;
+import net.fabricmc.fabric.api.networking.v1.PacketSender;
+import net.minecraft.client.MinecraftClient;
+import net.minecraft.client.network.ClientPlayNetworkHandler;
+import net.minecraft.server.MinecraftServer;
+import net.minecraft.server.network.ServerPlayNetworkHandler;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.world.World;
 
@@ -12,7 +16,7 @@ import net.minecraft.world.World;
  * </p>
  * <p>
  * When connecting to a remote server, data has to be reset, see
- * {@link #onClientConnectedToServer(boolean)}
+ * {@link #onClientConnectedToServer(ClientPlayNetworkHandler, PacketSender, MinecraftClient)}
  * </p>
  * @author Hunternif
  */
@@ -21,7 +25,7 @@ public class GlobalMarkersDataHandler {
 
 	private GlobalMarkersData data;
 
-	public void onWorldLoad(ServerWorld world) {
+	public void onWorldLoad(MinecraftServer server, ServerWorld world) {
 		if (world.getRegistryKey() == World.OVERWORLD) {
 			data = world.getPersistentStateManager().getOrCreate(GlobalMarkersData::readNbt, () -> {
 				GlobalMarkersData data = new GlobalMarkersData();
@@ -40,8 +44,8 @@ public class GlobalMarkersDataHandler {
 	 * form post, the latter event isn't actually fired on the client.
 	 * </p>
 	 */
-	public void onClientConnectedToServer(boolean isRemote) {
-		if (isRemote) { // make sure it's not an integrated server
+	public void onClientConnectedToServer(ClientPlayNetworkHandler handler, PacketSender sender, MinecraftClient client) {
+		if (!client.isIntegratedServerRunning()) {
 			data = null;
 		}
 	}
@@ -54,8 +58,7 @@ public class GlobalMarkersDataHandler {
 	}
 
 	/** Synchronizes global markers with the connecting client. */
-	public void onPlayerLogin(ServerPlayerEntity player) {
-		data.syncOnPlayer(player);
+	public void onPlayerLogin(ServerPlayNetworkHandler handler, PacketSender sender, MinecraftServer server) {
+		data.syncOnPlayer(handler.getPlayer());
 	}
-
 }

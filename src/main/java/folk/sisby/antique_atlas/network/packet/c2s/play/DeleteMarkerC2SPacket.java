@@ -1,11 +1,14 @@
 package folk.sisby.antique_atlas.network.packet.c2s.play;
 
-import dev.architectury.networking.NetworkManager;
 import folk.sisby.antique_atlas.AntiqueAtlas;
 import folk.sisby.antique_atlas.api.AtlasAPI;
 import folk.sisby.antique_atlas.network.packet.c2s.C2SPacket;
 import folk.sisby.antique_atlas.util.Log;
+import net.fabricmc.fabric.api.networking.v1.PacketSender;
 import net.minecraft.network.PacketByteBuf;
+import net.minecraft.server.MinecraftServer;
+import net.minecraft.server.network.ServerPlayNetworkHandler;
+import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.util.Identifier;
 
 /**
@@ -15,7 +18,7 @@ import net.minecraft.util.Identifier;
  * @author Hunternif
  */
 public class DeleteMarkerC2SPacket extends C2SPacket {
-	public static final Identifier ID = AntiqueAtlas.id("packet", "c2s", "marker", "delete");
+	public static final Identifier ID = AntiqueAtlas.id("packet.c2s.marker.delete");
 
 	private static final int GLOBAL = -1;
 
@@ -28,18 +31,16 @@ public class DeleteMarkerC2SPacket extends C2SPacket {
 	public Identifier getId() {
 		return ID;
 	}
-	public static void apply(PacketByteBuf buf, NetworkManager.PacketContext context) {
+
+	public static void apply(MinecraftServer server, ServerPlayerEntity player, ServerPlayNetworkHandler handler, PacketByteBuf buf, PacketSender sender) {
 		int atlasID = buf.readVarInt();
 		int markerID = buf.readVarInt();
 
-		context.queue(() -> {
-			if (AtlasAPI.getPlayerAtlasId(context.getPlayer()) != atlasID) {
-				Log.warn("Player %s attempted to delete marker from someone else's Atlas #%d",
-						context.getPlayer().getName(), atlasID);
-				return;
-			}
+		if (AtlasAPI.getPlayerAtlasId(player) != atlasID) {
+			Log.warn("Player %s attempted to delete marker from someone else's Atlas #%d", player.getName(), atlasID);
+			return;
+		}
 
-			AtlasAPI.getMarkerAPI().deleteMarker(context.getPlayer().getEntityWorld(), atlasID, markerID);
-		});
+		AtlasAPI.getMarkerAPI().deleteMarker(player.getEntityWorld(), atlasID, markerID);
 	}
 }

@@ -1,12 +1,12 @@
 package folk.sisby.antique_atlas.client;
 
-import dev.architectury.injectables.annotations.ExpectPlatform;
 import folk.sisby.antique_atlas.AntiqueAtlas;
 import folk.sisby.antique_atlas.client.texture.ITexture;
 import folk.sisby.antique_atlas.core.scanning.TileHeightType;
 import folk.sisby.antique_atlas.util.Log;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
+import net.fabricmc.fabric.api.tag.convention.v1.ConventionalBiomeTags;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.tag.BiomeTags;
 import net.minecraft.util.Identifier;
@@ -235,114 +235,92 @@ public class TileTextureMap {
         return Optional.empty();
     }
 
-    @ExpectPlatform
     public static boolean biomeIsVoid(RegistryEntry<Biome> biomeTag) {
-        return false;
+        return biomeTag.isIn(ConventionalBiomeTags.VOID);
     }
 
-    @ExpectPlatform
     public static boolean biomeIsEnd(RegistryEntry<Biome> biomeTag) {
-        return false;
+        return biomeTag.isIn(ConventionalBiomeTags.IN_THE_END) || biomeTag.isIn(ConventionalBiomeTags.END_ISLANDS);
     }
 
-    @ExpectPlatform
     public static boolean biomeHasVegetation(RegistryEntry<Biome> biomeTag) {
-        return false;
+        return biomeTag.isIn(ConventionalBiomeTags.VEGETATION_DENSE) || biomeTag.isIn(ConventionalBiomeTags.VEGETATION_SPARSE);
     }
 
-    @ExpectPlatform
     public static boolean biomeIsNether(RegistryEntry<Biome> biomeTag) {
-        return false;
+        return biomeTag.isIn(ConventionalBiomeTags.IN_NETHER);
     }
 
-    @ExpectPlatform
     public static boolean biomeIsSwamp(RegistryEntry<Biome> biomeTag) {
-        return false;
+        return biomeTag.isIn(ConventionalBiomeTags.SWAMP);
     }
 
-    @ExpectPlatform
     public static boolean biomeIsWater(RegistryEntry<Biome> biomeTag) {
-        return false;
+        return biomeTag.isIn(ConventionalBiomeTags.AQUATIC);
     }
 
-    @ExpectPlatform
     public static boolean biomeIsIcy(RegistryEntry<Biome> biomeTag) {
-        return false;
+        return biomeTag.isIn(ConventionalBiomeTags.ICY);
     }
 
-    @ExpectPlatform
     public static boolean biomeIsShore(RegistryEntry<Biome> biomeTag) {
-        return false;
+        return biomeTag.isIn(ConventionalBiomeTags.BEACH);
     }
 
-    @ExpectPlatform
     public static boolean biomeIsJungle(RegistryEntry<Biome> biomeTag) {
-        return false;
+        return biomeTag.isIn(ConventionalBiomeTags.JUNGLE) || biomeTag.isIn(ConventionalBiomeTags.TREE_JUNGLE);
     }
 
-    @ExpectPlatform
     public static boolean biomeIsSavanna(RegistryEntry<Biome> biomeTag) {
-        return false;
+        return biomeTag.isIn(ConventionalBiomeTags.SAVANNA) || biomeTag.isIn(ConventionalBiomeTags.TREE_SAVANNA);
     }
 
-    @ExpectPlatform
-    public static boolean biomeIsPlateau(RegistryEntry<Biome> biomeTag) {
-        return false;
-    }
-
-    @ExpectPlatform
     public static boolean biomeIsBadlands(RegistryEntry<Biome> biomeTag) {
-        return false;
+        return biomeTag.isIn((ConventionalBiomeTags.BADLANDS)) || biomeTag.isIn((ConventionalBiomeTags.MESA));
     }
 
-    @ExpectPlatform
+    public static boolean biomeIsPlateau(RegistryEntry<Biome> biomeTag) {
+        return false; // None
+    }
+
     public static boolean biomeIsForest(RegistryEntry<Biome> biomeTag) {
-        return false;
+        return biomeTag.isIn(ConventionalBiomeTags.TREE_DECIDUOUS);
     }
 
-    @ExpectPlatform
     public static boolean biomeIsSnowy(RegistryEntry<Biome> biomeTag) {
-        return false;
+        return biomeTag.isIn(ConventionalBiomeTags.SNOWY);
     }
 
-    @ExpectPlatform
     public static boolean biomeIsPlains(RegistryEntry<Biome> biomeTag) {
-        return false;
+        return biomeTag.isIn(ConventionalBiomeTags.PLAINS) || biomeTag.isIn(ConventionalBiomeTags.SNOWY_PLAINS);
     }
 
-    @ExpectPlatform
     public static boolean biomeIsDesert(RegistryEntry<Biome> biomeTag) {
-        return false;
+        return biomeTag.isIn(ConventionalBiomeTags.DESERT);
     }
 
-    @ExpectPlatform
     public static boolean biomeIsTaiga(RegistryEntry<Biome> biomeTag) {
-        return false;
+        return biomeTag.isIn(ConventionalBiomeTags.TAIGA);
     }
 
-    @ExpectPlatform
     public static boolean biomeIsExtremeHills(RegistryEntry<Biome> biomeTag) {
-        return false;
+        return biomeTag.isIn(ConventionalBiomeTags.EXTREME_HILLS);
     }
 
-    @ExpectPlatform
     public static boolean biomeIsPeak(RegistryEntry<Biome> biomeTag) {
-        return false;
+        return biomeTag.isIn(ConventionalBiomeTags.MOUNTAIN_PEAK);
     }
 
-    @ExpectPlatform
     public static boolean biomeIsMountain(RegistryEntry<Biome> biomeTag) {
-        return false;
+        return biomeTag.isIn(ConventionalBiomeTags.MOUNTAIN) || biomeTag.isIn(ConventionalBiomeTags.MOUNTAIN_SLOPE);
     }
 
-    @ExpectPlatform
     public static boolean biomeIsMushroom(RegistryEntry<Biome> biomeTag) {
-        return false;
+        return biomeTag.isIn(ConventionalBiomeTags.MUSHROOM);
     }
 
-    @ExpectPlatform
     public static boolean biomeIsUnderground(RegistryEntry<Biome> biomeTag) {
-        return false;
+        return biomeTag.isIn(ConventionalBiomeTags.UNDERGROUND);
     }
 
     public boolean isRegistered(Identifier id) {

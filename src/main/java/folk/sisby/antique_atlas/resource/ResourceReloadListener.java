@@ -1,5 +1,6 @@
 package folk.sisby.antique_atlas.resource;
 
+import net.fabricmc.fabric.api.resource.IdentifiableResourceReloadListener;
 import net.minecraft.resource.ResourceManager;
 import net.minecraft.resource.ResourceReloader;
 import net.minecraft.util.Identifier;
@@ -9,7 +10,7 @@ import java.util.Collection;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.Executor;
 
-public interface ResourceReloadListener<T> extends ResourceReloader {
+public interface ResourceReloadListener<T> extends ResourceReloader, IdentifiableResourceReloadListener {
 
     CompletableFuture<T> load(ResourceManager manager, Profiler profiler, Executor executor);
 
@@ -39,4 +40,13 @@ public interface ResourceReloadListener<T> extends ResourceReloader {
 
     Collection<Identifier> getDependencies();
 
+    @Override
+    default Identifier getFabricId() {
+        return getId();
+    }
+
+    @Override
+    default Collection<Identifier> getFabricDependencies() {
+        return getDependencies();
+    }
 }
