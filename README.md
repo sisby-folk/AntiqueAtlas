@@ -30,7 +30,7 @@ Our intent is that the atlas is a metaphysical representation of the player's ow
 
 All mods are built on the work of many others.
 
-This mod specifically is a fourth-gen offshoot, and relies on the work of many code and art contributors before us. [We can't draw autotile to save our lives](https://github.com/AntiqueAtlasTeam/AntiqueAtlas/wiki/Editing-Textures) - feel free to contribute!
+This mod specifically is a fourth-gen offshoot, and relies on the work of many code and art contributors before us.<br/>[We can't draw autotile to save our lives](https://github.com/AntiqueAtlasTeam/AntiqueAtlas/wiki/Editing-Textures) - feel free to contribute!
 
 If you usually rely on a minimap for cardinal direction, try [PicoHUD](https://modrinth.com/mod/picohud)!
 
