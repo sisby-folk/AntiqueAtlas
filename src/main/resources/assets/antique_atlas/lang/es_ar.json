@@ -1,0 +1,38 @@
+{
+  "item.antique_atlas.antique_atlas": "Antique Atlas #%d",
+  "item.antique_atlas.empty_antique_atlas": "Antique Atlas vacío",
+
+  "gui.antique_atlas.scalebar": "Escala en bloques",
+  "gui.antique_atlas.addMarker": "Añadir marcador",
+  "gui.antique_atlas.delMarker": "Borrar marcador",
+  "gui.antique_atlas.followPlayer": "Seguir jugador",
+  "gui.antique_atlas.exportImage": "Exportar imagen",
+  "gui.antique_atlas.hideMarkers": "Ocultar marcadores",
+  "gui.antique_atlas.showMarkers": "Mostrar marcadores",
+
+  "gui.antique_atlas.marker.label": "Etiqueta:",
+  "gui.antique_atlas.marker.type": "Tipo:",
+  "gui.antique_atlas.marker.village": "Aldea",
+  "gui.antique_atlas.marker.netherPortal": "Portal del Nether",
+  "gui.antique_atlas.marker.tomb": "Aquí yace %s",
+
+  "gui.antique_atlas.export.opening": "Abriendo diálogo del sistema de archivos...",
+  "gui.antique_atlas.export.selectFile": "Selecciona el archivo PNG para guardar en",
+  "gui.antique_atlas.export.tooLarge": "¡Lo siento! La imagen es muy grande para renderizarla, intenta incrementando Java heap size.",
+
+  "gui.antique_atlas.export.setup": "Configurando...",
+  "gui.antique_atlas.export.rendering": "Renderizando...",
+  "gui.antique_atlas.export.writing": "Escribiendo el archivo...",
+  "gui.antique_atlas.export.loadingtextures": "Cargando texturas...",
+  "gui.antique_atlas.export.makingbuffer": "Asignando %dx%d buffer de imagen...",
+
+  "gui.antique_atlas.export.renderstripe": "Renderizando rebanada %d/%d...",
+  "gui.antique_atlas.export.writestripe": "Escribiendo rebanada...",
+
+  "gui.antique_atlas.export.rendering.background": "Renderizando fondo del mapa",
+  "gui.antique_atlas.export.rendering.map": "Renderizando mosaicos del mapa",
+  "gui.antique_atlas.export.rendering.markers": "Renderizando marcadores",
+
+  "key.openatlas.desc": "Abrir Atlas",
+  "key.antique_atlas.category": "Antique Atlas"
+}

@@ -1,0 +1,46 @@
+{
+  "item.antique_atlas.antique_atlas": "Старинный атлас #%d",
+  "item.antique_atlas.empty_antique_atlas": "Пустой старинный атлас",
+
+  "gui.antique_atlas.scalebar": "Масштаб в блоках",
+  "gui.antique_atlas.addMarker": "Добавить метку",
+  "gui.antique_atlas.delMarker": "Удалить метку",
+  "gui.antique_atlas.followPlayer": "Привязать к игроку",
+  "gui.antique_atlas.exportImage": "Сохранить изображение",
+  "gui.antique_atlas.hideMarkers": "Скрыть метки",
+  "gui.antique_atlas.showMarkers": "Показать метки",
+
+  "gui.antique_atlas.marker.label": "Метка:",
+  "gui.antique_atlas.marker.type": "Тип:",
+  "gui.antique_atlas.marker.village": "Деревня",
+  "gui.antique_atlas.marker.netherPortal": "Портал в Нижний Мир",
+  "gui.antique_atlas.marker.tomb": "Здесь покоится %s",
+  "gui.antique_atlas.marker.treasure": "Зарытый клад",
+  "gui.antique_atlas.marker.monument": "Морской монумент",
+  "gui.antique_atlas.marker.mansion": "Лесной особняк",
+
+  "gui.antique_atlas.export.opening": "Открывается диалоговое окно...",
+  "gui.antique_atlas.export.selectFile": "Укажите PNG файл, куда сохранять изображение карты",
+  "gui.antique_atlas.export.tooLarge": "Извините, картинка слишком большая. Попробуйте выделить больше памяти для Java.",
+
+  "gui.antique_atlas.export.setup": "Подготовка...",
+  "gui.antique_atlas.export.rendering": "Отрисовка...",
+  "gui.antique_atlas.export.writing": "Запись в файл...",
+  "gui.antique_atlas.export.loadingtextures": "Загрузка текстур...",
+  "gui.antique_atlas.export.makingbuffer": "Выделение буфера размером %dx%d...",
+
+  "gui.antique_atlas.export.renderstripe": "Отрисовка слоя %d/%d...",
+  "gui.antique_atlas.export.writestripe": "Запись слоя...",
+
+  "gui.antique_atlas.export.rendering.background": "Отрисовка заднего фона",
+  "gui.antique_atlas.export.rendering.map": "Отрисовка карты",
+  "gui.antique_atlas.export.rendering.markers": "Отрисовка меток",
+
+  "key.openatlas.desc": "Открыть атлас",
+  "key.antique_atlas.category": "Antique Atlas",
+
+
+
+
+
+}

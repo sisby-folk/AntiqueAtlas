@@ -1,0 +1,9 @@
+{
+	"version": 2,
+	"texture_sets": {
+		"default": "antique_atlas:snow_pines",
+		"mid": "antique_atlas:snow_pines_hills",
+		"high": "antique_atlas:snow_pines_hills",
+		"peak": "antique_atlas:snow_pines_hills"
+	}
+}

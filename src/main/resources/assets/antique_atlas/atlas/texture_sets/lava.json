@@ -1,0 +1,23 @@
+{
+  "version": 1,
+  "data": {
+    "textures": {
+      "antique_atlas:lava": 1,
+      "antique_atlas:lava2": 1
+    },
+    "stitch": {
+      "antique_atlas:lava_shore": "both",
+      "antique_atlas:nether_bridge": "both",
+      "antique_atlas:nether_bridge_gate": "both",
+      "antique_atlas:nether_tower": "both",
+      "antique_atlas:nether_throne": "both",
+      "antique_atlas:nether_wall": "both",
+      "antique_atlas:nether_hall": "both",
+      "antique_atlas:nether_fort_stairs": "both",
+      "antique_atlas:nether_bridge_x": "both",
+      "antique_atlas:nether_bridge_end_x": "both",
+      "antique_atlas:nether_bridge_z": "both",
+      "antique_atlas:nether_bridge_end_z": "both"
+    }
+  }
+}

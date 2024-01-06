@@ -1,0 +1,20 @@
+{
+  "version": 1,
+  "data": {
+    "textures": {
+      "antique_atlas:nether_fort_stairs": 1
+    },
+    "stitch": {
+      "antique_atlas:nether_bridge_gate": "both",
+      "antique_atlas:nether_bridge": "both",
+      "antique_atlas:nether_hall": "both",
+      "antique_atlas:nether_wall": "both",
+      "antique_atlas:nether_tower": "both",
+      "antique_atlas:nether_throne": "both",
+      "antique_atlas:nether_bridge_z": "vertical",
+      "antique_atlas:nether_bridge_end_z": "vertical",
+      "antique_atlas:nether_bridge_x": "horizontal",
+      "antique_atlas:nether_bridge_end_x": "horizontal"
+    }
+  }
+}
