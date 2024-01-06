@@ -35,7 +35,7 @@ Versions `8.x` and `9.x` (listed as 0.8 and 0.9 on modrinth) have a similar arch
 
 All mods are built on the work of many others.
 
-This mod specifically is a fourth-gen offshoot, and relies on the work of many code and art contributors before us.<br/>[We can't draw autotile to save our lives](https://github.com/AntiqueAtlasTeam/AntiqueAtlas/wiki/Editing-Textures) - feel free to contribute!
+This mod specifically is a fourth-gen offshoot, and relies heavily on the excellent tile art by Hunternif as well as the code contributions of many developers before us.<br/>[We can't draw autotile to save our lives](https://github.com/AntiqueAtlasTeam/AntiqueAtlas/wiki/Editing-Textures) - feel free to contribute!
 
 If you usually rely on a minimap for a sense of cardinal direction, try [PicoHUD](https://modrinth.com/mod/picohud)!
 
