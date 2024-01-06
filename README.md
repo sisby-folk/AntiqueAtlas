@@ -1,13 +1,37 @@
-# Antique Atlas ![Minecraft 1.16.5](https://img.shields.io/badge/minecraft-1.16.5-blue.svg) [![Build Status](https://github.com/AntiqueAtlasTeam/AntiqueAtlas/workflows/Build%20Status/badge.svg)](https://github.com/AntiqueAtlasTeam/AntiqueAtlas/actions)
-Antique Atlas is a book that acts like a map featuring infinite scrolling, zoom and custom labeled markers. The map is generated around the player by calculating the average biome in each 16x16 chunk.
+<!--suppress HtmlDeprecatedTag, XmlDeprecatedElement -->
+<center><img alt="mod preview" src="https://i.imgur.com/i90KA8K.png" /></center>
 
-Navigate the map by dragging it with the mouse, clicking arrow buttons or pressing arrow keys on the keyboard. Use the +/- keys or mouse wheel to zoom in and out.
+<center>
+An always-accessible abstract world map.<br/>
+A shredded up port of <a href="https://modrinth.com/mod/antique-atlas">Antique Atlas</a> by hunternif, as continued by kenkron, asiekierkierka, and tyra314.<br/>
+</center>
 
-You can export the map of the current dimension into a PNG image, see buttons on the right side of the GUI.
+---
 
-You can edit the configs to set which biome uses what texture, or even assign your own textures to any biome, including custom mod biomes. See tutorial on the wiki: https://github.com/Hunternif/AntiqueAtlas/wiki/Editing-Textures
+Press **[M]** at any time to bring up the world map.
 
-### API
-If you are a mod developer and you wish to interact with AntiqueAtlas, you will need the source code of the API. You can include the whole source code of AntiqueAtlas (the `...-sources.jar` in [Releases](https://github.com/Hunternif/AntiqueAtlas/releases)) which allows you to test the  interaction when debugging your mod.
+The map is an abstracted view of the world, with tiles representing biomes and structures.
 
-Use the class `hunternif.mc.atlas.api.AtlasAPI` to obtain a reference to the API. There are 2 actual APIs: TileAPI and MarkerAPI. See javadocs/sources and the wiki for more: https://github.com/Hunternif/AntiqueAtlas/wiki/API
+It can be zoomed in as far as 4 chunks across, and out as far as 400.
+
+Markers can be named and added to the map any time, available in selection of icons.
+
+### Design
+
+We didn't make this mod! But we have strong opinions about it - primarily, that an abstracted view of the world prevents the map from getting in the way of experiencing the world as-is. 
+
+Antique Atlas is perfect to stop you from ever getting lost, but it never gets in the way. 
+
+When forking the mod, we wanted to make sure players could never get lost - so the map is always available. 
+
+Our intent is that the atlas is a metaphysical representation of the player's own _lay of the land_ - a memory of everywhere you've explored so far. We'd still like to keep small touches like the player appearing to physically look at a book in multiplayer, and being able to share map knowledge, but the item stays gone.
+
+### Afterword
+
+All mods are built on the work of many others.
+
+This mod specifically is a fourth-gen offshoot, and relies on the work of many code and art contributors before us. [We can't draw autotile to save our lives](https://github.com/AntiqueAtlasTeam/AntiqueAtlas/wiki/Editing-Textures) - feel free to contribute!
+
+This mod is included in [Tinkerer's Quilt Plus](https://modrinth.com/modpack/tinkerers-quilt) - our modpack about rediscovering vanilla.
+
+We're open to suggestions for how to implement stuff better - if you see something wonky and have an idea - let us know.
