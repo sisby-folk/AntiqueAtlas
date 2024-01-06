@@ -1,26 +1,33 @@
-# eclipse
-bin
+# Gradle
+.gradle/
+build/
+out/
+classes/
+
+# Loom
+run/
+
+# Eclipse
 *.launch
-.settings
-.metadata
+
+# IntelliJ Idea
+.idea/
+*.iml
+*.ipr
+*.iws
+
+# Visual Studio Code
+.settings/
+.vscode/
+bin/
 .classpath
 .project
 
-# idea
-out
-*.ipr
-*.iws
-*.iml
-.idea
+# Eclipse JDT LS
+workspace/
 
-# gradle
-build
-.gradle
-!build.gradle
+# macOS
+*.DS_Store
 
-# other
-eclipse
-run*
-
-classes
-logs
+# Changelog
+CHANGELOG.md

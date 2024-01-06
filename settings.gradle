@@ -1,18 +1,14 @@
 pluginManagement {
     repositories {
-        maven { url "https://maven.fabricmc.net/" }
-        maven { url "https://maven.architectury.dev/" }
-        maven { url "https://files.minecraftforge.net/maven/" }
+        maven { url 'https://maven.fabricmc.net/'}
         gradlePluginPortal()
     }
 }
 
-if (JavaVersion.current().ordinal() + 1 < 17) {
-    throw new IllegalStateException("Please run gradle with Java 17+!")
+dependencyResolutionManagement {
+    versionCatalogs {
+        create("libs") {
+            from(files("libs.versions.toml"))
+        }
+    }
 }
-
-include("common")
-include("fabric")
-include("forge")
-
-rootProject.name = "antiqueatlas"
