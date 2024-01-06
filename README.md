@@ -27,6 +27,10 @@ When forking the mod, we wanted to make sure players could never get lost - so t
 
 Our intent is that the atlas is a metaphysical representation of the player's own _lay of the land_ - a memory of everywhere you've explored so far. We'd still like to keep small touches like the player appearing to physically look at a book in multiplayer, and being able to share map knowledge, but the item stays gone.
 
+### Compatibility
+
+Versions `8.x` and `9.x` (listed as 0.8 and 0.9 on modrinth) have a similar architecture to Antique Atlas for 1.16-1.18.<br/>Versions following `1.0.0` have major breakages, and use the mod ID `antique-atlas` to prevent conflicts.
+
 ### Afterword
 
 All mods are built on the work of many others.
