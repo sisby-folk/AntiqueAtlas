@@ -1,6 +1,6 @@
 {
-	"version": 1,
-	"textures": [
-		"antique_atlas:textures/gui/markers/ocean_monument.png"
-	]
+  "version": 1,
+  "textures": [
+    "antique_atlas:textures/gui/markers/ocean_monument.png"
+  ]
 }

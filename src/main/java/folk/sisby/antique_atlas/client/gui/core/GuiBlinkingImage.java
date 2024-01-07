@@ -64,7 +64,7 @@ public class GuiBlinkingImage extends GuiComponent {
         drawImage(context);
 
         RenderSystem.disableBlend();
-        RenderSystem.setShaderColor(1,1,1,1);
+        RenderSystem.setShaderColor(1, 1, 1, 1);
     }
 
     private void drawImage(DrawContext context) {

@@ -73,7 +73,7 @@ public abstract class ATexture implements ITexture {
         context.getMatrices().multiply(RotationAxis.POSITIVE_Z.rotationDegrees(180 + rotation));
         context.getMatrices().translate(-width / 2f, -height / 2f, 0f);
 
-        draw(context, 0,0, width, height);
+        draw(context, 0, 0, width, height);
 
         context.getMatrices().pop();
     }

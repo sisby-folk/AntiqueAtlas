@@ -1,9 +1,9 @@
 {
-	"version": 2,
-	"texture_sets": {
-		"default": "antique_atlas:snow",
-		"mid": "antique_atlas:snow_hills",
-		"high": "antique_atlas:snow_hills",
-		"peak": "antique_atlas:mountains_snow_caps"
-	}
+  "version": 2,
+  "texture_sets": {
+    "default": "antique_atlas:snow",
+    "mid": "antique_atlas:snow_hills",
+    "high": "antique_atlas:snow_hills",
+    "peak": "antique_atlas:mountains_snow_caps"
+  }
 }

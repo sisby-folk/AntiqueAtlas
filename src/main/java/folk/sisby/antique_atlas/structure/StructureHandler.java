@@ -154,7 +154,7 @@ public class StructureHandler {
         Pair<Identifier, Text> foundMarker = null;
 
         if (STRUCTURE_PIECE_TO_MARKER_MAP.containsKey(structureId)) {
-            foundMarker =  STRUCTURE_PIECE_TO_MARKER_MAP.get(structureId);
+            foundMarker = STRUCTURE_PIECE_TO_MARKER_MAP.get(structureId);
         } else {
             Registry<Structure> structureRegistry = world.getRegistryManager().get(RegistryKeys.STRUCTURE);
             RegistryEntry<Structure> structureTag = structureRegistry.entryOf(structureRegistry.getKey(structureStart.getStructure()).orElse(null));
@@ -168,20 +168,20 @@ public class StructureHandler {
 
         if (foundMarker != null) {
             Triple<Integer, Integer, Identifier> key = Triple.of(
-                    structureStart.getBoundingBox().getCenter().getX(),
-                    structureStart.getBoundingBox().getCenter().getY(),
-                    structureId);
+                structureStart.getBoundingBox().getCenter().getX(),
+                structureStart.getBoundingBox().getCenter().getY(),
+                structureId);
 
             if (VISITED_STRUCTURES.contains(key)) return;
             VISITED_STRUCTURES.add(key);
 
             AtlasAPI.getMarkerAPI().putGlobalMarker(
-                    world,
-                    false,
-                    foundMarker.getLeft(),
-                    foundMarker.getRight(),
-                    structureStart.getBoundingBox().getCenter().getX(),
-                    structureStart.getBoundingBox().getCenter().getZ()
+                world,
+                false,
+                foundMarker.getLeft(),
+                foundMarker.getRight(),
+                structureStart.getBoundingBox().getCenter().getX(),
+                structureStart.getBoundingBox().getCenter().getZ()
             );
         }
     }

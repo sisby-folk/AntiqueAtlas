@@ -9,10 +9,10 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.nbt.NbtList;
+import net.minecraft.registry.RegistryKey;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.math.ChunkPos;
-import net.minecraft.registry.RegistryKey;
 import net.minecraft.world.World;
 
 import java.util.Map;
@@ -77,15 +77,15 @@ public class WorldData implements ITileStorage {
         this.browsingZoom = zoom;
         if (browsingZoom <= 0) {
             Log.warn("Setting map zoom to invalid value of %f", zoom);
-            browsingZoom = AntiqueAtlas.CONFIG.minScale;
+            browsingZoom = AntiqueAtlas.CONFIG.Interface.minScale;
         }
         parent.markDirty();
     }
 
     public void setBrowsingPositionTo(Entity e) {
-        setBrowsingPosition((int) Math.round(-e.getX() * AntiqueAtlas.CONFIG.defaultScale),
-                (int) Math.round(-e.getZ() * AntiqueAtlas.CONFIG.defaultScale),
-                AntiqueAtlas.CONFIG.defaultScale);
+        setBrowsingPosition((int) Math.round(-e.getX() * AntiqueAtlas.CONFIG.Interface.defaultScale),
+            (int) Math.round(-e.getZ() * AntiqueAtlas.CONFIG.Interface.defaultScale),
+            AntiqueAtlas.CONFIG.Interface.defaultScale);
     }
 
     public int getBrowsingX() {
@@ -103,7 +103,7 @@ public class WorldData implements ITileStorage {
     @Override
     public void setTile(int x, int y, Identifier tile) {
         ChunkPos groupPos = new ChunkPos((int) Math.floor(x / (float) TileGroup.CHUNK_STEP),
-                (int) Math.floor(y / (float) TileGroup.CHUNK_STEP));
+            (int) Math.floor(y / (float) TileGroup.CHUNK_STEP));
         TileGroup tg = tileGroups.get(groupPos);
         if (tg == null) {
             tg = new TileGroup(groupPos.x * TileGroup.CHUNK_STEP, groupPos.z * TileGroup.CHUNK_STEP);
@@ -136,7 +136,7 @@ public class WorldData implements ITileStorage {
     @Override
     public Identifier getTile(int x, int y) {
         ChunkPos groupPos = new ChunkPos((int) Math.floor(x / (float) TileGroup.CHUNK_STEP),
-                (int) Math.floor(y / (float) TileGroup.CHUNK_STEP));
+            (int) Math.floor(y / (float) TileGroup.CHUNK_STEP));
         TileGroup tg = tileGroups.get(groupPos);
         if (tg == null) {
             return null;

@@ -115,12 +115,12 @@ public class TileTextureConfig implements ResourceReloadListener<Map<Identifier,
                 }
 
                 tileTextureMap.setTexture(entry.getKey(), set);
-                if (AntiqueAtlas.CONFIG.resourcePackLogging)
+                if (AntiqueAtlas.CONFIG.Performance.resourcePackLogging)
                     Log.info("Loaded tile %s with texture set %s", tile_id, set.name);
             }
         }, executor);
     }
-    
+
     @Override
     public Identifier getId() {
         return ID;

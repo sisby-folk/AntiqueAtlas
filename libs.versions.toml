@@ -3,10 +3,10 @@ loom = "1.4.+"
 githubRelease = "2.4.1"
 minotaur = "2.6.0"
 
-mc = "1.19.2"
+mc = "1.20.1"
 fl = "0.15.0"
-yarn = "1.19.2+build.28"
-fapi = "0.76.0+1.19.2"
+yarn = "1.20.1+build.10"
+fapi = "0.83.0+1.20.1"
 kaleidoConfig = "0.1.1+1.1.0-beta.3"
 
 [plugins]

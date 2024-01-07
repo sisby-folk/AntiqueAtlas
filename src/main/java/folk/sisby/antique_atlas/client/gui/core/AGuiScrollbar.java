@@ -189,7 +189,7 @@ public abstract class AGuiScrollbar extends GuiComponent {
 
         if (isDragged) {
             doSetScrollRatio((float) (getMousePos(mouseX, mouseY) - anchorSize / 2)
-                    / (float) (getScrollbarLength() - anchorSize));
+                / (float) (getScrollbarLength() - anchorSize));
         }
 
         RenderSystem.enableBlend();

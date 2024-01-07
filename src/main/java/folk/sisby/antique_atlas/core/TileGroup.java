@@ -93,8 +93,8 @@ public class TileGroup implements ITileStorage {
             tiles[rx][ry] = tile;
         } else {
             Log.warn("TileGroup tried to set tile out of bounds:" +
-                    "\n\tbounds:" + scope +
-                    "\n\ttarget: x:" + x + ", y:" + y);
+                "\n\tbounds:" + scope +
+                "\n\ttarget: x:" + x + ", y:" + y);
         }
     }
 

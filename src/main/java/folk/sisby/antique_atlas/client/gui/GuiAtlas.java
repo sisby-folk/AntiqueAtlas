@@ -11,8 +11,6 @@ import folk.sisby.antique_atlas.client.gui.core.GuiStates.SimpleState;
 import folk.sisby.antique_atlas.client.texture.ITexture;
 import folk.sisby.antique_atlas.client.texture.TileTexture;
 import folk.sisby.antique_atlas.core.WorldData;
-import folk.sisby.antique_atlas.event.MarkerClickedCallback;
-import folk.sisby.antique_atlas.event.MarkerHoveredCallback;
 import folk.sisby.antique_atlas.marker.DimensionMarkersData;
 import folk.sisby.antique_atlas.marker.Marker;
 import folk.sisby.antique_atlas.marker.MarkersData;
@@ -318,15 +316,15 @@ public class GuiAtlas extends GuiComponent {
                 // While holding shift, we create a marker on the player's position
                 if (hasShiftDown()) {
                     markerFinalizer.setMarkerData(player.getEntityWorld(),
-                            getAtlasID(),
-                            player.getBlockX(), player.getBlockZ());
+                        getAtlasID(),
+                        player.getBlockX(), player.getBlockZ());
                     addChild(markerFinalizer);
 
                     blinkingIcon.setTexture(markerFinalizer.selectedType.getTexture(),
-                            MARKER_SIZE, MARKER_SIZE);
+                        MARKER_SIZE, MARKER_SIZE);
                     addChildBehind(markerFinalizer, blinkingIcon)
-                            .setRelativeCoords(worldXToScreenX((int) player.getX()) - getGuiX() - MARKER_SIZE / 2,
-                                    worldZToScreenY((int) player.getZ()) - getGuiY() - MARKER_SIZE / 2);
+                        .setRelativeCoords(worldXToScreenX((int) player.getX()) - getGuiX() - MARKER_SIZE / 2,
+                            worldZToScreenY((int) player.getZ()) - getGuiY() - MARKER_SIZE / 2);
 
                     // Need to intercept keyboard events to type in the label:
                     setInterceptKeyboard(true);
@@ -381,7 +379,7 @@ public class GuiAtlas extends GuiComponent {
 
         this.player = MinecraftClient.getInstance().player;
         updateAtlasData();
-        if (!followPlayer && AntiqueAtlas.CONFIG.doSaveBrowsingPos) {
+        if (!followPlayer && AntiqueAtlas.CONFIG.Gameplay.doSaveBrowsingPos) {
             loadSavedBrowsingPosition();
         }
 
@@ -427,10 +425,10 @@ public class GuiAtlas extends GuiComponent {
                     btnPosition.setEnabled(true);
                 } else if (state.is(DELETING_MARKER)) {
                     AtlasClientAPI.getMarkerAPI().deleteMarker(player.getEntityWorld(),
-                            getAtlasID(), marker.getId());
+                        getAtlasID(), marker.getId());
                     player.getEntityWorld().playSound(player, player.getBlockPos(),
-                            SoundEvents.UI_CARTOGRAPHY_TABLE_TAKE_RESULT, SoundCategory.AMBIENT,
-                            1F, 0.5F);
+                        SoundEvents.UI_CARTOGRAPHY_TABLE_TAKE_RESULT, SoundCategory.AMBIENT,
+                        1F, 0.5F);
                     state.switchTo(NORMAL);
                 }
             });
@@ -458,21 +456,21 @@ public class GuiAtlas extends GuiComponent {
         int mapX = (width - MAP_WIDTH) / 2;
         int mapY = (height - MAP_HEIGHT) / 2;
         boolean isMouseOverMap = mouseX >= mapX && mouseX <= mapX + MAP_WIDTH &&
-                mouseY >= mapY && mouseY <= mapY + MAP_HEIGHT;
+            mouseY >= mapY && mouseY <= mapY + MAP_HEIGHT;
         if (!state.is(NORMAL) && !state.is(HIDING_MARKERS)) {
             int atlasID = getAtlasID();
 
             if (state.is(PLACING_MARKER) // If clicked on the map, place marker:
-                    && isMouseOverMap && mouseState == 0 /* left click */) {
+                && isMouseOverMap && mouseState == 0 /* left click */) {
                 markerFinalizer.setMarkerData(player.getEntityWorld(), atlasID,
-                        screenXToWorldX((int) mouseX), screenYToWorldZ((int) mouseY));
+                    screenXToWorldX((int) mouseX), screenYToWorldZ((int) mouseY));
                 addChild(markerFinalizer);
 
                 blinkingIcon.setTexture(markerFinalizer.selectedType.getTexture(),
-                        MARKER_SIZE, MARKER_SIZE);
+                    MARKER_SIZE, MARKER_SIZE);
                 addChildBehind(markerFinalizer, blinkingIcon)
-                        .setRelativeCoords((int) mouseX - getGuiX() - MARKER_SIZE / 2,
-                                (int) mouseY - getGuiY() - MARKER_SIZE / 2);
+                    .setRelativeCoords((int) mouseX - getGuiX() - MARKER_SIZE / 2,
+                        (int) mouseY - getGuiY() - MARKER_SIZE / 2);
 
                 // Need to intercept keyboard events to type in the label:
                 setInterceptKeyboard(true);
@@ -483,17 +481,17 @@ public class GuiAtlas extends GuiComponent {
                 state.switchTo(NORMAL);
                 return true;
             } else if (state.is(DELETING_MARKER) // If clicked on a marker, delete it:
-                    && hoveredMarker != null && !hoveredMarker.isGlobal() && isMouseOverMap && mouseState == 0) {
+                && hoveredMarker != null && !hoveredMarker.isGlobal() && isMouseOverMap && mouseState == 0) {
                 AtlasClientAPI.getMarkerAPI().deleteMarker(player.getEntityWorld(),
-                        atlasID, hoveredMarker.getId());
+                    atlasID, hoveredMarker.getId());
                 hoveredMarker = null;
                 player.getEntityWorld().playSound(player, player.getBlockPos(),
-                        SoundEvents.UI_CARTOGRAPHY_TABLE_TAKE_RESULT, SoundCategory.AMBIENT,
-                        1F, 0.5F);
+                    SoundEvents.UI_CARTOGRAPHY_TABLE_TAKE_RESULT, SoundCategory.AMBIENT,
+                    1F, 0.5F);
             }
             state.switchTo(NORMAL);
         } else if (isMouseOverMap && selectedButton == null) {
-            if (hoveredMarker == null || !MarkerClickedCallback.EVENT.invoker().onClicked(player, hoveredMarker, mouseState).interruptsFurtherEvaluation()) {
+            if (hoveredMarker == null /* API: Marker Clicked Event */) {
                 isDragging = true;
                 return true;
             }
@@ -543,7 +541,7 @@ public class GuiAtlas extends GuiComponent {
 
         if (!handled && wheelMove != 0) {
             wheelMove = wheelMove > 0 ? 1 : -1;
-            if (AntiqueAtlas.CONFIG.doReverseWheelZoom) {
+            if (AntiqueAtlas.CONFIG.Interface.doReverseWheelZoom) {
                 wheelMove *= -1;
             }
 
@@ -653,15 +651,15 @@ public class GuiAtlas extends GuiComponent {
         int atlasID = getAtlasID();
 
         biomeData = AntiqueAtlas.tileData
-                .getData(atlasID, player.getEntityWorld())
-                .getWorldData(player.getEntityWorld().getRegistryKey());
+            .getData(atlasID, player.getEntityWorld())
+            .getWorldData(player.getEntityWorld().getRegistryKey());
         globalMarkersData = AntiqueAtlas.globalMarkersData.getData()
-                .getMarkersDataInWorld(player.getEntityWorld().getRegistryKey());
+            .getMarkersDataInWorld(player.getEntityWorld().getRegistryKey());
         MarkersData markersData = AntiqueAtlas.markersData
-                .getMarkersData(atlasID, player.getEntityWorld());
+            .getMarkersData(atlasID, player.getEntityWorld());
         if (markersData != null) {
             localMarkersData = markersData
-                    .getMarkersDataInWorld(player.getEntityWorld().getRegistryKey());
+                .getMarkersDataInWorld(player.getEntityWorld().getRegistryKey());
         } else {
             localMarkersData = null;
         }
@@ -724,7 +722,7 @@ public class GuiAtlas extends GuiComponent {
      */
     private void setMapScale(double scale, int addOffsetX, int addOffsetY) {
         double oldScale = mapScale;
-        mapScale = Math.min(Math.max(scale, AntiqueAtlas.CONFIG.minScale), AntiqueAtlas.CONFIG.maxScale);
+        mapScale = Math.min(Math.max(scale, AntiqueAtlas.CONFIG.Interface.minScale), AntiqueAtlas.CONFIG.Interface.maxScale);
 
         // Scaling not needed
         if (oldScale == mapScale) {
@@ -759,7 +757,7 @@ public class GuiAtlas extends GuiComponent {
         long deltaMillis = currentMillis - lastUpdateMillis;
         lastUpdateMillis = currentMillis;
 
-        if (AntiqueAtlas.CONFIG.debugRender) {
+        if (AntiqueAtlas.CONFIG.Performance.debugRender) {
             renderTimes[renderTimesIndex++] = System.currentTimeMillis();
             if (renderTimesIndex == renderTimes.length) {
                 renderTimesIndex = 0;
@@ -785,9 +783,9 @@ public class GuiAtlas extends GuiComponent {
             RenderSystem.setShaderColor(1, 1, 1, 0.5f);
         }
         RenderSystem.enableScissor(
-                (int) ((getGuiX() + MAP_BORDER_WIDTH) * screenScale),
-                (int) ((MinecraftClient.getInstance().getWindow().getFramebufferHeight() - (getGuiY() + MAP_BORDER_HEIGHT + MAP_HEIGHT) * screenScale)),
-                (int) (MAP_WIDTH * screenScale), (int) (MAP_HEIGHT * screenScale));
+            (int) ((getGuiX() + MAP_BORDER_WIDTH) * screenScale),
+            (int) ((MinecraftClient.getInstance().getWindow().getFramebufferHeight() - (getGuiY() + MAP_BORDER_HEIGHT + MAP_HEIGHT) * screenScale)),
+            (int) (MAP_WIDTH * screenScale), (int) (MAP_HEIGHT * screenScale));
         RenderSystem.enableBlend();
         RenderSystem.blendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
         // Find chunk coordinates of the top left corner of the map.
@@ -863,7 +861,7 @@ public class GuiAtlas extends GuiComponent {
         }
         RenderSystem.disableBlend();
 
-        if (AntiqueAtlas.CONFIG.debugRender && !isDragging && isMouseOver) {
+        if (AntiqueAtlas.CONFIG.Performance.debugRender && !isDragging && isMouseOver) {
             int x = screenXToWorldX((int) getMouseX());
             int z = screenYToWorldZ((int) getMouseY());
 
@@ -878,11 +876,11 @@ public class GuiAtlas extends GuiComponent {
             } else {
                 String texture_set = TileTextureMap.instance().getTextureSet(tile).name.toString();
                 drawTooltip(Arrays.asList(
-                                Text.literal(coords),
-                                Text.literal(chunks),
-                                Text.literal("Tile: " + tile),
-                                Text.literal("TSet: " + texture_set)),
-                        textRenderer);
+                        Text.literal(coords),
+                        Text.literal(chunks),
+                        Text.literal("Tile: " + tile),
+                        Text.literal("TSet: " + texture_set)),
+                    textRenderer);
             }
         }
     }
@@ -978,7 +976,7 @@ public class GuiAtlas extends GuiComponent {
         int markerX = worldXToScreenX(marker.getX());
         int markerY = worldZToScreenY(marker.getZ());
         if (!marker.isVisibleAhead() &&
-                !biomeData.hasTileAt(marker.getChunkX(), marker.getChunkZ())) {
+            !biomeData.hasTileAt(marker.getChunkX(), marker.getChunkZ())) {
             return;
         }
         type.calculateMip(scale, mapScale, screenScale);
@@ -990,7 +988,7 @@ public class GuiAtlas extends GuiComponent {
         if (mouseIsOverMarker) {
             RenderSystem.setShaderColor(0.5f, 0.5f, 0.5f, 1);
             hoveredMarker = marker;
-            MarkerHoveredCallback.EVENT.invoker().onHovered(player, marker);
+            // API: Marker Hovered Callback?
         } else {
             RenderSystem.setShaderColor(1, 1, 1, 1);
             if (hoveredMarker == marker) {
@@ -1006,12 +1004,12 @@ public class GuiAtlas extends GuiComponent {
             RenderSystem.setShaderColor(1, 1, 1, 1);
         }
 
-        if (AntiqueAtlas.CONFIG.debugRender) {
+        if (AntiqueAtlas.CONFIG.Performance.debugRender) {
             System.out.println("Rendering Marker: " + info.tex);
         }
 
         if (markerX <= getGuiX() + MAP_BORDER_WIDTH || markerX >= getGuiX() + MAP_WIDTH + MAP_BORDER_WIDTH
-                || markerY <= getGuiY() + MAP_BORDER_HEIGHT || markerY >= getGuiY() + MAP_HEIGHT + MAP_BORDER_HEIGHT
+            || markerY <= getGuiY() + MAP_BORDER_HEIGHT || markerY >= getGuiY() + MAP_HEIGHT + MAP_BORDER_HEIGHT
         ) {
             if (!type.isTechnical()) {
                 RenderSystem.setShaderColor(1, 1, 1, 0.5f);
@@ -1090,7 +1088,7 @@ public class GuiAtlas extends GuiComponent {
      * Returns the scale of markers and player icon at given mapScale.
      */
     private double getIconScale() {
-        if (AntiqueAtlas.CONFIG.doScaleMarkers) {
+        if (AntiqueAtlas.CONFIG.Interface.doScaleMarkers) {
             if (mapScale < 0.5) return 0.5;
             if (mapScale > 1) return 2;
         }

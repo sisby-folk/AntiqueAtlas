@@ -43,15 +43,15 @@ public class TextureSetConfig implements ResourceReloadListener<Collection<Textu
             try {
                 for (Identifier id : manager.findResources("atlas/texture_sets", id -> id.toString().endsWith(".json")).keySet()) {
                     Identifier texture_id = new Identifier(
-                            id.getNamespace(),
-                            id.getPath().replace("atlas/texture_sets/", "").replace(".json", "")
+                        id.getNamespace(),
+                        id.getPath().replace("atlas/texture_sets/", "").replace(".json", "")
                     );
 
                     try {
                         Resource resource = manager.getResource(id).orElseThrow(IOException::new);
                         try (
-                                InputStream stream = resource.getInputStream();
-                                InputStreamReader reader = new InputStreamReader(stream)
+                            InputStream stream = resource.getInputStream();
+                            InputStreamReader reader = new InputStreamReader(stream)
                         ) {
                             JsonObject object = PARSER.parse(reader).getAsJsonObject();
 
@@ -128,7 +128,7 @@ public class TextureSetConfig implements ResourceReloadListener<Collection<Textu
                 try {
                     set.loadTextures();
                     textureSetMap.register(set);
-                    if (AntiqueAtlas.CONFIG.resourcePackLogging)
+                    if (AntiqueAtlas.CONFIG.Performance.resourcePackLogging)
                         Log.info("Loaded texture set %s with %d custom texture(s)", set.name, set.getTexturePaths().length);
                 } catch (Throwable e) {
                     Log.error(e, "Failed to load the texture set `%s`:", set.name);
@@ -142,7 +142,7 @@ public class TextureSetConfig implements ResourceReloadListener<Collection<Textu
                 if (set instanceof TextureSet.TextureSetShore) {
                     TextureSet.TextureSetShore texture = (TextureSet.TextureSetShore) set;
                     texture.loadWater();
-                    if (AntiqueAtlas.CONFIG.resourcePackLogging)
+                    if (AntiqueAtlas.CONFIG.Performance.resourcePackLogging)
                         Log.info("Loaded water texture `%s` for shore texture `%s` texture", texture.waterName, texture.name);
                 }
             }

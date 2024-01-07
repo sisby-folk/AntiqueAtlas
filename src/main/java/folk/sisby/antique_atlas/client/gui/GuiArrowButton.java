@@ -57,7 +57,7 @@ public class GuiArrowButton extends GuiComponentButton {
         } else {
             // Fade out when the mouse is far from them:
             int distanceSq = (mouseX - x - getWidth() / 2) * (mouseX - x - getWidth() / 2) +
-                    (mouseY - y - getHeight() / 2) * (mouseY - y - getHeight() / 2);
+                (mouseY - y - getHeight() / 2) * (mouseY - y - getHeight() / 2);
             double alpha = distanceSq < 400 ? 0.5 : Math.pow((double) distanceSq, -0.28);
             RenderSystem.setShaderColor(1, 1, 1, (float) alpha);
         }

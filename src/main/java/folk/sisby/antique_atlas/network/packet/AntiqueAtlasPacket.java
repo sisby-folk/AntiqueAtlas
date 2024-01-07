@@ -5,9 +5,9 @@ import net.minecraft.network.PacketByteBuf;
 import net.minecraft.util.Identifier;
 
 public abstract class AntiqueAtlasPacket extends PacketByteBuf {
-	public AntiqueAtlasPacket() {
-		super(Unpooled.buffer());
-	}
+    public AntiqueAtlasPacket() {
+        super(Unpooled.buffer());
+    }
 
-	public abstract Identifier getId();
+    public abstract Identifier getId();
 }

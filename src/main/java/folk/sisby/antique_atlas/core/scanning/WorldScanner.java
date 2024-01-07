@@ -6,8 +6,8 @@ import folk.sisby.antique_atlas.core.AtlasData;
 import folk.sisby.antique_atlas.core.ITileStorage;
 import folk.sisby.antique_atlas.core.TileInfo;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.util.Identifier;
 import net.minecraft.registry.RegistryKey;
+import net.minecraft.util.Identifier;
 import net.minecraft.world.World;
 import net.minecraft.world.chunk.Chunk;
 import net.minecraft.world.chunk.ChunkStatus;
@@ -49,7 +49,7 @@ public class WorldScanner {
      */
     public Collection<TileInfo> updateAtlasAroundPlayer(AtlasData data, PlayerEntity player) {
         // Update the actual map only so often:
-        int newScanInterval = Math.round(AntiqueAtlas.CONFIG.newScanInterval * 20);
+        int newScanInterval = Math.round(AntiqueAtlas.CONFIG.Performance.newScanInterval * 20);
 
         if (player.getEntityWorld().getTime() % newScanInterval != 0) {
             return Collections.emptyList(); //no new tiles
@@ -57,8 +57,8 @@ public class WorldScanner {
 
         ArrayList<TileInfo> updatedTiles = new ArrayList<>();
 
-        int rescanInterval = newScanInterval * AntiqueAtlas.CONFIG.rescanRate;
-        boolean rescanRequired = AntiqueAtlas.CONFIG.doRescan && player.getEntityWorld().getTime() % rescanInterval == 0;
+        int rescanInterval = newScanInterval * AntiqueAtlas.CONFIG.Performance.rescanRate;
+        boolean rescanRequired = AntiqueAtlas.CONFIG.Performance.doRescan && player.getEntityWorld().getTime() % rescanInterval == 0;
 
         ITileDetector biomeDetector = getBiomeDetectorForWorld(player.getEntityWorld().getRegistryKey());
 
@@ -98,13 +98,12 @@ public class WorldScanner {
                 return null;
             }
 
-            if(!world.getChunkManager().isChunkLoaded(x,z))
-            {
+            if (!world.getChunkManager().isChunkLoaded(x, z)) {
                 return null;
             }
 
             // TODO FABRIC: forceChunkLoading crashes here
-            Chunk chunk = world.getChunk(x, z, ChunkStatus.FULL, AntiqueAtlas.CONFIG.forceChunkLoading);
+            Chunk chunk = world.getChunk(x, z, ChunkStatus.FULL, AntiqueAtlas.CONFIG.Performance.forceChunkLoading);
 
             // Skip chunk if it hasn't loaded yet:
             if (chunk == null) {

@@ -58,12 +58,12 @@ public class TileDetectorNether extends TileDetectorBase implements ITileDetecto
                             updateOccurrencesMap(biomeOccurrences, TileIdMap.TILE_LAVA_SHORE, 1);
                         } else {
                             // cave walls
-                            updateOccurrencesMap(biomeOccurrences, getBiomeIdentifier(world,biome), 2);
+                            updateOccurrencesMap(biomeOccurrences, getBiomeIdentifier(world, biome), 2);
                         }
                     }
                 } else {
                     // In case there are custom biomes "modded in":
-                    updateOccurrencesMap(biomeOccurrences, getBiomeIdentifier(world,biome), priorityForBiome(biomeTag));
+                    updateOccurrencesMap(biomeOccurrences, getBiomeIdentifier(world, biome), priorityForBiome(biomeTag));
                 }
             }
         }

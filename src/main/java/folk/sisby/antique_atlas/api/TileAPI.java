@@ -56,10 +56,10 @@ public interface TileAPI {
      * the tile will be persisted with the world and loaded when the server
      * starts up.
      *
-     * @param world    dimension the chunk is located in.
-     * @param tile     the unique name for your tile type.
-     * @param chunkX   x chunk coordinate. (block coordinate >> 4)
-     * @param chunkZ   z chunk coordinate. (block coordinate >> 4)
+     * @param world  dimension the chunk is located in.
+     * @param tile   the unique name for your tile type.
+     * @param chunkX x chunk coordinate. (block coordinate >> 4)
+     * @param chunkZ z chunk coordinate. (block coordinate >> 4)
      */
     void putGlobalTile(World world, Identifier tile, int chunkX, int chunkZ);
 
@@ -67,9 +67,9 @@ public interface TileAPI {
      * Get the global tile at the specified chunk coordinates
      * i.e. in every atlas.
      *
-     * @param world    dimension the chunk is located in.
-     * @param chunkX   x chunk coordinate. (block coordinate >> 4)
-     * @param chunkZ   z chunk coordinate. (block coordinate >> 4)
+     * @param world  dimension the chunk is located in.
+     * @param chunkX x chunk coordinate. (block coordinate >> 4)
+     * @param chunkZ z chunk coordinate. (block coordinate >> 4)
      * @return the identifier of the requested tile
      */
     Identifier getGlobalTile(World world, int chunkX, int chunkZ);

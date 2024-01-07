@@ -37,14 +37,14 @@ public class JigsawConfig implements ResourceReloadListener<Map<Identifier, Stru
 
         if (version == 1) {
             return new StructurePieceTile(
-                    Identifier.tryParse(json.get("tile").getAsString()),
-                    json.get("priority").getAsInt()
+                Identifier.tryParse(json.get("tile").getAsString()),
+                json.get("priority").getAsInt()
             );
         } else if (version == 2) {
             return new StructurePieceTileXZ(
-                    Identifier.tryParse(json.get("tile_x").getAsString()),
-                    Identifier.tryParse(json.get("tile_z").getAsString()),
-                    json.get("priority").getAsInt()
+                Identifier.tryParse(json.get("tile_x").getAsString()),
+                Identifier.tryParse(json.get("tile_z").getAsString()),
+                json.get("priority").getAsInt()
             );
         } else {
             throw new RuntimeException("Unsupported JSON version: " + version + ". Only version 1 is supported.");
@@ -53,7 +53,7 @@ public class JigsawConfig implements ResourceReloadListener<Map<Identifier, Stru
 
     @Override
     public CompletableFuture<Map<Identifier, StructurePieceTile>> load(ResourceManager manager, Profiler
-            profiler, Executor executor) {
+        profiler, Executor executor) {
         return CompletableFuture.supplyAsync(() -> {
             Map<Identifier, StructurePieceTile> pieces = new HashMap<>();
 
@@ -66,8 +66,8 @@ public class JigsawConfig implements ResourceReloadListener<Map<Identifier, Stru
                     try {
                         // strip parts to get a better id
                         Identifier piece_id = new Identifier(
-                                id.getNamespace(),
-                                id.getPath().replace("atlas/structures/", "").replace(".json", "")
+                            id.getNamespace(),
+                            id.getPath().replace("atlas/structures/", "").replace(".json", "")
                         );
 
                         JsonObject json = readResource(manager, id);
@@ -88,7 +88,7 @@ public class JigsawConfig implements ResourceReloadListener<Map<Identifier, Stru
 
     @Override
     public CompletableFuture<Void> apply(Map<Identifier, StructurePieceTile> pieces, ResourceManager
-            manager, Profiler profiler, Executor executor) {
+        manager, Profiler profiler, Executor executor) {
         return CompletableFuture.runAsync(() -> {
             pieces.forEach((id, piece) -> {
 

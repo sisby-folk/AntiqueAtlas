@@ -3,9 +3,9 @@ package folk.sisby.antique_atlas.core.scanning;
 import com.google.common.collect.HashMultiset;
 import com.google.common.collect.Multiset;
 import com.google.common.collect.Ordering;
-import dev.architectury.injectables.annotations.ExpectPlatform;
 import folk.sisby.antique_atlas.AntiqueAtlas;
 import folk.sisby.antique_atlas.core.TileIdMap;
+import net.fabricmc.fabric.api.tag.convention.v1.ConventionalBiomeTags;
 import net.minecraft.block.Block;
 import net.minecraft.block.Blocks;
 import net.minecraft.registry.Registry;
@@ -45,9 +45,8 @@ public class TileDetectorBase implements ITileDetector {
      */
     private static final int ravineMinDepth = 7;
 
-    @ExpectPlatform
-    static private boolean hasSwampWater(RegistryEntry<Biome> biomeTag) {
-        throw new AssertionError("Not implemented");
+    public static boolean hasSwampWater(RegistryEntry<Biome> biomeTag) {
+        return biomeTag.isIn(ConventionalBiomeTags.SWAMP);
     }
 
     static int priorityForBiome(RegistryEntry<Biome> biomeTag) {
@@ -93,7 +92,7 @@ public class TileDetectorBase implements ITileDetector {
 
     @Override
     public int getScanRadius() {
-        return AntiqueAtlas.CONFIG.scanRadius;
+        return AntiqueAtlas.CONFIG.Performance.scanRadius;
     }
 
     /**
@@ -115,7 +114,7 @@ public class TileDetectorBase implements ITileDetector {
                 // get top block
                 int y = chunk.getHeightmap(Heightmap.Type.MOTION_BLOCKING).get(x, z);
 
-                if (AntiqueAtlas.CONFIG.doScanPonds) {
+                if (AntiqueAtlas.CONFIG.Performance.doScanPonds) {
                     if (y > 0) {
                         Block topBlock = chunk.getBlockState(new BlockPos(x, y - 1, z)).getBlock();
                         // Check if there's surface of water at (x, z), but not swamp
@@ -132,7 +131,7 @@ public class TileDetectorBase implements ITileDetector {
                     }
                 }
 
-                if (AntiqueAtlas.CONFIG.doScanRavines) {
+                if (AntiqueAtlas.CONFIG.Performance.doScanRavines) {
                     if (y > 0 && y < world.getSeaLevel() - ravineMinDepth) {
                         updateOccurrencesMap(biomeOccurrences, TileIdMap.TILE_RAVINE, priorityRavine);
                     }

@@ -83,8 +83,8 @@ public class GuiMarkerFinalizer extends GuiComponent {
 
             ClientPlayerEntity player = MinecraftClient.getInstance().player;
             world.playSound(player, player.getBlockPos(),
-                    SoundEvents.ENTITY_VILLAGER_WORK_CARTOGRAPHER, SoundCategory.AMBIENT,
-                    1F, 1F);
+                SoundEvents.ENTITY_VILLAGER_WORK_CARTOGRAPHER, SoundCategory.AMBIENT,
+                1F, 1F);
             closeChild();
         }).dimensions(this.width / 2 - BUTTON_WIDTH - BUTTON_SPACING / 2, this.height / 2 + 40, BUTTON_WIDTH, 20).build());
         addDrawableChild(btnCancel = ButtonWidget.builder(Text.translatable("gui.cancel"), (button) -> {
@@ -105,7 +105,7 @@ public class GuiMarkerFinalizer extends GuiComponent {
                 typeCount++;
         }
         int allTypesWidth = typeCount *
-                (GuiMarkerInList.FRAME_SIZE + TYPE_SPACING) - TYPE_SPACING;
+            (GuiMarkerInList.FRAME_SIZE + TYPE_SPACING) - TYPE_SPACING;
         int scrollerWidth = Math.min(allTypesWidth, 240);
         scroller.setViewportSize(scrollerWidth, GuiMarkerInList.FRAME_SIZE + TYPE_SPACING);
         scroller.setGuiCoords((this.width - scrollerWidth) / 2, this.height / 2 - 25);
@@ -167,9 +167,9 @@ public class GuiMarkerFinalizer extends GuiComponent {
 
         // Darker background for marker type selector
         context.fillGradient(scroller.getGuiX() - TYPE_BG_FRAME, scroller.getGuiY() - TYPE_BG_FRAME,
-                scroller.getGuiX() + scroller.getWidth() + TYPE_BG_FRAME,
-                scroller.getGuiY() + scroller.getHeight() + TYPE_BG_FRAME,
-                0x88101010, 0x99101010);
+            scroller.getGuiX() + scroller.getWidth() + TYPE_BG_FRAME,
+            scroller.getGuiY() + scroller.getHeight() + TYPE_BG_FRAME,
+            0x88101010, 0x99101010);
         super.render(context, mouseX, mouseY, partialTick);
     }
 

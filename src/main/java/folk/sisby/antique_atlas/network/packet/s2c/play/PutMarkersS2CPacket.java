@@ -2,7 +2,6 @@ package folk.sisby.antique_atlas.network.packet.s2c.play;
 
 import com.google.common.collect.ArrayListMultimap;
 import com.google.common.collect.ListMultimap;
-import dev.architectury.networking.NetworkManager;
 import folk.sisby.antique_atlas.AntiqueAtlas;
 import folk.sisby.antique_atlas.AntiqueAtlasClient;
 import folk.sisby.antique_atlas.marker.Marker;
@@ -11,6 +10,9 @@ import folk.sisby.antique_atlas.network.packet.s2c.S2CPacket;
 import folk.sisby.antique_atlas.registry.MarkerType;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
+import net.fabricmc.fabric.api.networking.v1.PacketSender;
+import net.minecraft.client.MinecraftClient;
+import net.minecraft.client.network.ClientPlayNetworkHandler;
 import net.minecraft.network.PacketByteBuf;
 import net.minecraft.registry.RegistryKey;
 import net.minecraft.registry.RegistryKeys;
@@ -29,7 +31,7 @@ import java.util.List;
  * @author Haven King
  */
 public class PutMarkersS2CPacket extends S2CPacket {
-    public static final Identifier ID = AntiqueAtlas.id("packet", "s2c", "marker", "put");
+    public static final Identifier ID = AntiqueAtlas.id("packet.s2c.marker.put");
 
     private static final int GLOBAL = -1;
 
@@ -59,7 +61,7 @@ public class PutMarkersS2CPacket extends S2CPacket {
     }
 
     @Environment(EnvType.CLIENT)
-    public static void apply(PacketByteBuf buf, NetworkManager.PacketContext context) {
+    public static void apply(MinecraftClient client, ClientPlayNetworkHandler handler, PacketByteBuf buf, PacketSender sender) {
         int atlasID = buf.readVarInt();
         RegistryKey<World> world = RegistryKey.of(RegistryKeys.WORLD, buf.readIdentifier());
         int typesLength = buf.readVarInt();
@@ -73,19 +75,17 @@ public class PutMarkersS2CPacket extends S2CPacket {
             }
         }
 
-        context.queue(() -> {
-            MarkersData markersData = atlasID == GLOBAL
-                    ? AntiqueAtlas.globalMarkersData.getData()
-                    : AntiqueAtlas.markersData.getMarkersDataCached(atlasID, world);
+        MarkersData markersData = atlasID == GLOBAL
+            ? AntiqueAtlas.globalMarkersData.getData()
+            : AntiqueAtlas.markersData.getMarkersDataCached(atlasID, world);
 
-            for (Identifier type : markersByType.keys()) {
-                MarkerType markerType = MarkerType.REGISTRY.get(type);
-                for (Marker.Precursor precursor : markersByType.get(type)) {
-                    markersData.loadMarker(new Marker(MarkerType.REGISTRY.getId(markerType), world, precursor));
-                }
+        for (Identifier type : markersByType.keys()) {
+            MarkerType markerType = MarkerType.REGISTRY.get(type);
+            for (Marker.Precursor precursor : markersByType.get(type)) {
+                markersData.loadMarker(new Marker(MarkerType.REGISTRY.getId(markerType), world, precursor));
             }
+        }
 
-            AntiqueAtlasClient.getAtlasGUI().updateBookmarkerList();
-        });
+        AntiqueAtlasClient.getAtlasGUI().updateBookmarkerList();
     }
 }

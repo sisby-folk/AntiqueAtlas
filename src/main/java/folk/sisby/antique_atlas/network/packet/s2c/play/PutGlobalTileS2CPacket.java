@@ -1,11 +1,13 @@
 package folk.sisby.antique_atlas.network.packet.s2c.play;
 
-import dev.architectury.networking.NetworkManager;
 import folk.sisby.antique_atlas.AntiqueAtlas;
 import folk.sisby.antique_atlas.core.TileDataStorage;
 import folk.sisby.antique_atlas.network.packet.s2c.S2CPacket;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
+import net.fabricmc.fabric.api.networking.v1.PacketSender;
+import net.minecraft.client.MinecraftClient;
+import net.minecraft.client.network.ClientPlayNetworkHandler;
 import net.minecraft.network.PacketByteBuf;
 import net.minecraft.registry.RegistryKeys;
 import net.minecraft.util.Identifier;
@@ -18,44 +20,45 @@ import java.util.Map;
 
 /**
  * Used to sync custom tiles from server to client.
+ *
  * @author Hunternif
  * @author Haven King
  */
 public class PutGlobalTileS2CPacket extends S2CPacket {
-	public static final Identifier ID = AntiqueAtlas.id("packet", "s2c", "global_tile", "put");
+    public static final Identifier ID = AntiqueAtlas.id("packet.s2c.global_tile.put");
 
-	public PutGlobalTileS2CPacket(RegistryKey<World> world, List<Map.Entry<ChunkPos, Identifier>> tiles) {
-		this.writeIdentifier(world.getValue());
-		this.writeVarInt(tiles.size());
+    public PutGlobalTileS2CPacket(RegistryKey<World> world, List<Map.Entry<ChunkPos, Identifier>> tiles) {
+        this.writeIdentifier(world.getValue());
+        this.writeVarInt(tiles.size());
 
-		for (Map.Entry<ChunkPos, Identifier> entry : tiles) {
-			this.writeVarInt(entry.getKey().x);
-			this.writeVarInt(entry.getKey().z);
-			this.writeIdentifier(entry.getValue());
-		}
-	}
+        for (Map.Entry<ChunkPos, Identifier> entry : tiles) {
+            this.writeVarInt(entry.getKey().x);
+            this.writeVarInt(entry.getKey().z);
+            this.writeIdentifier(entry.getValue());
+        }
+    }
 
-	public PutGlobalTileS2CPacket(RegistryKey<World> world, int chunkX, int chunkZ, Identifier tileId) {
-		this.writeIdentifier(world.getValue());
-		this.writeVarInt(1);
-		this.writeVarInt(chunkX);
-		this.writeVarInt(chunkZ);
-		this.writeIdentifier(tileId);
-	}
+    public PutGlobalTileS2CPacket(RegistryKey<World> world, int chunkX, int chunkZ, Identifier tileId) {
+        this.writeIdentifier(world.getValue());
+        this.writeVarInt(1);
+        this.writeVarInt(chunkX);
+        this.writeVarInt(chunkZ);
+        this.writeIdentifier(tileId);
+    }
 
-	@Override
-	public Identifier getId() {
-		return ID;
-	}
+    @Override
+    public Identifier getId() {
+        return ID;
+    }
 
-	@Environment(EnvType.CLIENT)
-	public static void apply(PacketByteBuf buf, NetworkManager.PacketContext context) {
-		RegistryKey<World> world = RegistryKey.of(RegistryKeys.WORLD, buf.readIdentifier());
-		int tileCount = buf.readVarInt();
+    @Environment(EnvType.CLIENT)
+    public static void apply(MinecraftClient client, ClientPlayNetworkHandler handler, PacketByteBuf buf, PacketSender sender) {
+        RegistryKey<World> world = RegistryKey.of(RegistryKeys.WORLD, buf.readIdentifier());
+        int tileCount = buf.readVarInt();
 
-		TileDataStorage data = AntiqueAtlas.globalTileData.getData(world);
-		for (int i = 0; i < tileCount; ++i) {
-			data.setTile(buf.readVarInt(), buf.readVarInt(), buf.readIdentifier());
-		}
-	}
+        TileDataStorage data = AntiqueAtlas.globalTileData.getData(world);
+        for (int i = 0; i < tileCount; ++i) {
+            data.setTile(buf.readVarInt(), buf.readVarInt(), buf.readIdentifier());
+        }
+    }
 }

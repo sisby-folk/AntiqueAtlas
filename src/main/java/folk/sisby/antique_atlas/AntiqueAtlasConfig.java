@@ -53,7 +53,7 @@ public class AntiqueAtlasConfig extends WrappedConfig {
         @Comment("If true, then the direction is reversed.")
         public final Boolean doReverseWheelZoom = false;
     }
-    
+
     public static final class PerformanceSettings implements Section {
         @Comment("The radius of the area around the player which is scanned by the Atlas at regular intervals.")
         @Comment("Note that this will not force faraway chunks to load, unless force_chunk_loading is enabled.")
@@ -94,7 +94,7 @@ public class AntiqueAtlasConfig extends WrappedConfig {
         public final Boolean debugRender = false;
 
         @Comment("If true, all resource pack loading information will be logged during start and reload.")
-        public final Boolean resourcePackLogging = true;
+        public final Boolean resourcePackLogging = false;
     }
 
     public static final class AppearanceSettings implements Section {

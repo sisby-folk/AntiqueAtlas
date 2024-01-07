@@ -23,7 +23,7 @@ repositories {
 
 dependencies {
     minecraft libs.mc
-    mappings libs.yarn
+    mappings variantOf(libs.yarn) { classifier "v2" }
     modImplementation libs.fl
     modImplementation libs.fapi
     modImplementation libs.kaleidoConfig
@@ -31,10 +31,10 @@ dependencies {
 
 processResources {
     final Map<String, String> map = [
-            "version"        : version.toString(),
-            "mc"             : libs.versions.mc.get(),
-            "fl"             : libs.versions.fl.get(),
-            "fapi"           : libs.versions.fapi.get()
+            "version": version.toString(),
+            "mc"     : libs.versions.mc.get(),
+            "fl"     : libs.versions.fl.get(),
+            "fapi"   : libs.versions.fapi.get()
     ]
 
     inputs.properties(map)
@@ -48,6 +48,10 @@ tasks.withType(JavaCompile).configureEach {
 
 java {
     withSourcesJar()
+}
+
+loom {
+    accessWidenerPath = file("src/main/resources/antique-atlas.accesswidener")
 }
 
 jar {

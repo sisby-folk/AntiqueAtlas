@@ -6,7 +6,7 @@ import net.minecraft.text.Text;
 
 public class Village {
     public static void registerMarkers() {
-        if (AntiqueAtlas.CONFIG.autoVillageMarkers) {
+        if (AntiqueAtlas.CONFIG.Gameplay.autoVillageMarkers) {
             StructureHandler.registerMarker(StructureTags.VILLAGE, AntiqueAtlas.id("village"), Text.translatable("gui.antique_atlas.marker.village"));
         }
     }

@@ -1,7 +1,6 @@
 {
   "item.antique_atlas.antique_atlas": "Антикварний атлас #%d",
   "item.antique_atlas.empty_antique_atlas": "Порожній антикварний атлас",
-
   "gui.antique_atlas.scalebar": "Масштаб у блоках",
   "gui.antique_atlas.addMarker": "Додати мітку",
   "gui.antique_atlas.delMarker": "Видалити мітку",
@@ -9,7 +8,6 @@
   "gui.antique_atlas.exportImage": "Експортувати світлину",
   "gui.antique_atlas.hideMarkers": "Приховати мітки",
   "gui.antique_atlas.showMarkers": "Показати мітки",
-
   "gui.antique_atlas.marker.label": "Ярлик:",
   "gui.antique_atlas.marker.type": "Тип:",
   "gui.antique_atlas.marker.village": "Село",
@@ -18,24 +16,19 @@
   "gui.antique_atlas.marker.treasure": "Скарб",
   "gui.antique_atlas.marker.monument": "Океанічний монумент",
   "gui.antique_atlas.marker.mansion": "Лісовий маєток",
-
   "gui.antique_atlas.export.opening": "Відкриття діалогового вікна файлової системи...",
   "gui.antique_atlas.export.selectFile": "Оберіть файл PNG, щоб зберегти",
   "gui.antique_atlas.export.tooLarge": "Вибачте! Ця світлина занадто велика для рендерингу, спробуйте виділити більше пам'яті Java.",
-
   "gui.antique_atlas.export.setup": "Налаштування...",
   "gui.antique_atlas.export.rendering": "Рендеринг...",
   "gui.antique_atlas.export.writing": "Запис у файл...",
   "gui.antique_atlas.export.loadingtextures": "Завантаження текстур...",
   "gui.antique_atlas.export.makingbuffer": "Виділення буфера розміром %dx%d...",
-
   "gui.antique_atlas.export.renderstripe": "Візуалізація фрагменту %d/%d...",
   "gui.antique_atlas.export.writestripe": "Запис фрагменту...",
-
   "gui.antique_atlas.export.rendering.background": "Візуалізація фону мапи",
   "gui.antique_atlas.export.rendering.map": "Візуалізація заголовків мапи",
   "gui.antique_atlas.export.rendering.markers": "Візуалізація міток",
-
   "key.openatlas.desc": "Відкрити атлас",
   "key.antique_atlas.category": "Антикварний атлас"
 }

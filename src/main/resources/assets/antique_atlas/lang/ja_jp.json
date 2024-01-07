@@ -8,30 +8,24 @@
   "gui.antique_atlas.exportImage": "写真を保存する",
   "gui.antique_atlas.hideMarkers": "印を隠す",
   "gui.antique_atlas.showMarkers": "印を表す",
-
   "gui.antique_atlas.marker.label": "ラベル:",
   "gui.antique_atlas.marker.type": "タイプ:",
   "gui.antique_atlas.marker.village": "村",
   "gui.antique_atlas.marker.netherPortal": "ネザーポータル",
   "gui.antique_atlas.marker.tomb": "%sの墓",
-
   "gui.antique_atlas.export.opening": "ファイルシステムのダイアログを開いています...",
   "gui.antique_atlas.export.selectFile": "PNGファイルの保存先の選択",
   "gui.antique_atlas.export.tooLarge": "すみません！ 写真が大きすぎます。Java heap sizeを増やして下さい。",
-
   "gui.antique_atlas.export.setup": "セットアップしています...",
   "gui.antique_atlas.export.rendering": "レンダリング中...",
   "gui.antique_atlas.export.writing": "ファイルに書き込んでいます...",
   "gui.antique_atlas.export.loadingtextures": "テクスチャをロードしてます...",
   "gui.antique_atlas.export.makingbuffer": "%dx%dのイメージバッファを割り当てています...",
-
   "gui.antique_atlas.export.renderstripe": "%d/%dの分割をレンダリングしています...",
   "gui.antique_atlas.export.writestripe": "分割を書き込んでいます...",
-
   "gui.antique_atlas.export.rendering.background": "地図の背景をレンダリングしています",
   "gui.antique_atlas.export.rendering.map": "マップのタイルをレンダリングしています",
   "gui.antique_atlas.export.rendering.markers": "印をレンダリングしています",
-
   "key.openatlas.desc": "アトラスを開く",
   "key.antique_atlas.category": "アンティークアトラスの"
 }

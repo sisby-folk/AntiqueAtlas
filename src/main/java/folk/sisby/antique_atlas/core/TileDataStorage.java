@@ -33,7 +33,7 @@ public class TileDataStorage extends PersistentState {
 
     public TileDataStorage() {
     }
-    
+
     public static TileDataStorage readNbt(NbtCompound compound) {
         TileDataStorage data = new TileDataStorage();
 
@@ -100,7 +100,7 @@ public class TileDataStorage extends PersistentState {
      */
     public void syncToPlayer(PlayerEntity player, RegistryKey<World> world) {
         Streams.chunked(tiles.entrySet().stream(), CHUNK_SIZE)
-                .forEach(chunk -> new PutGlobalTileS2CPacket(world, chunk).send((ServerPlayerEntity) player));
+            .forEach(chunk -> new PutGlobalTileS2CPacket(world, chunk).send((ServerPlayerEntity) player));
 
         Log.info("Sent custom biome data to player %s", player.getCommandSource().getName());
     }

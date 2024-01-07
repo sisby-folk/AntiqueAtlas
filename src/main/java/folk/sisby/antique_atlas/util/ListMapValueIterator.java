@@ -55,7 +55,7 @@ public class ListMapValueIterator<E> implements Iterator<E> {
 
     private E findNext() {
         while (nextListIter == null
-                || !nextListIter.hasNext()) { // This condition allows to skip empty lists.
+            || !nextListIter.hasNext()) { // This condition allows to skip empty lists.
             if (valuesIter.hasNext()) {
                 nextListIter = valuesIter.next().iterator();
             } else {
