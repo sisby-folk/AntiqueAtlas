@@ -39,7 +39,7 @@ public class AntiqueAtlas implements ModInitializer {
     public static AntiqueAtlasConfig CONFIG = AntiqueAtlasConfig.createToml(FabricLoader.getInstance().getConfigDir(), "", "antique-atlas", AntiqueAtlasConfig.class);
 
     public static Identifier id(String path) {
-        return new Identifier(ID, String.join(".", path));
+        return path.contains(":") ? new Identifier(path) : new Identifier(ID, path);
     }
 
     @Override

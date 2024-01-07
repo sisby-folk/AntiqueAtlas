@@ -94,7 +94,7 @@ public class AntiqueAtlasConfig extends WrappedConfig {
         public final Boolean debugRender = false;
 
         @Comment("If true, all resource pack loading information will be logged during start and reload.")
-        public final Boolean resourcePackLogging = true;
+        public final Boolean resourcePackLogging = false;
     }
 
     public static final class AppearanceSettings implements Section {
