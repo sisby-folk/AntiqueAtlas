@@ -2,10 +2,13 @@ package folk.sisby.antique_atlas.network.packet;
 
 import com.google.common.collect.ArrayListMultimap;
 import com.google.common.collect.ListMultimap;
+import folk.sisby.antique_atlas.marker.MarkerData;
 import folk.sisby.antique_atlas.network.S2CPacket;
 import folk.sisby.antique_atlas.marker.Marker;
 import folk.sisby.antique_atlas.network.AntiqueAtlasNetworking;
+import net.minecraft.network.PacketByteBuf;
 import net.minecraft.registry.RegistryKey;
+import net.minecraft.registry.RegistryKeys;
 import net.minecraft.util.Identifier;
 import net.minecraft.world.World;
 
@@ -20,23 +23,50 @@ import java.util.List;
  * @author Hunternif
  * @author Haven King
  */
-public class PutMarkersS2CPacket extends S2CPacket {
+public record PutMarkersS2CPacket(int atlasID, RegistryKey<World> world, ListMultimap<Identifier, MarkerData> markers) implements S2CPacket {
     public PutMarkersS2CPacket(int atlasID, RegistryKey<World> world, Collection<Marker> markers) {
-        ListMultimap<Identifier, Marker> markersByType = ArrayListMultimap.create();
+        this(atlasID, world, getMarkersWithIDs(markers));
+    }
+
+    private static ListMultimap<Identifier, MarkerData> getMarkersWithIDs(Collection<Marker> markers) {
+        ListMultimap<Identifier, MarkerData> markersByType = ArrayListMultimap.create();
         for (Marker marker : markers) {
             markersByType.put(marker.getType(), marker);
         }
+        return markersByType;
+    }
 
-        this.writeVarInt(atlasID);
-        this.writeIdentifier(world.getValue());
-        this.writeVarInt(markersByType.keySet().size());
+    public PutMarkersS2CPacket(PacketByteBuf buf) {
+        this(buf.readVarInt(), RegistryKey.of(RegistryKeys.WORLD, buf.readIdentifier()), readMarkers(buf));
+    }
 
-        for (Identifier type : markersByType.keySet()) {
-            this.writeIdentifier(type);
-            List<Marker> markerList = markersByType.get(type);
-            this.writeVarInt(markerList.size());
-            for (Marker marker : markerList) {
-                marker.write(this);
+    private static ListMultimap<Identifier, MarkerData> readMarkers(PacketByteBuf buf) {
+        int typesLength = buf.readVarInt();
+
+        ListMultimap<Identifier, MarkerData> markersByType = ArrayListMultimap.create();
+        for (int i = 0; i < typesLength; ++i) {
+            Identifier type = buf.readIdentifier();
+            int markersLength = buf.readVarInt();
+            for (int j = 0; j < markersLength; ++j) {
+                markersByType.put(type, new MarkerData(buf));
+            }
+        }
+
+        return markersByType;
+    }
+
+    @Override
+    public void writeBuf(PacketByteBuf buf) {
+        buf.writeVarInt(atlasID);
+        buf.writeIdentifier(world.getValue());
+        buf.writeVarInt(markers.keySet().size());
+
+        for (Identifier type : markers.keySet()) {
+            buf.writeIdentifier(type);
+            List<MarkerData> markerList = markers.get(type);
+            buf.writeVarInt(markerList.size());
+            for (MarkerData marker : markerList) {
+                marker.write(buf);
             }
         }
     }

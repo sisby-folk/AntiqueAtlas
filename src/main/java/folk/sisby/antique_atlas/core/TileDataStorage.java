@@ -9,6 +9,7 @@ import net.minecraft.nbt.NbtElement;
 import net.minecraft.nbt.NbtList;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.util.Identifier;
+import net.minecraft.util.Pair;
 import net.minecraft.util.math.ChunkPos;
 import net.minecraft.registry.RegistryKey;
 import net.minecraft.world.PersistentState;
@@ -100,7 +101,7 @@ public class TileDataStorage extends PersistentState {
      */
     public void syncToPlayer(PlayerEntity player, RegistryKey<World> world) {
         Streams.chunked(tiles.entrySet().stream(), CHUNK_SIZE)
-            .forEach(chunk -> new PutGlobalTileS2CPacket(world, chunk).send((ServerPlayerEntity) player));
+            .forEach(chunk -> new PutGlobalTileS2CPacket(world, chunk.stream().map(e -> new Pair<>(e.getKey(), e.getValue())).toList()).send((ServerPlayerEntity) player));
 
         Log.info("Sent custom biome data to player %s", player.getCommandSource().getName());
     }

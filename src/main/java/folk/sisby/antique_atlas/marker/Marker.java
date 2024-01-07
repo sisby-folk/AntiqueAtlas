@@ -1,6 +1,5 @@
 package folk.sisby.antique_atlas.marker;
 
-import net.minecraft.network.PacketByteBuf;
 import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.math.BlockPos;
@@ -13,34 +12,25 @@ import net.minecraft.world.World;
  *
  * @author Hunternif
  */
-public class Marker {
+public class Marker extends MarkerData {
     /**
      * Id is unique only within a MarkersData instance, i.e. within one atlas
      * or among global markers in a world.
      */
-    private final int id;
     private final Identifier type;
-    private final Text label;
     private final RegistryKey<World> world;
-    private final int x, z;
-    private final boolean visibleAhead;
     private boolean isGlobal;
 
     //TODO make an option for the marker to disappear at a certain scale.
 
     public Marker(int id, Identifier type, Text label, RegistryKey<World> world, int x, int z, boolean visibleAhead) {
-        this.id = id;
+        super(id, label, x, z, visibleAhead);
         this.type = type;
-
-        this.label = label;
         this.world = world;
-        this.x = x;
-        this.z = z;
-        this.visibleAhead = visibleAhead;
     }
 
-    public Marker(Identifier type, RegistryKey<World> world, Precursor precursor) {
-        this(precursor.id, type, precursor.label, world, precursor.x, precursor.z, precursor.visibleAhead);
+    public Marker(Identifier type, RegistryKey<World> world, MarkerData data) {
+        this(data.id, type, data.label, world, data.x, data.z, data.visibleAhead);
     }
 
     public int getId() {
@@ -118,29 +108,5 @@ public class Marker {
     @Override
     public String toString() {
         return "#" + id + "\"" + label.getString() + "\"" + "@(" + x + ", " + z + ")";
-    }
-
-    public void write(PacketByteBuf buf) {
-        buf.writeVarInt(this.id);
-        buf.writeText(this.label);
-        buf.writeVarInt(this.x);
-        buf.writeVarInt(this.z);
-        buf.writeBoolean(this.visibleAhead);
-    }
-
-    public static class Precursor {
-        private final int id;
-        private final Text label;
-        private final int x, z;
-        private final boolean visibleAhead;
-
-
-        public Precursor(PacketByteBuf buf) {
-            this.id = buf.readVarInt();
-            this.label = buf.readText();
-            this.x = buf.readVarInt();
-            this.z = buf.readVarInt();
-            this.visibleAhead = buf.readBoolean();
-        }
     }
 }

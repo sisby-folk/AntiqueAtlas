@@ -12,6 +12,7 @@ import folk.sisby.antique_atlas.core.TileGroup;
 import folk.sisby.antique_atlas.core.TileInfo;
 import folk.sisby.antique_atlas.core.WorldData;
 import folk.sisby.antique_atlas.marker.Marker;
+import folk.sisby.antique_atlas.marker.MarkerData;
 import folk.sisby.antique_atlas.marker.MarkersData;
 import folk.sisby.antique_atlas.network.AntiqueAtlasNetworking;
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
@@ -114,12 +115,12 @@ public class AntiqueAtlasClientNetworking {
         RegistryKey<World> world = RegistryKey.of(RegistryKeys.WORLD, buf.readIdentifier());
         int typesLength = buf.readVarInt();
 
-        ListMultimap<Identifier, Marker.Precursor> markersByType = ArrayListMultimap.create();
+        ListMultimap<Identifier, MarkerData> markersByType = ArrayListMultimap.create();
         for (int i = 0; i < typesLength; ++i) {
             Identifier type = buf.readIdentifier();
             int markersLength = buf.readVarInt();
             for (int j = 0; j < markersLength; ++j) {
-                markersByType.put(type, new Marker.Precursor(buf));
+                markersByType.put(type, new MarkerData(buf));
             }
         }
 
@@ -129,7 +130,7 @@ public class AntiqueAtlasClientNetworking {
 
         for (Identifier type : markersByType.keys()) {
             MarkerType markerType = MarkerType.REGISTRY.get(type);
-            for (Marker.Precursor precursor : markersByType.get(type)) {
+            for (MarkerData precursor : markersByType.get(type)) {
                 markersData.loadMarker(new Marker(MarkerType.REGISTRY.getId(markerType), world, precursor));
             }
         }

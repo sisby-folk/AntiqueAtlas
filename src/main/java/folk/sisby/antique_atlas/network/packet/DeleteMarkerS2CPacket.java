@@ -2,6 +2,7 @@ package folk.sisby.antique_atlas.network.packet;
 
 import folk.sisby.antique_atlas.network.S2CPacket;
 import folk.sisby.antique_atlas.network.AntiqueAtlasNetworking;
+import net.minecraft.network.PacketByteBuf;
 import net.minecraft.util.Identifier;
 
 /**
@@ -12,10 +13,18 @@ import net.minecraft.util.Identifier;
  * @author Hunternif
  * @author Haven King
  */
-public class DeleteMarkerS2CPacket extends S2CPacket {
-    public DeleteMarkerS2CPacket(int atlasID, int markerID) {
-        this.writeVarInt(atlasID);
-        this.writeVarInt(markerID);
+public record DeleteMarkerS2CPacket(int atlasID, int markerID) implements S2CPacket {
+    public DeleteMarkerS2CPacket(PacketByteBuf buf) {
+        this(
+            buf.readVarInt(),
+            buf.readVarInt()
+        );
+    }
+
+    @Override
+    public void writeBuf(PacketByteBuf buf) {
+        buf.writeVarInt(atlasID);
+        buf.writeVarInt(markerID);
     }
 
     @Override
