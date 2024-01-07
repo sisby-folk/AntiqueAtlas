@@ -1,0 +1,23 @@
+{
+  "item.antique_atlas.antique_atlas": "Antico atlante #%d",
+  "item.antique_atlas.empty_antique_atlas": "Antico atlante vuoto",
+
+  "gui.antique_atlas.scalebar": "Scala in blocchi",
+  "gui.antique_atlas.addMarker": "Aggiungi marcatore",
+  "gui.antique_atlas.delMarker": "Elimina marcatore",
+  "gui.antique_atlas.followPlayer": "Segui giocatore",
+  "gui.antique_atlas.exportImage": "Esporta immagine",
+  "gui.antique_atlas.hideMarkers": "Nascondi marcatori",
+  "gui.antique_atlas.showMarkers": "Mostra marcatori",
+
+  "gui.antique_atlas.marker.label": "Etichetta:",
+  "gui.antique_atlas.marker.type": "Tipo:",
+  "gui.antique_atlas.marker.village": "Villaggio",
+  "gui.antique_atlas.marker.netherPortal": "Portale degli Inferi",
+
+  "gui.antique_atlas.export.opening": "Aprendo la pagina di dialogo...",
+  "gui.antique_atlas.export.selectFile": "Seleziona dove salvare il file PNG",
+  "gui.antique_atlas.export.tooLarge": "Spiacenti! L'immagine è troppo grande da renderizzare, prova a incrementare la dimensione della memoria heap di Java.",
+  "gui.antique_atlas.export.rendering": "Renderizzando...",
+  "gui.antique_atlas.export.writing": "Scrivendo il file..."
+}

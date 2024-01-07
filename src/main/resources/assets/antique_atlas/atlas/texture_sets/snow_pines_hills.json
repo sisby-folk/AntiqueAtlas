@@ -1,0 +1,16 @@
+{
+  "version": 1,
+  "data": {
+    "textures": {
+      "antique_atlas:snow_pines_hills": 1,
+      "antique_atlas:snow_pines_hills2": 1,
+      "antique_atlas:snow_pines_hills3": 1
+    },
+    "stitch": {
+      "antique_atlas:snow": "both",
+      "antique_atlas:snow_hills": "both",
+      "antique_atlas:ice_spikes": "both",
+      "antique_atlas:snow_pines_hills": "both"
+    }
+  }
+}

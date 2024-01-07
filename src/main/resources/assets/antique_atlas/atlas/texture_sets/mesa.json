@@ -1,0 +1,12 @@
+{
+  "version": 1,
+  "data": {
+    "textures": {
+      "antique_atlas:mesa": 1,
+      "antique_atlas:mesa2": 1,
+      "antique_atlas:mesa3": 1,
+      "antique_atlas:mesa4": 1,
+      "antique_atlas:sand_bushes": 1
+    }
+  }
+}

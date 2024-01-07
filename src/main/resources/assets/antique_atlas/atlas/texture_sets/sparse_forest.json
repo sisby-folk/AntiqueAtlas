@@ -1,0 +1,14 @@
+{
+  "version": 1,
+  "data": {
+    "textures": {
+      "antique_atlas:forest_sparse": 1,
+      "antique_atlas:forest_sparse2": 1,
+      "antique_atlas:forest_sparse3": 1,
+      "antique_atlas:grass": 1,
+      "antique_atlas:grass2": 1,
+      "antique_atlas:grass3": 1,
+      "antique_atlas:grass4": 1
+    }
+  }
+}

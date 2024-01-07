@@ -1,0 +1,13 @@
+{
+  "version": 1,
+  "data": {
+    "textures": {
+      "antique_atlas:plateau_trees": 1,
+      "antique_atlas:plateau_mesa": 1,
+      "antique_atlas:plateau_mesa2": 1
+    },
+    "stitch": {
+      "antique_atlas:plateau_mesa_low": "both"
+    }
+  }
+}

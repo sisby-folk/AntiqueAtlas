@@ -1,0 +1,9 @@
+{
+  "version": 1,
+  "data": {
+    "textures": {
+      "antique_atlas:hills": 3,
+      "antique_atlas:hills_bushes": 1
+    }
+  }
+}

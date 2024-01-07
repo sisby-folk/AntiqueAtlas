@@ -1,0 +1,41 @@
+{
+  "item.antique_atlas.antique_atlas": "Atlas antiguo #%d",
+  "item.antique_atlas.empty_antique_atlas": "Atlas antiguo vacío",
+
+  "gui.antique_atlas.scalebar": "Escala en bloques",
+  "gui.antique_atlas.addMarker": "Agregar marcador",
+  "gui.antique_atlas.delMarker": "Quitar marcador",
+  "gui.antique_atlas.followPlayer": "Seguir jugador",
+  "gui.antique_atlas.exportImage": "Exportar imagen",
+  "gui.antique_atlas.hideMarkers": "Ocultar marcadores",
+  "gui.antique_atlas.showMarkers": "Mostrar marcadores",
+
+  "gui.antique_atlas.marker.label": "Etiqueta:",
+  "gui.antique_atlas.marker.type": "Tipo:",
+  "gui.antique_atlas.marker.village": "Aldea",
+  "gui.antique_atlas.marker.netherPortal": "Portal del Nether",
+  "gui.antique_atlas.marker.tomb": "Aqui yace %s",
+  "gui.antique_atlas.marker.treasure": "Tesoro enterrado",
+  "gui.antique_atlas.marker.monument": "Monumento oceánico",
+  "gui.antique_atlas.marker.mansion": "Mansión del bosque",
+
+  "gui.antique_atlas.export.opening": "Abriendo el cuadro de diálogo del sistema de archivos...",
+  "gui.antique_atlas.export.selectFile": "Seleccione el archivo PNG para guardar",
+  "gui.antique_atlas.export.tooLarge": "¡Lo siento! La imagen es demasiado grande para procesarla, intente aumentar el tamaño del montículo de Java.",
+
+  "gui.antique_atlas.export.setup": "Configurando...",
+  "gui.antique_atlas.export.rendering": "Procesando...",
+  "gui.antique_atlas.export.writing": "Escribiendo el archivo...",
+  "gui.antique_atlas.export.loadingtextures": "Cargando texturas...",
+  "gui.antique_atlas.export.makingbuffer": "Asignando %dx%d de búfer de imagen...",
+
+  "gui.antique_atlas.export.renderstripe": "Procesando trozo %d/%d...",
+  "gui.antique_atlas.export.writestripe": "Escribiendo trozo...",
+
+  "gui.antique_atlas.export.rendering.background": "Procesando fondo del mapa",
+  "gui.antique_atlas.export.rendering.map": "Procesando mosaico del mapa",
+  "gui.antique_atlas.export.rendering.markers": "Procesando marcadores",
+
+  "key.openatlas.desc": "Abrir atlas",
+  "key.antique_atlas.category": "Atlas Antiguo"
+}

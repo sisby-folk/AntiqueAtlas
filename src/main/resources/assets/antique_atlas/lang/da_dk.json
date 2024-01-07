@@ -1,0 +1,38 @@
+{
+  "item.antique_atlas.antique_atlas": "Antikt Atlas #%d",
+  "item.antique_atlas.empty_antique_atlas": "Tomt Antikt Atlas",
+
+  "gui.antique_atlas.scalebar": "Målestok i blokke",
+  "gui.antique_atlas.addMarker": "Tilføj markør",
+  "gui.antique_atlas.delMarker": "Fjern markør",
+  "gui.antique_atlas.followPlayer": "Følg spiller",
+  "gui.antique_atlas.exportImage": "Eksporter billede",
+  "gui.antique_atlas.hideMarkers": "Skjul markører",
+  "gui.antique_atlas.showMarkers": "Vis markører",
+
+  "gui.antique_atlas.marker.label": "Mærkat:",
+  "gui.antique_atlas.marker.type": "Type:",
+  "gui.antique_atlas.marker.village": "Landsby",
+  "gui.antique_atlas.marker.netherPortal": "Nether Portal",
+  "gui.antique_atlas.marker.tomb": "Her ligger %s",
+
+  "gui.antique_atlas.export.opening": "Åbner filsystemsdialog...",
+  "gui.antique_atlas.export.selectFile": "Vælg PNG fil, der skal gemmes til",
+  "gui.antique_atlas.export.tooLarge": "Undskyld! Billedet er for stort til at rendere, prøv at øge Java heap size",
+
+  "gui.antique_atlas.export.setup": "Sætter op...",
+  "gui.antique_atlas.export.rendering": "Renderer...",
+  "gui.antique_atlas.export.writing": "Skriver til fil...",
+  "gui.antique_atlas.export.loadingtextures": "Indlæser teksturfiler...",
+  "gui.antique_atlas.export.makingbuffer": "Tildeler %dx%d image buffer...",
+
+  "gui.antique_atlas.export.renderstripe": "Renderer skive %d/%d...",
+  "gui.antique_atlas.export.writestripe": "Skriver skive...",
+
+  "gui.antique_atlas.export.rendering.background": "Renderer kortbaggrund",
+  "gui.antique_atlas.export.rendering.map": "Renderer kortfelter",
+  "gui.antique_atlas.export.rendering.markers": "Viser markører",
+
+  "key.openatlas.desc": "Åben Atlas",
+  "key.antique_atlas.category": "Antique Atlas"
+}

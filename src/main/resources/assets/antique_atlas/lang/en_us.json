@@ -1,0 +1,41 @@
+{
+  "item.antique_atlas.antique_atlas": "Antique Atlas #%d",
+  "item.antique_atlas.empty_antique_atlas": "Empty Antique Atlas",
+
+  "gui.antique_atlas.scalebar": "Scale in blocks",
+  "gui.antique_atlas.addMarker": "Add marker",
+  "gui.antique_atlas.delMarker": "Delete marker",
+  "gui.antique_atlas.followPlayer": "Follow player",
+  "gui.antique_atlas.exportImage": "Export image",
+  "gui.antique_atlas.hideMarkers": "Hide markers",
+  "gui.antique_atlas.showMarkers": "Show markers",
+
+  "gui.antique_atlas.marker.label": "Label:",
+  "gui.antique_atlas.marker.type": "Type:",
+  "gui.antique_atlas.marker.village": "Village",
+  "gui.antique_atlas.marker.netherPortal": "Nether Portal",
+  "gui.antique_atlas.marker.tomb": "Here lies %s",
+  "gui.antique_atlas.marker.treasure": "Buried treasure",
+  "gui.antique_atlas.marker.monument": "Ocean Monument",
+  "gui.antique_atlas.marker.mansion": "Woodland Mansion",
+
+  "gui.antique_atlas.export.opening": "Opening file system dialog...",
+  "gui.antique_atlas.export.selectFile": "Select PNG file to save to",
+  "gui.antique_atlas.export.tooLarge": "Sorry! The image is too large to render, try increasing Java heap size.",
+
+  "gui.antique_atlas.export.setup": "Setting up...",
+  "gui.antique_atlas.export.rendering": "Rendering...",
+  "gui.antique_atlas.export.writing": "Writing to file...",
+  "gui.antique_atlas.export.loadingtextures": "Loading textures...",
+  "gui.antique_atlas.export.makingbuffer": "Allocating %dx%d image buffer...",
+
+  "gui.antique_atlas.export.renderstripe": "Rendering slice %d/%d...",
+  "gui.antique_atlas.export.writestripe": "Writing slice...",
+
+  "gui.antique_atlas.export.rendering.background": "Rendering map background",
+  "gui.antique_atlas.export.rendering.map": "Rendering map tiles",
+  "gui.antique_atlas.export.rendering.markers": "Rendering markers",
+
+  "key.openatlas.desc": "Open Atlas",
+  "key.antique_atlas.category": "Antique Atlas"
+}

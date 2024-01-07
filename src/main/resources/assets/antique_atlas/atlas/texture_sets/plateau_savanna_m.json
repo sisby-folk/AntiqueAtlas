@@ -1,0 +1,21 @@
+{
+  "version": 1,
+  "data": {
+    "textures": {
+      "antique_atlas:plateau_grass": 1,
+      "antique_atlas:plateau_grass2": 1,
+      "antique_atlas:plateau_grass3": 1,
+      "antique_atlas:plateau_savanna2": 1,
+      "antique_atlas:plateau_savanna3": 1,
+      "antique_atlas:cliffs_clouds": 1,
+      "antique_atlas:savanna_cliffs_clouds": 1,
+      "antique_atlas:savanna_cliffs_clouds2": 1,
+      "antique_atlas:savanna_cliffs_clouds3": 1
+    },
+    "stitch":{
+      "antique_atlas:plateau_mesa": "both",
+      "antique_atlas:plateau_mesa_trees": "both",
+      "antique_atlas:plateau_savanna": "both"
+    }
+  }
+}

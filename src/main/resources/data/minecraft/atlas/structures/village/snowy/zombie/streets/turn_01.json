@@ -1,0 +1,6 @@
+{
+  "version": 2,
+  "tile_x": "antique_atlas:npc_village_path_x",
+  "tile_z": "antique_atlas:npc_village_path_z",
+  "priority": 110
+}
