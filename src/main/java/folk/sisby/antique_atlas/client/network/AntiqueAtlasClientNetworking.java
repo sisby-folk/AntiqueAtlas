@@ -1,4 +1,4 @@
-package folk.sisby.antique_atlas.client.network.packet;
+package folk.sisby.antique_atlas.client.network;
 
 import com.google.common.collect.ArrayListMultimap;
 import com.google.common.collect.ListMultimap;

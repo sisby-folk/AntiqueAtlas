@@ -10,7 +10,7 @@ import folk.sisby.antique_atlas.client.TileTextureMap;
 import folk.sisby.antique_atlas.client.gui.GuiAtlas;
 import folk.sisby.antique_atlas.client.MarkerMipsConfig;
 import folk.sisby.antique_atlas.client.MarkerTextureConfig;
-import folk.sisby.antique_atlas.client.network.packet.AntiqueAtlasClientNetworking;
+import folk.sisby.antique_atlas.client.network.AntiqueAtlasClientNetworking;
 import folk.sisby.antique_atlas.client.MarkerType;
 import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
