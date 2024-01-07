@@ -5,8 +5,7 @@
   "compatibilityLevel": "JAVA_17",
   "mixins": [
     "MixinPlayerEntity",
-    "MixinPlayerEntityDeath",
-    "structure.StructureStartMixin"
+    "MixinStructureStart"
   ],
   "client": [
     "MixinMinecraftClient"
