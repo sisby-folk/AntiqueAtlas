@@ -1,6 +1,5 @@
 package folk.sisby.antique_atlas;
 
-import folk.sisby.antique_atlas.client.gui.GuiAtlas;
 import folk.sisby.kaleido.api.WrappedConfig;
 import folk.sisby.kaleido.lib.quiltconfig.api.annotations.Comment;
 import folk.sisby.kaleido.lib.quiltconfig.api.annotations.FloatRange;
@@ -107,7 +106,7 @@ public class AntiqueAtlasConfig extends WrappedConfig {
         @Comment("The size (in GUI pixels) of a marker on the map.")
         @Comment("Note that this will change with Minecraft's GUI scale configuration.")
         @IntegerRange(min = 0, max = 128)
-        public final Integer markerSize = GuiAtlas.MARKER_SIZE / 2;
+        public final Integer markerSize = 16;
 
         @Comment("The width (in GUI pixels) of the player's icon.")
         @IntegerRange(min = 0, max = 128)

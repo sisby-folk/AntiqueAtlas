@@ -1,7 +1,7 @@
 package folk.sisby.antique_atlas.client.gui;
 
 import folk.sisby.antique_atlas.client.gui.core.GuiBlinkingImage;
-import folk.sisby.antique_atlas.registry.MarkerType;
+import folk.sisby.antique_atlas.client.MarkerType;
 
 public class GuiBlinkingMarker extends GuiBlinkingImage implements GuiMarkerFinalizer.IMarkerTypeSelectListener {
     public void onSelectMarkerType(MarkerType markerType) {

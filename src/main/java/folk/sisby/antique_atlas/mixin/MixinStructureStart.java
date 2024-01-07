@@ -1,4 +1,4 @@
-package folk.sisby.antique_atlas.mixin.structure;
+package folk.sisby.antique_atlas.mixin;
 
 import folk.sisby.antique_atlas.structure.StructureHandler;
 import net.minecraft.server.world.ServerWorld;
@@ -21,12 +21,8 @@ import org.spongepowered.asm.mixin.injection.Redirect;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 @Mixin(StructureStart.class)
-public class StructureStartMixin {
-
-    @Final
-    @Shadow
-    private StructurePiecesList children;
-
+public abstract class MixinStructureStart {
+    @Final @Shadow private StructurePiecesList children;
 
     @Redirect(method = "place", at = @At(value = "INVOKE", target = "Lnet/minecraft/structure/StructurePiece;generate(Lnet/minecraft/world/StructureWorldAccess;Lnet/minecraft/world/gen/StructureAccessor;Lnet/minecraft/world/gen/chunk/ChunkGenerator;Lnet/minecraft/util/math/random/Random;Lnet/minecraft/util/math/BlockBox;Lnet/minecraft/util/math/ChunkPos;Lnet/minecraft/util/math/BlockPos;)V"))
     private void structurePieceGenerated(StructurePiece structurePiece, StructureWorldAccess serverWorldAccess, StructureAccessor structureAccessor, ChunkGenerator chunkGenerator, net.minecraft.util.math.random.Random random, BlockBox boundingBox, ChunkPos chunkPos, BlockPos blockPos) {

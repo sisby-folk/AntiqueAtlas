@@ -2,8 +2,6 @@ package folk.sisby.antique_atlas.client;
 
 import folk.sisby.antique_atlas.client.texture.ITexture;
 import folk.sisby.antique_atlas.client.texture.Texture;
-import net.fabricmc.api.EnvType;
-import net.fabricmc.api.Environment;
 import net.minecraft.client.render.VertexConsumerProvider;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.util.Identifier;
@@ -17,7 +15,6 @@ import java.util.HashMap;
  * sorting the draw commands by texture, then
  * rendering all of the same textures of a map at once without re-binding.
  */
-@Environment(EnvType.CLIENT)
 class SetTileRenderer {
 
     private final HashMap<Identifier, ArrayList<TileCorner>> subjects = new HashMap<>();

@@ -3,10 +3,8 @@ package folk.sisby.antique_atlas.api.client.impl;
 import folk.sisby.antique_atlas.AntiqueAtlas;
 import folk.sisby.antique_atlas.api.MarkerAPI;
 import folk.sisby.antique_atlas.marker.Marker;
-import folk.sisby.antique_atlas.network.packet.c2s.play.DeleteMarkerC2SPacket;
-import folk.sisby.antique_atlas.network.packet.c2s.play.PutMarkerC2SPacket;
-import net.fabricmc.api.EnvType;
-import net.fabricmc.api.Environment;
+import folk.sisby.antique_atlas.client.network.packet.DeleteMarkerC2SPacket;
+import folk.sisby.antique_atlas.client.network.packet.PutMarkerC2SPacket;
 import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
 import net.minecraft.world.World;
@@ -14,7 +12,6 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 
-@Environment(EnvType.CLIENT)
 public class MarkerApiImplClient implements MarkerAPI {
     @Nullable
     @Override

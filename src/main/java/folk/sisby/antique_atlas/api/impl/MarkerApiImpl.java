@@ -4,10 +4,8 @@ import folk.sisby.antique_atlas.AntiqueAtlas;
 import folk.sisby.antique_atlas.api.MarkerAPI;
 import folk.sisby.antique_atlas.marker.Marker;
 import folk.sisby.antique_atlas.marker.MarkersData;
-import folk.sisby.antique_atlas.network.packet.c2s.play.DeleteMarkerC2SPacket;
-import folk.sisby.antique_atlas.network.packet.s2c.play.DeleteMarkerS2CPacket;
-import folk.sisby.antique_atlas.network.packet.s2c.play.PutMarkersS2CPacket;
-import folk.sisby.antique_atlas.util.Log;
+import folk.sisby.antique_atlas.network.packet.DeleteMarkerS2CPacket;
+import folk.sisby.antique_atlas.network.packet.PutMarkersS2CPacket;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
@@ -60,19 +58,11 @@ public class MarkerApiImpl implements MarkerAPI {
     }
 
     private void doDeleteMarker(World world, int atlasID, int markerID) {
-        if (world.isClient) {
-            if (atlasID == GLOBAL) {
-                Log.warn("Client tried to delete a global marker!");
-            } else {
-                new DeleteMarkerC2SPacket(atlasID, markerID).send();
-            }
-        } else {
-            MarkersData data = atlasID == GLOBAL ?
-                AntiqueAtlas.globalMarkersData.getData() :
-                AntiqueAtlas.markersData.getMarkersData(atlasID, world);
-            data.removeMarker(markerID);
+        MarkersData data = atlasID == GLOBAL ?
+            AntiqueAtlas.globalMarkersData.getData() :
+            AntiqueAtlas.markersData.getMarkersData(atlasID, world);
+        data.removeMarker(markerID);
 
-            new DeleteMarkerS2CPacket(atlasID, markerID).send(((ServerWorld) world).getServer());
-        }
+        new DeleteMarkerS2CPacket(atlasID, markerID).send(((ServerWorld) world).getServer());
     }
 }

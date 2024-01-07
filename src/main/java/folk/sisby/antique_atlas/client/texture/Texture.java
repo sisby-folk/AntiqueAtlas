@@ -1,13 +1,10 @@
 package folk.sisby.antique_atlas.client.texture;
 
-import net.fabricmc.api.EnvType;
-import net.fabricmc.api.Environment;
 import net.minecraft.util.Identifier;
 
 /**
  * A generic texture, which needs the size of the texture at construction time.
  */
-@Environment(EnvType.CLIENT)
 public class Texture extends ATexture {
     public final int width;
     public final int height;

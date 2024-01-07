@@ -4,8 +4,6 @@ import folk.sisby.antique_atlas.client.SubTile.Part;
 import folk.sisby.antique_atlas.client.SubTile.Shape;
 import folk.sisby.antique_atlas.core.ITileStorage;
 import folk.sisby.antique_atlas.util.Rect;
-import net.fabricmc.api.EnvType;
-import net.fabricmc.api.Environment;
 import net.minecraft.util.Identifier;
 
 import java.util.Iterator;
@@ -18,7 +16,6 @@ import java.util.Iterator;
  *
  * @author Hunternif
  */
-@Environment(EnvType.CLIENT)
 public class TileRenderIterator implements Iterator<SubTileQuartet>, Iterable<SubTileQuartet> {
 
     private final ITileStorage tiles;

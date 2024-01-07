@@ -1,7 +1,6 @@
-package folk.sisby.antique_atlas.marker;
+package folk.sisby.antique_atlas.client;
 
 import folk.sisby.antique_atlas.AntiqueAtlas;
-import folk.sisby.antique_atlas.registry.MarkerType;
 import net.fabricmc.fabric.api.resource.IdentifiableResourceReloadListener;
 import net.minecraft.resource.ResourceManager;
 import net.minecraft.resource.ResourceReloader;

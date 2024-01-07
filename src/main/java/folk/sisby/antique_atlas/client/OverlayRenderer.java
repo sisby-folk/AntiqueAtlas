@@ -9,11 +9,7 @@ import folk.sisby.antique_atlas.core.WorldData;
 import folk.sisby.antique_atlas.marker.DimensionMarkersData;
 import folk.sisby.antique_atlas.marker.Marker;
 import folk.sisby.antique_atlas.marker.MarkersData;
-import folk.sisby.antique_atlas.registry.MarkerRenderInfo;
-import folk.sisby.antique_atlas.registry.MarkerType;
 import folk.sisby.antique_atlas.util.Rect;
-import net.fabricmc.api.EnvType;
-import net.fabricmc.api.Environment;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.DrawableHelper;
 import net.minecraft.client.render.VertexConsumerProvider;
@@ -27,7 +23,6 @@ import org.lwjgl.opengl.GL11;
 
 import java.util.List;
 
-@Environment(EnvType.CLIENT)
 public class OverlayRenderer extends DrawableHelper {
     /**
      * Number of blocks per chunk in minecraft. This is certianly stored

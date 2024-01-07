@@ -3,15 +3,12 @@ package folk.sisby.antique_atlas.api.client;
 import folk.sisby.antique_atlas.api.MarkerAPI;
 import folk.sisby.antique_atlas.api.client.impl.MarkerApiImplClient;
 import folk.sisby.antique_atlas.api.client.impl.TileApiImplClient;
-import net.fabricmc.api.EnvType;
-import net.fabricmc.api.Environment;
 
 /**
  * Use this class to obtain a reference to the client-side APIs.
  *
  * @author Hunternif
  */
-@Environment(EnvType.CLIENT)
 public class AtlasClientAPI {
     private static final int VERSION = 5;
     private static final ClientTileAPI tiles = new TileApiImplClient();

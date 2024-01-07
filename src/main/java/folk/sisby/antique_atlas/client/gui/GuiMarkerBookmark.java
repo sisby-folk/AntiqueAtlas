@@ -5,7 +5,7 @@ import folk.sisby.antique_atlas.client.Textures;
 import folk.sisby.antique_atlas.client.gui.core.GuiComponentButton;
 import folk.sisby.antique_atlas.client.texture.ITexture;
 import folk.sisby.antique_atlas.marker.Marker;
-import folk.sisby.antique_atlas.registry.MarkerType;
+import folk.sisby.antique_atlas.client.MarkerType;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.text.Text;

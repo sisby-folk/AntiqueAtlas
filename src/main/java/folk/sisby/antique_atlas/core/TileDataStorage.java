@@ -1,6 +1,6 @@
 package folk.sisby.antique_atlas.core;
 
-import folk.sisby.antique_atlas.network.packet.s2c.play.PutGlobalTileS2CPacket;
+import folk.sisby.antique_atlas.network.packet.PutGlobalTileS2CPacket;
 import folk.sisby.antique_atlas.util.Log;
 import folk.sisby.antique_atlas.util.Streams;
 import net.minecraft.entity.player.PlayerEntity;

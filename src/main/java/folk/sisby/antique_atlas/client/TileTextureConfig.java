@@ -6,8 +6,6 @@ import folk.sisby.antique_atlas.AntiqueAtlas;
 import folk.sisby.antique_atlas.core.scanning.TileHeightType;
 import folk.sisby.antique_atlas.resource.ResourceReloadListener;
 import folk.sisby.antique_atlas.util.Log;
-import net.fabricmc.api.EnvType;
-import net.fabricmc.api.Environment;
 import net.minecraft.resource.Resource;
 import net.minecraft.resource.ResourceManager;
 import net.minecraft.util.Identifier;
@@ -29,7 +27,6 @@ import java.util.concurrent.Executor;
  *
  * @author Hunternif
  */
-@Environment(EnvType.CLIENT)
 public class TileTextureConfig implements ResourceReloadListener<Map<Identifier, Identifier>> {
     public static final Identifier ID = AntiqueAtlas.id("tile_textures");
     private final TileTextureMap tileTextureMap;

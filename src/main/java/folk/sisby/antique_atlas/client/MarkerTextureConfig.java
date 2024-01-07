@@ -1,12 +1,9 @@
-package folk.sisby.antique_atlas.marker;
+package folk.sisby.antique_atlas.client;
 
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import folk.sisby.antique_atlas.AntiqueAtlas;
 import folk.sisby.antique_atlas.resource.ResourceReloadListener;
-import folk.sisby.antique_atlas.registry.MarkerType;
-import net.fabricmc.api.EnvType;
-import net.fabricmc.api.Environment;
 import net.minecraft.resource.Resource;
 import net.minecraft.resource.ResourceManager;
 import net.minecraft.util.Identifier;
@@ -27,7 +24,6 @@ import java.util.concurrent.Executor;
  *
  * @author Hunternif
  */
-@Environment(EnvType.CLIENT)
 public class MarkerTextureConfig implements ResourceReloadListener<Map<Identifier, MarkerType>> {
     public static final Identifier ID = AntiqueAtlas.id("markers");
     private static final int VERSION = 1;

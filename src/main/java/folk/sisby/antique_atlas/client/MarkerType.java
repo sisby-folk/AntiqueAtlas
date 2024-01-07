@@ -1,4 +1,4 @@
-package folk.sisby.antique_atlas.registry;
+package folk.sisby.antique_atlas.client;
 
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
@@ -10,8 +10,7 @@ import folk.sisby.antique_atlas.client.texture.ITexture;
 import folk.sisby.antique_atlas.client.texture.Texture;
 import folk.sisby.antique_atlas.util.BitMatrix;
 import folk.sisby.antique_atlas.util.Log;
-import net.fabricmc.api.EnvType;
-import net.fabricmc.api.Environment;
+import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.texture.NativeImage;
 import net.minecraft.client.texture.TextureManager;
 import net.minecraft.util.Identifier;
@@ -22,7 +21,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.OptionalInt;
 
-import net.minecraft.client.MinecraftClient;
 import net.minecraft.resource.Resource;
 
 public class MarkerType {
@@ -188,7 +186,6 @@ public class MarkerType {
         return new MarkerRenderInfo(getTexture(), x, y, size, size);
     }
 
-    @Environment(EnvType.CLIENT)
     public void initMips() {
         iconSizes = new int[icons.length];
         iconPixels = new BitMatrix[icons.length];

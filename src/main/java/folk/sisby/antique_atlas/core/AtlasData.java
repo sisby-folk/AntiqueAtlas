@@ -1,6 +1,6 @@
 package folk.sisby.antique_atlas.core;
 
-import folk.sisby.antique_atlas.network.packet.s2c.play.MapDataS2CPacket;
+import folk.sisby.antique_atlas.network.packet.MapDataS2CPacket;
 import folk.sisby.antique_atlas.util.Log;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.nbt.NbtCompound;

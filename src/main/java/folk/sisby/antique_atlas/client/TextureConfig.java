@@ -5,8 +5,6 @@ import folk.sisby.antique_atlas.client.texture.ITexture;
 import folk.sisby.antique_atlas.client.texture.TileTexture;
 import folk.sisby.antique_atlas.resource.ResourceReloadListener;
 import folk.sisby.antique_atlas.util.Log;
-import net.fabricmc.api.EnvType;
-import net.fabricmc.api.Environment;
 import net.minecraft.resource.ResourceManager;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.InvalidIdentifierException;
@@ -27,7 +25,6 @@ import java.util.concurrent.Executor;
  * - The identifier of the physical location in modid:texture/gui/tiles/tex.png
  * - The logical identifier modid:tex referenced by TextureSets
  */
-@Environment(EnvType.CLIENT)
 public class TextureConfig implements ResourceReloadListener<Map<Identifier, ITexture>> {
     public static final Identifier ID = AntiqueAtlas.id("textures");
     private final Map<Identifier, ITexture> texture_map;
