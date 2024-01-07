@@ -101,18 +101,18 @@ public class OverlayRenderer extends DrawableHelper {
                 // Position of this subtile (measured in chunks) relative to the
                 // player
                 float relativeChunkPositionX = (float) (subtile.x / 2.0
-                        + iteratorScope.minX - chunkPosition.x);
+                    + iteratorScope.minX - chunkPosition.x);
                 float relativeChunkPositionY = (float) (subtile.y / 2.0
-                        + iteratorScope.minY - chunkPosition.z);
+                    + iteratorScope.minY - chunkPosition.z);
                 renderer.addTileCorner(
-                        TileTextureMap.instance().getTexture(subtile).getTexture(),
-                        shapeMiddleX
-                                + (int) Math.floor(relativeChunkPositionX
-                                * AntiqueAtlas.CONFIG.Appearance.tileSize),
-                        shapeMiddleY
-                                + (int) Math.floor(relativeChunkPositionY
-                                * AntiqueAtlas.CONFIG.Appearance.tileSize), subtile.getTextureU(),
-                        subtile.getTextureV());
+                    TileTextureMap.instance().getTexture(subtile).getTexture(),
+                    shapeMiddleX
+                        + (int) Math.floor(relativeChunkPositionX
+                        * AntiqueAtlas.CONFIG.Appearance.tileSize),
+                    shapeMiddleY
+                        + (int) Math.floor(relativeChunkPositionY
+                        * AntiqueAtlas.CONFIG.Appearance.tileSize), subtile.getTextureU(),
+                    subtile.getTextureV());
             }
         }
         renderer.draw();
@@ -121,16 +121,16 @@ public class OverlayRenderer extends DrawableHelper {
     private void drawMarkers(VertexConsumerProvider buffer, MatrixStack matrices, int atlasID, int light) {
         // biomeData needed to prevent undiscovered markers from appearing
         WorldData biomeData = AntiqueAtlas.tileData.getData(
-                atlasID, this.world).getWorldData(
-                this.world.getRegistryKey());
+            atlasID, this.world).getWorldData(
+            this.world.getRegistryKey());
         DimensionMarkersData globalMarkersData = AntiqueAtlas.globalMarkersData
-                .getData().getMarkersDataInWorld(this.world.getRegistryKey());
+            .getData().getMarkersDataInWorld(this.world.getRegistryKey());
 
         // Draw global markers:
         drawMarkersData(buffer, matrices, globalMarkersData, biomeData, light);
 
         MarkersData markersData = AntiqueAtlas.markersData.getMarkersData(
-                atlasID, MinecraftClient.getInstance().world);
+            atlasID, MinecraftClient.getInstance().world);
         if (markersData != null) {
             DimensionMarkersData localMarkersData = markersData.getMarkersDataInWorld(world.getRegistryKey());
 
@@ -154,9 +154,9 @@ public class OverlayRenderer extends DrawableHelper {
         //this will be large enough to include markers that are larger than tiles
         Rect mcchunks = getChunkCoverage(player.getPos());
         Rect chunks = new Rect(mcchunks.minX / MarkersData.CHUNK_STEP,
-                mcchunks.minY / MarkersData.CHUNK_STEP,
-                (int) Math.ceil((float) mcchunks.maxX / MarkersData.CHUNK_STEP),
-                (int) Math.ceil((float) mcchunks.maxY / MarkersData.CHUNK_STEP));
+            mcchunks.minY / MarkersData.CHUNK_STEP,
+            (int) Math.ceil((float) mcchunks.maxX / MarkersData.CHUNK_STEP),
+            (int) Math.ceil((float) mcchunks.maxY / MarkersData.CHUNK_STEP));
 
         int shapeMiddleX = (int) ((GuiAtlas.WIDTH * 1.5F) / (INNER_ELEMENTS_SCALE_FACTOR * 2));
         int shapeMiddleY = (int) ((GuiAtlas.HEIGHT * 1.5F) / (INNER_ELEMENTS_SCALE_FACTOR * 2));
@@ -170,15 +170,15 @@ public class OverlayRenderer extends DrawableHelper {
                     continue;
                 for (Marker marker : markers) {
                     float relativeChunkPositionX = (float) (marker.getChunkX()
-                            - chunkPosition.x);
+                        - chunkPosition.x);
                     float relativeChunkPositionY = (float) (marker.getChunkZ()
-                            - chunkPosition.z);
+                        - chunkPosition.z);
 
                     renderMarker(buffer, matrices, marker,
-                            shapeMiddleX
-                                    + (int) Math.floor(relativeChunkPositionX * 8),
-                            shapeMiddleY
-                                    + (int) Math.floor(relativeChunkPositionY * 8), biomeData, light);
+                        shapeMiddleX
+                            + (int) Math.floor(relativeChunkPositionX * 8),
+                        shapeMiddleY
+                            + (int) Math.floor(relativeChunkPositionY * 8), biomeData, light);
                 }
             }
         }
@@ -201,16 +201,16 @@ public class OverlayRenderer extends DrawableHelper {
 
     private Rect getChunkCoverage(Vec3d position) {
         int minChunkX = (int) Math.floor(position.x / CHUNK_SIZE
-                - (GuiAtlas.WIDTH) / (4f * AntiqueAtlas.CONFIG.Appearance.tileSize));
+            - (GuiAtlas.WIDTH) / (4f * AntiqueAtlas.CONFIG.Appearance.tileSize));
         minChunkX -= 4;
         int minChunkY = (int) Math.floor(position.z / CHUNK_SIZE
-                - (GuiAtlas.HEIGHT) / (4f * AntiqueAtlas.CONFIG.Appearance.tileSize));
+            - (GuiAtlas.HEIGHT) / (4f * AntiqueAtlas.CONFIG.Appearance.tileSize));
         minChunkY -= 3;
         int maxChunkX = (int) Math.ceil(position.x / CHUNK_SIZE
-                + (GuiAtlas.WIDTH) / (4f * AntiqueAtlas.CONFIG.Appearance.tileSize));
+            + (GuiAtlas.WIDTH) / (4f * AntiqueAtlas.CONFIG.Appearance.tileSize));
         maxChunkX += 4;
         int maxChunkY = (int) Math.ceil(position.z / CHUNK_SIZE
-                + (GuiAtlas.HEIGHT) / (4f * AntiqueAtlas.CONFIG.Appearance.tileSize));
+            + (GuiAtlas.HEIGHT) / (4f * AntiqueAtlas.CONFIG.Appearance.tileSize));
         maxChunkY += 2;
         return new Rect(minChunkX, minChunkY, maxChunkX, maxChunkY);
     }

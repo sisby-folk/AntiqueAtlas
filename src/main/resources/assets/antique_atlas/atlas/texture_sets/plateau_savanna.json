@@ -9,7 +9,7 @@
       "antique_atlas:plateau_savanna2": 1,
       "antique_atlas:plateau_savanna3": 1
     },
-    "stitch":{
+    "stitch": {
       "antique_atlas:plateau_mesa": "both",
       "antique_atlas:plateau_mesa_trees": "both",
       "antique_atlas:plateau_savanna_m": "both"

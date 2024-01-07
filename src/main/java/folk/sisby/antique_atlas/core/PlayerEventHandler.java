@@ -32,7 +32,7 @@ public class PlayerEventHandler {
     public static void onPlayerTick(PlayerEntity player) {
         // TODO Can we move world scanning to the server in this case as well?
         AtlasData data = AntiqueAtlas.tileData.getData(
-                AtlasAPI.getPlayerAtlasId(player), player.world);
+            AtlasAPI.getPlayerAtlasId(player), player.world);
 
         AntiqueAtlas.worldScanner.updateAtlasAroundPlayer(data, player);
     }

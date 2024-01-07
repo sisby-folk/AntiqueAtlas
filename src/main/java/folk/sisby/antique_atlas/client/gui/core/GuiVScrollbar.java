@@ -17,7 +17,7 @@ public class GuiVScrollbar extends AGuiScrollbar {
         texture.draw(matrices, getGuiX(), getGuiY() + anchorPos + capLength, textureWidth, anchorSize, 0, capLength, textureWidth, textureBodyLength);
 
         // Draw bottom cap:
-        texture.draw(matrices, getGuiX(),getGuiY() + anchorPos + capLength + anchorSize, 0, textureHeight - capLength, textureWidth, capLength);
+        texture.draw(matrices, getGuiX(), getGuiY() + anchorPos + capLength + anchorSize, 0, textureHeight - capLength, textureWidth, capLength);
     }
 
     @Override

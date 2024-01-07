@@ -20,7 +20,7 @@ public class GlobalTileDataHandler {
     private static final String DATA_KEY = "aAtlasTiles";
 
     private final Map<RegistryKey<World>, TileDataStorage> globalTileData =
-            new ConcurrentHashMap<>(2, 0.75f, 2);
+        new ConcurrentHashMap<>(2, 0.75f, 2);
 
     public void onWorldLoad(MinecraftServer server, ServerWorld world) {
         globalTileData.put(world.getRegistryKey(), world.getPersistentStateManager().getOrCreate(TileDataStorage::readNbt, () -> {
@@ -36,7 +36,7 @@ public class GlobalTileDataHandler {
 
     public TileDataStorage getData(RegistryKey<World> world) {
         return globalTileData.computeIfAbsent(world,
-                k -> new TileDataStorage());
+            k -> new TileDataStorage());
     }
 
     public void onPlayerLogin(ServerPlayNetworkHandler handler, PacketSender sender, MinecraftServer server) {

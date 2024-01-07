@@ -98,8 +98,7 @@ public class WorldScanner {
                 return null;
             }
 
-            if(!world.getChunkManager().isChunkLoaded(x,z))
-            {
+            if (!world.getChunkManager().isChunkLoaded(x, z)) {
                 return null;
             }
 

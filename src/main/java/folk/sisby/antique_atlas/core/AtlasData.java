@@ -39,7 +39,7 @@ public class AtlasData extends PersistentState {
      * CAREFUL! Don't modify chunk coordinates that are already put in the map!
      */
     private final Map<RegistryKey<World>, WorldData> worldMap =
-            new ConcurrentHashMap<>(2, 0.75f, 2);
+        new ConcurrentHashMap<>(2, 0.75f, 2);
 
     /**
      * Set of players this Atlas data has been sent to.
@@ -73,7 +73,7 @@ public class AtlasData extends PersistentState {
             double zoom = worldTag.getDouble(TAG_BROWSING_ZOOM);
             if (zoom == 0) zoom = 0.5;
             dimData.setBrowsingPosition(worldTag.getInt(TAG_BROWSING_X),
-                    worldTag.getInt(TAG_BROWSING_Y), zoom);
+                worldTag.getInt(TAG_BROWSING_Y), zoom);
         }
     }
 

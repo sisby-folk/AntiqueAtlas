@@ -7,6 +7,7 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.text.Text;
 import net.minecraft.world.World;
 import net.minecraft.world.dimension.DimensionType;
+
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
@@ -14,19 +15,20 @@ import java.util.concurrent.ConcurrentHashMap;
 /**
  * Identifies when a player teleports in or out of the nether and puts a portal
  * marker in the atlases he is carrying.
+ *
  * @author Hunternif
  */
 public class NetherPortalWatcher {
-	/**
-	 * When a player teleports, he is removed from the source dimension, where
-	 * portal detection works well, and his ID is placed in this set.
-	 * Then the player is spawned in the destination dimension, where portal
-	 * detection doesn't work for some reason. But we can detect his arrival
-	 * by checking if this set contains the player's ID!
-	 */
-	private final Map<Integer, DimensionType> teleportingPlayersOrigin = new ConcurrentHashMap<>();
+    /**
+     * When a player teleports, he is removed from the source dimension, where
+     * portal detection works well, and his ID is placed in this set.
+     * Then the player is spawned in the destination dimension, where portal
+     * detection doesn't work for some reason. But we can detect his arrival
+     * by checking if this set contains the player's ID!
+     */
+    private final Map<Integer, DimensionType> teleportingPlayersOrigin = new ConcurrentHashMap<>();
 
-	// TODO FABRIC
+    // TODO FABRIC
 	/* @SubscribeEvent
 	public void onWorldLoad(WorldEvent.Load event) {
 		if (!event.getWorld().G) {
@@ -78,45 +80,47 @@ public class NetherPortalWatcher {
 		}
 	} */
 
-	/** Put the Portal marker at the player's current coordinates into all
-	 * atlases that he is carrying, if the same marker is not already there. */
-	private void addPortalMarkerIfNone(PlayerEntity player) {
-		if (!AntiqueAtlas.CONFIG.Gameplay.autoNetherPortalMarkers || player.getEntityWorld().isClient) {
-			return;
-		}
+    /**
+     * Put the Portal marker at the player's current coordinates into all
+     * atlases that he is carrying, if the same marker is not already there.
+     */
+    private void addPortalMarkerIfNone(PlayerEntity player) {
+        if (!AntiqueAtlas.CONFIG.Gameplay.autoNetherPortalMarkers || player.getEntityWorld().isClient) {
+            return;
+        }
 
-		// Due to switching dimensions this player entity's worldObj is lagging.
-		// We need the very specific dimension each time.
-		World world = player.getEntityWorld();
+        // Due to switching dimensions this player entity's worldObj is lagging.
+        // We need the very specific dimension each time.
+        World world = player.getEntityWorld();
 
-		addPortalMarkerIfNone(player, world, AtlasAPI.getPlayerAtlasId(player));
-	}
+        addPortalMarkerIfNone(player, world, AtlasAPI.getPlayerAtlasId(player));
+    }
 
-	private void addPortalMarkerIfNone(PlayerEntity player, World world, int atlasID) {
-		MarkerType netherPortalType = MarkerType.REGISTRY.get(AntiqueAtlas.id("nether_portal"));
-		if (netherPortalType == null) {
-			return;
-		}
+    private void addPortalMarkerIfNone(PlayerEntity player, World world, int atlasID) {
+        MarkerType netherPortalType = MarkerType.REGISTRY.get(AntiqueAtlas.id("nether_portal"));
+        if (netherPortalType == null) {
+            return;
+        }
 
-		// Can't use entity.dimension here, because its value has already been updated!
-		DimensionMarkersData data = AntiqueAtlas.markersData.getMarkersData(atlasID, world)
-				.getMarkersDataInWorld(world.getRegistryKey());
+        // Can't use entity.dimension here, because its value has already been updated!
+        DimensionMarkersData data = AntiqueAtlas.markersData.getMarkersData(atlasID, world)
+            .getMarkersDataInWorld(world.getRegistryKey());
 
-		int x = (int)player.getX();
-		int z = (int)player.getZ();
+        int x = (int) player.getX();
+        int z = (int) player.getZ();
 
-		// Check if the marker already exists:
-		List<Marker> markers = data.getMarkersAtChunk((x >> 4) / MarkersData.CHUNK_STEP, (z >> 4) / MarkersData.CHUNK_STEP);
-		if (markers != null) {
-			for (Marker marker : markers) {
-				if (marker.getType().equals("antique_atlas:nether_portal")) {
-					// Found the marker.
-					return;
-				}
-			}
-		}
+        // Check if the marker already exists:
+        List<Marker> markers = data.getMarkersAtChunk((x >> 4) / MarkersData.CHUNK_STEP, (z >> 4) / MarkersData.CHUNK_STEP);
+        if (markers != null) {
+            for (Marker marker : markers) {
+                if (marker.getType().equals("antique_atlas:nether_portal")) {
+                    // Found the marker.
+                    return;
+                }
+            }
+        }
 
-		// Marker not found, place new one:
-		AtlasAPI.getMarkerAPI().putMarker(world, false, atlasID, MarkerType.REGISTRY.getId(netherPortalType), Text.translatable("gui.antique_atlas.marker.netherPortal"), x, z);
-	}
+        // Marker not found, place new one:
+        AtlasAPI.getMarkerAPI().putMarker(world, false, atlasID, MarkerType.REGISTRY.getId(netherPortalType), Text.translatable("gui.antique_atlas.marker.netherPortal"), x, z);
+    }
 }

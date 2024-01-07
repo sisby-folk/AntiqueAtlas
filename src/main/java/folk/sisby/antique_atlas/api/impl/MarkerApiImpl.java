@@ -39,8 +39,8 @@ public class MarkerApiImpl implements MarkerAPI {
         Marker marker = null;
         if (!world.isClient && world.getServer() != null) {
             MarkersData data = atlasID == GLOBAL
-                    ? AntiqueAtlas.globalMarkersData.getData()
-                    : AntiqueAtlas.markersData.getMarkersData(atlasID, world);
+                ? AntiqueAtlas.globalMarkersData.getData()
+                : AntiqueAtlas.markersData.getMarkersData(atlasID, world);
 
             marker = data.createAndSaveMarker(markerId, world.getRegistryKey(), x, z, visibleAhead, label);
             new PutMarkersS2CPacket(atlasID, world.getRegistryKey(), Collections.singleton(marker)).send((ServerWorld) world);
@@ -68,8 +68,8 @@ public class MarkerApiImpl implements MarkerAPI {
             }
         } else {
             MarkersData data = atlasID == GLOBAL ?
-                    AntiqueAtlas.globalMarkersData.getData() :
-                    AntiqueAtlas.markersData.getMarkersData(atlasID, world);
+                AntiqueAtlas.globalMarkersData.getData() :
+                AntiqueAtlas.markersData.getMarkersData(atlasID, world);
             data.removeMarker(markerID);
 
             new DeleteMarkerS2CPacket(atlasID, markerID).send(((ServerWorld) world).getServer());

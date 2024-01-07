@@ -16,30 +16,31 @@ import net.minecraft.world.World;
 
 /**
  * Sent from server to client to remove a custom global tile.
+ *
  * @author Hunternif
  * @author Haven King
  */
 public class DeleteGlobalTileS2CPacket extends S2CPacket {
-	public static final Identifier ID = AntiqueAtlas.id("packet.c2s.global_tile.delete");
+    public static final Identifier ID = AntiqueAtlas.id("packet.c2s.global_tile.delete");
 
-	public DeleteGlobalTileS2CPacket(RegistryKey<World> world, int chunkX, int chunkZ) {
-		this.writeIdentifier(world.getValue());
-		this.writeVarInt(chunkX);
-		this.writeVarInt(chunkZ);
-	}
+    public DeleteGlobalTileS2CPacket(RegistryKey<World> world, int chunkX, int chunkZ) {
+        this.writeIdentifier(world.getValue());
+        this.writeVarInt(chunkX);
+        this.writeVarInt(chunkZ);
+    }
 
-	@Override
-	public Identifier getId() {
-		return ID;
-	}
+    @Override
+    public Identifier getId() {
+        return ID;
+    }
 
-	@Environment(EnvType.CLIENT)
-	public static void apply(MinecraftClient client, ClientPlayNetworkHandler handler, PacketByteBuf buf, PacketSender sender) {
-		RegistryKey<World> world = RegistryKey.of(Registry.WORLD_KEY, buf.readIdentifier());
-		int chunkX = buf.readVarInt();
-		int chunkZ = buf.readVarInt();
+    @Environment(EnvType.CLIENT)
+    public static void apply(MinecraftClient client, ClientPlayNetworkHandler handler, PacketByteBuf buf, PacketSender sender) {
+        RegistryKey<World> world = RegistryKey.of(Registry.WORLD_KEY, buf.readIdentifier());
+        int chunkX = buf.readVarInt();
+        int chunkZ = buf.readVarInt();
 
-		TileDataStorage data = AntiqueAtlas.globalTileData.getData(world);
-		data.removeTile(chunkX, chunkZ);
-	}
+        TileDataStorage data = AntiqueAtlas.globalTileData.getData(world);
+        data.removeTile(chunkX, chunkZ);
+    }
 }

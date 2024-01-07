@@ -1,6 +1,6 @@
 {
-	"version": 1,
-	"textures": [
-		"antique_atlas:textures/gui/markers/tomb.png"
-	]
+  "version": 1,
+  "textures": [
+    "antique_atlas:textures/gui/markers/tomb.png"
+  ]
 }

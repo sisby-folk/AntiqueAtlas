@@ -84,8 +84,8 @@ public class WorldData implements ITileStorage {
 
     public void setBrowsingPositionTo(Entity e) {
         setBrowsingPosition((int) Math.round(-e.getX() * AntiqueAtlas.CONFIG.Interface.defaultScale),
-                (int) Math.round(-e.getZ() * AntiqueAtlas.CONFIG.Interface.defaultScale),
-                AntiqueAtlas.CONFIG.Interface.defaultScale);
+            (int) Math.round(-e.getZ() * AntiqueAtlas.CONFIG.Interface.defaultScale),
+            AntiqueAtlas.CONFIG.Interface.defaultScale);
     }
 
     public int getBrowsingX() {
@@ -103,7 +103,7 @@ public class WorldData implements ITileStorage {
     @Override
     public void setTile(int x, int y, Identifier tile) {
         ChunkPos groupPos = new ChunkPos((int) Math.floor(x / (float) TileGroup.CHUNK_STEP),
-                (int) Math.floor(y / (float) TileGroup.CHUNK_STEP));
+            (int) Math.floor(y / (float) TileGroup.CHUNK_STEP));
         TileGroup tg = tileGroups.get(groupPos);
         if (tg == null) {
             tg = new TileGroup(groupPos.x * TileGroup.CHUNK_STEP, groupPos.z * TileGroup.CHUNK_STEP);
@@ -136,7 +136,7 @@ public class WorldData implements ITileStorage {
     @Override
     public Identifier getTile(int x, int y) {
         ChunkPos groupPos = new ChunkPos((int) Math.floor(x / (float) TileGroup.CHUNK_STEP),
-                (int) Math.floor(y / (float) TileGroup.CHUNK_STEP));
+            (int) Math.floor(y / (float) TileGroup.CHUNK_STEP));
         TileGroup tg = tileGroups.get(groupPos);
         if (tg == null) {
             return null;

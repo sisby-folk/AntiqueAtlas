@@ -66,7 +66,7 @@ public abstract class ATexture implements ITexture {
         matrices.multiply(Vec3f.POSITIVE_Z.getDegreesQuaternion(180 + rotation));
         matrices.translate(-width / 2f, -height / 2f, 0f);
 
-        draw(matrices, 0,0, width, height);
+        draw(matrices, 0, 0, width, height);
 
         matrices.pop();
     }

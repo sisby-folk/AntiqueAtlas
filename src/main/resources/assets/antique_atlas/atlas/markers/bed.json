@@ -1,6 +1,6 @@
 {
-	"version": 1,
-	"textures": [
-		"antique_atlas:textures/gui/markers/bed.png"
-	]
+  "version": 1,
+  "textures": [
+    "antique_atlas:textures/gui/markers/bed.png"
+  ]
 }

@@ -40,15 +40,15 @@ public class MarkerTextureConfig implements ResourceReloadListener<Map<Identifie
 
             for (Identifier id : manager.findResources("atlas/markers", id -> id.toString().endsWith(".json")).keySet()) {
                 Identifier markerId = new Identifier(
-                        id.getNamespace(),
-                        id.getPath().replace("atlas/markers/", "").replace(".json", "")
+                    id.getNamespace(),
+                    id.getPath().replace("atlas/markers/", "").replace(".json", "")
                 );
 
                 try {
                     Resource resource = manager.getResource(id).orElseThrow(IOException::new);
                     try (
-                            InputStream stream = resource.getInputStream();
-                            InputStreamReader reader = new InputStreamReader(stream)
+                        InputStream stream = resource.getInputStream();
+                        InputStreamReader reader = new InputStreamReader(stream)
                     ) {
                         JsonObject object = parser.parse(reader).getAsJsonObject();
 

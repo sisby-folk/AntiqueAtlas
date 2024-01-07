@@ -76,8 +76,8 @@ public class PutMarkersS2CPacket extends S2CPacket {
         }
 
         MarkersData markersData = atlasID == GLOBAL
-        ? AntiqueAtlas.globalMarkersData.getData()
-        : AntiqueAtlas.markersData.getMarkersDataCached(atlasID, world);
+            ? AntiqueAtlas.globalMarkersData.getData()
+            : AntiqueAtlas.markersData.getMarkersDataCached(atlasID, world);
 
         for (Identifier type : markersByType.keys()) {
             MarkerType markerType = MarkerType.REGISTRY.get(type);

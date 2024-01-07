@@ -120,7 +120,7 @@ public class TileTextureConfig implements ResourceReloadListener<Map<Identifier,
             }
         }, executor);
     }
-    
+
     @Override
     public Identifier getId() {
         return ID;

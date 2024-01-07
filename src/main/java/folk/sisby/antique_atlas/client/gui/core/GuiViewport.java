@@ -54,8 +54,8 @@ public class GuiViewport extends GuiComponent {
     @Override
     public void render(MatrixStack matrices, int mouseX, int mouseY, float par3) {
         RenderSystem.enableScissor((int) (getGuiX() * screenScale),
-                (int) (MinecraftClient.getInstance().getWindow().getFramebufferHeight() - (getGuiY() + properHeight) * screenScale),
-                (int) (properWidth * screenScale), (int) (properHeight * screenScale));
+            (int) (MinecraftClient.getInstance().getWindow().getFramebufferHeight() - (getGuiY() + properHeight) * screenScale),
+            (int) (properWidth * screenScale), (int) (properHeight * screenScale));
 
         // Draw the content (child GUIs):
         super.render(matrices, mouseX, mouseY, par3);
@@ -84,9 +84,9 @@ public class GuiViewport extends GuiComponent {
         // Update the clipping flag on content's child components:
         for (GuiComponent child : this.getChildren()) {
             if (child.getGuiY() > getGuiY() + properHeight ||
-                    child.getGuiY() + child.getHeight() < getGuiY() ||
-                    child.getGuiX() > getGuiX() + properWidth ||
-                    child.getGuiX() + child.getWidth() < getGuiX()) {
+                child.getGuiY() + child.getHeight() < getGuiY() ||
+                child.getGuiX() > getGuiX() + properWidth ||
+                child.getGuiX() + child.getWidth() < getGuiX()) {
                 child.setClipped(true);
             } else {
                 child.setClipped(false);

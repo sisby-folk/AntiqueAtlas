@@ -53,7 +53,7 @@ public class StructureStartMixin {
         }
 
         synchronized (this.children) {
-            if(this.children.isEmpty()) return;
+            if (this.children.isEmpty()) return;
 
             StructureHandler.resolve((StructureStart) (Object) this, world);
         }

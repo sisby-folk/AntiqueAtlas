@@ -39,8 +39,7 @@ public class MarkersDataHandler {
         }
     }
 
-    public MarkersData getMarkersDataCached(int atlasID, RegistryKey<World> world)
-    {
+    public MarkersData getMarkersDataCached(int atlasID, RegistryKey<World> world) {
         String key = getMarkersDataKey(atlasID);
         return markersDataClientCache.computeIfAbsent(key + world, s -> new MarkersData());
     }

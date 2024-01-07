@@ -29,7 +29,7 @@ public interface ResourceReloadListener<T> extends ResourceReloader, Identifiabl
         CompletableFuture<T> load = load(manager, prepareProfiler, prepareExecutor);
 
         return load.thenCompose(synchronizer::whenPrepared)
-                .thenCompose(t -> apply(t, manager, applyProfiler, applyExecutor));
+            .thenCompose(t -> apply(t, manager, applyProfiler, applyExecutor));
     }
 
     default String getName() {

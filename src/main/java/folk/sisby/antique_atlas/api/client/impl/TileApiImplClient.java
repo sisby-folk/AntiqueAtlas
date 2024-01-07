@@ -1,7 +1,7 @@
 package folk.sisby.antique_atlas.api.client.impl;
 
-import folk.sisby.antique_atlas.api.client.ClientTileAPI;
 import folk.sisby.antique_atlas.AntiqueAtlas;
+import folk.sisby.antique_atlas.api.client.ClientTileAPI;
 import folk.sisby.antique_atlas.client.TileRenderIterator;
 import folk.sisby.antique_atlas.core.AtlasData;
 import folk.sisby.antique_atlas.core.TileDataStorage;
@@ -45,8 +45,8 @@ public class TileApiImplClient implements ClientTileAPI {
     @Override
     public TileRenderIterator getTiles(World world, int atlasID, Rect scope, int step) {
         TileRenderIterator iter = new TileRenderIterator(AntiqueAtlas.tileData
-                .getData(atlasID, world)
-                .getWorldData(world.getRegistryKey()));
+            .getData(atlasID, world)
+            .getWorldData(world.getRegistryKey()));
         iter.setScope(scope);
         iter.setStep(step);
         return iter;

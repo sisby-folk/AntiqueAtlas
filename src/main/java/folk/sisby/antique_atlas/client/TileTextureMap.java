@@ -123,9 +123,9 @@ public class TileTextureMap {
         }
 
         if (biomeTag.isIn(BiomeTags.IS_OCEAN)
-                || biomeTag.isIn(BiomeTags.IS_DEEP_OCEAN)
-                || biomeTag.isIn(BiomeTags.IS_RIVER)
-                || biomeIsWater(biomeTag)) {
+            || biomeTag.isIn(BiomeTags.IS_DEEP_OCEAN)
+            || biomeTag.isIn(BiomeTags.IS_RIVER)
+            || biomeIsWater(biomeTag)) {
             if (biomeIsIcy(biomeTag))
                 return Optional.of(AntiqueAtlas.id("ice"));
 

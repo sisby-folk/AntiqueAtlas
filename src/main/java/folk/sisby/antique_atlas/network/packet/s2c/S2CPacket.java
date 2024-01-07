@@ -7,19 +7,19 @@ import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.server.world.ServerWorld;
 
 public abstract class S2CPacket extends AntiqueAtlasPacket {
-	public void send(ServerPlayerEntity playerEntity) {
-		ServerPlayNetworking.send(playerEntity, this.getId(), this);
-	}
+    public void send(ServerPlayerEntity playerEntity) {
+        ServerPlayNetworking.send(playerEntity, this.getId(), this);
+    }
 
-	public void send(ServerWorld world) {
-		for (ServerPlayerEntity player : world.getPlayers()) {
-			ServerPlayNetworking.send(player, this.getId(), this);
-		}
-	}
+    public void send(ServerWorld world) {
+        for (ServerPlayerEntity player : world.getPlayers()) {
+            ServerPlayNetworking.send(player, this.getId(), this);
+        }
+    }
 
-	public void send(MinecraftServer server) {
-		for (ServerPlayerEntity player : server.getPlayerManager().getPlayerList()) {
-			ServerPlayNetworking.send(player, this.getId(), this);
-		}
-	}
+    public void send(MinecraftServer server) {
+        for (ServerPlayerEntity player : server.getPlayerManager().getPlayerList()) {
+            ServerPlayNetworking.send(player, this.getId(), this);
+        }
+    }
 }
