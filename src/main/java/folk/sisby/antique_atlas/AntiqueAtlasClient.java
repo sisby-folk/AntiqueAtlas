@@ -8,13 +8,11 @@ import folk.sisby.antique_atlas.client.Textures;
 import folk.sisby.antique_atlas.client.TileTextureConfig;
 import folk.sisby.antique_atlas.client.TileTextureMap;
 import folk.sisby.antique_atlas.client.gui.GuiAtlas;
-import folk.sisby.antique_atlas.marker.MarkerMipsConfig;
-import folk.sisby.antique_atlas.marker.MarkerTextureConfig;
-import folk.sisby.antique_atlas.network.AntiqueAtlasNetworking;
-import folk.sisby.antique_atlas.registry.MarkerType;
+import folk.sisby.antique_atlas.client.MarkerMipsConfig;
+import folk.sisby.antique_atlas.client.MarkerTextureConfig;
+import folk.sisby.antique_atlas.client.network.packet.AntiqueAtlasClientNetworking;
+import folk.sisby.antique_atlas.client.MarkerType;
 import net.fabricmc.api.ClientModInitializer;
-import net.fabricmc.api.EnvType;
-import net.fabricmc.api.Environment;
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
 import net.fabricmc.fabric.api.resource.ResourceManagerHelper;
 import net.minecraft.client.MinecraftClient;
@@ -27,7 +25,6 @@ import net.minecraft.world.biome.Biome;
 
 import java.util.Map;
 
-@Environment(EnvType.CLIENT)
 public class AntiqueAtlasClient implements ClientModInitializer {
     private static GuiAtlas guiAtlas;
 
@@ -89,6 +86,6 @@ public class AntiqueAtlasClient implements ClientModInitializer {
         }
         KeyHandler.registerBindings();
         ClientTickEvents.END_CLIENT_TICK.register(KeyHandler::onClientTick);
-        AntiqueAtlasNetworking.registerS2CListeners();
+        AntiqueAtlasClientNetworking.init();
     }
 }

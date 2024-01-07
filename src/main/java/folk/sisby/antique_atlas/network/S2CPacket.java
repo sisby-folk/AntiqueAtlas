@@ -1,6 +1,5 @@
-package folk.sisby.antique_atlas.network.packet.s2c;
+package folk.sisby.antique_atlas.network;
 
-import folk.sisby.antique_atlas.network.packet.AntiqueAtlasPacket;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.network.ServerPlayerEntity;

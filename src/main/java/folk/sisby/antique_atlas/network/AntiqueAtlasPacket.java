@@ -1,4 +1,4 @@
-package folk.sisby.antique_atlas.network.packet;
+package folk.sisby.antique_atlas.network;
 
 import io.netty.buffer.Unpooled;
 import net.minecraft.network.PacketByteBuf;

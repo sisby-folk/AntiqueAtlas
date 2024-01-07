@@ -4,8 +4,6 @@ import folk.sisby.antique_atlas.AntiqueAtlas;
 import folk.sisby.antique_atlas.client.texture.ITexture;
 import folk.sisby.antique_atlas.core.scanning.TileHeightType;
 import folk.sisby.antique_atlas.util.Log;
-import net.fabricmc.api.EnvType;
-import net.fabricmc.api.Environment;
 import net.fabricmc.fabric.api.tag.convention.v1.ConventionalBiomeTags;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.registry.RegistryKey;
@@ -25,7 +23,6 @@ import java.util.Map.Entry;
  *
  * @author Hunternif
  */
-@Environment(EnvType.CLIENT)
 public class TileTextureMap {
     private static final TileTextureMap INSTANCE = new TileTextureMap();
 

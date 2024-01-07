@@ -1,7 +1,5 @@
 package folk.sisby.antique_atlas.client.texture;
 
-import net.fabricmc.api.EnvType;
-import net.fabricmc.api.Environment;
 import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.render.VertexConsumerProvider;
 import net.minecraft.client.util.math.MatrixStack;
@@ -11,7 +9,6 @@ import net.minecraft.util.Identifier;
  * A generic interface for textures. The texture know their own width and height.
  * All method parameters are provided in pixels.
  */
-@Environment(EnvType.CLIENT)
 public interface ITexture {
 
     /**

@@ -1,7 +1,5 @@
 package folk.sisby.antique_atlas.client.gui.core;
 
-import net.fabricmc.api.EnvType;
-import net.fabricmc.api.Environment;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.font.TextRenderer;
 import net.minecraft.client.gui.DrawContext;
@@ -19,7 +17,6 @@ import java.util.concurrent.CopyOnWriteArrayList;
  * keyboard events, window resize and will be moved around together with the
  * parent component.
  */
-@Environment(EnvType.CLIENT)
 public class GuiComponent extends Screen {
     @FunctionalInterface
     interface UiCall {

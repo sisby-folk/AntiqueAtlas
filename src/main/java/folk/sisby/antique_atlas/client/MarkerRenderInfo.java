@@ -1,4 +1,4 @@
-package folk.sisby.antique_atlas.registry;
+package folk.sisby.antique_atlas.client;
 
 
 import folk.sisby.antique_atlas.client.texture.ITexture;

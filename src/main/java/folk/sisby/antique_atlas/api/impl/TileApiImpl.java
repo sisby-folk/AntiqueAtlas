@@ -4,10 +4,9 @@ import folk.sisby.antique_atlas.AntiqueAtlas;
 import folk.sisby.antique_atlas.api.TileAPI;
 import folk.sisby.antique_atlas.core.AtlasData;
 import folk.sisby.antique_atlas.core.TileDataStorage;
-import folk.sisby.antique_atlas.network.packet.c2s.play.PutTileC2SPacket;
-import folk.sisby.antique_atlas.network.packet.s2c.play.DeleteGlobalTileS2CPacket;
-import folk.sisby.antique_atlas.network.packet.s2c.play.PutGlobalTileS2CPacket;
-import folk.sisby.antique_atlas.network.packet.s2c.play.PutTileS2CPacket;
+import folk.sisby.antique_atlas.network.packet.DeleteGlobalTileS2CPacket;
+import folk.sisby.antique_atlas.network.packet.PutGlobalTileS2CPacket;
+import folk.sisby.antique_atlas.network.packet.PutTileS2CPacket;
 import folk.sisby.antique_atlas.util.Log;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.registry.RegistryKey;
@@ -28,14 +27,10 @@ public class TileApiImpl implements TileAPI {
         }
 
         RegistryKey<World> dimension = world.getRegistryKey();
-        if (world.isClient) {
-            new PutTileC2SPacket(atlasID, chunkX, chunkZ, tile).send();
-        } else {
-            AtlasData data = AntiqueAtlas.tileData.getData(atlasID, world);
-            data.setTile(dimension, chunkX, chunkZ, tile);
-            for (PlayerEntity syncedPlayer : data.getSyncedPlayers()) {
-                new PutTileS2CPacket(atlasID, dimension, chunkX, chunkZ, tile).send((ServerPlayerEntity) syncedPlayer);
-            }
+        AtlasData data = AntiqueAtlas.tileData.getData(atlasID, world);
+        data.setTile(dimension, chunkX, chunkZ, tile);
+        for (PlayerEntity syncedPlayer : data.getSyncedPlayers()) {
+            new PutTileS2CPacket(atlasID, dimension, chunkX, chunkZ, tile).send((ServerPlayerEntity) syncedPlayer);
         }
     }
 
@@ -73,10 +68,6 @@ public class TileApiImpl implements TileAPI {
 
     @Override
     public void deleteGlobalTile(World world, int chunkX, int chunkZ) {
-        if (world.isClient) {
-            Log.warn("Client attempted to delete global tile");
-            return;
-        }
         TileDataStorage data = AntiqueAtlas.globalTileData.getData(world);
         if (data.getTile(chunkX, chunkZ) != null) {
             data.removeTile(chunkX, chunkZ);

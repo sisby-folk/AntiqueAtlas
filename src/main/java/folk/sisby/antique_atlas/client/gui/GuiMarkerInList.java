@@ -3,7 +3,7 @@ package folk.sisby.antique_atlas.client.gui;
 import folk.sisby.antique_atlas.client.Textures;
 import folk.sisby.antique_atlas.client.gui.core.GuiToggleButton;
 import folk.sisby.antique_atlas.client.texture.ITexture;
-import folk.sisby.antique_atlas.registry.MarkerType;
+import folk.sisby.antique_atlas.client.MarkerType;
 import net.minecraft.client.gui.DrawContext;
 
 

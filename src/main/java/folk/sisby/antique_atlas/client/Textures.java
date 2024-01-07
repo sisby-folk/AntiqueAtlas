@@ -4,14 +4,11 @@ import folk.sisby.antique_atlas.AntiqueAtlas;
 import folk.sisby.antique_atlas.client.texture.ITexture;
 import folk.sisby.antique_atlas.client.texture.IconTexture;
 import folk.sisby.antique_atlas.client.texture.Texture;
-import net.fabricmc.api.EnvType;
-import net.fabricmc.api.Environment;
 import net.minecraft.util.Identifier;
 
 import java.util.HashMap;
 import java.util.Map;
 
-@Environment(EnvType.CLIENT)
 public class Textures {
     public final static Map<Identifier, ITexture> TILE_TEXTURES_MAP = new HashMap<>();
 

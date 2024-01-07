@@ -2,13 +2,10 @@ package folk.sisby.antique_atlas.client;
 
 import folk.sisby.antique_atlas.client.texture.ITexture;
 import folk.sisby.antique_atlas.util.Log;
-import net.fabricmc.api.EnvType;
-import net.fabricmc.api.Environment;
 import net.minecraft.util.Identifier;
 
 import java.util.*;
 
-@Environment(EnvType.CLIENT)
 public class TextureSet implements Comparable<TextureSet> {
     /**
      * Name of the texture pack to write in the config file.

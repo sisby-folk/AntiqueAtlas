@@ -5,15 +5,12 @@ import folk.sisby.antique_atlas.api.client.ClientTileAPI;
 import folk.sisby.antique_atlas.client.TileRenderIterator;
 import folk.sisby.antique_atlas.core.AtlasData;
 import folk.sisby.antique_atlas.core.TileDataStorage;
-import folk.sisby.antique_atlas.network.packet.c2s.play.PutTileC2SPacket;
+import folk.sisby.antique_atlas.client.network.packet.PutTileC2SPacket;
 import folk.sisby.antique_atlas.util.Log;
 import folk.sisby.antique_atlas.util.Rect;
-import net.fabricmc.api.EnvType;
-import net.fabricmc.api.Environment;
 import net.minecraft.util.Identifier;
 import net.minecraft.world.World;
 
-@Environment(EnvType.CLIENT)
 public class TileApiImplClient implements ClientTileAPI {
     @Override
     public void putTile(World world, int atlasID, Identifier tile, int chunkX, int chunkZ) {

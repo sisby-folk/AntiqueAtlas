@@ -44,7 +44,7 @@ public class AntiqueAtlas implements ModInitializer {
 
     @Override
     public void onInitialize() {
-        AntiqueAtlasNetworking.registerC2SListeners();
+        AntiqueAtlasNetworking.init();
 
         ClientPlayConnectionEvents.JOIN.register(tileData::onClientConnectedToServer);
         ClientPlayConnectionEvents.JOIN.register(markersData::onClientConnectedToServer);

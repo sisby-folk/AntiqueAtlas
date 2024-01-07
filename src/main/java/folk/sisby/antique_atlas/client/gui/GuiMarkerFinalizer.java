@@ -4,10 +4,8 @@ import folk.sisby.antique_atlas.api.client.AtlasClientAPI;
 import folk.sisby.antique_atlas.client.gui.core.GuiComponent;
 import folk.sisby.antique_atlas.client.gui.core.GuiScrollingContainer;
 import folk.sisby.antique_atlas.client.gui.core.ToggleGroup;
-import folk.sisby.antique_atlas.registry.MarkerType;
+import folk.sisby.antique_atlas.client.MarkerType;
 import folk.sisby.antique_atlas.util.Log;
-import net.fabricmc.api.EnvType;
-import net.fabricmc.api.Environment;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.gui.widget.ButtonWidget;
@@ -27,7 +25,6 @@ import java.util.List;
  *
  * @author Hunternif
  */
-@Environment(EnvType.CLIENT)
 public class GuiMarkerFinalizer extends GuiComponent {
     private World world;
     private int atlasID;

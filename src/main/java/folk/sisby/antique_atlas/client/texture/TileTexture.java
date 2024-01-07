@@ -1,8 +1,6 @@
 package folk.sisby.antique_atlas.client.texture;
 
 import folk.sisby.antique_atlas.client.SubTile;
-import net.fabricmc.api.EnvType;
-import net.fabricmc.api.Environment;
 import net.minecraft.client.gui.DrawContext;
 import net.minecraft.util.Identifier;
 
@@ -12,7 +10,6 @@ import net.minecraft.util.Identifier;
  * By default, TileTextures DO NOT bind the texture. This is on purpose to allow
  * the performance optimization shown in the SetTileRenderer.
  */
-@Environment(EnvType.CLIENT)
 public class TileTexture extends ATexture {
     public TileTexture(Identifier texture) {
         super(texture, false);

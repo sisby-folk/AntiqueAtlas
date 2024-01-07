@@ -1,17 +1,15 @@
 package folk.sisby.antique_atlas.client;
 
-import net.fabricmc.api.EnvType;
-import net.fabricmc.api.Environment;
 import net.minecraft.util.Identifier;
 
-import java.util.*;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Maps texture sets to their names.
  *
  * @author Hunternif
  */
-@Environment(EnvType.CLIENT)
 public class TextureSetMap {
     private static final TextureSetMap INSTANCE = new TextureSetMap();
 

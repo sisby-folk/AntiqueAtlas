@@ -1,8 +1,6 @@
 package folk.sisby.antique_atlas.client.texture;
 
 import com.mojang.blaze3d.systems.RenderSystem;
-import net.fabricmc.api.EnvType;
-import net.fabricmc.api.Environment;
 import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.render.RenderLayer;
 import net.minecraft.client.render.VertexConsumer;
@@ -16,7 +14,6 @@ import org.joml.Matrix4f;
  * An abstract base class, which implements the ITexture interface using
  * the DrawHelper.drawTexture method provided by minecraft code.
  */
-@Environment(EnvType.CLIENT)
 public abstract class ATexture implements ITexture {
     final Identifier texture;
     final boolean autobind;
