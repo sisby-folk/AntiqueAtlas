@@ -13,7 +13,7 @@ import net.minecraft.world.World;
 public class PlayerEventHandler {
     public static void onPlayerLogin(ServerPlayNetworkHandler handler, PacketSender sender, MinecraftServer server) {
         ServerPlayerEntity player = handler.getPlayer();
-        World world = player.getWorld();
+        World world = player.world;
         int atlasID = AtlasAPI.getPlayerAtlasId(player);
 
         AtlasData data = AntiqueAtlas.tileData.getData(atlasID, world);
@@ -32,7 +32,7 @@ public class PlayerEventHandler {
     public static void onPlayerTick(PlayerEntity player) {
         // TODO Can we move world scanning to the server in this case as well?
         AtlasData data = AntiqueAtlas.tileData.getData(
-            AtlasAPI.getPlayerAtlasId(player), player.getWorld());
+            AtlasAPI.getPlayerAtlasId(player), player.world);
 
         AntiqueAtlas.worldScanner.updateAtlasAroundPlayer(data, player);
     }

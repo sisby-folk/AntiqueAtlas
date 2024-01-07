@@ -1,7 +1,7 @@
 package folk.sisby.antique_atlas.structure;
 
 import folk.sisby.antique_atlas.AntiqueAtlas;
-import net.minecraft.registry.tag.StructureTags;
+import net.minecraft.tag.StructureTags;
 import net.minecraft.text.Text;
 
 public class Village {

@@ -6,12 +6,12 @@ import folk.sisby.antique_atlas.network.packet.c2s.C2SPacket;
 import folk.sisby.antique_atlas.util.Log;
 import net.fabricmc.fabric.api.networking.v1.PacketSender;
 import net.minecraft.network.PacketByteBuf;
-import net.minecraft.registry.RegistryKey;
-import net.minecraft.registry.RegistryKeys;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.network.ServerPlayNetworkHandler;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.util.Identifier;
+import net.minecraft.util.registry.Registry;
+import net.minecraft.util.registry.RegistryKey;
 import net.minecraft.world.World;
 
 /**
@@ -38,7 +38,7 @@ public class PutBrowsingPositionC2SPacket extends C2SPacket {
 
     public static void apply(MinecraftServer server, ServerPlayerEntity player, ServerPlayNetworkHandler handler, PacketByteBuf buf, PacketSender sender) {
         int atlasID = buf.readVarInt();
-        RegistryKey<World> world = RegistryKey.of(RegistryKeys.WORLD, buf.readIdentifier());
+        RegistryKey<World> world = RegistryKey.of(Registry.WORLD_KEY, buf.readIdentifier());
         int x = buf.readVarInt();
         int y = buf.readVarInt();
         double zoom = buf.readDouble();

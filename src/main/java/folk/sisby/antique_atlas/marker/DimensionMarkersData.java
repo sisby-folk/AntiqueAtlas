@@ -2,7 +2,7 @@ package folk.sisby.antique_atlas.marker;
 
 import folk.sisby.antique_atlas.util.ListMapValueIterator;
 import net.minecraft.util.math.ChunkPos;
-import net.minecraft.registry.RegistryKey;
+import net.minecraft.util.registry.RegistryKey;
 import net.minecraft.world.World;
 
 import java.util.AbstractCollection;

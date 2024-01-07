@@ -20,7 +20,7 @@ import folk.sisby.antique_atlas.registry.MarkerType;
 import folk.sisby.antique_atlas.util.MathUtil;
 import folk.sisby.antique_atlas.util.Rect;
 import net.minecraft.client.MinecraftClient;
-import net.minecraft.client.gui.DrawContext;
+import net.minecraft.client.gui.DrawableHelper;
 import net.minecraft.client.option.KeyBinding;
 import net.minecraft.client.sound.PositionedSoundInstance;
 import net.minecraft.client.util.math.MatrixStack;
@@ -398,6 +398,7 @@ public class GuiAtlas extends GuiComponent {
     public void init() {
         super.init();
 
+        MinecraftClient.getInstance().keyboard.setRepeatEvents(true);
         screenScale = MinecraftClient.getInstance().getWindow().getScaleFactor();
         setCentered();
 
@@ -752,7 +753,7 @@ public class GuiAtlas extends GuiComponent {
     }
 
     @Override
-    public void render(DrawContext context, int mouseX, int mouseY, float par3) {
+    public void render(MatrixStack matrices, int mouseX, int mouseY, float par3) {
         long currentMillis = System.currentTimeMillis();
         long deltaMillis = currentMillis - lastUpdateMillis;
         lastUpdateMillis = currentMillis;
@@ -769,13 +770,13 @@ public class GuiAtlas extends GuiComponent {
             }
         }
 
-        super.renderBackground(context);
+        super.renderBackground(matrices);
 
         RenderSystem.setShaderColor(1, 1, 1, 1);
         // TODO fix me for 1.17
 //        RenderSystem.enableAlphaTest();
 //        RenderSystem.alphaFunc(GL11.GL_GREATER, 0); // So light detail on tiles is visible
-        Textures.BOOK.draw(context, getGuiX(), getGuiY());
+        Textures.BOOK.draw(matrices, getGuiX(), getGuiY());
 
         if (biomeData == null) return;
 
@@ -803,8 +804,8 @@ public class GuiAtlas extends GuiComponent {
         tiles.setScope(new Rect(mapStartX, mapStartZ, mapEndX, mapEndZ));
         tiles.setStep(tile2ChunkScale);
 
-        context.getMatrices().push();
-        context.getMatrices().translate(mapStartScreenX, mapStartScreenY, 0);
+        matrices.push();
+        matrices.translate(mapStartScreenX, mapStartScreenY, 0);
 
         for (SubTileQuartet subtiles : tiles) {
             for (SubTile subtile : subtiles) {
@@ -812,12 +813,12 @@ public class GuiAtlas extends GuiComponent {
                 ITexture texture = TileTextureMap.instance().getTexture(subtile);
                 if (texture instanceof TileTexture tileTexture) {
                     tileTexture.bind();
-                    tileTexture.drawSubTile(context, subtile, tileHalfSize);
+                    tileTexture.drawSubTile(matrices, subtile, tileHalfSize);
                 }
             }
         }
 
-        context.getMatrices().pop();
+        matrices.pop();
 
         int markersStartX = MathUtil.roundToBase(mapStartX, MarkersData.CHUNK_STEP) / MarkersData.CHUNK_STEP - 1;
         int markersStartZ = MathUtil.roundToBase(mapStartZ, MarkersData.CHUNK_STEP) / MarkersData.CHUNK_STEP - 1;
@@ -826,27 +827,27 @@ public class GuiAtlas extends GuiComponent {
 
         // Overlay the frame so that edges of the map are smooth:
         RenderSystem.setShaderColor(1, 1, 1, 1);
-        Textures.BOOK_FRAME.draw(context, getGuiX(), getGuiY());
+        Textures.BOOK_FRAME.draw(matrices, getGuiX(), getGuiY());
 
         double iconScale = getIconScale();
 
         // Draw global markers:
-        renderMarkers(context, markersStartX, markersStartZ, markersEndX, markersEndZ, globalMarkersData);
-        renderMarkers(context, markersStartX, markersStartZ, markersEndX, markersEndZ, localMarkersData);
+        renderMarkers(matrices, markersStartX, markersStartZ, markersEndX, markersEndZ, globalMarkersData);
+        renderMarkers(matrices, markersStartX, markersStartZ, markersEndX, markersEndZ, localMarkersData);
 
         RenderSystem.disableScissor();
 
-        Textures.BOOK_FRAME_NARROW.draw(context, getGuiX(), getGuiY());
+        Textures.BOOK_FRAME_NARROW.draw(matrices, getGuiX(), getGuiY());
 
-        renderScaleOverlay(context, deltaMillis);
+        renderScaleOverlay(matrices, deltaMillis);
 
         // Draw player icon:
         if (!state.is(HIDING_MARKERS)) {
-            renderPlayer(context, iconScale);
+            renderPlayer(matrices, iconScale);
         }
 
         // Draw buttons:
-        super.render(context, mouseX, mouseY, par3);
+        super.render(matrices, mouseX, mouseY, par3);
 
         // Draw the semi-transparent marker attached to the cursor when placing a new marker:
         RenderSystem.enableBlend();
@@ -856,7 +857,7 @@ public class GuiAtlas extends GuiComponent {
             markerFinalizer.selectedType.calculateMip(iconScale, mapScale, screenScale);
             MarkerRenderInfo renderInfo = markerFinalizer.selectedType.getRenderInfo(iconScale, mapScale, screenScale);
             markerFinalizer.selectedType.resetMip();
-            renderInfo.tex.draw(context, mouseX + renderInfo.x, mouseY + renderInfo.y);
+            renderInfo.tex.draw(matrices, mouseX + renderInfo.x, mouseY + renderInfo.y);
             RenderSystem.setShaderColor(1, 1, 1, 1);
         }
         RenderSystem.disableBlend();
@@ -885,7 +886,7 @@ public class GuiAtlas extends GuiComponent {
         }
     }
 
-    private void renderPlayer(DrawContext context, double iconScale) {
+    private void renderPlayer(MatrixStack matrices, double iconScale) {
         int playerOffsetX = worldXToScreenX(player.getBlockX());
         int playerOffsetY = worldZToScreenY(player.getBlockZ());
 
@@ -896,13 +897,12 @@ public class GuiAtlas extends GuiComponent {
         RenderSystem.setShaderColor(1, 1, 1, state.is(PLACING_MARKER) ? 0.5f : 1);
         float playerRotation = (float) Math.round(player.getYaw() / 360f * PLAYER_ROTATION_STEPS) / PLAYER_ROTATION_STEPS * 360f;
 
-        Textures.PLAYER.drawCenteredWithRotation(context, playerOffsetX, playerOffsetY, (int) Math.round(PLAYER_ICON_WIDTH * iconScale), (int) Math.round(PLAYER_ICON_HEIGHT * iconScale), playerRotation);
+        Textures.PLAYER.drawCenteredWithRotation(matrices, playerOffsetX, playerOffsetY, (int) Math.round(PLAYER_ICON_WIDTH * iconScale), (int) Math.round(PLAYER_ICON_HEIGHT * iconScale), playerRotation);
 
         RenderSystem.setShaderColor(1, 1, 1, 1);
     }
 
-    private void renderScaleOverlay(DrawContext context, long deltaMillis) {
-        MatrixStack matrices = context.getMatrices();
+    private void renderScaleOverlay(MatrixStack matrices, long deltaMillis) {
         if (scaleAlpha > 3) {
             matrices.push();
             matrices.translate(getGuiX() + WIDTH - 13, getGuiY() + 12, 0);
@@ -915,7 +915,7 @@ public class GuiAtlas extends GuiComponent {
             text = "x";
             xWidth = textWidth = this.textRenderer.getWidth(text);
             xWidth++;
-            context.drawText(this.textRenderer, text, -textWidth, 0, color, false);
+            this.textRenderer.draw(matrices, text, -textWidth, 0, color);
 
             text = zoomNames[zoomLevel];
             if (text.contains("/")) {
@@ -924,16 +924,16 @@ public class GuiAtlas extends GuiComponent {
                 int centerXtranslate = Math.max(this.textRenderer.getWidth(parts[0]), this.textRenderer.getWidth(parts[1])) / 2;
                 matrices.translate(-xWidth - centerXtranslate, (float) -this.textRenderer.fontHeight / 2, 0);
 
-                context.fill(-centerXtranslate - 1, this.textRenderer.fontHeight - 1, centerXtranslate, this.textRenderer.fontHeight, color);
+                DrawableHelper.fill(matrices, -centerXtranslate - 1, this.textRenderer.fontHeight - 1, centerXtranslate, this.textRenderer.fontHeight, color);
 
                 textWidth = this.textRenderer.getWidth(parts[0]);
-                context.drawText(this.textRenderer, parts[0], -textWidth / 2, 0, color, false);
+                this.textRenderer.draw(matrices, parts[0], (float) -textWidth / 2, 0, color);
 
                 textWidth = this.textRenderer.getWidth(parts[1]);
-                context.drawText(this.textRenderer, parts[1], -textWidth / 2, 10, color, false);
+                this.textRenderer.draw(matrices, parts[1], (float) -textWidth / 2, 10, color);
             } else {
                 textWidth = this.textRenderer.getWidth(text);
-                context.drawText(this.textRenderer, text, -textWidth - xWidth + 1, 2, color, false);
+                this.textRenderer.draw(matrices, text, -textWidth - xWidth + 1, 2, color);
             }
 
             matrices.pop();
@@ -952,7 +952,7 @@ public class GuiAtlas extends GuiComponent {
         }
     }
 
-    private void renderMarkers(DrawContext context, int markersStartX, int markersStartZ,
+    private void renderMarkers(MatrixStack matrices, int markersStartX, int markersStartZ,
                                int markersEndX, int markersEndZ, DimensionMarkersData markersData) {
         if (markersData == null) return;
 
@@ -961,13 +961,13 @@ public class GuiAtlas extends GuiComponent {
                 List<Marker> markers = markersData.getMarkersAtChunk(x, z);
                 if (markers == null) continue;
                 for (Marker marker : markers) {
-                    renderMarker(context, marker, getIconScale());
+                    renderMarker(matrices, marker, getIconScale());
                 }
             }
         }
     }
 
-    private void renderMarker(DrawContext context, Marker marker, double scale) {
+    private void renderMarker(MatrixStack matrices, Marker marker, double scale) {
         MarkerType type = MarkerType.REGISTRY.get(marker.getType());
         if (type.shouldHide(state.is(HIDING_MARKERS), scaleClipIndex)) {
             return;
@@ -1022,11 +1022,11 @@ public class GuiAtlas extends GuiComponent {
             markerY = MathHelper.clamp(markerY, getGuiY() + MAP_BORDER_HEIGHT, getGuiY() + MAP_HEIGHT + MAP_BORDER_HEIGHT);
         }
 
-        info.tex.draw(context, markerX + info.x, markerY + info.y, info.width, info.height);
+        info.tex.draw(matrices, markerX + info.x, markerY + info.y, info.width, info.height);
 
         RenderSystem.setShaderColor(1, 1, 1, 1);
 
-        if (isMouseOver && mouseIsOverMarker && !marker.getLabel().getString().isEmpty()) {
+        if (isMouseOver && mouseIsOverMarker && marker.getLabel().getString().length() > 0) {
             drawTooltip(Collections.singletonList(marker.getLabel()), textRenderer);
         }
     }

@@ -15,19 +15,20 @@ import folk.sisby.antique_atlas.util.Rect;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.client.MinecraftClient;
+import net.minecraft.client.gui.DrawableHelper;
 import net.minecraft.client.render.VertexConsumerProvider;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.util.math.RotationAxis;
+import net.minecraft.util.math.Quaternion;
 import net.minecraft.util.math.Vec3d;
+import net.minecraft.util.math.Vec3f;
 import net.minecraft.world.World;
-import org.joml.Quaternionf;
 import org.lwjgl.opengl.GL11;
 
 import java.util.List;
 
 @Environment(EnvType.CLIENT)
-public class OverlayRenderer {
+public class OverlayRenderer extends DrawableHelper {
     /**
      * Number of blocks per chunk in minecraft. This is certianly stored
      * somewhere else, but I couldn't be bothered to find it.
@@ -142,7 +143,7 @@ public class OverlayRenderer {
         matrices.push();
 
         matrices.translate((int) ((GuiAtlas.WIDTH * 1.5F) / 2F), (int) ((GuiAtlas.HEIGHT * 1.5F) / 2F), 0);
-        matrices.multiply(new Quaternionf(RotationAxis.POSITIVE_Z.rotationDegrees(this.player.getHeadYaw() + 180)));
+        matrices.multiply(new Quaternion(Vec3f.POSITIVE_Z, this.player.getHeadYaw() + 180, true));
         matrices.translate(-AntiqueAtlas.CONFIG.Appearance.playerIconWidth / 2.0, -AntiqueAtlas.CONFIG.Appearance.playerIconHeight / 2.0, 0);
 
         Textures.PLAYER.drawWithLight(buffer, matrices, 0, 0, AntiqueAtlas.CONFIG.Appearance.playerIconWidth, AntiqueAtlas.CONFIG.Appearance.playerIconHeight, light);

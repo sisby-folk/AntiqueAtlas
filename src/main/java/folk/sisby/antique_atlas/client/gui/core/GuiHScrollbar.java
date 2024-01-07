@@ -1,6 +1,6 @@
 package folk.sisby.antique_atlas.client.gui.core;
 
-import net.minecraft.client.gui.DrawContext;
+import net.minecraft.client.util.math.MatrixStack;
 
 public class GuiHScrollbar extends AGuiScrollbar {
 
@@ -9,15 +9,15 @@ public class GuiHScrollbar extends AGuiScrollbar {
     }
 
     @Override
-    protected void drawAnchor(DrawContext context) {
+    protected void drawAnchor(MatrixStack matrices) {
         // Draw left cap:
-        texture.draw(context, getGuiX() + anchorPos, getGuiY(), capLength, textureHeight, 0, 0, capLength, textureHeight);
+        texture.draw(matrices, getGuiX() + anchorPos, getGuiY(), capLength, textureHeight, 0, 0, capLength, textureHeight);
 
         // Draw body:
-        texture.draw(context, getGuiX() + anchorPos + capLength, getGuiY(), anchorSize, textureHeight, capLength, 0, textureBodyLength, textureHeight);
+        texture.draw(matrices, getGuiX() + anchorPos + capLength, getGuiY(), anchorSize, textureHeight, capLength, 0, textureBodyLength, textureHeight);
 
         // Draw right cap:
-        texture.draw(context, getGuiX() + anchorPos + capLength + anchorSize, getGuiY(), textureWidth - capLength, 0, capLength, textureHeight);
+        texture.draw(matrices, getGuiX() + anchorPos + capLength + anchorSize, getGuiY(), textureWidth - capLength, 0, capLength, textureHeight);
     }
 
     @Override

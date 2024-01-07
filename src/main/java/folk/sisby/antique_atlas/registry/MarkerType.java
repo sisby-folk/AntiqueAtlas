@@ -12,25 +12,25 @@ import folk.sisby.antique_atlas.util.BitMatrix;
 import folk.sisby.antique_atlas.util.Log;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
-import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.texture.NativeImage;
 import net.minecraft.client.texture.TextureManager;
-import net.minecraft.registry.Registry;
-import net.minecraft.registry.RegistryKey;
-import net.minecraft.registry.SimpleDefaultedRegistry;
-import net.minecraft.resource.Resource;
 import net.minecraft.util.Identifier;
+import net.minecraft.util.registry.*;
 
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.OptionalInt;
+
+import net.minecraft.client.MinecraftClient;
+import net.minecraft.resource.Resource;
 
 public class MarkerType {
     public static final RegistryKey<Registry<MarkerType>> KEY = RegistryKey.ofRegistry(AntiqueAtlas.id("marker"));
-    public static final SimpleDefaultedRegistry<MarkerType> REGISTRY = new SimpleDefaultedRegistry<>(AntiqueAtlas.id("red_x_small").toString(),
-            KEY,
-            Lifecycle.experimental(),
-            false);
+    public static final DefaultedRegistry<MarkerType> REGISTRY = new DefaultedRegistry<>(AntiqueAtlas.id("red_x_small").toString(),
+        KEY,
+        Lifecycle.experimental(),
+        null);
 
     private Identifier[] icons;
     private BitMatrix[] iconPixels;
@@ -59,7 +59,7 @@ public class MarkerType {
         type.initMips();
         if (REGISTRY.containsId(location)) {
             int id = REGISTRY.getRawId(REGISTRY.get(location));
-            REGISTRY.set(id, RegistryKey.of(KEY, location), type, Lifecycle.stable());
+            REGISTRY.replace(OptionalInt.of(id), RegistryKey.of(KEY, location), type, Lifecycle.stable());
         } else {
             REGISTRY.add(RegistryKey.of(KEY, location), type, Lifecycle.stable());
         }

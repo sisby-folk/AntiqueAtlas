@@ -19,10 +19,11 @@ import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
 import net.fabricmc.fabric.api.resource.ResourceManagerHelper;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.world.ClientWorld;
-import net.minecraft.registry.RegistryKey;
-import net.minecraft.registry.RegistryKeys;
 import net.minecraft.resource.ResourceType;
 import net.minecraft.util.Identifier;
+import net.minecraft.util.registry.BuiltinRegistries;
+import net.minecraft.util.registry.Registry;
+import net.minecraft.util.registry.RegistryKey;
 import net.minecraft.world.biome.Biome;
 
 import java.util.Map;
@@ -58,15 +59,15 @@ public class AntiqueAtlasClient implements ClientModInitializer {
      * we need the ClientWorld loaded here.
      */
     public static void assignCustomBiomeTextures(ClientWorld world) {
-        for (Map.Entry<RegistryKey<Biome>, Biome> biome : world.getRegistryManager().get(RegistryKeys.BIOME).getEntrySet()) {
-            Identifier id = world.getRegistryManager().get(RegistryKeys.BIOME).getId(biome.getValue());
+        for (Map.Entry<RegistryKey<Biome>, Biome> biome : BuiltinRegistries.BIOME.getEntrySet()) {
+            Identifier id = BuiltinRegistries.BIOME.getId(biome.getValue());
             if (!TileTextureMap.instance().isRegistered(id)) {
                 TileTextureMap.instance().autoRegister(id, biome.getKey());
             }
         }
 
-        for (Map.Entry<RegistryKey<Biome>, Biome> entry : world.getRegistryManager().get(RegistryKeys.BIOME).getEntrySet()) {
-            Identifier id = world.getRegistryManager().get(RegistryKeys.BIOME).getId(entry.getValue());
+        for (Map.Entry<RegistryKey<Biome>, Biome> entry : world.getRegistryManager().get(Registry.BIOME_KEY).getEntrySet()) {
+            Identifier id = world.getRegistryManager().get(Registry.BIOME_KEY).getId(entry.getValue());
             if (!TileTextureMap.instance().isRegistered(id)) {
                 TileTextureMap.instance().autoRegister(id, entry.getKey());
             }
