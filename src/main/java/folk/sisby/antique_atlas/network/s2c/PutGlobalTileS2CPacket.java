@@ -1,7 +1,6 @@
-package folk.sisby.antique_atlas.network.packet;
+package folk.sisby.antique_atlas.network.s2c;
 
 import folk.sisby.antique_atlas.network.AntiqueAtlasNetworking;
-import folk.sisby.antique_atlas.network.S2CPacket;
 import net.minecraft.network.PacketByteBuf;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.Pair;

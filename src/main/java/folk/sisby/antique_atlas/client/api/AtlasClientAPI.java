@@ -1,8 +1,8 @@
-package folk.sisby.antique_atlas.api.client;
+package folk.sisby.antique_atlas.client.api;
 
 import folk.sisby.antique_atlas.api.MarkerAPI;
-import folk.sisby.antique_atlas.api.client.impl.MarkerApiImplClient;
-import folk.sisby.antique_atlas.api.client.impl.TileApiImplClient;
+import folk.sisby.antique_atlas.client.api.impl.MarkerApiImplClient;
+import folk.sisby.antique_atlas.client.api.impl.TileApiImplClient;
 
 /**
  * Use this class to obtain a reference to the client-side APIs.

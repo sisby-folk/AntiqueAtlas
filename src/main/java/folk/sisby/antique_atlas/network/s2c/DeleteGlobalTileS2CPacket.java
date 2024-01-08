@@ -1,0 +1,36 @@
+package folk.sisby.antique_atlas.network.s2c;
+
+import folk.sisby.antique_atlas.network.AntiqueAtlasNetworking;
+import net.minecraft.network.PacketByteBuf;
+import net.minecraft.util.Identifier;
+import net.minecraft.util.registry.Registry;
+import net.minecraft.util.registry.RegistryKey;
+import net.minecraft.world.World;
+
+/**
+ * Sent from server to client to remove a custom global tile.
+ *
+ * @author Hunternif
+ * @author Haven King
+ */
+public record DeleteGlobalTileS2CPacket(RegistryKey<World> world, int chunkX, int chunkZ) implements S2CPacket {
+    public DeleteGlobalTileS2CPacket(PacketByteBuf buf) {
+        this(
+            RegistryKey.of(Registry.WORLD_KEY, buf.readIdentifier()),
+            buf.readVarInt(),
+            buf.readVarInt()
+        );
+    }
+
+    @Override
+    public void writeBuf(PacketByteBuf buf) {
+        buf.writeIdentifier(world.getValue());
+        buf.writeVarInt(chunkX);
+        buf.writeVarInt(chunkZ);
+    }
+
+    @Override
+    public Identifier getId() {
+        return AntiqueAtlasNetworking.S2C_DELETE_GLOBAL_TILE;
+    }
+}

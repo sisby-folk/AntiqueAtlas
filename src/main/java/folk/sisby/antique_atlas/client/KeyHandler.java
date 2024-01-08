@@ -1,6 +1,5 @@
 package folk.sisby.antique_atlas.client;
 
-import folk.sisby.antique_atlas.AntiqueAtlasClient;
 import folk.sisby.antique_atlas.client.gui.GuiAtlas;
 import net.fabricmc.fabric.api.client.keybinding.v1.KeyBindingHelper;
 import net.minecraft.client.MinecraftClient;

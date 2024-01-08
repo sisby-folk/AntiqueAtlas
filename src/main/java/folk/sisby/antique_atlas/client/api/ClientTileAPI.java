@@ -1,4 +1,4 @@
-package folk.sisby.antique_atlas.api.client;
+package folk.sisby.antique_atlas.client.api;
 
 import folk.sisby.antique_atlas.api.TileAPI;
 import folk.sisby.antique_atlas.client.TileRenderIterator;

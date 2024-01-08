@@ -1,7 +1,7 @@
 package folk.sisby.antique_atlas.core;
 
 import folk.sisby.antique_atlas.AntiqueAtlas;
-import folk.sisby.antique_atlas.network.packet.TileGroupsS2CPacket;
+import folk.sisby.antique_atlas.network.s2c.TileGroupsS2CPacket;
 import folk.sisby.antique_atlas.util.Log;
 import folk.sisby.antique_atlas.util.Rect;
 import folk.sisby.antique_atlas.util.Streams;

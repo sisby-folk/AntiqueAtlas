@@ -1,6 +1,6 @@
 package folk.sisby.antique_atlas.mixin;
 
-import folk.sisby.antique_atlas.AntiqueAtlasClient;
+import folk.sisby.antique_atlas.client.AntiqueAtlasClient;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.world.ClientWorld;
 import org.spongepowered.asm.mixin.Mixin;

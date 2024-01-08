@@ -2,11 +2,11 @@ package folk.sisby.antique_atlas.network;
 
 import folk.sisby.antique_atlas.AntiqueAtlas;
 import folk.sisby.antique_atlas.api.AtlasAPI;
-import folk.sisby.antique_atlas.client.network.C2SPacket;
-import folk.sisby.antique_atlas.client.network.packet.DeleteMarkerC2SPacket;
-import folk.sisby.antique_atlas.client.network.packet.PutBrowsingPositionC2SPacket;
-import folk.sisby.antique_atlas.client.network.packet.PutMarkerC2SPacket;
-import folk.sisby.antique_atlas.client.network.packet.PutTileC2SPacket;
+import folk.sisby.antique_atlas.network.c2s.C2SPacket;
+import folk.sisby.antique_atlas.network.c2s.DeleteMarkerC2SPacket;
+import folk.sisby.antique_atlas.network.c2s.PutBrowsingPositionC2SPacket;
+import folk.sisby.antique_atlas.network.c2s.PutMarkerC2SPacket;
+import folk.sisby.antique_atlas.network.c2s.PutTileC2SPacket;
 import folk.sisby.antique_atlas.util.Log;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
 import net.minecraft.network.PacketByteBuf;
