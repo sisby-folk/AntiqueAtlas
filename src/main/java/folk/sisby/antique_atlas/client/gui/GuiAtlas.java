@@ -8,6 +8,10 @@ import folk.sisby.antique_atlas.client.*;
 import folk.sisby.antique_atlas.client.gui.core.*;
 import folk.sisby.antique_atlas.client.gui.core.GuiStates.IState;
 import folk.sisby.antique_atlas.client.gui.core.GuiStates.SimpleState;
+import folk.sisby.antique_atlas.client.gui.tiles.SubTile;
+import folk.sisby.antique_atlas.client.gui.tiles.SubTileQuartet;
+import folk.sisby.antique_atlas.client.gui.tiles.TileRenderIterator;
+import folk.sisby.antique_atlas.client.resource.TileTextureMap;
 import folk.sisby.antique_atlas.client.texture.ITexture;
 import folk.sisby.antique_atlas.client.texture.TileTexture;
 import folk.sisby.antique_atlas.core.WorldData;
@@ -15,8 +19,8 @@ import folk.sisby.antique_atlas.marker.DimensionMarkersData;
 import folk.sisby.antique_atlas.marker.Marker;
 import folk.sisby.antique_atlas.marker.MarkersData;
 import folk.sisby.antique_atlas.network.c2s.PutBrowsingPositionC2SPacket;
-import folk.sisby.antique_atlas.client.MarkerRenderInfo;
-import folk.sisby.antique_atlas.client.MarkerType;
+import folk.sisby.antique_atlas.client.resource.MarkerRenderInfo;
+import folk.sisby.antique_atlas.client.resource.MarkerType;
 import folk.sisby.antique_atlas.util.MathUtil;
 import folk.sisby.antique_atlas.util.Rect;
 import net.minecraft.client.MinecraftClient;
@@ -82,14 +86,14 @@ public class GuiAtlas extends GuiComponent {
             // Set the button as not selected so that it can be clicked again:
             btnShowMarkers.setSelected(false);
             btnShowMarkers.setTitle(Text.translatable("gui.antique_atlas.showMarkers"));
-            btnShowMarkers.setIconTexture(Textures.ICON_SHOW_MARKERS);
+            btnShowMarkers.setIconTexture(AntiqueAtlasTextures.ICON_SHOW_MARKERS);
         }
 
         @Override
         public void onExitState() {
             btnShowMarkers.setSelected(false);
             btnShowMarkers.setTitle(Text.translatable("gui.antique_atlas.hideMarkers"));
-            btnShowMarkers.setIconTexture(Textures.ICON_HIDE_MARKERS);
+            btnShowMarkers.setIconTexture(AntiqueAtlasTextures.ICON_HIDE_MARKERS);
         }
     };
 
@@ -303,7 +307,7 @@ public class GuiAtlas extends GuiComponent {
         btnRight.addListener(positionListener);
         btnPosition.addListener(positionListener);
 
-        btnMarker = new GuiBookmarkButton(0, Textures.ICON_ADD_MARKER, Text.translatable("gui.antique_atlas.addMarker"));
+        btnMarker = new GuiBookmarkButton(0, AntiqueAtlasTextures.ICON_ADD_MARKER, Text.translatable("gui.antique_atlas.addMarker"));
         addChild(btnMarker).offsetGuiCoords(300, 14);
         btnMarker.addListener(button -> {
             if (state.is(PLACING_MARKER)) {
@@ -337,7 +341,7 @@ public class GuiAtlas extends GuiComponent {
                 }
             }
         });
-        btnDelMarker = new GuiBookmarkButton(2, Textures.ICON_DELETE_MARKER, Text.translatable("gui.antique_atlas.delMarker"));
+        btnDelMarker = new GuiBookmarkButton(2, AntiqueAtlasTextures.ICON_DELETE_MARKER, Text.translatable("gui.antique_atlas.delMarker"));
         addChild(btnDelMarker).offsetGuiCoords(300, 33);
         btnDelMarker.addListener(button -> {
             if (state.is(DELETING_MARKER)) {
@@ -348,7 +352,7 @@ public class GuiAtlas extends GuiComponent {
                 state.switchTo(DELETING_MARKER);
             }
         });
-        btnShowMarkers = new GuiBookmarkButton(3, Textures.ICON_HIDE_MARKERS, Text.translatable("gui.antique_atlas.hideMarkers"));
+        btnShowMarkers = new GuiBookmarkButton(3, AntiqueAtlasTextures.ICON_HIDE_MARKERS, Text.translatable("gui.antique_atlas.hideMarkers"));
         addChild(btnShowMarkers).offsetGuiCoords(300, 52);
         btnShowMarkers.addListener(button -> {
             selectedButton = null;
@@ -369,7 +373,7 @@ public class GuiAtlas extends GuiComponent {
 
         markerFinalizer.addMarkerListener(blinkingIcon);
 
-        eraser.setTexture(Textures.ERASER, 12, 14, 2, 11);
+        eraser.setTexture(AntiqueAtlasTextures.ERASER, 12, 14, 2, 11);
 
         state.switchTo(NORMAL);
     }
@@ -775,7 +779,7 @@ public class GuiAtlas extends GuiComponent {
         // TODO fix me for 1.17
 //        RenderSystem.enableAlphaTest();
 //        RenderSystem.alphaFunc(GL11.GL_GREATER, 0); // So light detail on tiles is visible
-        Textures.BOOK.draw(context, getGuiX(), getGuiY());
+        AntiqueAtlasTextures.BOOK.draw(context, getGuiX(), getGuiY());
 
         if (biomeData == null) return;
 
@@ -826,7 +830,7 @@ public class GuiAtlas extends GuiComponent {
 
         // Overlay the frame so that edges of the map are smooth:
         RenderSystem.setShaderColor(1, 1, 1, 1);
-        Textures.BOOK_FRAME.draw(context, getGuiX(), getGuiY());
+        AntiqueAtlasTextures.BOOK_FRAME.draw(context, getGuiX(), getGuiY());
 
         double iconScale = getIconScale();
 
@@ -836,7 +840,7 @@ public class GuiAtlas extends GuiComponent {
 
         RenderSystem.disableScissor();
 
-        Textures.BOOK_FRAME_NARROW.draw(context, getGuiX(), getGuiY());
+        AntiqueAtlasTextures.BOOK_FRAME_NARROW.draw(context, getGuiX(), getGuiY());
 
         renderScaleOverlay(context, deltaMillis);
 
@@ -896,7 +900,7 @@ public class GuiAtlas extends GuiComponent {
         RenderSystem.setShaderColor(1, 1, 1, state.is(PLACING_MARKER) ? 0.5f : 1);
         float playerRotation = (float) Math.round(player.getYaw() / 360f * PLAYER_ROTATION_STEPS) / PLAYER_ROTATION_STEPS * 360f;
 
-        Textures.PLAYER.drawCenteredWithRotation(context, playerOffsetX, playerOffsetY, (int) Math.round(PLAYER_ICON_WIDTH * iconScale), (int) Math.round(PLAYER_ICON_HEIGHT * iconScale), playerRotation);
+        AntiqueAtlasTextures.PLAYER.drawCenteredWithRotation(context, playerOffsetX, playerOffsetY, (int) Math.round(PLAYER_ICON_WIDTH * iconScale), (int) Math.round(PLAYER_ICON_HEIGHT * iconScale), playerRotation);
 
         RenderSystem.setShaderColor(1, 1, 1, 1);
     }

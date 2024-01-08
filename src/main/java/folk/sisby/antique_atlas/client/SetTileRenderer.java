@@ -15,7 +15,7 @@ import java.util.HashMap;
  * sorting the draw commands by texture, then
  * rendering all of the same textures of a map at once without re-binding.
  */
-class SetTileRenderer {
+public class SetTileRenderer {
 
     private final HashMap<Identifier, ArrayList<TileCorner>> subjects = new HashMap<>();
     private final MatrixStack matrices;

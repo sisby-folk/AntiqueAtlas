@@ -1,4 +1,4 @@
-package folk.sisby.antique_atlas.client;
+package folk.sisby.antique_atlas.client.gui.tiles;
 
 import net.minecraft.util.Identifier;
 import net.minecraft.util.math.MathHelper;

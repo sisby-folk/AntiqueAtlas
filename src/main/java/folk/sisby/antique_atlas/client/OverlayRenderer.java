@@ -5,6 +5,12 @@ import folk.sisby.antique_atlas.api.AtlasAPI;
 import folk.sisby.antique_atlas.client.api.AtlasClientAPI;
 import folk.sisby.antique_atlas.AntiqueAtlas;
 import folk.sisby.antique_atlas.client.gui.GuiAtlas;
+import folk.sisby.antique_atlas.client.gui.tiles.SubTile;
+import folk.sisby.antique_atlas.client.gui.tiles.SubTileQuartet;
+import folk.sisby.antique_atlas.client.gui.tiles.TileRenderIterator;
+import folk.sisby.antique_atlas.client.resource.MarkerRenderInfo;
+import folk.sisby.antique_atlas.client.resource.MarkerType;
+import folk.sisby.antique_atlas.client.resource.TileTextureMap;
 import folk.sisby.antique_atlas.core.WorldData;
 import folk.sisby.antique_atlas.marker.DimensionMarkersData;
 import folk.sisby.antique_atlas.marker.Marker;
@@ -54,7 +60,7 @@ public class OverlayRenderer {
 
         matrices.push();
         matrices.translate(0, 0, 0.01);
-        Textures.BOOK.drawWithLight(buffer, matrices, 0, 0, (int) (GuiAtlas.WIDTH * 1.5), (int) (GuiAtlas.HEIGHT * 1.5), light);
+        AntiqueAtlasTextures.BOOK.drawWithLight(buffer, matrices, 0, 0, (int) (GuiAtlas.WIDTH * 1.5), (int) (GuiAtlas.HEIGHT * 1.5), light);
         matrices.pop();
 
         matrices.push();
@@ -73,7 +79,7 @@ public class OverlayRenderer {
 
         // Overlay the frame so that edges of the map are smooth:
         matrices.translate(0, 0, -0.01);
-        Textures.BOOK_FRAME.drawWithLight(buffer, matrices, 0, 0, (int) (GuiAtlas.WIDTH * 1.5), (int) (GuiAtlas.HEIGHT * 1.5), light);
+        AntiqueAtlasTextures.BOOK_FRAME.drawWithLight(buffer, matrices, 0, 0, (int) (GuiAtlas.WIDTH * 1.5), (int) (GuiAtlas.HEIGHT * 1.5), light);
 
         RenderSystem.disableBlend();
     }
@@ -140,7 +146,7 @@ public class OverlayRenderer {
         matrices.multiply(new Quaternionf(RotationAxis.POSITIVE_Z.rotationDegrees(this.player.getHeadYaw() + 180)));
         matrices.translate(-AntiqueAtlas.CONFIG.Appearance.playerIconWidth / 2.0, -AntiqueAtlas.CONFIG.Appearance.playerIconHeight / 2.0, 0);
 
-        Textures.PLAYER.drawWithLight(buffer, matrices, 0, 0, AntiqueAtlas.CONFIG.Appearance.playerIconWidth, AntiqueAtlas.CONFIG.Appearance.playerIconHeight, light);
+        AntiqueAtlasTextures.PLAYER.drawWithLight(buffer, matrices, 0, 0, AntiqueAtlas.CONFIG.Appearance.playerIconWidth, AntiqueAtlas.CONFIG.Appearance.playerIconHeight, light);
         matrices.pop();
     }
 

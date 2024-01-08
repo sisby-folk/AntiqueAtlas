@@ -1,10 +1,13 @@
-package folk.sisby.antique_atlas.client;
+package folk.sisby.antique_atlas.client.resource.reloader;
 
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import folk.sisby.antique_atlas.AntiqueAtlas;
+import folk.sisby.antique_atlas.client.resource.TextureSet;
+import folk.sisby.antique_atlas.client.resource.TextureSetMap;
+import folk.sisby.antique_atlas.client.resource.TileTextureMap;
 import folk.sisby.antique_atlas.core.scanning.TileHeightType;
-import folk.sisby.antique_atlas.resource.ResourceReloadListener;
+import folk.sisby.antique_atlas.resource.reloader.ResourceReloadListener;
 import folk.sisby.antique_atlas.util.Log;
 import net.minecraft.resource.Resource;
 import net.minecraft.resource.ResourceManager;

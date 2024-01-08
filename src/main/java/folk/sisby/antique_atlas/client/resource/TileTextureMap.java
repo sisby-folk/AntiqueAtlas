@@ -1,6 +1,7 @@
-package folk.sisby.antique_atlas.client;
+package folk.sisby.antique_atlas.client.resource;
 
 import folk.sisby.antique_atlas.AntiqueAtlas;
+import folk.sisby.antique_atlas.client.gui.tiles.SubTile;
 import folk.sisby.antique_atlas.client.texture.ITexture;
 import folk.sisby.antique_atlas.core.scanning.TileHeightType;
 import folk.sisby.antique_atlas.util.Log;

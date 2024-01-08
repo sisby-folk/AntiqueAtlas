@@ -1,9 +1,9 @@
 package folk.sisby.antique_atlas.client.gui;
 
-import folk.sisby.antique_atlas.client.Textures;
+import folk.sisby.antique_atlas.client.AntiqueAtlasTextures;
 import folk.sisby.antique_atlas.client.gui.core.GuiToggleButton;
 import folk.sisby.antique_atlas.client.texture.ITexture;
-import folk.sisby.antique_atlas.client.MarkerType;
+import folk.sisby.antique_atlas.client.resource.MarkerType;
 import net.minecraft.client.gui.DrawContext;
 
 
@@ -23,7 +23,7 @@ public class GuiMarkerInList extends GuiToggleButton {
 
     @Override
     public void render(DrawContext context, int mouseX, int mouseY, float partialTick) {
-        ITexture frame_texture = isSelected() ? Textures.MARKER_FRAME_ON : Textures.MARKER_FRAME_OFF;
+        ITexture frame_texture = isSelected() ? AntiqueAtlasTextures.MARKER_FRAME_ON : AntiqueAtlasTextures.MARKER_FRAME_OFF;
         frame_texture.draw(context, getGuiX() + 1, getGuiY() + 1);
 
         ITexture texture = markerType.getTexture();

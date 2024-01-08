@@ -2,7 +2,7 @@ package folk.sisby.antique_atlas.client.api.impl;
 
 import folk.sisby.antique_atlas.AntiqueAtlas;
 import folk.sisby.antique_atlas.client.api.ClientTileAPI;
-import folk.sisby.antique_atlas.client.TileRenderIterator;
+import folk.sisby.antique_atlas.client.gui.tiles.TileRenderIterator;
 import folk.sisby.antique_atlas.core.AtlasData;
 import folk.sisby.antique_atlas.core.TileDataStorage;
 import folk.sisby.antique_atlas.network.c2s.PutTileC2SPacket;

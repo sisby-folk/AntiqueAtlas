@@ -1,7 +1,7 @@
 package folk.sisby.antique_atlas.client.gui;
 
 import com.mojang.blaze3d.systems.RenderSystem;
-import folk.sisby.antique_atlas.client.Textures;
+import folk.sisby.antique_atlas.client.AntiqueAtlasTextures;
 import folk.sisby.antique_atlas.client.gui.core.GuiToggleButton;
 import folk.sisby.antique_atlas.client.texture.ITexture;
 import net.minecraft.client.MinecraftClient;
@@ -54,7 +54,7 @@ public class GuiBookmarkButton extends GuiToggleButton {
         // Render background:
         int u = colorIndex * WIDTH;
         int v = isMouseOver || isSelected() ? 0 : HEIGHT;
-        Textures.BOOKMARKS.draw(context, getGuiX(), getGuiY(), u, v, WIDTH, HEIGHT);
+        AntiqueAtlasTextures.BOOKMARKS.draw(context, getGuiX(), getGuiY(), u, v, WIDTH, HEIGHT);
 
         // Render the icon:
         iconTexture.draw(context, getGuiX() + (isMouseOver || isSelected() ? 3 : 2), getGuiY() + 1);

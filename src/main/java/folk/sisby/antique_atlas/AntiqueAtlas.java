@@ -8,7 +8,7 @@ import folk.sisby.antique_atlas.marker.GlobalMarkersDataHandler;
 import folk.sisby.antique_atlas.marker.MarkersDataHandler;
 import folk.sisby.antique_atlas.network.AntiqueAtlasNetworking;
 import folk.sisby.antique_atlas.structure.EndCity;
-import folk.sisby.antique_atlas.structure.JigsawConfig;
+import folk.sisby.antique_atlas.resource.reloader.JigsawConfig;
 import folk.sisby.antique_atlas.structure.NetherFortress;
 import folk.sisby.antique_atlas.structure.Overworld;
 import folk.sisby.antique_atlas.structure.Village;

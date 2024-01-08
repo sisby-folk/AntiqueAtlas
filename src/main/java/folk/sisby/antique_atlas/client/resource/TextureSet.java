@@ -1,5 +1,6 @@
-package folk.sisby.antique_atlas.client;
+package folk.sisby.antique_atlas.client.resource;
 
+import folk.sisby.antique_atlas.client.AntiqueAtlasTextures;
 import folk.sisby.antique_atlas.client.texture.ITexture;
 import folk.sisby.antique_atlas.util.Log;
 import net.minecraft.util.Identifier;
@@ -114,10 +115,10 @@ public class TextureSet implements Comparable<TextureSet> {
 
     public void loadTextures() {
         for (int i = 0; i < texturePaths.length; i++) {
-            if (!Textures.TILE_TEXTURES_MAP.containsKey(texturePaths[i])) {
+            if (!AntiqueAtlasTextures.TILE_TEXTURES_MAP.containsKey(texturePaths[i])) {
                 throw new RuntimeException("Couldn't find the specified texture: " + texturePaths[i].toString());
             }
-            textures[i] = Textures.TILE_TEXTURES_MAP.get(texturePaths[i]);
+            textures[i] = AntiqueAtlasTextures.TILE_TEXTURES_MAP.get(texturePaths[i]);
         }
     }
 
@@ -143,7 +144,7 @@ public class TextureSet implements Comparable<TextureSet> {
         public final Identifier waterName;
         private TextureSet water;
 
-        TextureSetShore(Identifier name, Identifier water, Identifier... textures) {
+        public TextureSetShore(Identifier name, Identifier water, Identifier... textures) {
             super(name, textures);
             this.waterName = water;
         }
