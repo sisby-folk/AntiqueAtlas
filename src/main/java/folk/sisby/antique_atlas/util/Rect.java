@@ -11,10 +11,6 @@ public class Rect {
         this.set(minX, minY, maxX, maxY);
     }
 
-    public Rect(Rect r) {
-        this(r.minX, r.minY, r.maxX, r.maxY);
-    }
-
     public Rect set(int minX, int minY, int maxX, int maxY) {
         this.minX = minX;
         this.minY = minY;
@@ -29,32 +25,6 @@ public class Rect {
     }
 
     /**
-     * Set minX and minY.
-     */
-    public Rect setOrigin(int x, int y) {
-        this.minX = x;
-        this.minY = y;
-        return this;
-    }
-
-    /**
-     * Set maxX and maxY, assuming that minX and minY are already set.
-     */
-    public Rect setSize(int width, int height) {
-        this.maxX = this.minX + width;
-        this.maxY = this.minY + height;
-        return this;
-    }
-
-    public int getWidth() {
-        return maxX - minX;
-    }
-
-    public int getHeight() {
-        return maxY - minY;
-    }
-
-    /**
      * Extend the bounds to include the given point.
      */
     public void extendTo(int x, int y) {
@@ -66,8 +36,7 @@ public class Rect {
 
     @Override
     public boolean equals(Object obj) {
-        if (obj == null || !(obj instanceof Rect)) return false;
-        Rect r = (Rect) obj;
+        if (!(obj instanceof Rect r)) return false;
         return minX == r.minX && minY == r.minY && maxX == r.maxX && maxY == r.maxY;
     }
 

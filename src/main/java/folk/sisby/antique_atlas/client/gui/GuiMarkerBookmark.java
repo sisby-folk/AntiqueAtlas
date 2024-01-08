@@ -23,7 +23,7 @@ public class GuiMarkerBookmark extends GuiComponentButton {
 
     private final int colorIndex;
     private ITexture iconTexture;
-    private Marker marker;
+    private final Marker marker;
 
     GuiMarkerBookmark(Marker marker) {
         this.colorIndex = 3;

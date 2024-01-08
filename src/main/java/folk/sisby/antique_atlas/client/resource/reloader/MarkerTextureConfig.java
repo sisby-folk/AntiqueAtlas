@@ -57,7 +57,6 @@ public class MarkerTextureConfig implements ResourceReloadListener<Map<Identifie
 
                         MarkerType markerType = new MarkerType(markerId);
                         markerType.getJSONData().readFrom(object);
-                        markerType.setIsFromJson(true);
                         typeMap.put(markerId, markerType);
                     }
                 } catch (Exception e) {

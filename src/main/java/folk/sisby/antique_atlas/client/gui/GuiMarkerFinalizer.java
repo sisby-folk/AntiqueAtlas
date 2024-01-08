@@ -1,11 +1,11 @@
 package folk.sisby.antique_atlas.client.gui;
 
+import folk.sisby.antique_atlas.AntiqueAtlas;
 import folk.sisby.antique_atlas.client.api.AtlasClientAPI;
 import folk.sisby.antique_atlas.client.gui.core.GuiComponent;
 import folk.sisby.antique_atlas.client.gui.core.GuiScrollingContainer;
 import folk.sisby.antique_atlas.client.gui.core.ToggleGroup;
 import folk.sisby.antique_atlas.client.resource.MarkerType;
-import folk.sisby.antique_atlas.util.Log;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.widget.ButtonWidget;
 import net.minecraft.client.gui.widget.TextFieldWidget;
@@ -55,19 +55,10 @@ public class GuiMarkerFinalizer extends GuiComponent {
         this.atlasID = atlasID;
         this.markerX = markerX;
         this.markerZ = markerZ;
-        setBlocksScreen(true);
     }
 
     void addMarkerListener(IMarkerTypeSelectListener listener) {
         markerListeners.add(listener);
-    }
-
-    void removeMarkerListener(IMarkerTypeSelectListener listener) {
-        markerListeners.remove(listener);
-    }
-
-    void removeAllMarkerListeners() {
-        markerListeners.clear();
     }
 
     @Override
@@ -76,7 +67,7 @@ public class GuiMarkerFinalizer extends GuiComponent {
 
         addDrawableChild(btnDone = new ButtonWidget(this.width / 2 - BUTTON_WIDTH - BUTTON_SPACING / 2, this.height / 2 + 40, BUTTON_WIDTH, 20, Text.translatable("gui.done"), (button) -> {
             AtlasClientAPI.getMarkerAPI().putMarker(world, true, atlasID, MarkerType.REGISTRY.getId(selectedType), Text.literal(textField.getText()), markerX, markerZ);
-            Log.info("Put marker in Atlas #%d \"%s\" at (%d, %d)", atlasID, textField.getText(), markerX, markerZ);
+            AntiqueAtlas.LOG.info("Put marker in Atlas #{} \"{}\" at ({}, {})", atlasID, textField.getText(), markerX, markerZ);
 
             ClientPlayerEntity player = MinecraftClient.getInstance().player;
             world.playSound(player, player.getBlockPos(),
@@ -84,9 +75,7 @@ public class GuiMarkerFinalizer extends GuiComponent {
                 1F, 1F);
             closeChild();
         }));
-        addDrawableChild(btnCancel = new ButtonWidget(this.width / 2 + BUTTON_SPACING / 2, this.height / 2 + 40, BUTTON_WIDTH, 20, Text.translatable("gui.cancel"), (button) -> {
-            closeChild();
-        }));
+        addDrawableChild(btnCancel = new ButtonWidget(this.width / 2 + BUTTON_SPACING / 2, this.height / 2 + 40, BUTTON_WIDTH, 20, Text.translatable("gui.cancel"), (button) -> closeChild()));
         textField = new TextFieldWidget(MinecraftClient.getInstance().textRenderer, (this.width - 200) / 2, this.height / 2 - 81, 200, 20, Text.translatable("gui.antique_atlas.marker.label"));
         textField.setEditable(true);
         textField.setText("");
@@ -125,10 +114,6 @@ public class GuiMarkerFinalizer extends GuiComponent {
             scroller.addContent(markerGui).setRelativeX(contentX);
             contentX += GuiMarkerInList.FRAME_SIZE + TYPE_SPACING;
         }
-    }
-
-    public void setMarkerName(Text name) {
-        textField.setText(name.getString());
     }
 
     @Override

@@ -13,6 +13,7 @@ import org.jetbrains.annotations.Nullable;
  *
  * @author Hunternif
  */
+@SuppressWarnings("unused")
 public interface MarkerAPI {
 
     /**

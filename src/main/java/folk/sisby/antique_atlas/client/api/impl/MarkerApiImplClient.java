@@ -11,7 +11,7 @@ import net.minecraft.world.World;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-
+@SuppressWarnings("unused")
 public class MarkerApiImplClient implements MarkerAPI {
     @Nullable
     @Override

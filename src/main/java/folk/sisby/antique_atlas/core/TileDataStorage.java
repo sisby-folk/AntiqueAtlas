@@ -1,7 +1,7 @@
 package folk.sisby.antique_atlas.core;
 
+import folk.sisby.antique_atlas.AntiqueAtlas;
 import folk.sisby.antique_atlas.network.s2c.PutGlobalTileS2CPacket;
-import folk.sisby.antique_atlas.util.Log;
 import folk.sisby.antique_atlas.util.Streams;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.nbt.NbtCompound;
@@ -41,7 +41,7 @@ public class TileDataStorage extends PersistentState {
         int version = compound.getInt(TAG_VERSION);
 
         if (version < VERSION) {
-            Log.warn("Outdated atlas data format! Was %d but current is %d", version, VERSION);
+            AntiqueAtlas.LOG.warn("Outdated atlas data format! Was {} but current is {}", version, VERSION);
             return data;
         }
 
@@ -103,6 +103,6 @@ public class TileDataStorage extends PersistentState {
         Streams.chunked(tiles.entrySet().stream(), CHUNK_SIZE)
             .forEach(chunk -> new PutGlobalTileS2CPacket(world, chunk.stream().map(e -> new Pair<>(e.getKey(), e.getValue())).toList()).send((ServerPlayerEntity) player));
 
-        Log.info("Sent custom biome data to player %s", player.getCommandSource().getName());
+        AntiqueAtlas.LOG.info("Sent custom biome data to player {}", player.getCommandSource().getName());
     }
 }

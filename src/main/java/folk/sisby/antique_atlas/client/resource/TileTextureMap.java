@@ -4,7 +4,6 @@ import folk.sisby.antique_atlas.AntiqueAtlas;
 import folk.sisby.antique_atlas.client.gui.tiles.SubTile;
 import folk.sisby.antique_atlas.client.texture.ITexture;
 import folk.sisby.antique_atlas.core.scanning.TileHeightType;
-import folk.sisby.antique_atlas.util.Log;
 import net.fabricmc.fabric.api.tag.convention.v1.ConventionalBiomeTags;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.tag.BiomeTags;
@@ -14,8 +13,9 @@ import net.minecraft.util.registry.RegistryEntry;
 import net.minecraft.util.registry.RegistryKey;
 import net.minecraft.world.biome.Biome;
 
-import java.util.*;
-import java.util.Map.Entry;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Optional;
 
 /**
  * Maps biome IDs (or pseudo IDs) to textures. <i>Not thread-safe!</i>
@@ -46,7 +46,7 @@ public class TileTextureMap {
 
         if (textureSet == null) {
             if (textureMap.remove(tileId) != null) {
-                Log.warn("Removing old texture for %d", tileId);
+                AntiqueAtlas.LOG.warn("Removing old texture for {}", tileId);
             }
             return;
         }
@@ -75,7 +75,7 @@ public class TileTextureMap {
      */
     public void autoRegister(Identifier id, RegistryKey<Biome> biome) {
         if (biome == null || id == null) {
-            Log.error("Given biome is null. Cannot autodetect a suitable texture set for that.");
+            AntiqueAtlas.LOG.error("Given biome is null. Cannot autodetect a suitable texture set for that.");
             return;
         }
 
@@ -83,9 +83,9 @@ public class TileTextureMap {
 
         if (texture_set.isPresent()) {
             setAllTextures(id, TextureSetMap.instance().getByName(texture_set.get()));
-            Log.info("Auto-registered standard texture set for biome %s: %s", id, texture_set.get());
+            AntiqueAtlas.LOG.info("Auto-registered standard texture set for biome {}: {}", id, texture_set.get());
         } else {
-            Log.error("Failed to auto-register a standard texture set for the biome '%s'. This is most likely caused by errors in the TextureSet configurations, check your resource packs first before reporting it as an issue!", id.toString());
+            AntiqueAtlas.LOG.error("Failed to auto-register a standard texture set for the biome '{}'. This is most likely caused by errors in the TextureSet configurations, check your resource packs first before reporting it as an issue!", id.toString());
             setAllTextures(id, getDefaultTexture());
         }
     }
@@ -96,23 +96,23 @@ public class TileTextureMap {
 
         RegistryEntry<Biome> biomeTag = MinecraftClient.getInstance().world.getRegistryManager().get(Registry.BIOME_KEY).entryOf(biome);
 
-        if (biomeIsVoid(biomeTag)) {
+        if (biomeTag.isIn(ConventionalBiomeTags.VOID)) {
             return Optional.of(AntiqueAtlas.id("end_void"));
         }
 
-        if (biomeTag.isIn(BiomeTags.IS_END) || biomeIsEnd(biomeTag)) {
-            if (biomeHasVegetation(biomeTag)) {
+        if (biomeTag.isIn(BiomeTags.IS_END) || biomeTag.isIn(ConventionalBiomeTags.IN_THE_END) || biomeTag.isIn(ConventionalBiomeTags.END_ISLANDS)) {
+            if (biomeTag.isIn(ConventionalBiomeTags.VEGETATION_DENSE) || biomeTag.isIn(ConventionalBiomeTags.VEGETATION_SPARSE)) {
                 return Optional.of(AntiqueAtlas.id("end_island_plants"));
             } else {
                 return Optional.of(AntiqueAtlas.id("end_island"));
             }
         }
 
-        if (biomeTag.isIn(BiomeTags.IS_NETHER) || biomeIsNether(biomeTag)) {
+        if (biomeTag.isIn(BiomeTags.IS_NETHER) || biomeTag.isIn(ConventionalBiomeTags.IN_NETHER)) {
             return Optional.of(AntiqueAtlas.id("soul_sand_valley"));
         }
 
-        if (biomeIsSwamp(biomeTag)) {
+        if (biomeTag.isIn(ConventionalBiomeTags.SWAMP)) {
             if (biomeTag.isIn(BiomeTags.IS_HILL)) {
                 return Optional.of(AntiqueAtlas.id("swamp_hills"));
             } else {
@@ -123,18 +123,18 @@ public class TileTextureMap {
         if (biomeTag.isIn(BiomeTags.IS_OCEAN)
             || biomeTag.isIn(BiomeTags.IS_DEEP_OCEAN)
             || biomeTag.isIn(BiomeTags.IS_RIVER)
-            || biomeIsWater(biomeTag)) {
+            || biomeTag.isIn(ConventionalBiomeTags.AQUATIC)) {
             if (biomeIsIcy(biomeTag))
                 return Optional.of(AntiqueAtlas.id("ice"));
 
             return Optional.of(AntiqueAtlas.id("water"));
         }
 
-        if (biomeTag.isIn(BiomeTags.IS_BEACH) || biomeIsShore(biomeTag)) {
+        if (biomeTag.isIn(BiomeTags.IS_BEACH) || biomeTag.isIn(ConventionalBiomeTags.BEACH)) {
             return Optional.of(AntiqueAtlas.id("shore"));
         }
 
-        if (biomeTag.isIn(BiomeTags.IS_JUNGLE) || biomeIsJungle(biomeTag)) {
+        if (biomeTag.isIn(BiomeTags.IS_JUNGLE) || biomeTag.isIn(ConventionalBiomeTags.JUNGLE) || biomeTag.isIn(ConventionalBiomeTags.TREE_JUNGLE)) {
             if (biomeTag.isIn(BiomeTags.IS_HILL)) {
                 return Optional.of(AntiqueAtlas.id("jungle_hills"));
             } else {
@@ -142,19 +142,15 @@ public class TileTextureMap {
             }
         }
 
-        if (biomeTag.isIn(BiomeTags.IS_SAVANNA) || biomeIsSavanna(biomeTag)) {
+        if (biomeTag.isIn(BiomeTags.IS_SAVANNA) || biomeTag.isIn(ConventionalBiomeTags.SAVANNA) || biomeTag.isIn(ConventionalBiomeTags.TREE_SAVANNA)) {
             return Optional.of(AntiqueAtlas.id("savana"));
         }
 
-        if (biomeTag.isIn(BiomeTags.IS_BADLANDS) || biomeIsBadlands(biomeTag)) {
-            if (biomeIsPlateau(biomeTag)) { // Is this still valid? Does height checking supersede this?
-                return Optional.of(AntiqueAtlas.id("plateau_mesa"));
-            } else {
-                return Optional.of(AntiqueAtlas.id("mesa"));
-            }
+        if (biomeTag.isIn(BiomeTags.IS_BADLANDS) || biomeTag.isIn((ConventionalBiomeTags.BADLANDS)) || biomeTag.isIn((ConventionalBiomeTags.MESA))) {
+            return Optional.of(AntiqueAtlas.id("mesa"));
         }
 
-        if (biomeTag.isIn(BiomeTags.IS_FOREST) || biomeIsForest(biomeTag)) {
+        if (biomeTag.isIn(BiomeTags.IS_FOREST) || biomeTag.isIn(ConventionalBiomeTags.TREE_DECIDUOUS)) {
             if (biomeIsIcy(biomeTag) || biomeIsSnowy(biomeTag)) {
                 if (biomeTag.isIn(BiomeTags.IS_HILL)) {
                     return Optional.of(AntiqueAtlas.id("snow_pines_hills"));
@@ -170,7 +166,7 @@ public class TileTextureMap {
             }
         }
 
-        if (biomeIsPlains(biomeTag)) {
+        if (biomeTag.isIn(ConventionalBiomeTags.PLAINS) || biomeTag.isIn(ConventionalBiomeTags.SNOWY_PLAINS)) {
             if (biomeIsIcy(biomeTag) || biomeIsSnowy(biomeTag)) {
                 if (biomeTag.isIn(BiomeTags.IS_HILL)) {
                     return Optional.of(AntiqueAtlas.id("snow_hills"));
@@ -194,7 +190,7 @@ public class TileTextureMap {
             }
         }
 
-        if (biomeIsDesert(biomeTag)) {
+        if (biomeTag.isIn(ConventionalBiomeTags.DESERT)) {
             if (biomeTag.isIn(BiomeTags.IS_HILL)) {
                 return Optional.of(AntiqueAtlas.id("desert_hills"));
             } else {
@@ -202,23 +198,23 @@ public class TileTextureMap {
             }
         }
 
-        if (biomeTag.isIn(BiomeTags.IS_TAIGA) || biomeIsTaiga(biomeTag)) { // should this be any snowy biome as a fallback?
+        if (biomeTag.isIn(BiomeTags.IS_TAIGA) || biomeTag.isIn(ConventionalBiomeTags.TAIGA)) { // should this be any snowy biome as a fallback?
             return Optional.of(AntiqueAtlas.id("snow"));
         }
 
-        if (biomeIsExtremeHills(biomeTag)) {
+        if (biomeTag.isIn(ConventionalBiomeTags.EXTREME_HILLS)) {
             return Optional.of(AntiqueAtlas.id("hills"));
         }
 
-        if (biomeIsPeak(biomeTag)) {
+        if (biomeTag.isIn(ConventionalBiomeTags.MOUNTAIN_PEAK)) {
             return Optional.of(AntiqueAtlas.id("mountains_snow_caps"));
         }
 
-        if (biomeTag.isIn(BiomeTags.IS_MOUNTAIN) || biomeIsMountain(biomeTag)) {
+        if (biomeTag.isIn(BiomeTags.IS_MOUNTAIN) || biomeTag.isIn(ConventionalBiomeTags.MOUNTAIN) || biomeTag.isIn(ConventionalBiomeTags.MOUNTAIN_SLOPE)) {
             return Optional.of(AntiqueAtlas.id("mountains"));
         }
 
-        if (biomeIsMushroom(biomeTag)) {
+        if (biomeTag.isIn(ConventionalBiomeTags.MUSHROOM)) {
             return Optional.of(AntiqueAtlas.id("mushroom"));
         }
 
@@ -226,99 +222,19 @@ public class TileTextureMap {
             return Optional.of(AntiqueAtlas.id("hills"));
         }
 
-        if (biomeIsUnderground(biomeTag)) {
+        if (biomeTag.isIn(ConventionalBiomeTags.UNDERGROUND)) {
             AntiqueAtlas.LOG.warn("Underground biomes aren't supported yet.");
         }
 
         return Optional.empty();
     }
 
-    public static boolean biomeIsVoid(RegistryEntry<Biome> biomeTag) {
-        return biomeTag.isIn(ConventionalBiomeTags.VOID);
-    }
-
-    public static boolean biomeIsEnd(RegistryEntry<Biome> biomeTag) {
-        return biomeTag.isIn(ConventionalBiomeTags.IN_THE_END) || biomeTag.isIn(ConventionalBiomeTags.END_ISLANDS);
-    }
-
-    public static boolean biomeHasVegetation(RegistryEntry<Biome> biomeTag) {
-        return biomeTag.isIn(ConventionalBiomeTags.VEGETATION_DENSE) || biomeTag.isIn(ConventionalBiomeTags.VEGETATION_SPARSE);
-    }
-
-    public static boolean biomeIsNether(RegistryEntry<Biome> biomeTag) {
-        return biomeTag.isIn(ConventionalBiomeTags.IN_NETHER);
-    }
-
-    public static boolean biomeIsSwamp(RegistryEntry<Biome> biomeTag) {
-        return biomeTag.isIn(ConventionalBiomeTags.SWAMP);
-    }
-
-    public static boolean biomeIsWater(RegistryEntry<Biome> biomeTag) {
-        return biomeTag.isIn(ConventionalBiomeTags.AQUATIC);
-    }
-
     public static boolean biomeIsIcy(RegistryEntry<Biome> biomeTag) {
         return biomeTag.isIn(ConventionalBiomeTags.ICY);
     }
 
-    public static boolean biomeIsShore(RegistryEntry<Biome> biomeTag) {
-        return biomeTag.isIn(ConventionalBiomeTags.BEACH);
-    }
-
-    public static boolean biomeIsJungle(RegistryEntry<Biome> biomeTag) {
-        return biomeTag.isIn(ConventionalBiomeTags.JUNGLE) || biomeTag.isIn(ConventionalBiomeTags.TREE_JUNGLE);
-    }
-
-    public static boolean biomeIsSavanna(RegistryEntry<Biome> biomeTag) {
-        return biomeTag.isIn(ConventionalBiomeTags.SAVANNA) || biomeTag.isIn(ConventionalBiomeTags.TREE_SAVANNA);
-    }
-
-    public static boolean biomeIsBadlands(RegistryEntry<Biome> biomeTag) {
-        return biomeTag.isIn((ConventionalBiomeTags.BADLANDS)) || biomeTag.isIn((ConventionalBiomeTags.MESA));
-    }
-
-    public static boolean biomeIsPlateau(RegistryEntry<Biome> biomeTag) {
-        return false; // None
-    }
-
-    public static boolean biomeIsForest(RegistryEntry<Biome> biomeTag) {
-        return biomeTag.isIn(ConventionalBiomeTags.TREE_DECIDUOUS);
-    }
-
     public static boolean biomeIsSnowy(RegistryEntry<Biome> biomeTag) {
         return biomeTag.isIn(ConventionalBiomeTags.SNOWY);
-    }
-
-    public static boolean biomeIsPlains(RegistryEntry<Biome> biomeTag) {
-        return biomeTag.isIn(ConventionalBiomeTags.PLAINS) || biomeTag.isIn(ConventionalBiomeTags.SNOWY_PLAINS);
-    }
-
-    public static boolean biomeIsDesert(RegistryEntry<Biome> biomeTag) {
-        return biomeTag.isIn(ConventionalBiomeTags.DESERT);
-    }
-
-    public static boolean biomeIsTaiga(RegistryEntry<Biome> biomeTag) {
-        return biomeTag.isIn(ConventionalBiomeTags.TAIGA);
-    }
-
-    public static boolean biomeIsExtremeHills(RegistryEntry<Biome> biomeTag) {
-        return biomeTag.isIn(ConventionalBiomeTags.EXTREME_HILLS);
-    }
-
-    public static boolean biomeIsPeak(RegistryEntry<Biome> biomeTag) {
-        return biomeTag.isIn(ConventionalBiomeTags.MOUNTAIN_PEAK);
-    }
-
-    public static boolean biomeIsMountain(RegistryEntry<Biome> biomeTag) {
-        return biomeTag.isIn(ConventionalBiomeTags.MOUNTAIN) || biomeTag.isIn(ConventionalBiomeTags.MOUNTAIN_SLOPE);
-    }
-
-    public static boolean biomeIsMushroom(RegistryEntry<Biome> biomeTag) {
-        return biomeTag.isIn(ConventionalBiomeTags.MUSHROOM);
-    }
-
-    public static boolean biomeIsUnderground(RegistryEntry<Biome> biomeTag) {
-        return biomeTag.isIn(ConventionalBiomeTags.UNDERGROUND);
     }
 
     public boolean isRegistered(Identifier id) {
@@ -338,15 +254,5 @@ public class TileTextureMap {
 
     public ITexture getTexture(SubTile subTile) {
         return getTextureSet(subTile.tile).getTexture(subTile.variationNumber);
-    }
-
-    public List<Identifier> getAllTextures() {
-        List<Identifier> list = new ArrayList<>();
-
-        for (Entry<Identifier, TextureSet> entry : textureMap.entrySet()) {
-            Arrays.stream(entry.getValue().textures).forEach(iTexture -> list.add(iTexture.getTexture()));
-        }
-
-        return list;
     }
 }

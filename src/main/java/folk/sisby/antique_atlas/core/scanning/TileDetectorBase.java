@@ -4,7 +4,7 @@ import com.google.common.collect.HashMultiset;
 import com.google.common.collect.Multiset;
 import com.google.common.collect.Ordering;
 import folk.sisby.antique_atlas.AntiqueAtlas;
-import folk.sisby.antique_atlas.core.TileIdMap;
+import folk.sisby.antique_atlas.core.BuiltinTiles;
 import net.fabricmc.fabric.api.tag.convention.v1.ConventionalBiomeTags;
 import net.minecraft.block.Block;
 import net.minecraft.block.Blocks;
@@ -121,19 +121,19 @@ public class TileDetectorBase implements ITileDetector {
                         if (topBlock == Blocks.WATER) {
 
                             if (hasSwampWater(biomeTag)) {
-                                updateOccurrencesMap(biomeOccurrences, TileIdMap.SWAMP_WATER, priorityWaterPool);
+                                updateOccurrencesMap(biomeOccurrences, BuiltinTiles.SWAMP_WATER, priorityWaterPool);
                             } else {
                                 updateOccurrencesMap(biomeOccurrences, waterPoolBiome, priorityWaterPool);
                             }
                         } else if (topBlock == Blocks.LAVA) {
-                            updateOccurrencesMap(biomeOccurrences, TileIdMap.TILE_LAVA, priorityLavaPool);
+                            updateOccurrencesMap(biomeOccurrences, BuiltinTiles.TILE_LAVA, priorityLavaPool);
                         }
                     }
                 }
 
                 if (AntiqueAtlas.CONFIG.Performance.doScanRavines) {
                     if (y > 0 && y < world.getSeaLevel() - ravineMinDepth) {
-                        updateOccurrencesMap(biomeOccurrences, TileIdMap.TILE_RAVINE, priorityRavine);
+                        updateOccurrencesMap(biomeOccurrences, BuiltinTiles.TILE_RAVINE, priorityRavine);
                     }
                 }
 

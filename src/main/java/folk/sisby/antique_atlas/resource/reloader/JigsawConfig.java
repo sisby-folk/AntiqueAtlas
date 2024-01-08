@@ -19,13 +19,10 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.CompletableFuture;
-import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.Executor;
 
 public class JigsawConfig implements ResourceReloadListener<Map<Identifier, StructurePieceTile>> {
     private static final Identifier ID = AntiqueAtlas.id("structures");
-
-    public static final Map<Identifier, StructurePieceTile> PIECES = new ConcurrentHashMap<>();
 
     private static JsonObject readResource(ResourceManager manager, Identifier id) throws IOException {
         Resource resource = manager.getResource(id).orElseThrow(IOException::new);
@@ -91,18 +88,15 @@ public class JigsawConfig implements ResourceReloadListener<Map<Identifier, Stru
     @Override
     public CompletableFuture<Void> apply(Map<Identifier, StructurePieceTile> pieces, ResourceManager
         manager, Profiler profiler, Executor executor) {
-        return CompletableFuture.runAsync(() -> {
-            pieces.forEach((id, piece) -> {
-
-                AntiqueAtlas.LOG.info("Apply structure piece config: " + id);
-                if (piece instanceof StructurePieceTileXZ) {
-                    StructureHandler.registerJigsawTile(id, piece.getPriority(), piece.getTileX(), StructureHandler::IF_X_DIRECTION);
-                    StructureHandler.registerJigsawTile(id, piece.getPriority(), piece.getTileZ(), StructureHandler::IF_Z_DIRECTION);
-                } else {
-                    StructureHandler.registerJigsawTile(id, piece.getPriority(), piece.getTile());
-                }
-            });
-        }, executor);
+        return CompletableFuture.runAsync(() -> pieces.forEach((id, piece) -> {
+            AntiqueAtlas.LOG.info("Apply structure piece config: " + id);
+            if (piece instanceof StructurePieceTileXZ) {
+                StructureHandler.registerJigsawTile(id, piece.getPriority(), piece.getTileX(), StructureHandler::IF_X_DIRECTION);
+                StructureHandler.registerJigsawTile(id, piece.getPriority(), piece.getTileZ(), StructureHandler::IF_Z_DIRECTION);
+            } else {
+                StructureHandler.registerJigsawTile(id, piece.getPriority(), piece.getTile());
+            }
+        }), executor);
     }
 
     @Override

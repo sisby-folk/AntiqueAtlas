@@ -7,7 +7,6 @@ import folk.sisby.antique_atlas.network.c2s.DeleteMarkerC2SPacket;
 import folk.sisby.antique_atlas.network.c2s.PutBrowsingPositionC2SPacket;
 import folk.sisby.antique_atlas.network.c2s.PutMarkerC2SPacket;
 import folk.sisby.antique_atlas.network.c2s.PutTileC2SPacket;
-import folk.sisby.antique_atlas.util.Log;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
 import net.minecraft.network.PacketByteBuf;
 import net.minecraft.server.network.ServerPlayerEntity;
@@ -57,7 +56,7 @@ public class AntiqueAtlasNetworking {
     private static <T extends C2SPacket> void handleServer(ServerPlayerEntity player, PacketByteBuf buf, Function<PacketByteBuf, T> reader, ServerPacketHandler<T> handler) {
         T packet = reader.apply(buf);
         if (AtlasAPI.getPlayerAtlasId(player) != packet.atlasID()) {
-            Log.warn("Player %s attempted to modify someone else's Atlas #%d", player.getName(), packet.atlasID());
+            AntiqueAtlas.LOG.warn("Player {} attempted to modify someone else's Atlas #{}", player.getName(), packet.atlasID());
             return;
         }
         handler.handle(player.getWorld(), packet);

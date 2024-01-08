@@ -9,7 +9,6 @@ public class AntiqueAtlasConfig extends WrappedConfig {
     public final GameplaySettings Gameplay = new GameplaySettings();
     public final InterfaceSettings Interface = new InterfaceSettings();
     public final PerformanceSettings Performance = new PerformanceSettings();
-    public final AppearanceSettings Appearance = new AppearanceSettings();
 
     public static final class GameplaySettings implements Section {
         @Comment("Whether to remember last open browsing position and zoom level for each dimension in every atlas.")
@@ -94,26 +93,5 @@ public class AntiqueAtlasConfig extends WrappedConfig {
 
         @Comment("If true, all resource pack loading information will be logged during start and reload.")
         public final Boolean resourcePackLogging = false;
-    }
-
-    public static final class AppearanceSettings implements Section {
-        @Comment("The size (in GUI pixels) of a map's tile.")
-        @Comment("Note that this will change with Minecraft's GUI scale configuration.")
-        @Comment("When using a small gui scale, the map may look better with a TILE_SIZE of 16 or more.")
-        @IntegerRange(min = 1, max = 10)
-        public final Integer tileSize = 8;
-
-        @Comment("The size (in GUI pixels) of a marker on the map.")
-        @Comment("Note that this will change with Minecraft's GUI scale configuration.")
-        @IntegerRange(min = 0, max = 128)
-        public final Integer markerSize = 16;
-
-        @Comment("The width (in GUI pixels) of the player's icon.")
-        @IntegerRange(min = 0, max = 128)
-        public final Integer playerIconWidth = 14;
-
-        @Comment("The height (in GUI pixels) of the player's icon.")
-        @IntegerRange(min = 0, max = 128)
-        public final Integer playerIconHeight = 16;
     }
 }

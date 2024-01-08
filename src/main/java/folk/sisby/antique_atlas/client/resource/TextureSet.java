@@ -1,8 +1,8 @@
 package folk.sisby.antique_atlas.client.resource;
 
+import folk.sisby.antique_atlas.AntiqueAtlas;
 import folk.sisby.antique_atlas.client.AntiqueAtlasTextures;
 import folk.sisby.antique_atlas.client.texture.ITexture;
-import folk.sisby.antique_atlas.util.Log;
 import net.minecraft.util.Identifier;
 
 import java.util.*;
@@ -26,7 +26,7 @@ public class TextureSet implements Comparable<TextureSet> {
     private final Set<Identifier> stitchToHorizontal = new HashSet<>();
     private final Set<Identifier> stitchToVertical = new HashSet<>();
     private final Identifier[] texturePaths;
-    private boolean stitchesToNull = false;
+    private final boolean stitchesToNull = false;
     private boolean anisotropicStitching = false;
 
     /**
@@ -36,14 +36,6 @@ public class TextureSet implements Comparable<TextureSet> {
         this.name = name;
         this.texturePaths = textures;
         this.textures = new ITexture[textures.length];
-    }
-
-    /**
-     * Allow this texture set to be stitched to empty space, i.e. edge of the map.
-     */
-    public TextureSet stitchesToNull() {
-        this.stitchesToNull = true;
-        return this;
     }
 
     /**
@@ -93,10 +85,7 @@ public class TextureSet implements Comparable<TextureSet> {
 
     @Override
     public boolean equals(Object obj) {
-        if (!(obj instanceof TextureSet)) {
-            return false;
-        }
-        TextureSet set = (TextureSet) obj;
+        if (!(obj instanceof TextureSet set)) return false;
         return this.name.equals(set.name);
     }
 
@@ -126,15 +115,12 @@ public class TextureSet implements Comparable<TextureSet> {
      * This method goes through the list of all TextureSets this should stitch to and assert that these TextureSet exist
      */
     public void checkStitching() {
-        stitchTo.stream().filter(identifier -> !TextureSetMap.isRegistered(identifier)).forEach(identifier -> {
-            Log.error("The texture set %s tries to stitch to %s, which does not exists.", name, identifier);
-        });
-        stitchToVertical.stream().filter(identifier -> !TextureSetMap.isRegistered(identifier)).forEach(identifier -> {
-            Log.error("The texture set %s tries to stitch vertically to %s, which does not exists.", name, identifier);
-        });
-        stitchToHorizontal.stream().filter(identifier -> !TextureSetMap.isRegistered(identifier)).forEach(identifier -> {
-            Log.error("The texture set %s tries to stitch horizontally to %s, which does not exists.", name, identifier);
-        });
+        stitchTo.stream().filter(identifier -> !TextureSetMap.isRegistered(identifier)).forEach(identifier ->
+            AntiqueAtlas.LOG.error("The texture set {} tries to stitch to {}, which does not exists.", name, identifier));
+        stitchToVertical.stream().filter(identifier -> !TextureSetMap.isRegistered(identifier)).forEach(identifier ->
+            AntiqueAtlas.LOG.error("The texture set {} tries to stitch vertically to {}, which does not exists.", name, identifier));
+        stitchToHorizontal.stream().filter(identifier -> !TextureSetMap.isRegistered(identifier)).forEach(identifier ->
+            AntiqueAtlas.LOG.error("The texture set {} tries to stitch horizontally to {}, which does not exists.", name, identifier));
     }
 
     /**

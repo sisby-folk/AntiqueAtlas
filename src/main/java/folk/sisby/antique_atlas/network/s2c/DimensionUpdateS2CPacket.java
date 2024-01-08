@@ -38,9 +38,9 @@ public record DimensionUpdateS2CPacket(int atlasID, RegistryKey<World> world, Co
         buf.writeVarInt(tiles.size());
 
         for (TileInfo tile : tiles) {
-            buf.writeVarInt(tile.x);
-            buf.writeVarInt(tile.z);
-            buf.writeIdentifier(tile.id);
+            buf.writeVarInt(tile.x());
+            buf.writeVarInt(tile.z());
+            buf.writeIdentifier(tile.id());
         }
     }
 

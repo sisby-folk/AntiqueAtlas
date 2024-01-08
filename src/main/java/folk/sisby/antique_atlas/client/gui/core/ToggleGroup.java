@@ -1,5 +1,7 @@
 package folk.sisby.antique_atlas.client.gui.core;
 
+import org.jetbrains.annotations.NotNull;
+
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -24,38 +26,10 @@ public class ToggleGroup<B extends GuiToggleButton> implements Iterable<B> {
         if (!buttons.contains(button)) {
             buttons.add(button);
             button.addListener(clickListener);
-            button.setRadioGroup(this);
             return true;
         } else {
             return false;
         }
-    }
-
-    public boolean removeButton(B button) {
-        if (buttons.remove(button)) {
-            button.removeListener(clickListener);
-            button.setRadioGroup(null);
-            return true;
-        } else {
-            return false;
-        }
-    }
-
-    public void removeAllButtons() {
-        Iterator<B> iter = buttons.iterator();
-        while (iter.hasNext()) {
-            B button = iter.next();
-            button.removeListener(clickListener);
-            button.setRadioGroup(null);
-            iter.remove();
-        }
-    }
-
-    /**
-     * Returns the RadioButton that is selected at the moment, or null if none is.
-     */
-    public B getSelectedButton() {
-        return selectedButton;
     }
 
     /**
@@ -73,16 +47,12 @@ public class ToggleGroup<B extends GuiToggleButton> implements Iterable<B> {
     }
 
     @Override
-    public Iterator<B> iterator() {
+    public @NotNull Iterator<B> iterator() {
         return buttons.iterator();
     }
 
     public void addListener(ISelectListener<? extends B> listener) {
         listeners.add(listener);
-    }
-
-    public void removeListener(ISelectListener<? extends B> listener) {
-        listeners.remove(listener);
     }
 
     private class ClickListener implements IButtonListener<B> {

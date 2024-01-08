@@ -3,7 +3,6 @@ package folk.sisby.antique_atlas.util;
 import java.util.BitSet;
 
 public class BitMatrix {
-
     private final BitSet set;
     private final int width;
     private final int height;

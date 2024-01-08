@@ -3,8 +3,6 @@ package folk.sisby.antique_atlas.marker;
 import folk.sisby.antique_atlas.AntiqueAtlas;
 import folk.sisby.antique_atlas.api.MarkerAPI;
 import folk.sisby.antique_atlas.network.s2c.PutMarkersS2CPacket;
-import folk.sisby.antique_atlas.util.Log;
-import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.nbt.NbtElement;
 import net.minecraft.nbt.NbtList;
@@ -16,7 +14,7 @@ import net.minecraft.util.registry.RegistryKey;
 import net.minecraft.world.PersistentState;
 import net.minecraft.world.World;
 
-import java.util.*;
+import java.util.Map;
 import java.util.Map.Entry;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -49,11 +47,6 @@ public class MarkersData extends PersistentState {
      * across.
      */
     public static final int CHUNK_STEP = 8;
-
-    /**
-     * Set of players this data has been sent to, only once after they connect.
-     */
-    private final Set<PlayerEntity> playersSentTo = new HashSet<>();
 
     private final AtomicInteger largestID = new AtomicInteger(0);
 
@@ -88,7 +81,7 @@ public class MarkersData extends PersistentState {
 
         int version = compound.getInt(TAG_VERSION);
         if (version < VERSION) {
-            Log.warn("Outdated atlas data format! Was %d but current is %d", version, VERSION);
+            AntiqueAtlas.LOG.warn("Outdated atlas data format! Was {} but current is {}", version, VERSION);
             return;
         }
 
@@ -104,7 +97,7 @@ public class MarkersData extends PersistentState {
 
                 int id = markerTag.getInt(TAG_MARKER_ID);
                 if (data.getMarkerByID(id) != null) {
-                    Log.warn("Loading marker with duplicate id %d. Getting new id", id);
+                    AntiqueAtlas.LOG.warn("Loading marker with duplicate id {}. Getting new id", id);
                     id = data.getNewID();
                 }
                 data.markDirty();
@@ -127,7 +120,7 @@ public class MarkersData extends PersistentState {
 
     @Override
     public NbtCompound writeNbt(NbtCompound compound) {
-        Log.info("Saving local markers data to NBT");
+        AntiqueAtlas.LOG.info("Saving local markers data to NBT");
         compound.putInt(TAG_VERSION, VERSION);
         NbtList dimensionMapList = new NbtList();
         for (RegistryKey<World> world : worldMap.keySet()) {
@@ -153,30 +146,11 @@ public class MarkersData extends PersistentState {
         return compound;
     }
 
-    public Set<RegistryKey<World>> getVisitedDimensions() {
-        return worldMap.keySet();
-    }
-
-    /**
-     * This method is rather inefficient, use it sparingly.
-     */
-    public Collection<Marker> getMarkersInWorld(RegistryKey<World> world) {
-        return getMarkersDataInWorld(world).getAllMarkers();
-    }
-
     /**
      * Creates a new instance of {@link DimensionMarkersData}, if necessary.
      */
     public DimensionMarkersData getMarkersDataInWorld(RegistryKey<World> world) {
-        return worldMap.computeIfAbsent(world, k -> new DimensionMarkersData(this, world));
-    }
-
-    /**
-     * The "chunk" here is {@link MarkersData#CHUNK_STEP} times larger than the
-     * Minecraft 16x16 chunk! May return null.
-     */
-    public List<Marker> getMarkersAtChunk(RegistryKey<World> world, int x, int z) {
-        return getMarkersDataInWorld(world).getMarkersAtChunk(x, z);
+        return worldMap.computeIfAbsent(world, k -> new DimensionMarkersData(this));
     }
 
     private Marker getMarkerByID(int id) {
@@ -200,7 +174,7 @@ public class MarkersData extends PersistentState {
      */
     public Marker createAndSaveMarker(Identifier type, RegistryKey<World> world, int x, int z, boolean visibleAhead, Text label) {
         Marker marker = new Marker(getNewID(), type, label, world, x, z, visibleAhead);
-        Log.info("Created new marker %s", marker.toString());
+        AntiqueAtlas.LOG.info("Created new marker {}", marker.toString());
         idMap.put(marker.getId(), marker);
         getMarkersDataInWorld(world).insertMarker(marker);
         markDirty();
@@ -223,14 +197,10 @@ public class MarkersData extends PersistentState {
             if (totalMarkers < AntiqueAtlas.CONFIG.Performance.markerLimit) {
                 getMarkersDataInWorld(marker.getWorld()).insertMarker(marker);
             } else {
-                Log.warn("Could not add new marker. Atlas is at it's limit of %d markers", AntiqueAtlas.CONFIG.Performance.markerLimit);
+                AntiqueAtlas.LOG.warn("Could not add new marker. Atlas is at it's limit of {} markers", AntiqueAtlas.CONFIG.Performance.markerLimit);
             }
         }
         return marker;
-    }
-
-    public boolean isSyncedOnPlayer(PlayerEntity player) {
-        return playersSentTo.contains(player);
     }
 
     /**
@@ -242,8 +212,7 @@ public class MarkersData extends PersistentState {
 
             new PutMarkersS2CPacket(atlasID, world, data.getAllMarkers()).send(player);
         }
-        Log.info("Sent markers data #%d to player %s", atlasID, player.getCommandSource().getName());
-        playersSentTo.add(player);
+        AntiqueAtlas.LOG.info("Sent markers data #{} to player {}", atlasID, player.getCommandSource().getName());
     }
 
     public boolean isEmpty() {

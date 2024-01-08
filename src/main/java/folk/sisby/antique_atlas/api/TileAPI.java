@@ -8,6 +8,7 @@ import net.minecraft.world.World;
  *
  * @author Hunternf
  */
+@SuppressWarnings("unused")
 public interface TileAPI {
 
     /**

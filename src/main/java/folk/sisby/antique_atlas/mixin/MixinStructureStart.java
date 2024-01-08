@@ -48,6 +48,7 @@ public abstract class MixinStructureStart {
             world = ((ChunkRegion) serverWorldAccess).world;
         }
 
+        //noinspection SynchronizeOnNonFinalField
         synchronized (this.children) {
             if (this.children.isEmpty()) return;
 

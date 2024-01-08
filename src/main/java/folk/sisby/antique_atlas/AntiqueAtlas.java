@@ -27,7 +27,7 @@ public class AntiqueAtlas implements ModInitializer {
     public static final String ID = "antique_atlas";
     public static final String NAME = "Antique Atlas";
 
-    public static Logger LOG = LogManager.getLogger(NAME);
+    public static final Logger LOG = LogManager.getLogger(NAME);
 
     public static final WorldScanner worldScanner = new WorldScanner();
     public static final TileDataHandler tileData = new TileDataHandler();
@@ -36,7 +36,7 @@ public class AntiqueAtlas implements ModInitializer {
     public static final GlobalTileDataHandler globalTileData = new GlobalTileDataHandler();
     public static final GlobalMarkersDataHandler globalMarkersData = new GlobalMarkersDataHandler();
 
-    public static AntiqueAtlasConfig CONFIG = AntiqueAtlasConfig.createToml(FabricLoader.getInstance().getConfigDir(), "", "antique-atlas", AntiqueAtlasConfig.class);
+    public static final AntiqueAtlasConfig CONFIG = AntiqueAtlasConfig.createToml(FabricLoader.getInstance().getConfigDir(), "", "antique-atlas", AntiqueAtlasConfig.class);
 
     public static Identifier id(String path) {
         return path.contains(":") ? new Identifier(path) : new Identifier(ID, path);

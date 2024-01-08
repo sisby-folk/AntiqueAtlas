@@ -3,7 +3,7 @@ package folk.sisby.antique_atlas.core.scanning;
 import com.google.common.collect.HashMultiset;
 import com.google.common.collect.Multiset;
 import com.google.common.collect.Ordering;
-import folk.sisby.antique_atlas.core.TileIdMap;
+import folk.sisby.antique_atlas.core.BuiltinTiles;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
@@ -51,11 +51,11 @@ public class TileDetectorNether extends TileDetectorBase implements ITileDetecto
                     // The Nether!
                     Block seaLevelBlock = chunk.getBlockState(new BlockPos(x, lavaSeaLevel, z)).getBlock();
                     if (seaLevelBlock == Blocks.LAVA) {
-                        updateOccurrencesMap(biomeOccurrences, TileIdMap.TILE_LAVA, priorityLava);
+                        updateOccurrencesMap(biomeOccurrences, BuiltinTiles.TILE_LAVA, priorityLava);
                     } else {
                         BlockState airProbeBlock = chunk.getBlockState(new BlockPos(x, airProbeLevel, z));
                         if (airProbeBlock.isAir()) {
-                            updateOccurrencesMap(biomeOccurrences, TileIdMap.TILE_LAVA_SHORE, 1);
+                            updateOccurrencesMap(biomeOccurrences, BuiltinTiles.TILE_LAVA_SHORE, 1);
                         } else {
                             // cave walls
                             updateOccurrencesMap(biomeOccurrences, getBiomeIdentifier(world, biome), 2);

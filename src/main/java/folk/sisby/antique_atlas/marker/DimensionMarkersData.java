@@ -2,8 +2,7 @@ package folk.sisby.antique_atlas.marker;
 
 import folk.sisby.antique_atlas.util.ListMapValueIterator;
 import net.minecraft.util.math.ChunkPos;
-import net.minecraft.util.registry.RegistryKey;
-import net.minecraft.world.World;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.AbstractCollection;
 import java.util.Collection;
@@ -15,7 +14,6 @@ import java.util.concurrent.CopyOnWriteArrayList;
 
 public class DimensionMarkersData {
     private final MarkersData parent;
-    private final RegistryKey<World> world;
 
     private int size = 0;
 
@@ -24,13 +22,8 @@ public class DimensionMarkersData {
 
     private final Values values = new Values();
 
-    public DimensionMarkersData(MarkersData parent, RegistryKey<World> world) {
+    public DimensionMarkersData(MarkersData parent) {
         this.parent = parent;
-        this.world = world;
-    }
-
-    public RegistryKey<World> getWorld() {
-        return world;
     }
 
     /**
@@ -85,7 +78,7 @@ public class DimensionMarkersData {
 
     private class Values extends AbstractCollection<Marker> {
         @Override
-        public Iterator<Marker> iterator() {
+        public @NotNull Iterator<Marker> iterator() {
             return new ListMapValueIterator<>(chunkMap).setImmutable(true);
         }
 

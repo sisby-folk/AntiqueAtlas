@@ -1,15 +1,12 @@
 package folk.sisby.antique_atlas.util;
 
-import com.google.common.collect.Maps;
-
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
 /**
- * Iterates over the values in a map of lists, similar to
- * {@link Maps#valueIterator}. This iterator will reflect changes made to the
- * map if map.values() does.
+ * Iterates over the values in a map of lists.
+ * This iterator will reflect changes made to the map if map.values() does.
  *
  * @author Hunternif
  */
