@@ -4,10 +4,14 @@ import io.netty.buffer.Unpooled;
 import net.minecraft.network.PacketByteBuf;
 import net.minecraft.util.Identifier;
 
-public abstract class AntiqueAtlasPacket extends PacketByteBuf {
-    public AntiqueAtlasPacket() {
-        super(Unpooled.buffer());
-    }
+public interface AntiqueAtlasPacket {
+    void writeBuf(PacketByteBuf buf);
 
-    public abstract Identifier getId();
+    Identifier getId();
+
+    default PacketByteBuf toBuf() {
+        PacketByteBuf buf = new PacketByteBuf(Unpooled.buffer());
+        writeBuf(buf);
+        return buf;
+    }
 }

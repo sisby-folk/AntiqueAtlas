@@ -2,6 +2,7 @@ package folk.sisby.antique_atlas.client.network.packet;
 
 import folk.sisby.antique_atlas.network.AntiqueAtlasNetworking;
 import folk.sisby.antique_atlas.client.network.C2SPacket;
+import net.minecraft.network.PacketByteBuf;
 import net.minecraft.util.Identifier;
 
 /**
@@ -11,12 +12,22 @@ import net.minecraft.util.Identifier;
  * @author Hunternif
  * @author Haven King
  */
-public class PutTileC2SPacket extends C2SPacket {
-    public PutTileC2SPacket(int atlasID, int x, int z, Identifier tile) {
-        this.writeInt(atlasID);
-        this.writeVarInt(x);
-        this.writeVarInt(z);
-        this.writeIdentifier(tile);
+public record PutTileC2SPacket(int atlasID, int x, int z, Identifier tile) implements C2SPacket {
+    public PutTileC2SPacket(PacketByteBuf buf) {
+        this(
+            buf.readInt(),
+            buf.readVarInt(),
+            buf.readVarInt(),
+            buf.readIdentifier()
+        );
+    }
+
+    @Override
+    public void writeBuf(PacketByteBuf buf) {
+        buf.writeInt(atlasID);
+        buf.writeVarInt(x);
+        buf.writeVarInt(z);
+        buf.writeIdentifier(tile);
     }
 
     @Override

@@ -1,14 +1,17 @@
 package folk.sisby.antique_atlas.network.packet;
 
-import folk.sisby.antique_atlas.network.S2CPacket;
 import folk.sisby.antique_atlas.network.AntiqueAtlasNetworking;
+import folk.sisby.antique_atlas.network.S2CPacket;
+import net.minecraft.network.PacketByteBuf;
 import net.minecraft.util.Identifier;
+import net.minecraft.util.Pair;
 import net.minecraft.util.math.ChunkPos;
+import net.minecraft.util.registry.Registry;
 import net.minecraft.util.registry.RegistryKey;
 import net.minecraft.world.World;
 
+import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 /**
  * Used to sync custom tiles from server to client.
@@ -16,24 +19,36 @@ import java.util.Map;
  * @author Hunternif
  * @author Haven King
  */
-public class PutGlobalTileS2CPacket extends S2CPacket {
-    public PutGlobalTileS2CPacket(RegistryKey<World> world, List<Map.Entry<ChunkPos, Identifier>> tiles) {
-        this.writeIdentifier(world.getValue());
-        this.writeVarInt(tiles.size());
-
-        for (Map.Entry<ChunkPos, Identifier> entry : tiles) {
-            this.writeVarInt(entry.getKey().x);
-            this.writeVarInt(entry.getKey().z);
-            this.writeIdentifier(entry.getValue());
-        }
+public record PutGlobalTileS2CPacket(RegistryKey<World> world, List<Pair<ChunkPos, Identifier>> tiles) implements S2CPacket {
+    public PutGlobalTileS2CPacket(RegistryKey<World> world, int chunkX, int chunkZ, Identifier tileId) {
+        this(world, List.of(new Pair<>(new ChunkPos(chunkX, chunkZ), tileId)));
     }
 
-    public PutGlobalTileS2CPacket(RegistryKey<World> world, int chunkX, int chunkZ, Identifier tileId) {
-        this.writeIdentifier(world.getValue());
-        this.writeVarInt(1);
-        this.writeVarInt(chunkX);
-        this.writeVarInt(chunkZ);
-        this.writeIdentifier(tileId);
+    public PutGlobalTileS2CPacket(PacketByteBuf buf) {
+        this(RegistryKey.of(Registry.WORLD_KEY, buf.readIdentifier()), readTiles(buf));
+    }
+
+    private static List<Pair<ChunkPos, Identifier>> readTiles(PacketByteBuf buf) {
+        int tileCount = buf.readVarInt();
+
+        List<Pair<ChunkPos, Identifier>> list = new ArrayList<>();
+        for (int i = 0; i < tileCount; ++i) {
+            list.add(new Pair<>(new ChunkPos(buf.readVarInt(), buf.readVarInt()), buf.readIdentifier()));
+        }
+        return list;
+    }
+
+
+    @Override
+    public void writeBuf(PacketByteBuf buf) {
+        buf.writeIdentifier(world.getValue());
+        buf.writeVarInt(tiles.size());
+
+        for (Pair<ChunkPos, Identifier> entry : tiles) {
+            buf.writeVarInt(entry.getLeft().x);
+            buf.writeVarInt(entry.getLeft().z);
+            buf.writeIdentifier(entry.getRight());
+        }
     }
 
     @Override

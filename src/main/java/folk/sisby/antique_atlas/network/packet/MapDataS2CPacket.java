@@ -3,6 +3,7 @@ package folk.sisby.antique_atlas.network.packet;
 import folk.sisby.antique_atlas.network.S2CPacket;
 import folk.sisby.antique_atlas.network.AntiqueAtlasNetworking;
 import net.minecraft.nbt.NbtCompound;
+import net.minecraft.network.PacketByteBuf;
 import net.minecraft.util.Identifier;
 
 /**
@@ -11,10 +12,18 @@ import net.minecraft.util.Identifier;
  * @author Hunternif
  * @author Haven King
  */
-public class MapDataS2CPacket extends S2CPacket {
-    public MapDataS2CPacket(int atlasID, NbtCompound data) {
-        this.writeVarInt(atlasID);
-        this.writeNbt(data);
+public record MapDataS2CPacket(int atlasID, NbtCompound data) implements S2CPacket {
+    public MapDataS2CPacket(PacketByteBuf buf) {
+        this(
+            buf.readVarInt(),
+            buf.readNbt()
+        );
+    }
+
+    @Override
+    public void writeBuf(PacketByteBuf buf) {
+        buf.writeVarInt(atlasID);
+        buf.writeNbt(data);
     }
 
     @Override

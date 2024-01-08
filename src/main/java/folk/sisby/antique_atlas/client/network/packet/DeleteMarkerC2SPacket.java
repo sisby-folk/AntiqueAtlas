@@ -1,7 +1,8 @@
 package folk.sisby.antique_atlas.client.network.packet;
 
-import folk.sisby.antique_atlas.network.AntiqueAtlasNetworking;
 import folk.sisby.antique_atlas.client.network.C2SPacket;
+import folk.sisby.antique_atlas.network.AntiqueAtlasNetworking;
+import net.minecraft.network.PacketByteBuf;
 import net.minecraft.util.Identifier;
 
 /**
@@ -11,10 +12,18 @@ import net.minecraft.util.Identifier;
  *
  * @author Hunternif
  */
-public class DeleteMarkerC2SPacket extends C2SPacket {
-    public DeleteMarkerC2SPacket(int atlasID, int markerID) {
-        this.writeVarInt(atlasID);
-        this.writeVarInt(markerID);
+public record DeleteMarkerC2SPacket(int atlasID, int markerID) implements C2SPacket {
+    public DeleteMarkerC2SPacket(PacketByteBuf buf) {
+        this(
+            buf.readVarInt(),
+            buf.readVarInt()
+        );
+    }
+
+    @Override
+    public void writeBuf(PacketByteBuf buf) {
+        buf.writeVarInt(atlasID);
+        buf.writeVarInt(markerID);
     }
 
     @Override

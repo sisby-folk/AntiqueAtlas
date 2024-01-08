@@ -2,6 +2,7 @@ package folk.sisby.antique_atlas.client.network.packet;
 
 import folk.sisby.antique_atlas.network.AntiqueAtlasNetworking;
 import folk.sisby.antique_atlas.client.network.C2SPacket;
+import net.minecraft.network.PacketByteBuf;
 import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
 
@@ -12,14 +13,26 @@ import net.minecraft.util.Identifier;
  * @author Hunternif
  * @author Haven King
  */
-public class PutMarkerC2SPacket extends C2SPacket {
-    public PutMarkerC2SPacket(int atlasID, Identifier markerType, int x, int z, boolean visibleBeforeDiscovery, Text label) {
-        this.writeVarInt(atlasID);
-        this.writeIdentifier(markerType);
-        this.writeVarInt(x);
-        this.writeVarInt(z);
-        this.writeBoolean(visibleBeforeDiscovery);
-        this.writeText(label);
+public record PutMarkerC2SPacket(int atlasID, Identifier markerType, int x, int z, boolean visibleBeforeDiscovery, Text label) implements C2SPacket {
+    public PutMarkerC2SPacket(PacketByteBuf buf) {
+        this(
+            buf.readVarInt(),
+            buf.readIdentifier(),
+            buf.readVarInt(),
+            buf.readVarInt(),
+            buf.readBoolean(),
+            buf.readText()
+        );
+    }
+
+    @Override
+    public void writeBuf(PacketByteBuf buf) {
+        buf.writeVarInt(atlasID);
+        buf.writeIdentifier(markerType);
+        buf.writeVarInt(x);
+        buf.writeVarInt(z);
+        buf.writeBoolean(visibleBeforeDiscovery);
+        buf.writeText(label);
     }
 
     @Override

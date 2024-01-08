@@ -2,7 +2,9 @@ package folk.sisby.antique_atlas.client.network.packet;
 
 import folk.sisby.antique_atlas.network.AntiqueAtlasNetworking;
 import folk.sisby.antique_atlas.client.network.C2SPacket;
+import net.minecraft.network.PacketByteBuf;
 import net.minecraft.util.Identifier;
+import net.minecraft.util.registry.Registry;
 import net.minecraft.util.registry.RegistryKey;
 import net.minecraft.world.World;
 
@@ -12,13 +14,24 @@ import net.minecraft.world.World;
  * @author Hunternif
  * @author Haven King
  */
-public class PutBrowsingPositionC2SPacket extends C2SPacket {
-    public PutBrowsingPositionC2SPacket(int atlasID, RegistryKey<World> world, int x, int y, double zoom) {
-        this.writeVarInt(atlasID);
-        this.writeIdentifier(world.getValue());
-        this.writeVarInt(x);
-        this.writeVarInt(y);
-        this.writeDouble(zoom);
+public record PutBrowsingPositionC2SPacket(int atlasID, RegistryKey<World> world, int x, int y, double zoom) implements C2SPacket {
+    public PutBrowsingPositionC2SPacket(PacketByteBuf buf) {
+        this(
+            buf.readVarInt(),
+            RegistryKey.of(Registry.WORLD_KEY, buf.readIdentifier()),
+            buf.readVarInt(),
+            buf.readVarInt(),
+            buf.readDouble()
+        );
+    }
+
+    @Override
+    public void writeBuf(PacketByteBuf buf) {
+        buf.writeVarInt(atlasID);
+        buf.writeIdentifier(world.getValue());
+        buf.writeVarInt(x);
+        buf.writeVarInt(y);
+        buf.writeDouble(zoom);
     }
 
     @Override
