@@ -2,7 +2,7 @@ package folk.sisby.antique_atlas.marker;
 
 import folk.sisby.antique_atlas.AntiqueAtlas;
 import folk.sisby.antique_atlas.api.MarkerAPI;
-import folk.sisby.antique_atlas.network.packet.PutMarkersS2CPacket;
+import folk.sisby.antique_atlas.network.s2c.PutMarkersS2CPacket;
 import folk.sisby.antique_atlas.util.Log;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.nbt.NbtCompound;

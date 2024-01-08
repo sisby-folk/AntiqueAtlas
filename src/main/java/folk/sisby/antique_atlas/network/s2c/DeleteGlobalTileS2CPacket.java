@@ -1,6 +1,5 @@
-package folk.sisby.antique_atlas.network.packet;
+package folk.sisby.antique_atlas.network.s2c;
 
-import folk.sisby.antique_atlas.network.S2CPacket;
 import folk.sisby.antique_atlas.network.AntiqueAtlasNetworking;
 import net.minecraft.network.PacketByteBuf;
 import net.minecraft.registry.RegistryKey;

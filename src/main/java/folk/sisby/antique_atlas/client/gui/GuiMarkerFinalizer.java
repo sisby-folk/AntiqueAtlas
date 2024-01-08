@@ -1,6 +1,6 @@
 package folk.sisby.antique_atlas.client.gui;
 
-import folk.sisby.antique_atlas.api.client.AtlasClientAPI;
+import folk.sisby.antique_atlas.client.api.AtlasClientAPI;
 import folk.sisby.antique_atlas.client.gui.core.GuiComponent;
 import folk.sisby.antique_atlas.client.gui.core.GuiScrollingContainer;
 import folk.sisby.antique_atlas.client.gui.core.ToggleGroup;

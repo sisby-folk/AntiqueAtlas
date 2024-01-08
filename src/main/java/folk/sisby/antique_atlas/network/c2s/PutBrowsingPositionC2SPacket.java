@@ -1,6 +1,5 @@
-package folk.sisby.antique_atlas.network.packet;
+package folk.sisby.antique_atlas.network.c2s;
 
-import folk.sisby.antique_atlas.network.S2CPacket;
 import folk.sisby.antique_atlas.network.AntiqueAtlasNetworking;
 import net.minecraft.network.PacketByteBuf;
 import net.minecraft.registry.RegistryKey;
@@ -9,33 +8,33 @@ import net.minecraft.util.Identifier;
 import net.minecraft.world.World;
 
 /**
- * Puts biome tile into one atlas.
+ * Packet used to save the last browsing position for a dimension in an atlas.
  *
  * @author Hunternif
  * @author Haven King
  */
-public record PutTileS2CPacket(int atlasID, RegistryKey<World> world, int x, int z, Identifier tile) implements S2CPacket {
-    public PutTileS2CPacket(PacketByteBuf buf) {
+public record PutBrowsingPositionC2SPacket(int atlasID, RegistryKey<World> world, int x, int y, double zoom) implements C2SPacket {
+    public PutBrowsingPositionC2SPacket(PacketByteBuf buf) {
         this(
-            buf.readInt(),
+            buf.readVarInt(),
             RegistryKey.of(RegistryKeys.WORLD, buf.readIdentifier()),
             buf.readVarInt(),
             buf.readVarInt(),
-            buf.readIdentifier()
+            buf.readDouble()
         );
     }
 
     @Override
     public void writeBuf(PacketByteBuf buf) {
-        buf.writeInt(atlasID);
+        buf.writeVarInt(atlasID);
         buf.writeIdentifier(world.getValue());
         buf.writeVarInt(x);
-        buf.writeVarInt(z);
-        buf.writeIdentifier(tile);
+        buf.writeVarInt(y);
+        buf.writeDouble(zoom);
     }
 
     @Override
     public Identifier getId() {
-        return AntiqueAtlasNetworking.S2C_PUT_TILE;
+        return AntiqueAtlasNetworking.C2S_PUT_BROWSING_POSITION;
     }
 }

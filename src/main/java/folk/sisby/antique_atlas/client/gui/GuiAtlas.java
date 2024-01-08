@@ -2,7 +2,7 @@ package folk.sisby.antique_atlas.client.gui;
 
 import com.mojang.blaze3d.systems.RenderSystem;
 import folk.sisby.antique_atlas.api.AtlasAPI;
-import folk.sisby.antique_atlas.api.client.AtlasClientAPI;
+import folk.sisby.antique_atlas.client.api.AtlasClientAPI;
 import folk.sisby.antique_atlas.AntiqueAtlas;
 import folk.sisby.antique_atlas.client.*;
 import folk.sisby.antique_atlas.client.gui.core.*;
@@ -14,7 +14,7 @@ import folk.sisby.antique_atlas.core.WorldData;
 import folk.sisby.antique_atlas.marker.DimensionMarkersData;
 import folk.sisby.antique_atlas.marker.Marker;
 import folk.sisby.antique_atlas.marker.MarkersData;
-import folk.sisby.antique_atlas.client.network.packet.PutBrowsingPositionC2SPacket;
+import folk.sisby.antique_atlas.network.c2s.PutBrowsingPositionC2SPacket;
 import folk.sisby.antique_atlas.client.MarkerRenderInfo;
 import folk.sisby.antique_atlas.client.MarkerType;
 import folk.sisby.antique_atlas.util.MathUtil;

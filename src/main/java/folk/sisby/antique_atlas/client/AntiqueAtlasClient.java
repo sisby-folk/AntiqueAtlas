@@ -1,17 +1,7 @@
-package folk.sisby.antique_atlas;
+package folk.sisby.antique_atlas.client;
 
-import folk.sisby.antique_atlas.client.KeyHandler;
-import folk.sisby.antique_atlas.client.TextureConfig;
-import folk.sisby.antique_atlas.client.TextureSetConfig;
-import folk.sisby.antique_atlas.client.TextureSetMap;
-import folk.sisby.antique_atlas.client.Textures;
-import folk.sisby.antique_atlas.client.TileTextureConfig;
-import folk.sisby.antique_atlas.client.TileTextureMap;
+import folk.sisby.antique_atlas.AntiqueAtlas;
 import folk.sisby.antique_atlas.client.gui.GuiAtlas;
-import folk.sisby.antique_atlas.client.MarkerMipsConfig;
-import folk.sisby.antique_atlas.client.MarkerTextureConfig;
-import folk.sisby.antique_atlas.client.network.AntiqueAtlasClientNetworking;
-import folk.sisby.antique_atlas.client.MarkerType;
 import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
 import net.fabricmc.fabric.api.resource.ResourceManagerHelper;

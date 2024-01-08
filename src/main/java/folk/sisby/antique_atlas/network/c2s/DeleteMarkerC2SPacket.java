@@ -1,6 +1,5 @@
-package folk.sisby.antique_atlas.client.network.packet;
+package folk.sisby.antique_atlas.network.c2s;
 
-import folk.sisby.antique_atlas.client.network.C2SPacket;
 import folk.sisby.antique_atlas.network.AntiqueAtlasNetworking;
 import net.minecraft.network.PacketByteBuf;
 import net.minecraft.util.Identifier;

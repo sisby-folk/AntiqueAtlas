@@ -2,7 +2,7 @@ package folk.sisby.antique_atlas.client;
 
 import com.mojang.blaze3d.systems.RenderSystem;
 import folk.sisby.antique_atlas.api.AtlasAPI;
-import folk.sisby.antique_atlas.api.client.AtlasClientAPI;
+import folk.sisby.antique_atlas.client.api.AtlasClientAPI;
 import folk.sisby.antique_atlas.AntiqueAtlas;
 import folk.sisby.antique_atlas.client.gui.GuiAtlas;
 import folk.sisby.antique_atlas.core.WorldData;

@@ -1,9 +1,8 @@
-package folk.sisby.antique_atlas.network.packet;
+package folk.sisby.antique_atlas.network.s2c;
 
 import com.google.common.collect.ArrayListMultimap;
 import com.google.common.collect.ListMultimap;
 import folk.sisby.antique_atlas.marker.MarkerData;
-import folk.sisby.antique_atlas.network.S2CPacket;
 import folk.sisby.antique_atlas.marker.Marker;
 import folk.sisby.antique_atlas.network.AntiqueAtlasNetworking;
 import net.minecraft.network.PacketByteBuf;

@@ -1,4 +1,4 @@
-package folk.sisby.antique_atlas.client.network;
+package folk.sisby.antique_atlas.network.c2s;
 
 import folk.sisby.antique_atlas.network.AntiqueAtlasPacket;
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;

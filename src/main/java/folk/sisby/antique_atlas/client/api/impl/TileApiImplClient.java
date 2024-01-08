@@ -1,11 +1,11 @@
-package folk.sisby.antique_atlas.api.client.impl;
+package folk.sisby.antique_atlas.client.api.impl;
 
 import folk.sisby.antique_atlas.AntiqueAtlas;
-import folk.sisby.antique_atlas.api.client.ClientTileAPI;
+import folk.sisby.antique_atlas.client.api.ClientTileAPI;
 import folk.sisby.antique_atlas.client.TileRenderIterator;
 import folk.sisby.antique_atlas.core.AtlasData;
 import folk.sisby.antique_atlas.core.TileDataStorage;
-import folk.sisby.antique_atlas.client.network.packet.PutTileC2SPacket;
+import folk.sisby.antique_atlas.network.c2s.PutTileC2SPacket;
 import folk.sisby.antique_atlas.util.Log;
 import folk.sisby.antique_atlas.util.Rect;
 import net.minecraft.util.Identifier;

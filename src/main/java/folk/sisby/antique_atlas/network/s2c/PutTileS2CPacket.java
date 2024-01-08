@@ -1,21 +1,23 @@
-package folk.sisby.antique_atlas.client.network.packet;
+package folk.sisby.antique_atlas.network.s2c;
 
 import folk.sisby.antique_atlas.network.AntiqueAtlasNetworking;
-import folk.sisby.antique_atlas.client.network.C2SPacket;
 import net.minecraft.network.PacketByteBuf;
+import net.minecraft.registry.RegistryKey;
+import net.minecraft.registry.RegistryKeys;
 import net.minecraft.util.Identifier;
+import net.minecraft.world.World;
 
 /**
- * Puts biome tile into one atlas. When sent to server, forwards it to every
- * client that has this atlas' data synced.
+ * Puts biome tile into one atlas.
  *
  * @author Hunternif
  * @author Haven King
  */
-public record PutTileC2SPacket(int atlasID, int x, int z, Identifier tile) implements C2SPacket {
-    public PutTileC2SPacket(PacketByteBuf buf) {
+public record PutTileS2CPacket(int atlasID, RegistryKey<World> world, int x, int z, Identifier tile) implements S2CPacket {
+    public PutTileS2CPacket(PacketByteBuf buf) {
         this(
             buf.readInt(),
+            RegistryKey.of(RegistryKeys.WORLD, buf.readIdentifier()),
             buf.readVarInt(),
             buf.readVarInt(),
             buf.readIdentifier()
@@ -25,6 +27,7 @@ public record PutTileC2SPacket(int atlasID, int x, int z, Identifier tile) imple
     @Override
     public void writeBuf(PacketByteBuf buf) {
         buf.writeInt(atlasID);
+        buf.writeIdentifier(world.getValue());
         buf.writeVarInt(x);
         buf.writeVarInt(z);
         buf.writeIdentifier(tile);
@@ -32,6 +35,6 @@ public record PutTileC2SPacket(int atlasID, int x, int z, Identifier tile) imple
 
     @Override
     public Identifier getId() {
-        return AntiqueAtlasNetworking.C2S_PUT_TILE;
+        return AntiqueAtlasNetworking.S2C_PUT_TILE;
     }
 }
