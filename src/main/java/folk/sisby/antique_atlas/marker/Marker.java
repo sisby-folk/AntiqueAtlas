@@ -1,10 +1,8 @@
 package folk.sisby.antique_atlas.marker;
 
+import net.minecraft.registry.RegistryKey;
 import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.ChunkPos;
-import net.minecraft.registry.RegistryKey;
 import net.minecraft.world.World;
 
 /**
@@ -93,16 +91,8 @@ public class Marker extends MarkerData {
 
     @Override
     public boolean equals(Object obj) {
-        if (!(obj instanceof Marker)) return false;
-        Marker marker = (Marker) obj;
+        if (!(obj instanceof Marker marker)) return false;
         return this.id == marker.id;
-    }
-
-    /**
-     * Returns the coordinates of the chunk this marker is located in.
-     */
-    public ChunkPos getChunkCoords() {
-        return new ChunkPos(new BlockPos(x, 0, z));
     }
 
     @Override

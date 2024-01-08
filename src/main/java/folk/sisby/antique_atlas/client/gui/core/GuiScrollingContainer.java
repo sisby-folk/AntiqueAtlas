@@ -28,13 +28,6 @@ public class GuiScrollingContainer extends GuiComponent {
         return viewport.addContent(child);
     }
 
-    /**
-     * @return the child removed
-     */
-    public GuiComponent removeContent(GuiComponent child) {
-        return viewport.removeContent(child);
-    }
-
     public void removeAllContent() {
         viewport.removeAllContent();
     }

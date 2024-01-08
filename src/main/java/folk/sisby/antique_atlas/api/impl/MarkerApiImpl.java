@@ -15,6 +15,7 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.Collections;
 
+@SuppressWarnings("unused")
 public class MarkerApiImpl implements MarkerAPI {
     /**
      * Used in place of atlasID to signify that the marker is global.

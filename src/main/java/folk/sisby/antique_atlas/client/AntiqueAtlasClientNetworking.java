@@ -46,7 +46,7 @@ public class AntiqueAtlasClientNetworking {
         ClientPlayNetworking.registerGlobalReceiver(AntiqueAtlasNetworking.S2C_TILE_GROUPS, (c, h, b, s) -> handleClient(b, TileGroupsS2CPacket::new, AntiqueAtlasClientNetworking::handleTileGroups));
     }
 
-    public static void handleDeleteGlobalTile(ClientWorld clientWorld, DeleteGlobalTileS2CPacket packet) {
+    public static void handleDeleteGlobalTile(ClientWorld ignored, DeleteGlobalTileS2CPacket packet) {
         TileDataStorage data = AntiqueAtlas.globalTileData.getData(packet.world());
         data.removeTile(packet.chunkX(), packet.chunkZ());
     }
@@ -62,7 +62,7 @@ public class AntiqueAtlasClientNetworking {
         if (clientWorld == null) return;
         AtlasData data = AntiqueAtlas.tileData.getData(packet.atlasID(), clientWorld);
         for (TileInfo info : packet.tiles()) {
-            data.getWorldData(packet.world()).setTile(info.x, info.z, info.id);
+            data.getWorldData(packet.world()).setTile(info.x(), info.z(), info.id());
         }
     }
 
@@ -76,14 +76,14 @@ public class AntiqueAtlasClientNetworking {
         }
     }
 
-    public static void handlePutGlobalTile(ClientWorld clientWorld, PutGlobalTileS2CPacket packet) {
+    public static void handlePutGlobalTile(ClientWorld ignored, PutGlobalTileS2CPacket packet) {
         TileDataStorage data = AntiqueAtlas.globalTileData.getData(packet.world());
         for (Pair<ChunkPos, Identifier> tile : packet.tiles()) {
             data.setTile(tile.getLeft().x, tile.getLeft().z, tile.getRight());
         }
     }
 
-    public static void handlePutMarkers(ClientWorld clientWorld, PutMarkersS2CPacket packet) {
+    public static void handlePutMarkers(ClientWorld ignored, PutMarkersS2CPacket packet) {
         MarkersData markersData = packet.atlasID() == GLOBAL ? AntiqueAtlas.globalMarkersData.getData() : AntiqueAtlas.markersData.getMarkersDataCached(packet.atlasID(), packet.world());
         for (Map.Entry<Identifier, MarkerData> entry : packet.markers().entries()) {
             MarkerType markerType = MarkerType.REGISTRY.get(entry.getKey());

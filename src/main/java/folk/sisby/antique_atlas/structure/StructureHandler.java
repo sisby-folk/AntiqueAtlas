@@ -3,14 +3,17 @@ package folk.sisby.antique_atlas.structure;
 import com.google.common.collect.HashMultimap;
 import com.google.common.collect.Multimap;
 import folk.sisby.antique_atlas.api.AtlasAPI;
-import folk.sisby.antique_atlas.util.MathUtil;
 import net.minecraft.registry.Registries;
 import net.minecraft.registry.Registry;
 import net.minecraft.registry.RegistryKeys;
 import net.minecraft.registry.entry.RegistryEntry;
 import net.minecraft.registry.tag.TagKey;
 import net.minecraft.server.world.ServerWorld;
-import net.minecraft.structure.*;
+import net.minecraft.structure.JigsawJunction;
+import net.minecraft.structure.PoolStructurePiece;
+import net.minecraft.structure.StructurePiece;
+import net.minecraft.structure.StructurePieceType;
+import net.minecraft.structure.StructureStart;
 import net.minecraft.structure.pool.SinglePoolElement;
 import net.minecraft.structure.pool.StructurePoolElement;
 import net.minecraft.text.Text;
@@ -23,7 +26,13 @@ import net.minecraft.world.gen.structure.Structure;
 import net.minecraft.world.gen.structure.StructureType;
 import org.apache.commons.lang3.tuple.Triple;
 
-import java.util.*;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
+import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 
 public class StructureHandler {
@@ -32,7 +41,7 @@ public class StructureHandler {
     private static final Map<Identifier, Pair<Identifier, Text>> STRUCTURE_PIECE_TO_MARKER_MAP = new HashMap<>();
     private static final Map<TagKey<Structure>, Pair<Identifier, Text>> STRUCTURE_TAG_TO_MARKER_MAP = new HashMap<>();
     private static final Map<Identifier, Integer> STRUCTURE_PIECE_TILE_PRIORITY = new HashMap<>();
-    public static final Setter ALWAYS = (world, element, box, rotation) -> Collections.singleton(new ChunkPos(MathUtil.getCenter(box).getX() >> 4, MathUtil.getCenter(box).getZ() >> 4));
+    public static final Setter ALWAYS = (world, element, box, rotation) -> Collections.singleton(new ChunkPos(box.getCenter().getX() >> 4, box.getCenter().getZ() >> 4));
 
 
     public static Collection<ChunkPos> IF_X_DIRECTION(World ignoredWorld, StructurePoolElement ignoredElement, BlockBox box, StructurePiece piece) {
@@ -40,10 +49,10 @@ public class StructureHandler {
             List<JigsawJunction> junctions = poolPiece.getJunctions();
             if (junctions.size() == 2) {
                 if (junctions.get(0).getSourceX() == junctions.get(1).getSourceX() || junctions.get(0).getSourceZ() != junctions.get(1).getSourceZ()) {
-                    return Collections.singleton(new ChunkPos(MathUtil.getCenter(box)));
+                    return Collections.singleton(new ChunkPos(box.getCenter()));
                 }
             } else {
-                return Collections.singleton(new ChunkPos(MathUtil.getCenter(box)));
+                return Collections.singleton(new ChunkPos(box.getCenter()));
             }
         }
         return Collections.emptyList();
@@ -54,10 +63,10 @@ public class StructureHandler {
             List<JigsawJunction> junctions = poolPiece.getJunctions();
             if (junctions.size() == 2) {
                 if (junctions.get(0).getSourceZ() == junctions.get(1).getSourceZ() || junctions.get(0).getSourceX() != junctions.get(1).getSourceX()) {
-                    return Collections.singleton(new ChunkPos(MathUtil.getCenter(box)));
+                    return Collections.singleton(new ChunkPos(box.getCenter()));
                 }
             } else {
-                return Collections.singleton(new ChunkPos(MathUtil.getCenter(box)));
+                return Collections.singleton(new ChunkPos(box.getCenter()));
             }
         }
         return Collections.emptyList();

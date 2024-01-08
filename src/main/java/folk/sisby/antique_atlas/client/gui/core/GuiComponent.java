@@ -50,21 +50,6 @@ public class GuiComponent extends Screen {
     protected boolean isMouseOver = false;
 
     /**
-     * If true, mouse actions will only affect this GUI and its children,
-     * else they will only affect the in-game controller.
-     */
-    private boolean interceptsMouse = true;
-    /**
-     * If true, pressing keyboard keys will affect this GUI, it's children,
-     * and the in-game controller.
-     */
-    private boolean interceptsKeyboard = true;
-    /**
-     * If true, no input is handled by the parent or any sibling GUIs.
-     */
-    private boolean blocksScreen = false;
-
-    /**
      * guiX and guiY are absolute coordinates on the screen.
      */
     private int guiX = 0, guiY = 0;
@@ -198,19 +183,6 @@ public class GuiComponent extends Screen {
 
     /**
      * Adds the child component to this GUI's content and initializes it.
-     * The child is placed in the list immediately after the specified child,
-     * which is equivalent to putting it in front of that child in Z-order.
-     * The child is placed at the top left corner of this component.
-     *
-     * @return the child added.
-     */
-    public GuiComponent addChildInfrontOf(GuiComponent inFrontOf, GuiComponent child) {
-        doAddChild(inFrontOf, child, null);
-        return child;
-    }
-
-    /**
-     * Adds the child component to this GUI's content and initializes it.
      * The child is placed in the list immediately before the specified child,
      * which is equivalent to putting it behind that child in Z-order.
      * The child is placed at the top left corner of this component.
@@ -272,29 +244,6 @@ public class GuiComponent extends Screen {
 
     List<GuiComponent> getChildren() {
         return children;
-    }
-
-    /**
-     * If true, mouse actions will only affect this GUI and its children,
-     * else they will only affect the in-game controller.
-     */
-    public void setInterceptMouse(boolean value) {
-        this.interceptsMouse = value;
-    }
-
-    /**
-     * If true, pressing keyboard keys will affect this GUI, it's children,
-     * and the in-game controller.
-     */
-    protected void setInterceptKeyboard(boolean value) {
-        this.interceptsKeyboard = value;
-    }
-
-    /**
-     * If true, no input is handled by the parent or any sibling GUIs.
-     */
-    protected void setBlocksScreen(boolean value) {
-        this.blocksScreen = value;
     }
 
     boolean iterateInput(UiCall callMethod) {
@@ -529,20 +478,6 @@ public class GuiComponent extends Screen {
         double mouseX = getMouseX();
         double mouseY = getMouseY();
         return mouseX >= left && mouseX < left + width && mouseY >= top && mouseY < top + height;
-    }
-
-    /**
-     * Returns true if the mouse cursor is within a rectangular box of the specified
-     * size with its center at the specified point.
-     *
-     * @param x      center of the box, absolute
-     * @param y      center of the box, absolute
-     * @param radius half the side of the box
-     */
-    protected boolean isMouseInRadius(int x, int y, int radius) {
-        double mouseX = getMouseX();
-        double mouseY = getMouseY();
-        return mouseX >= x - radius && mouseX < x + radius && mouseY >= y - radius && mouseY < y + radius;
     }
 
     /**

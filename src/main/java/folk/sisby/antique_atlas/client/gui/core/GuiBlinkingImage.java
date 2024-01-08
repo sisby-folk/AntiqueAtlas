@@ -17,9 +17,9 @@ public class GuiBlinkingImage extends GuiComponent {
     /**
      * The number of milliseconds the icon spends visible or invisible.
      */
-    private long blinkTime = 500;
-    private float visibleAlpha = 1;
-    private float invisibleAlpha = 0.25f;
+    private final long blinkTime;
+    private final float visibleAlpha;
+    private final float invisibleAlpha;
 
     private long lastTickTime;
     /**
@@ -27,27 +27,22 @@ public class GuiBlinkingImage extends GuiComponent {
      */
     private boolean isVisible;
 
+    public GuiBlinkingImage(long blinkTime, float visibleAlpha, float invisibleAlpha) {
+        this.blinkTime = blinkTime;
+        this.visibleAlpha = visibleAlpha;
+        this.invisibleAlpha = invisibleAlpha;
+    }
+
+    public GuiBlinkingImage() {
+        this(500, 1, 0.25f);
+    }
+
     public void setTexture(ITexture texture, int width, int height) {
         this.texture = texture;
         setSize(width, height);
         // Set up the timer so that the image appears visible at the first moment:
         lastTickTime = 0;
         isVisible = false;
-    }
-
-    /**
-     * The number of milliseconds the icon spends visible or invisible.
-     */
-    public void setBlinkTime(long blinkTime) {
-        this.blinkTime = blinkTime;
-    }
-
-    public void setVisibleAlpha(float visibleAlpha) {
-        this.visibleAlpha = visibleAlpha;
-    }
-
-    public void setInvisibleAlpha(float invisibleAlpha) {
-        this.invisibleAlpha = invisibleAlpha;
     }
 
     @Override

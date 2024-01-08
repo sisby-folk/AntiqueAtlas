@@ -7,7 +7,6 @@ import folk.sisby.antique_atlas.AntiqueAtlas;
 import folk.sisby.antique_atlas.client.resource.TextureSet;
 import folk.sisby.antique_atlas.client.resource.TextureSetMap;
 import folk.sisby.antique_atlas.resource.reloader.ResourceReloadListener;
-import folk.sisby.antique_atlas.util.Log;
 import net.minecraft.resource.Resource;
 import net.minecraft.resource.ResourceManager;
 import net.minecraft.util.Identifier;
@@ -113,7 +112,7 @@ public class TextureSetConfig implements ResourceReloadListener<Collection<Textu
                     }
                 }
             } catch (Throwable e) {
-                Log.warn(e, "Failed to read texture sets!");
+                AntiqueAtlas.LOG.warn("Failed to read texture sets!", e);
             }
 
             return sets.values();
@@ -128,9 +127,9 @@ public class TextureSetConfig implements ResourceReloadListener<Collection<Textu
                     set.loadTextures();
                     textureSetMap.register(set);
                     if (AntiqueAtlas.CONFIG.Performance.resourcePackLogging)
-                        Log.info("Loaded texture set %s with %d custom texture(s)", set.name, set.getTexturePaths().length);
+                        AntiqueAtlas.LOG.info("Loaded texture set {} with {} custom texture(s)", set.name, set.getTexturePaths().length);
                 } catch (Throwable e) {
-                    Log.error(e, "Failed to load the texture set `%s`:", set.name);
+                    AntiqueAtlas.LOG.error("Failed to load the texture set `{}`:", set.name, e);
                 }
 
             }
@@ -138,11 +137,10 @@ public class TextureSetConfig implements ResourceReloadListener<Collection<Textu
             for (TextureSet set : sets) {
                 set.checkStitching();
 
-                if (set instanceof TextureSet.TextureSetShore) {
-                    TextureSet.TextureSetShore texture = (TextureSet.TextureSetShore) set;
+                if (set instanceof TextureSet.TextureSetShore texture) {
                     texture.loadWater();
                     if (AntiqueAtlas.CONFIG.Performance.resourcePackLogging)
-                        Log.info("Loaded water texture `%s` for shore texture `%s` texture", texture.waterName, texture.name);
+                        AntiqueAtlas.LOG.info("Loaded water texture `{}` for shore texture `{}` texture", texture.waterName, texture.name);
                 }
             }
         }, executor);

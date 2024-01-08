@@ -1,15 +1,12 @@
 package folk.sisby.antique_atlas.client.resource;
 
-import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
-import com.google.gson.JsonPrimitive;
 import com.mojang.serialization.Lifecycle;
 import folk.sisby.antique_atlas.AntiqueAtlas;
 import folk.sisby.antique_atlas.client.texture.ITexture;
 import folk.sisby.antique_atlas.client.texture.Texture;
 import folk.sisby.antique_atlas.util.BitMatrix;
-import folk.sisby.antique_atlas.util.Log;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.texture.NativeImage;
 import net.minecraft.client.texture.TextureManager;
@@ -44,8 +41,6 @@ public class MarkerType {
 
     private double centerX = 0.5;
     private double centerY = 0.5;
-
-    private boolean isFromJson = false;
 
     private final JSONData data = new JSONData(this);
 
@@ -140,25 +135,19 @@ public class MarkerType {
         return new Texture(getIcon(), iconSizes[iconIndex], iconSizes[iconIndex]);
     }
 
-    public Identifier[] getAllIcons() {
-        return icons;
-    }
-
     private int iconIndex = 0;
 
-    public void calculateMip(double scale, double mapScale, double screenScale) {
+    public void calculateMip(double scale, double mapScale) {
         int size = (int) (16 * scale * viewSize());
         if (isTile) {
-            size *= mapScale;
+            size *= (int) mapScale;
         }
 
         if (icons.length > 1) {
-            int smallestSide = (int) (size);
-
             int closestValue = Integer.MAX_VALUE;
             int closestIndex = -1;
             for (int i = 0; i < iconSizes.length; i++) {
-                if (iconSizes[i] < closestValue && iconSizes[i] >= smallestSide) {
+                if (iconSizes[i] < closestValue && iconSizes[i] >= size) {
                     closestValue = iconSizes[i];
                     closestIndex = i;
                 }
@@ -173,12 +162,12 @@ public class MarkerType {
         iconIndex = 0;
     }
 
-    public MarkerRenderInfo getRenderInfo(double scale, double mapScale, double screenScale) {
+    public MarkerRenderInfo getRenderInfo(double scale, double mapScale) {
         boolean isTile = isTile();
 
         int size = (int) (16 * scale * viewSize());
         if (isTile) {
-            size *= mapScale;
+            size *= (int) mapScale;
         }
         int x = -(int) (size * getCenterX());
         int y = -(int) (size * getCenterY());
@@ -193,7 +182,7 @@ public class MarkerType {
         for (int i = 0; i < icons.length; i++) {
             iconSizes[i] = -1;
             if (icons[i] == null) {
-                Log.warn("Marker %s -- Texture location is null at index %d!", MarkerType.REGISTRY.getId(this).toString(), i);
+                AntiqueAtlas.LOG.warn("Marker {} -- Texture location is null at index {}!", MarkerType.REGISTRY.getId(this).toString(), i);
             }
 
             NativeImage bufferedimage = null;
@@ -230,53 +219,14 @@ public class MarkerType {
 
                 iconPixels[i] = matrix;
             } catch (IOException e) {
-                Log.warn(e, "Marker %s -- Error getting texture size data for index %d - %s",
-                    MarkerType.REGISTRY.getId(this).toString(), i, icons[i].toString());
+                AntiqueAtlas.LOG.warn("Marker {} -- Error getting texture size data for index {} - {}",
+                    MarkerType.REGISTRY.getId(this).toString(), i, icons[i].toString(), e);
             } finally {
                 if (bufferedimage != null) {
                     bufferedimage.close();
                 }
             }
         }
-    }
-
-    /* Setters */
-
-    public MarkerType setSize(int value) {
-        this.viewSize = value;
-        return this;
-    }
-
-    public MarkerType setIsTile(boolean value) {
-        this.isTile = value;
-        return this;
-    }
-
-    public MarkerType setAlwaysShow(boolean value) {
-        this.alwaysShow = value;
-        return this;
-    }
-
-    public MarkerType setClip(int min, int max) {
-        this.clipMin = Math.min(min, max);
-        this.clipMax = Math.max(min, max);
-        return this;
-    }
-
-    public MarkerType setCenter(double x, double y) {
-        this.centerX = x;
-        this.centerY = y;
-        return this;
-    }
-
-    public MarkerType setIsTechnical(boolean value) {
-        this.isTechnical = value;
-        return this;
-    }
-
-    public MarkerType setIsFromJson(boolean value) {
-        this.isFromJson = value;
-        return this;
     }
 
     public JSONData getJSONData() {
@@ -309,53 +259,8 @@ public class MarkerType {
             this.type = type;
         }
 
-        public void saveTo(JsonObject object) {
-            if (icons != null) {
-
-                JsonArray arr = new JsonArray();
-
-                for (Identifier loc : icons) {
-                    arr.add(new JsonPrimitive(loc.toString()));
-                }
-
-                object.add(ICONS, arr);
-            }
-
-            if (viewSize != null) {
-                object.addProperty(SIZE, viewSize);
-            }
-
-            if (clipMin != null) {
-                object.addProperty(CLIP_MIN, clipMin);
-            }
-
-            if (clipMax != null) {
-                object.addProperty(CLIP_MAX, clipMax);
-            }
-
-            if (alwaysShow != null) {
-                object.addProperty(ALWAYS_SHOW, alwaysShow);
-            }
-
-            if (isTile != null) {
-                object.addProperty(IS_TILE, isTile);
-            }
-
-            if (isTechnical != null) {
-                object.addProperty(IS_TECH, isTechnical);
-            }
-
-            if (centerX != null) {
-                object.addProperty(CENTER_X, centerX);
-            }
-
-            if (centerY != null) {
-                object.addProperty(CENTER_Y, centerY);
-            }
-        }
-
         public void readFrom(JsonObject object) {
-            if (object.entrySet().size() == 0)
+            if (object.entrySet().isEmpty())
                 return;
 
             Identifier typeName = MarkerType.REGISTRY.getId(type);
@@ -369,7 +274,7 @@ public class MarkerType {
                         if (elem.isJsonPrimitive()) {
                             list.add(AntiqueAtlas.id(elem.getAsString()));
                         } else {
-                            Log.warn("Loading marker %s from JSON: Texture item %d isn't a primitive", typeName, i);
+                            AntiqueAtlas.LOG.warn("Loading marker {} from JSON: Texture item {} isn't a primitive", typeName, i);
                         }
                         i++;
                     }
@@ -425,9 +330,9 @@ public class MarkerType {
                     workingOn = NONE;
                 }
             } catch (ClassCastException e) {
-                Log.warn(e, "Loading marker $s from JSON: Parsing element %s: element was wrong type!", typeName, workingOn);
+                AntiqueAtlas.LOG.warn("Loading marker {} from JSON: Parsing element {}: element was wrong type!", typeName, workingOn, e);
             } catch (NumberFormatException e) {
-                Log.warn(e, "Loading marker $s from JSON: Parsing element %s: element was an invalid number!", typeName, workingOn);
+                AntiqueAtlas.LOG.warn("Loading marker {} from JSON: Parsing element {}: element was an invalid number!", typeName, workingOn, e);
             }
 
             if (icons != null)

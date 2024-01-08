@@ -30,7 +30,7 @@ public class SubTile {
      */
     public int variationNumber;
     public Shape shape;
-    public Part part;
+    public final Part part;
 
     public SubTile(Part part) {
         this.part = part;
@@ -44,39 +44,23 @@ public class SubTile {
      * Texture offset from to the respective subtile section, in subtiles.
      */
     public int getTextureU() {
-        switch (shape) {
-            case SINGLE_OBJECT:
-                return part.u;
-            case CONCAVE:
-                return 2 + part.u;
-            case VERTICAL:
-            case CONVEX:
-                return part.u * 3;
-            case HORIZONTAL:
-            case FULL:
-                return 2 - part.u;
-            default:
-                return 0;
-        }
+        return switch (shape) {
+            case SINGLE_OBJECT -> part.u;
+            case CONCAVE -> 2 + part.u;
+            case VERTICAL, CONVEX -> part.u * 3;
+            case HORIZONTAL, FULL -> 2 - part.u;
+        };
     }
 
     /**
      * Texture offset from to the respective subtile section, in subtiles.
      */
     public int getTextureV() {
-        switch (shape) {
-            case SINGLE_OBJECT:
-            case CONCAVE:
-                return part.v;
-            case CONVEX:
-            case HORIZONTAL:
-                return 2 + part.v * 3;
-            case FULL:
-            case VERTICAL:
-                return 4 - part.v;
-            default:
-                return 0;
-        }
+        return switch (shape) {
+            case SINGLE_OBJECT, CONCAVE -> part.v;
+            case CONVEX, HORIZONTAL -> 2 + part.v * 3;
+            case FULL, VERTICAL -> 4 - part.v;
+        };
     }
 
     public void setChunkCoords(int chunkX, int chunkY, int step) {

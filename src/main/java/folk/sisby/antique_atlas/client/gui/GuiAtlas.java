@@ -202,7 +202,7 @@ public class GuiAtlas extends GuiComponent {
      * When dragging, this saves the partly updates of the mapOffset.
      * Turns out, mouse dragging events are too precise.
      */
-    private float mapOffsetDeltaX, mapOffsetDeltaY;
+    private double mapOffsetDeltaX, mapOffsetDeltaY;
 
     private Integer targetOffsetX, targetOffsetY;
     /**
@@ -275,7 +275,6 @@ public class GuiAtlas extends GuiComponent {
         setSize(WIDTH, HEIGHT);
         setMapScale(0.5);
         followPlayer = true;
-        setInterceptKeyboard(true);
 
         btnUp = GuiArrowButton.up();
         addChild(btnUp).offsetGuiCoords(148, 10);
@@ -329,9 +328,6 @@ public class GuiAtlas extends GuiComponent {
                     addChildBehind(markerFinalizer, blinkingIcon)
                         .setRelativeCoords(worldXToScreenX((int) player.getX()) - getGuiX() - MARKER_SIZE / 2,
                             worldZToScreenY((int) player.getZ()) - getGuiY() - MARKER_SIZE / 2);
-
-                    // Need to intercept keyboard events to type in the label:
-                    setInterceptKeyboard(true);
 
                     // Un-press all keys to prevent player from walking infinitely:
                     KeyBinding.unpressAll();
@@ -475,9 +471,6 @@ public class GuiAtlas extends GuiComponent {
                 addChildBehind(markerFinalizer, blinkingIcon)
                     .setRelativeCoords((int) mouseX - getGuiX() - MARKER_SIZE / 2,
                         (int) mouseY - getGuiY() - MARKER_SIZE / 2);
-
-                // Need to intercept keyboard events to type in the label:
-                setInterceptKeyboard(true);
 
                 // Un-press all keys to prevent player from walking infinitely:
                 KeyBinding.unpressAll();
@@ -776,9 +769,6 @@ public class GuiAtlas extends GuiComponent {
         super.renderBackground(context);
 
         RenderSystem.setShaderColor(1, 1, 1, 1);
-        // TODO fix me for 1.17
-//        RenderSystem.enableAlphaTest();
-//        RenderSystem.alphaFunc(GL11.GL_GREATER, 0); // So light detail on tiles is visible
         AntiqueAtlasTextures.BOOK.draw(context, getGuiX(), getGuiY());
 
         if (biomeData == null) return;
@@ -857,8 +847,8 @@ public class GuiAtlas extends GuiComponent {
         RenderSystem.blendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
         if (state.is(PLACING_MARKER)) {
             RenderSystem.setShaderColor(1, 1, 1, 0.5f);
-            markerFinalizer.selectedType.calculateMip(iconScale, mapScale, screenScale);
-            MarkerRenderInfo renderInfo = markerFinalizer.selectedType.getRenderInfo(iconScale, mapScale, screenScale);
+            markerFinalizer.selectedType.calculateMip(iconScale, mapScale);
+            MarkerRenderInfo renderInfo = markerFinalizer.selectedType.getRenderInfo(iconScale, mapScale);
             markerFinalizer.selectedType.resetMip();
             renderInfo.tex.draw(context, mouseX + renderInfo.x, mouseY + renderInfo.y);
             RenderSystem.setShaderColor(1, 1, 1, 1);
@@ -983,8 +973,8 @@ public class GuiAtlas extends GuiComponent {
             !biomeData.hasTileAt(marker.getChunkX(), marker.getChunkZ())) {
             return;
         }
-        type.calculateMip(scale, mapScale, screenScale);
-        MarkerRenderInfo info = type.getRenderInfo(scale, mapScale, screenScale);
+        type.calculateMip(scale, mapScale);
+        MarkerRenderInfo info = type.getRenderInfo(scale, mapScale);
 
         boolean mouseIsOverMarker = type.shouldHover((getMouseX() - (markerX + info.x)) / info.tex.width(), (getMouseY() - (markerY + info.y)) / info.tex.height());
         type.resetMip();
@@ -1076,7 +1066,6 @@ public class GuiAtlas extends GuiComponent {
     @Override
     protected void onChildClosed(GuiComponent child) {
         if (child.equals(markerFinalizer)) {
-            setInterceptKeyboard(true);
             removeChild(blinkingIcon);
         }
     }

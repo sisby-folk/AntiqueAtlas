@@ -11,12 +11,17 @@ public class GuiArrowButton extends GuiComponentButton {
     private static final int HEIGHT = 12;
 
     public enum ArrowDirection {
-        UP("Up"), DOWN("Down"), LEFT("Left"), RIGHT("Right");
+        UP(12, 0),
+        DOWN(12, 12),
+        LEFT(0, 0),
+        RIGHT(0, 12);
 
-        public final String description;
+        public final int u;
+        public final int v;
 
-        ArrowDirection(String text) {
-            this.description = text;
+        ArrowDirection(int u, int v) {
+            this.u = u;
+            this.v = v;
         }
     }
 
@@ -48,9 +53,6 @@ public class GuiArrowButton extends GuiComponentButton {
         RenderSystem.enableBlend();
         RenderSystem.blendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
 
-        // TODO fix me for 1.17
-        //RenderSystem.alphaFunc(GL11.GL_GREATER, 0);
-
         int x = getGuiX(), y = getGuiY();
         if (isMouseOver) {
             RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
@@ -58,30 +60,11 @@ public class GuiArrowButton extends GuiComponentButton {
             // Fade out when the mouse is far from them:
             int distanceSq = (mouseX - x - getWidth() / 2) * (mouseX - x - getWidth() / 2) +
                 (mouseY - y - getHeight() / 2) * (mouseY - y - getHeight() / 2);
-            double alpha = distanceSq < 400 ? 0.5 : Math.pow((double) distanceSq, -0.28);
+            double alpha = distanceSq < 400 ? 0.5 : Math.pow(distanceSq, -0.28);
             RenderSystem.setShaderColor(1, 1, 1, (float) alpha);
         }
 
-        int u = 0, v = 0;
-        switch (direction) {
-            case LEFT:
-                u = 0;
-                v = 0;
-                break;
-            case RIGHT:
-                u = 0;
-                v = 12;
-                break;
-            case UP:
-                u = 12;
-                v = 0;
-                break;
-            case DOWN:
-                u = 12;
-                v = 12;
-                break;
-        }
-        AntiqueAtlasTextures.BTN_ARROWS.draw(context, x, y, u, v, WIDTH, HEIGHT);
+        AntiqueAtlasTextures.BTN_ARROWS.draw(context, x, y, direction.u, direction.v, WIDTH, HEIGHT);
 
         RenderSystem.disableBlend();
     }

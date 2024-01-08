@@ -1,6 +1,6 @@
 package folk.sisby.antique_atlas.core;
 
-import folk.sisby.antique_atlas.util.Log;
+import folk.sisby.antique_atlas.AntiqueAtlas;
 import folk.sisby.antique_atlas.util.Rect;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.nbt.NbtList;
@@ -23,12 +23,12 @@ public class TileGroup implements ITileStorage {
     /**
      * The area of chunks this group covers
      */
-    Rect scope = new Rect(0, 0, CHUNK_STEP, CHUNK_STEP);
+    public final Rect scope = new Rect(0, 0, CHUNK_STEP, CHUNK_STEP);
 
     /**
      * The tiles in this scope
      */
-    Identifier[][] tiles = new Identifier[CHUNK_STEP][CHUNK_STEP];
+    public final Identifier[][] tiles = new Identifier[CHUNK_STEP][CHUNK_STEP];
 
     public TileGroup(int x, int y) {
         scope.minX = x;
@@ -85,24 +85,16 @@ public class TileGroup implements ITileStorage {
         return compound;
     }
 
-    @Override
     public void setTile(int x, int y, Identifier tile) {
         if (x >= scope.minX && y >= scope.minY && x <= scope.maxX && y <= scope.maxY) {
             int rx = x - scope.minX;
             int ry = y - scope.minY;
             tiles[rx][ry] = tile;
         } else {
-            Log.warn("TileGroup tried to set tile out of bounds:" +
+            AntiqueAtlas.LOG.warn("TileGroup tried to set tile out of bounds:" +
                 "\n\tbounds:" + scope +
                 "\n\ttarget: x:" + x + ", y:" + y);
         }
-    }
-
-    @Override
-    public Identifier removeTile(int x, int y) {
-        Identifier tmp = getTile(x, y);
-        setTile(x, y, null);
-        return tmp;
     }
 
     @Override
@@ -115,7 +107,6 @@ public class TileGroup implements ITileStorage {
         return null;
     }
 
-    @Override
     public boolean hasTileAt(int x, int y) {
         return getTile(x, y) != null;
     }
@@ -127,11 +118,10 @@ public class TileGroup implements ITileStorage {
 
     @Override
     public boolean equals(Object obj) {
-        if (!(obj instanceof TileGroup)) {
+        if (!(obj instanceof TileGroup other)) {
             return false;
         }
 
-        TileGroup other = (TileGroup) obj;
         if (!scope.equals(other.scope)) {
             return false;
         }

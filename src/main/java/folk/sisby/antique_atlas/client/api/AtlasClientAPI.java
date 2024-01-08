@@ -9,18 +9,10 @@ import folk.sisby.antique_atlas.client.api.impl.TileApiImplClient;
  *
  * @author Hunternif
  */
+@SuppressWarnings("unused")
 public class AtlasClientAPI {
-    private static final int VERSION = 5;
     private static final ClientTileAPI tiles = new TileApiImplClient();
     private static final MarkerAPI markers = new MarkerApiImplClient();
-
-    /**
-     * Version of the API, meaning only this particular class. You might
-     * want to check static field VERSION in the specific API interfaces.
-     */
-    public static int getVersion() {
-        return VERSION;
-    }
 
     /**
      * API for biomes and custom tiles (i.e. dungeons, towns etc).

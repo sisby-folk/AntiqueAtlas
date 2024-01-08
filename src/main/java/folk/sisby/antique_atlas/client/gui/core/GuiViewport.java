@@ -34,13 +34,6 @@ public class GuiViewport extends GuiComponent {
         return content.addChild(child);
     }
 
-    /**
-     * @return the child removed
-     */
-    public GuiComponent removeContent(GuiComponent child) {
-        return content.removeChild(child);
-    }
-
     public void removeAllContent() {
         content.removeAllChildren();
     }
@@ -83,14 +76,11 @@ public class GuiViewport extends GuiComponent {
         super.validateSize();
         // Update the clipping flag on content's child components:
         for (GuiComponent child : this.getChildren()) {
-            if (child.getGuiY() > getGuiY() + properHeight ||
-                child.getGuiY() + child.getHeight() < getGuiY() ||
-                child.getGuiX() > getGuiX() + properWidth ||
-                child.getGuiX() + child.getWidth() < getGuiX()) {
-                child.setClipped(true);
-            } else {
-                child.setClipped(false);
-            }
+            child.setClipped(child.getGuiY() > getGuiY() + properHeight ||
+                    child.getGuiY() + child.getHeight() < getGuiY() ||
+                    child.getGuiX() > getGuiX() + properWidth ||
+                    child.getGuiX() + child.getWidth() < getGuiX()
+            );
         }
     }
 }

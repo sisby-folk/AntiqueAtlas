@@ -1,6 +1,7 @@
 package folk.sisby.antique_atlas.client.gui.tiles;
 
 import folk.sisby.antique_atlas.util.ArrayIterator;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.Iterator;
 
@@ -26,10 +27,6 @@ public class SubTileQuartet implements Iterable<SubTile> {
         array = new SubTile[]{a, b, c, d};
     }
 
-    public SubTile get(int i) {
-        return array[i];
-    }
-
     /**
      * Set the coordinates for the top left subtile, and the rest of them
      * have their coordinates updated respectively.
@@ -47,7 +44,7 @@ public class SubTileQuartet implements Iterable<SubTile> {
     }
 
     @Override
-    public Iterator<SubTile> iterator() {
+    public @NotNull Iterator<SubTile> iterator() {
         return new ArrayIterator<>(array);
     }
 

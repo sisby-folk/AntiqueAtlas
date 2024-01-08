@@ -6,11 +6,11 @@ import folk.sisby.antique_atlas.client.gui.tiles.TileRenderIterator;
 import folk.sisby.antique_atlas.core.AtlasData;
 import folk.sisby.antique_atlas.core.TileDataStorage;
 import folk.sisby.antique_atlas.network.c2s.PutTileC2SPacket;
-import folk.sisby.antique_atlas.util.Log;
 import folk.sisby.antique_atlas.util.Rect;
 import net.minecraft.util.Identifier;
 import net.minecraft.world.World;
 
+@SuppressWarnings("unused")
 public class TileApiImplClient implements ClientTileAPI {
     @Override
     public void putTile(World world, int atlasID, Identifier tile, int chunkX, int chunkZ) {
@@ -25,7 +25,7 @@ public class TileApiImplClient implements ClientTileAPI {
 
     @Override
     public void putGlobalTile(World world, Identifier tile, int chunkX, int chunkZ) {
-        Log.warn("Client attempted to put global tile");
+        AntiqueAtlas.LOG.warn("Client attempted to put global tile");
     }
 
     @Override
@@ -36,7 +36,7 @@ public class TileApiImplClient implements ClientTileAPI {
 
     @Override
     public void deleteGlobalTile(World world, int chunkX, int chunkZ) {
-        Log.warn("Client attempted to delete global tile");
+        AntiqueAtlas.LOG.warn("Client attempted to delete global tile");
     }
 
     @Override

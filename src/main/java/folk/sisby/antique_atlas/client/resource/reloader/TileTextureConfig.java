@@ -8,7 +8,6 @@ import folk.sisby.antique_atlas.client.resource.TextureSetMap;
 import folk.sisby.antique_atlas.client.resource.TileTextureMap;
 import folk.sisby.antique_atlas.core.scanning.TileHeightType;
 import folk.sisby.antique_atlas.resource.reloader.ResourceReloadListener;
-import folk.sisby.antique_atlas.util.Log;
 import net.minecraft.resource.Resource;
 import net.minecraft.resource.ResourceManager;
 import net.minecraft.util.Identifier;
@@ -93,7 +92,7 @@ public class TileTextureConfig implements ResourceReloadListener<Map<Identifier,
                     }
                 }
             } catch (Throwable e) {
-                Log.warn(e, "Failed to read tile mappings!");
+                AntiqueAtlas.LOG.warn("Failed to read tile mappings!", e);
             }
 
             return map;
@@ -116,7 +115,7 @@ public class TileTextureConfig implements ResourceReloadListener<Map<Identifier,
 
                 tileTextureMap.setTexture(entry.getKey(), set);
                 if (AntiqueAtlas.CONFIG.Performance.resourcePackLogging)
-                    Log.info("Loaded tile %s with texture set %s", tile_id, set.name);
+                    AntiqueAtlas.LOG.info("Loaded tile {} with texture set {}", tile_id, set.name);
             }
         }, executor);
     }

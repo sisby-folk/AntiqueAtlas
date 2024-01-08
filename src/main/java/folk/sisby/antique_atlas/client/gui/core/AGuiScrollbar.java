@@ -19,7 +19,7 @@ public abstract class AGuiScrollbar extends GuiComponent {
     /**
      * In pixels.
      */
-    private static int scrollStep = 18;
+    private static final int scrollStep = 18;
 
     boolean visible = false;
     /**
@@ -46,10 +46,7 @@ public abstract class AGuiScrollbar extends GuiComponent {
 
     int anchorPos = 0;
     int anchorSize;
-    /**
-     * How much to scale the texture vertically to draw the body of the anchor.
-     */
-    double bodyTextureScale = 1;
+
     /**
      * How much the content of the viewport is displaced.
      */
@@ -113,17 +110,6 @@ public abstract class AGuiScrollbar extends GuiComponent {
         this.scrollPos = scrollPos;
         scrollRatio = (float) scrollPos / (float) (getContentSize() - getViewportSize());
         updateAnchorPos();
-    }
-
-    /**
-     * Amount scrolled (0.0 = top, 1.0 = bottom). This method forces
-     * validation of the viewport and its content in order to work correctly
-     * during initGui().
-     */
-    public void setScrollRatio(float scrollRatio) {
-        viewport.content.validateSize();
-        viewport.validateSize();
-        doSetScrollRatio(scrollRatio);
     }
 
     /**
@@ -203,7 +189,6 @@ public abstract class AGuiScrollbar extends GuiComponent {
 
     private void updateAnchorSize() {
         anchorSize = Math.max(capLength * 2, Math.round(Math.min(1, contentRatio) * getScrollbarLength()));
-        bodyTextureScale = (double) (anchorSize - capLength * 2) / (double) textureBodyLength;
     }
 
     private void updateAnchorPos() {

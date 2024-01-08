@@ -36,7 +36,7 @@ public class GuiStates {
     }
 
     public boolean is(IState state) {
-        return currentState == state;
+        return current() == state;
     }
 
     public void switchTo(IState state) {

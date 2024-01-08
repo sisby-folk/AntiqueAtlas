@@ -19,7 +19,7 @@ public class AntiqueAtlasKeybindings {
 
     public static void onClientTick(MinecraftClient client) {
         while (ATLAS_KEYMAPPING.wasPressed()) {
-            Screen currentScreen = MinecraftClient.getInstance().currentScreen;
+            Screen currentScreen = client.currentScreen;
             if (currentScreen instanceof GuiAtlas) {
                 currentScreen.close();
             } else {

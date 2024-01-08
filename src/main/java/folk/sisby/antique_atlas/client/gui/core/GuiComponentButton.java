@@ -11,11 +11,12 @@ import java.util.List;
 /**
  * A GuiComponent that can act like a button.
  */
+@SuppressWarnings("rawtypes")
 public class GuiComponentButton extends GuiComponent {
     private final List<IButtonListener> listeners = new ArrayList<>();
 
     private boolean enabled = true;
-    private SoundEvent clickSound = SoundEvents.UI_BUTTON_CLICK.value();
+    private final SoundEvent clickSound = SoundEvents.UI_BUTTON_CLICK.value();
 
     public void setEnabled(boolean value) {
         enabled = value;
@@ -23,17 +24,6 @@ public class GuiComponentButton extends GuiComponent {
 
     public boolean isEnabled() {
         return enabled;
-    }
-
-    public void setClickSound(SoundEvent clickSound) {
-        this.clickSound = clickSound;
-    }
-
-    /**
-     * Makes the button produce no sound when clicked on.
-     */
-    public void mute() {
-        clickSound = null;
     }
 
     @Override
@@ -62,9 +52,5 @@ public class GuiComponentButton extends GuiComponent {
 
     public void addListener(IButtonListener listener) {
         listeners.add(listener);
-    }
-
-    public void removeListener(IButtonListener listener) {
-        listeners.remove(listener);
     }
 }

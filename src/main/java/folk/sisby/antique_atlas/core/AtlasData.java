@@ -1,7 +1,7 @@
 package folk.sisby.antique_atlas.core;
 
+import folk.sisby.antique_atlas.AntiqueAtlas;
 import folk.sisby.antique_atlas.network.s2c.MapDataS2CPacket;
-import folk.sisby.antique_atlas.util.Log;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.nbt.NbtElement;
@@ -10,12 +10,15 @@ import net.minecraft.registry.RegistryKey;
 import net.minecraft.registry.RegistryKeys;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.util.Identifier;
-import net.minecraft.util.math.ChunkPos;
 import net.minecraft.world.PersistentState;
 import net.minecraft.world.World;
 
-import java.util.*;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.HashSet;
+import java.util.Map;
 import java.util.Map.Entry;
+import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 
 /**
@@ -58,7 +61,7 @@ public class AtlasData extends PersistentState {
     public void updateFromNbt(NbtCompound compound) {
         int version = compound.getInt(TAG_VERSION);
         if (version < VERSION) {
-            Log.warn("Outdated atlas data format! Was %d but current is %d.", version, VERSION);
+            AntiqueAtlas.LOG.warn("Outdated atlas data format! Was {} but current is {}.", version, VERSION);
             return;
         }
 
@@ -119,13 +122,6 @@ public class AtlasData extends PersistentState {
         return dimData.removeTile(x, y);
     }
 
-    public Set<RegistryKey<World>> getVisitedWorlds() {
-        return worldMap.keySet();
-    }
-
-    /* TODO: Packet Rework
-     *   Dimension data should check the server for updates*/
-
     /**
      * If this dimension is not yet visited, empty DimensionData will be created.
      */
@@ -133,22 +129,11 @@ public class AtlasData extends PersistentState {
         return worldMap.computeIfAbsent(world, k -> new WorldData(this, world));
     }
 
-    public Map<ChunkPos, Identifier> getSeenChunksInWorld(RegistryKey<World> world) {
-        return getWorldData(world).getSeenChunks();
-    }
-
     /**
      * The set of players this AtlasData has already been sent to.
      */
     public Collection<PlayerEntity> getSyncedPlayers() {
         return Collections.unmodifiableCollection(playersSentTo);
-    }
-
-    /**
-     * Whether this AtlasData has already been sent to the specified player.
-     */
-    public boolean isSyncedToPlayer(PlayerEntity player) {
-        return playersSentTo.contains(player);
     }
 
     /**
@@ -166,7 +151,7 @@ public class AtlasData extends PersistentState {
             worldMap.get(world).syncToPlayer(atlasID, player);
         }
 
-        Log.info("Sent Atlas #%d data to player %s", atlasID, player.getCommandSource().getName());
+        AntiqueAtlas.LOG.info("Sent Atlas #{} data to player {}", atlasID, player.getCommandSource().getName());
         playersSentTo.add(player);
     }
 

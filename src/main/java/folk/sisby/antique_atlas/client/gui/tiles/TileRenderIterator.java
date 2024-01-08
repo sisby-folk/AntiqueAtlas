@@ -7,6 +7,7 @@ import folk.sisby.antique_atlas.client.gui.tiles.SubTile.Shape;
 import folk.sisby.antique_atlas.core.ITileStorage;
 import folk.sisby.antique_atlas.util.Rect;
 import net.minecraft.util.Identifier;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.Iterator;
 
@@ -39,12 +40,6 @@ public class TileRenderIterator implements Iterator<SubTileQuartet>, Iterable<Su
      * The scope of iteration.
      */
     private final Rect scope = new Rect();
-
-    public void setScope(int minX, int minY, int maxX, int maxY) {
-        scope.set(minX, minY, maxX, maxY);
-        chunkX = minX;
-        chunkY = minY;
-    }
 
     public void setScope(Rect scope) {
         this.scope.set(scope);
@@ -90,7 +85,7 @@ public class TileRenderIterator implements Iterator<SubTileQuartet>, Iterable<Su
     }
 
     @Override
-    public Iterator<SubTileQuartet> iterator() {
+    public @NotNull Iterator<SubTileQuartet> iterator() {
         return this;
     }
 

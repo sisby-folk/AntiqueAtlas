@@ -4,11 +4,8 @@ package folk.sisby.antique_atlas.client.gui.core;
  * A button that can be toggled on, and only toggled off by selecting
  * a different ToggleButton.
  */
-@SuppressWarnings("rawtypes")
 public class GuiToggleButton extends GuiComponentButton {
     private boolean selected;
-
-    private ToggleGroup radioGroup;
 
     /**
      * Sets the button selected state. If the button is part of a RadioGroup,
@@ -20,14 +17,6 @@ public class GuiToggleButton extends GuiComponentButton {
 
     protected boolean isSelected() {
         return selected;
-    }
-
-    void setRadioGroup(ToggleGroup radioGroup) {
-        this.radioGroup = radioGroup;
-    }
-
-    public ToggleGroup getRadioGroup() {
-        return radioGroup;
     }
 
     @Override

@@ -5,6 +5,7 @@ import folk.sisby.antique_atlas.client.gui.tiles.TileRenderIterator;
 import folk.sisby.antique_atlas.util.Rect;
 import net.minecraft.world.World;
 
+@SuppressWarnings("unused")
 public interface ClientTileAPI extends TileAPI {
     TileRenderIterator getTiles(World world, int atlasID, Rect scope, int step);
 }

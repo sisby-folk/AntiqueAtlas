@@ -2,10 +2,8 @@ package folk.sisby.antique_atlas.core;
 
 import folk.sisby.antique_atlas.AntiqueAtlas;
 import folk.sisby.antique_atlas.network.s2c.TileGroupsS2CPacket;
-import folk.sisby.antique_atlas.util.Log;
 import folk.sisby.antique_atlas.util.Rect;
 import folk.sisby.antique_atlas.util.Streams;
-import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.nbt.NbtList;
@@ -48,27 +46,6 @@ public class WorldData implements ITileStorage {
     }
 
     /**
-     * This function has to create a new map on each call since the packet rework
-     */
-    public Map<ChunkPos, Identifier> getSeenChunks() {
-        Map<ChunkPos, Identifier> chunks = new ConcurrentHashMap<>(2, 0.75f, 2);
-        Identifier t;
-        for (Map.Entry<ChunkPos, TileGroup> entry : tileGroups.entrySet()) {
-            int basex = entry.getValue().getScope().minX;
-            int basey = entry.getValue().getScope().minY;
-            for (int x = basex; x < basex + TileGroup.CHUNK_STEP; x++) {
-                for (int y = basey; y < basey + TileGroup.CHUNK_STEP; y++) {
-                    t = entry.getValue().getTile(x, y);
-                    if (t != null) {
-                        chunks.put(new ChunkPos(x, y), t);
-                    }
-                }
-            }
-        }
-        return chunks;
-    }
-
-    /**
      * Set world coordinates that are in the center of the GUI.
      */
     public void setBrowsingPosition(int x, int y, double zoom) {
@@ -76,16 +53,10 @@ public class WorldData implements ITileStorage {
         this.browsingY = y;
         this.browsingZoom = zoom;
         if (browsingZoom <= 0) {
-            Log.warn("Setting map zoom to invalid value of %f", zoom);
+            AntiqueAtlas.LOG.warn("Setting map zoom to invalid value of {}", zoom);
             browsingZoom = AntiqueAtlas.CONFIG.Interface.minScale;
         }
         parent.markDirty();
-    }
-
-    public void setBrowsingPositionTo(Entity e) {
-        setBrowsingPosition((int) Math.round(-e.getX() * AntiqueAtlas.CONFIG.Interface.defaultScale),
-            (int) Math.round(-e.getZ() * AntiqueAtlas.CONFIG.Interface.defaultScale),
-            AntiqueAtlas.CONFIG.Interface.defaultScale);
     }
 
     public int getBrowsingX() {
@@ -100,7 +71,6 @@ public class WorldData implements ITileStorage {
         return browsingZoom;
     }
 
-    @Override
     public void setTile(int x, int y, Identifier tile) {
         ChunkPos groupPos = new ChunkPos((int) Math.floor(x / (float) TileGroup.CHUNK_STEP),
             (int) Math.floor(y / (float) TileGroup.CHUNK_STEP));
@@ -123,7 +93,6 @@ public class WorldData implements ITileStorage {
         extendToTileGroup(t);
     }
 
-    @Override
     public Identifier removeTile(int x, int y) {
         //TODO
         // since scope is not modified, I assume this was never really used
@@ -144,7 +113,6 @@ public class WorldData implements ITileStorage {
         return tg.getTile(x, y);
     }
 
-    @Override
     public boolean hasTileAt(int x, int y) {
         return getTile(x, y) != null;
     }
@@ -152,28 +120,6 @@ public class WorldData implements ITileStorage {
     @Override
     public Rect getScope() {
         return scope;
-    }
-
-    @Override
-    public WorldData clone() {
-        //TODO
-        WorldData data = new WorldData(this.parent, this.world);
-        data.tileGroups.putAll(tileGroups);
-        data.scope.set(scope);
-        return data;
-    }
-
-    public void addData(WorldData other) {
-        for (Entry<ChunkPos, TileGroup> e : other.tileGroups.entrySet()) {
-            TileGroup group = e.getValue();
-            Rect s = group.getScope();
-            for (int x = s.minX; x <= s.maxX; x++) {
-                for (int y = s.minY; y <= s.maxY; y++) {
-                    Identifier tile = group.getTile(x, y);
-                    if (tile != null) setTile(x, y, tile);
-                }
-            }
-        }
     }
 
     public NbtList writeToNBT() {
@@ -209,19 +155,18 @@ public class WorldData implements ITileStorage {
     }
 
     public void syncToPlayer(int atlasID, PlayerEntity player) {
-        Log.info("Sending dimension #%s", this.world.toString());
+        AntiqueAtlas.LOG.info("Sending dimension #{}", this.world.toString());
 
         Streams.chunked(this.tileGroups.values().stream(), TileGroupsS2CPacket.TILE_GROUPS_PER_PACKET).forEach(
             chunk -> new TileGroupsS2CPacket(atlasID, this.world, chunk).send((ServerPlayerEntity) player)
         );
 
-        Log.info("Sent dimension #%s (%d tiles)", this.world.toString(), this.tileGroups.size());
+        AntiqueAtlas.LOG.info("Sent dimension #{} ({} tiles)", this.world.toString(), this.tileGroups.size());
     }
 
     @Override
     public boolean equals(Object obj) {
-        if (!(obj instanceof WorldData)) return false;
-        WorldData other = (WorldData) obj;
+        if (!(obj instanceof WorldData other)) return false;
         if (other.tileGroups.size() != tileGroups.size()) return false;
         for (ChunkPos entry : tileGroups.keySet()) {
             if (!this.tileGroups.get(entry).equals(other.tileGroups.get(entry))) return false;

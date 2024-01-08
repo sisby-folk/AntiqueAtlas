@@ -4,7 +4,6 @@ import folk.sisby.antique_atlas.AntiqueAtlas;
 import folk.sisby.antique_atlas.client.texture.ITexture;
 import folk.sisby.antique_atlas.client.texture.TileTexture;
 import folk.sisby.antique_atlas.resource.reloader.ResourceReloadListener;
-import folk.sisby.antique_atlas.util.Log;
 import net.minecraft.resource.ResourceManager;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.InvalidIdentifierException;
@@ -65,7 +64,7 @@ public class TextureConfig implements ResourceReloadListener<Map<Identifier, ITe
             for (Map.Entry<Identifier, ITexture> entry : textures.entrySet()) {
                 texture_map.put(entry.getKey(), entry.getValue());
                 if (AntiqueAtlas.CONFIG.Performance.resourcePackLogging)
-                    Log.info("Loaded texture %s with path %s", entry.getKey(), entry.getValue().getTexture());
+                    AntiqueAtlas.LOG.info("Loaded texture {} with path {}", entry.getKey(), entry.getValue().getTexture());
             }
         }, executor);
     }
