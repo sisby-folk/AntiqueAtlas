@@ -136,11 +136,6 @@ public class GuiAtlas extends GuiComponent {
     // Buttons =================================================================
 
     /**
-     * Arrow buttons for navigating the map view via mouse clicks.
-     */
-    private final GuiArrowButton btnUp, btnDown, btnLeft, btnRight;
-
-    /**
      * Button for placing a marker at current position, local to this Atlas instance.
      */
     private final GuiBookmarkButton btnMarker;
@@ -164,12 +159,6 @@ public class GuiAtlas extends GuiComponent {
     // Navigation ==============================================================
 
     /**
-     * Pause between after the arrow button is pressed and continuous
-     * navigation starts, in ticks.
-     */
-    private static final int BUTTON_PAUSE = 8;
-
-    /**
      * How much the map view is offset, in blocks, per click (or per tick).
      */
     private static final int navigateStep = 24;
@@ -180,12 +169,6 @@ public class GuiAtlas extends GuiComponent {
      * canceling of placing marker.
      */
     private GuiComponentButton selectedButton = null;
-
-    /**
-     * Time in world ticks when the button was pressed. Used to create a pause
-     * before continuous navigation using the arrow buttons.
-     */
-    private long timeButtonPressed = 0;
 
     /**
      * Set to true when dragging the map view.
@@ -276,14 +259,6 @@ public class GuiAtlas extends GuiComponent {
         setMapScale(0.5);
         followPlayer = true;
 
-        btnUp = GuiArrowButton.up();
-        addChild(btnUp).offsetGuiCoords(148, 10);
-        btnDown = GuiArrowButton.down();
-        addChild(btnDown).offsetGuiCoords(148, 194);
-        btnLeft = GuiArrowButton.left();
-        addChild(btnLeft).offsetGuiCoords(15, 100);
-        btnRight = GuiArrowButton.right();
-        addChild(btnRight).offsetGuiCoords(283, 100);
         btnPosition = new GuiPositionButton();
         btnPosition.setEnabled(!followPlayer);
         addChild(btnPosition).offsetGuiCoords(283, 194);
@@ -294,16 +269,8 @@ public class GuiAtlas extends GuiComponent {
                 targetOffsetX = null;
                 targetOffsetY = null;
                 btnPosition.setEnabled(false);
-            } else {
-                // Navigate once, before enabling pause:
-                navigateByButton(selectedButton);
-                timeButtonPressed = player.getEntityWorld().getTime();
             }
         };
-        btnUp.addListener(positionListener);
-        btnDown.addListener(positionListener);
-        btnLeft.addListener(positionListener);
-        btnRight.addListener(positionListener);
         btnPosition.addListener(positionListener);
 
         btnMarker = new GuiBookmarkButton(0, AntiqueAtlasTextures.ICON_ADD_MARKER, Text.translatable("gui.antique_atlas.addMarker"));
@@ -615,9 +582,6 @@ public class GuiAtlas extends GuiComponent {
         if (followPlayer) {
             setMapPosition(player.getBlockX(), player.getBlockZ());
         }
-        if (player.getEntityWorld().getTime() > timeButtonPressed + BUTTON_PAUSE) {
-            navigateByButton(selectedButton);
-        }
 
         if (targetOffsetX != null) {
             if (Math.abs(getTargetPositionX() - mapOffsetX) > navigateStep) {
@@ -659,22 +623,6 @@ public class GuiAtlas extends GuiComponent {
                 .getMarkersDataInWorld(player.getEntityWorld().getRegistryKey());
         } else {
             localMarkersData = null;
-        }
-    }
-
-    /**
-     * Offset the map view depending on which button was pressed.
-     */
-    private void navigateByButton(GuiComponentButton btn) {
-        if (btn == null) return;
-        if (btn.equals(btnUp)) {
-            navigateMap(0, navigateStep);
-        } else if (btn.equals(btnDown)) {
-            navigateMap(0, -navigateStep);
-        } else if (btn.equals(btnLeft)) {
-            navigateMap(navigateStep, 0);
-        } else if (btn.equals(btnRight)) {
-            navigateMap(-navigateStep, 0);
         }
     }
 
