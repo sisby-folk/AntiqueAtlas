@@ -4,7 +4,7 @@ import folk.sisby.antique_atlas.client.api.AtlasClientAPI;
 import folk.sisby.antique_atlas.client.gui.core.GuiComponent;
 import folk.sisby.antique_atlas.client.gui.core.GuiScrollingContainer;
 import folk.sisby.antique_atlas.client.gui.core.ToggleGroup;
-import folk.sisby.antique_atlas.client.MarkerType;
+import folk.sisby.antique_atlas.client.resource.MarkerType;
 import folk.sisby.antique_atlas.util.Log;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.widget.ButtonWidget;

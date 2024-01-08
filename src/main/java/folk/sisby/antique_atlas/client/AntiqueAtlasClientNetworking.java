@@ -2,6 +2,7 @@ package folk.sisby.antique_atlas.client;
 
 import folk.sisby.antique_atlas.AntiqueAtlas;
 import folk.sisby.antique_atlas.client.gui.GuiAtlas;
+import folk.sisby.antique_atlas.client.resource.MarkerType;
 import folk.sisby.antique_atlas.core.AtlasData;
 import folk.sisby.antique_atlas.core.TileDataStorage;
 import folk.sisby.antique_atlas.core.TileGroup;

@@ -1,11 +1,11 @@
 package folk.sisby.antique_atlas.client.gui;
 
 import com.mojang.blaze3d.systems.RenderSystem;
-import folk.sisby.antique_atlas.client.Textures;
+import folk.sisby.antique_atlas.client.AntiqueAtlasTextures;
 import folk.sisby.antique_atlas.client.gui.core.GuiComponentButton;
 import folk.sisby.antique_atlas.client.texture.ITexture;
 import folk.sisby.antique_atlas.marker.Marker;
-import folk.sisby.antique_atlas.client.MarkerType;
+import folk.sisby.antique_atlas.client.resource.MarkerType;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.text.Text;
@@ -51,7 +51,7 @@ public class GuiMarkerBookmark extends GuiComponentButton {
         // Render background:
         int u = colorIndex * WIDTH;
         int v = isMouseOver ? 0 : HEIGHT;
-        Textures.BOOKMARKS_LEFT.draw(matrices, getGuiX(), getGuiY(), u, v, WIDTH, HEIGHT);
+        AntiqueAtlasTextures.BOOKMARKS_LEFT.draw(matrices, getGuiX(), getGuiY(), u, v, WIDTH, HEIGHT);
 
         // Render the icon:
         iconTexture.draw(matrices, getGuiX() - (isMouseOver ? 3 : 2), getGuiY() - 3, 24, 24);

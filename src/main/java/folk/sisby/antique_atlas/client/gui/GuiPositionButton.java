@@ -1,7 +1,7 @@
 package folk.sisby.antique_atlas.client.gui;
 
 import com.mojang.blaze3d.systems.RenderSystem;
-import folk.sisby.antique_atlas.client.Textures;
+import folk.sisby.antique_atlas.client.AntiqueAtlasTextures;
 import folk.sisby.antique_atlas.client.gui.core.GuiComponentButton;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.util.math.MatrixStack;
@@ -31,7 +31,7 @@ public class GuiPositionButton extends GuiComponentButton {
                 RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 0.5F);
             }
 
-            Textures.BTN_POSITION.draw(matrices, x, y, WIDTH, HEIGHT);
+            AntiqueAtlasTextures.BTN_POSITION.draw(matrices, x, y, WIDTH, HEIGHT);
 
             RenderSystem.disableBlend();
 

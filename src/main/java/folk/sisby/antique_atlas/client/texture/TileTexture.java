@@ -1,6 +1,6 @@
 package folk.sisby.antique_atlas.client.texture;
 
-import folk.sisby.antique_atlas.client.SubTile;
+import folk.sisby.antique_atlas.client.gui.tiles.SubTile;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.util.Identifier;
 

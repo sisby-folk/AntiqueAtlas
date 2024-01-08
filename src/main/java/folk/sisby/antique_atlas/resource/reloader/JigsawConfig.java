@@ -1,9 +1,11 @@
-package folk.sisby.antique_atlas.structure;
+package folk.sisby.antique_atlas.resource.reloader;
 
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import folk.sisby.antique_atlas.AntiqueAtlas;
-import folk.sisby.antique_atlas.resource.ResourceReloadListener;
+import folk.sisby.antique_atlas.structure.StructureHandler;
+import folk.sisby.antique_atlas.structure.StructurePieceTile;
+import folk.sisby.antique_atlas.structure.StructurePieceTileXZ;
 import net.minecraft.resource.Resource;
 import net.minecraft.resource.ResourceManager;
 import net.minecraft.util.Identifier;

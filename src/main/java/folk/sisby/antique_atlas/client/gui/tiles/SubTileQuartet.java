@@ -1,4 +1,4 @@
-package folk.sisby.antique_atlas.client;
+package folk.sisby.antique_atlas.client.gui.tiles;
 
 import folk.sisby.antique_atlas.util.ArrayIterator;
 

@@ -9,7 +9,7 @@ import net.minecraft.util.Identifier;
 import java.util.HashMap;
 import java.util.Map;
 
-public class Textures {
+public class AntiqueAtlasTextures {
     public final static Map<Identifier, ITexture> TILE_TEXTURES_MAP = new HashMap<>();
 
     private static final String MOD_PREFIX = AntiqueAtlas.ID + ":";

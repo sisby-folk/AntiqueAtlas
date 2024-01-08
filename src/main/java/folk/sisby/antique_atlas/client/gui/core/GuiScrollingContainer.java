@@ -1,6 +1,6 @@
 package folk.sisby.antique_atlas.client.gui.core;
 
-import folk.sisby.antique_atlas.client.Textures;
+import folk.sisby.antique_atlas.client.AntiqueAtlasTextures;
 
 public class GuiScrollingContainer extends GuiComponent {
     private final GuiViewport viewport;
@@ -10,9 +10,9 @@ public class GuiScrollingContainer extends GuiComponent {
     public GuiScrollingContainer() {
         viewport = new GuiViewport();
         scrollbarHor = new GuiHScrollbar(viewport);
-        scrollbarHor.setTexture(Textures.SCROLLBAR_HOR, 8, 7, 2);
+        scrollbarHor.setTexture(AntiqueAtlasTextures.SCROLLBAR_HOR, 8, 7, 2);
         scrollbarVer = new GuiVScrollbar(viewport);
-        scrollbarVer.setTexture(Textures.SCROLLBAR_VER, 7, 8, 2);
+        scrollbarVer.setTexture(AntiqueAtlasTextures.SCROLLBAR_VER, 7, 8, 2);
         setWheelScrollsVertically();
         this.addChild(viewport);
         this.addChild(scrollbarHor);

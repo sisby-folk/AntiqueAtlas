@@ -184,7 +184,7 @@ public class StructureHandler {
         }
     }
 
-    interface Setter {
+    public interface Setter {
         Collection<ChunkPos> matches(World world, StructurePoolElement element, BlockBox box, StructurePiece rotation);
     }
 }

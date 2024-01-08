@@ -2,8 +2,15 @@ package folk.sisby.antique_atlas.client;
 
 import folk.sisby.antique_atlas.AntiqueAtlas;
 import folk.sisby.antique_atlas.client.gui.GuiAtlas;
+import folk.sisby.antique_atlas.client.resource.MarkerType;
+import folk.sisby.antique_atlas.client.resource.reloader.MarkerMipsConfig;
+import folk.sisby.antique_atlas.client.resource.reloader.MarkerTextureConfig;
+import folk.sisby.antique_atlas.client.resource.reloader.TextureConfig;
+import folk.sisby.antique_atlas.client.resource.reloader.TextureSetConfig;
+import folk.sisby.antique_atlas.client.resource.reloader.TileTextureConfig;
+import folk.sisby.antique_atlas.client.resource.TextureSetMap;
+import folk.sisby.antique_atlas.client.resource.TileTextureMap;
 import net.fabricmc.api.ClientModInitializer;
-import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
 import net.fabricmc.fabric.api.resource.ResourceManagerHelper;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.world.ClientWorld;
@@ -64,7 +71,7 @@ public class AntiqueAtlasClient implements ClientModInitializer {
 
     @Override
     public void onInitializeClient() {
-        ResourceManagerHelper.get(ResourceType.CLIENT_RESOURCES).registerReloadListener(new TextureConfig(Textures.TILE_TEXTURES_MAP));
+        ResourceManagerHelper.get(ResourceType.CLIENT_RESOURCES).registerReloadListener(new TextureConfig(AntiqueAtlasTextures.TILE_TEXTURES_MAP));
         TextureSetMap textureSetMap = TextureSetMap.instance();
         ResourceManagerHelper.get(ResourceType.CLIENT_RESOURCES).registerReloadListener(new TextureSetConfig(textureSetMap));
         TileTextureMap tileTextureMap = TileTextureMap.instance();
@@ -75,8 +82,7 @@ public class AntiqueAtlasClient implements ClientModInitializer {
         for (MarkerType type : MarkerType.REGISTRY) {
             type.initMips();
         }
-        KeyHandler.registerBindings();
-        ClientTickEvents.END_CLIENT_TICK.register(KeyHandler::onClientTick);
+        AntiqueAtlasKeybindings.init();
         AntiqueAtlasClientNetworking.init();
     }
 }

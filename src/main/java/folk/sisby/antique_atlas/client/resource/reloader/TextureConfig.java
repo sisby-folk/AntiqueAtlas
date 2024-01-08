@@ -1,9 +1,9 @@
-package folk.sisby.antique_atlas.client;
+package folk.sisby.antique_atlas.client.resource.reloader;
 
 import folk.sisby.antique_atlas.AntiqueAtlas;
 import folk.sisby.antique_atlas.client.texture.ITexture;
 import folk.sisby.antique_atlas.client.texture.TileTexture;
-import folk.sisby.antique_atlas.resource.ResourceReloadListener;
+import folk.sisby.antique_atlas.resource.reloader.ResourceReloadListener;
 import folk.sisby.antique_atlas.util.Log;
 import net.minecraft.resource.ResourceManager;
 import net.minecraft.util.Identifier;

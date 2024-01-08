@@ -1,7 +1,7 @@
 package folk.sisby.antique_atlas.client.gui;
 
 import com.mojang.blaze3d.systems.RenderSystem;
-import folk.sisby.antique_atlas.client.Textures;
+import folk.sisby.antique_atlas.client.AntiqueAtlasTextures;
 import folk.sisby.antique_atlas.client.gui.core.GuiComponentButton;
 import net.minecraft.client.util.math.MatrixStack;
 import org.lwjgl.opengl.GL11;
@@ -81,7 +81,7 @@ public class GuiArrowButton extends GuiComponentButton {
                 v = 12;
                 break;
         }
-        Textures.BTN_ARROWS.draw(matrices, x, y, u, v, WIDTH, HEIGHT);
+        AntiqueAtlasTextures.BTN_ARROWS.draw(matrices, x, y, u, v, WIDTH, HEIGHT);
 
         RenderSystem.disableBlend();
     }

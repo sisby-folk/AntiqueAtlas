@@ -1,7 +1,9 @@
-package folk.sisby.antique_atlas.client;
+package folk.sisby.antique_atlas.client.gui.tiles;
 
-import folk.sisby.antique_atlas.client.SubTile.Part;
-import folk.sisby.antique_atlas.client.SubTile.Shape;
+import folk.sisby.antique_atlas.client.resource.TextureSet;
+import folk.sisby.antique_atlas.client.resource.TileTextureMap;
+import folk.sisby.antique_atlas.client.gui.tiles.SubTile.Part;
+import folk.sisby.antique_atlas.client.gui.tiles.SubTile.Shape;
 import folk.sisby.antique_atlas.core.ITileStorage;
 import folk.sisby.antique_atlas.util.Rect;
 import net.minecraft.util.Identifier;

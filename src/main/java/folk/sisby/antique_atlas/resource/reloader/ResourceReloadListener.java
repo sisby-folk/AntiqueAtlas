@@ -1,4 +1,4 @@
-package folk.sisby.antique_atlas.resource;
+package folk.sisby.antique_atlas.resource.reloader;
 
 import net.fabricmc.fabric.api.resource.IdentifiableResourceReloadListener;
 import net.minecraft.resource.ResourceManager;

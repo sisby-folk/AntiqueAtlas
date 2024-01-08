@@ -2,7 +2,7 @@ package folk.sisby.antique_atlas.client.gui;
 
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.ImmutableMap.Builder;
-import folk.sisby.antique_atlas.client.Textures;
+import folk.sisby.antique_atlas.client.AntiqueAtlasTextures;
 import folk.sisby.antique_atlas.client.gui.core.GuiComponent;
 import folk.sisby.antique_atlas.client.texture.ITexture;
 import net.minecraft.client.MinecraftClient;
@@ -25,14 +25,14 @@ public class GuiScaleBar extends GuiComponent {
 
     static {
         Builder<Double, ITexture> builder = ImmutableMap.builder();
-        builder.put(0.0625, Textures.SCALEBAR_512);
-        builder.put(0.125, Textures.SCALEBAR_256);
-        builder.put(0.25, Textures.SCALEBAR_128);
-        builder.put(0.5, Textures.SCALEBAR_64);
-        builder.put(1.0, Textures.SCALEBAR_32);
-        builder.put(2.0, Textures.SCALEBAR_16);
-        builder.put(4.0, Textures.SCALEBAR_8);
-        builder.put(8.0, Textures.SCALEBAR_4);
+        builder.put(0.0625, AntiqueAtlasTextures.SCALEBAR_512);
+        builder.put(0.125, AntiqueAtlasTextures.SCALEBAR_256);
+        builder.put(0.25, AntiqueAtlasTextures.SCALEBAR_128);
+        builder.put(0.5, AntiqueAtlasTextures.SCALEBAR_64);
+        builder.put(1.0, AntiqueAtlasTextures.SCALEBAR_32);
+        builder.put(2.0, AntiqueAtlasTextures.SCALEBAR_16);
+        builder.put(4.0, AntiqueAtlasTextures.SCALEBAR_8);
+        builder.put(8.0, AntiqueAtlasTextures.SCALEBAR_4);
         textureMap = builder.build();
     }
 
