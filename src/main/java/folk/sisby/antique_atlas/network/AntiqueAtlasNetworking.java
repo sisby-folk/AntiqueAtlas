@@ -2,18 +2,19 @@ package folk.sisby.antique_atlas.network;
 
 import folk.sisby.antique_atlas.AntiqueAtlas;
 import folk.sisby.antique_atlas.api.AtlasAPI;
+import folk.sisby.antique_atlas.client.network.C2SPacket;
+import folk.sisby.antique_atlas.client.network.packet.DeleteMarkerC2SPacket;
+import folk.sisby.antique_atlas.client.network.packet.PutBrowsingPositionC2SPacket;
+import folk.sisby.antique_atlas.client.network.packet.PutMarkerC2SPacket;
+import folk.sisby.antique_atlas.client.network.packet.PutTileC2SPacket;
 import folk.sisby.antique_atlas.util.Log;
-import net.fabricmc.fabric.api.networking.v1.PacketSender;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
 import net.minecraft.network.PacketByteBuf;
-import net.minecraft.registry.RegistryKey;
-import net.minecraft.registry.RegistryKeys;
-import net.minecraft.server.MinecraftServer;
-import net.minecraft.server.network.ServerPlayNetworkHandler;
 import net.minecraft.server.network.ServerPlayerEntity;
-import net.minecraft.text.Text;
+import net.minecraft.server.world.ServerWorld;
 import net.minecraft.util.Identifier;
-import net.minecraft.world.World;
+
+import java.util.function.Function;
 
 public class AntiqueAtlasNetworking {
     public static final Identifier C2S_DELETE_MARKER = AntiqueAtlas.id("packet.c2s.marker.delete");
@@ -30,70 +31,39 @@ public class AntiqueAtlasNetworking {
     public static final Identifier S2C_PUT_TILE = AntiqueAtlas.id("packet.s2c.tile.put");
     public static final Identifier S2C_TILE_GROUPS = AntiqueAtlas.id("packet.s2c.tile.groups");
 
-
     public static void init() {
-        ServerPlayNetworking.registerGlobalReceiver(C2S_DELETE_MARKER, AntiqueAtlasNetworking::handleDeleteMarker);
-        ServerPlayNetworking.registerGlobalReceiver(C2S_PUT_BROWSING_POSITION, AntiqueAtlasNetworking::handlePutBrowsingPosition);
-        ServerPlayNetworking.registerGlobalReceiver(C2S_PUT_MARKER, AntiqueAtlasNetworking::handlePutMarker);
-        ServerPlayNetworking.registerGlobalReceiver(C2S_PUT_TILE, AntiqueAtlasNetworking::handlePutTile);
+        ServerPlayNetworking.registerGlobalReceiver(C2S_DELETE_MARKER, (sv, p, h, b, se) -> handleServer(p, b, DeleteMarkerC2SPacket::new, AntiqueAtlasNetworking::handleDeleteMarker));
+        ServerPlayNetworking.registerGlobalReceiver(C2S_PUT_BROWSING_POSITION, (sv, p, h, b, se) -> handleServer(p, b, PutBrowsingPositionC2SPacket::new, AntiqueAtlasNetworking::handlePutBrowsingPosition));
+        ServerPlayNetworking.registerGlobalReceiver(C2S_PUT_MARKER, (sv, p, h, b, se) -> handleServer(p, b, PutMarkerC2SPacket::new, AntiqueAtlasNetworking::handlePutMarker));
+        ServerPlayNetworking.registerGlobalReceiver(C2S_PUT_TILE, (sv, p, h, b, se) -> handleServer(p, b, PutTileC2SPacket::new, AntiqueAtlasNetworking::handlePutTile));
     }
 
-    public static void handleDeleteMarker(MinecraftServer server, ServerPlayerEntity player, ServerPlayNetworkHandler handler, PacketByteBuf buf, PacketSender sender) {
-        int atlasID = buf.readVarInt();
-        int markerID = buf.readVarInt();
-
-        if (AtlasAPI.getPlayerAtlasId(player) != atlasID) {
-            Log.warn("Player %s attempted to delete marker from someone else's Atlas #%d", player.getName(), atlasID);
-            return;
-        }
-
-        AtlasAPI.getMarkerAPI().deleteMarker(player.getEntityWorld(), atlasID, markerID);
+    public static void handleDeleteMarker(ServerWorld world, DeleteMarkerC2SPacket packet) {
+        AtlasAPI.getMarkerAPI().deleteMarker(world, packet.atlasID(), packet.markerID());
     }
 
-    public static void handlePutBrowsingPosition(MinecraftServer server, ServerPlayerEntity player, ServerPlayNetworkHandler handler, PacketByteBuf buf, PacketSender sender) {
-        int atlasID = buf.readVarInt();
-        RegistryKey<World> world = RegistryKey.of(RegistryKeys.WORLD, buf.readIdentifier());
-        int x = buf.readVarInt();
-        int y = buf.readVarInt();
-        double zoom = buf.readDouble();
-
-        if (AtlasAPI.getPlayerAtlasId(player) != atlasID) {
-            Log.warn("Player %s attempted to put position marker into someone else's Atlas #%d", player.getCommandSource().getName(), atlasID);
-            return;
-        }
-
-        AntiqueAtlas.tileData.getData(atlasID, player.getEntityWorld()).getWorldData(world).setBrowsingPosition(x, y, zoom);
+    public static void handlePutBrowsingPosition(ServerWorld world, PutBrowsingPositionC2SPacket packet) {
+        AntiqueAtlas.tileData.getData(packet.atlasID(), world).getWorldData(packet.world()).setBrowsingPosition(packet.x(), packet.y(), packet.zoom());
     }
 
-    public static void handlePutMarker(MinecraftServer server, ServerPlayerEntity player, ServerPlayNetworkHandler handler, PacketByteBuf buf, PacketSender sender) {
-        int atlasID = buf.readVarInt();
-        Identifier markerType = buf.readIdentifier();
-        int x = buf.readVarInt();
-        int z = buf.readVarInt();
-        boolean visibleBeforeDiscovery = buf.readBoolean();
-        Text label = buf.readText();
-
-        if (AtlasAPI.getPlayerAtlasId(player) != atlasID) {
-            AntiqueAtlas.LOG.warn("Player {} attempted to put marker into someone else's Atlas #{}}", player.getName(), atlasID);
-            return;
-        }
-
-        AtlasAPI.getMarkerAPI().putMarker(player.getEntityWorld(), visibleBeforeDiscovery, atlasID, markerType, label, x, z);
+    public static void handlePutMarker(ServerWorld world, PutMarkerC2SPacket packet) {
+        AtlasAPI.getMarkerAPI().putMarker(world, packet.visibleBeforeDiscovery(), packet.atlasID(), packet.markerType(), packet.label(), packet.x(), packet.z());
     }
 
+    public static void handlePutTile(ServerWorld world, PutTileC2SPacket packet) {
+        AtlasAPI.getTileAPI().putTile(world, packet.atlasID(), packet.tile(), packet.x(), packet.z());
+    }
 
-    public static void handlePutTile(MinecraftServer server, ServerPlayerEntity player, ServerPlayNetworkHandler handler, PacketByteBuf buf, PacketSender sender) {
-        int atlasID = buf.readVarInt();
-        int x = buf.readVarInt();
-        int z = buf.readVarInt();
-        Identifier tile = buf.readIdentifier();
-
-        if (AtlasAPI.getPlayerAtlasId(player) != atlasID) {
-            Log.warn("Player %s attempted to modify someone else's Atlas #%d",
-                player.getName(), atlasID);
+    private static <T extends C2SPacket> void handleServer(ServerPlayerEntity player, PacketByteBuf buf, Function<PacketByteBuf, T> reader, ServerPacketHandler<T> handler) {
+        T packet = reader.apply(buf);
+        if (AtlasAPI.getPlayerAtlasId(player) != packet.atlasID()) {
+            Log.warn("Player %s attempted to modify someone else's Atlas #%d", player.getName(), packet.atlasID());
             return;
         }
+        handler.handle(player.getServerWorld(), packet);
+    }
 
-        AtlasAPI.getTileAPI().putTile(player.getEntityWorld(), atlasID, tile, x, z);
+    public interface ServerPacketHandler<T extends C2SPacket> {
+        void handle(ServerWorld world, T packet);
     }
 }

@@ -7,4 +7,6 @@ public interface C2SPacket extends AntiqueAtlasPacket {
     default void send() {
         ClientPlayNetworking.send(getId(), toBuf());
     }
+
+    int atlasID();
 }
