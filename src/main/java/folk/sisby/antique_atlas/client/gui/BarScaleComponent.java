@@ -3,7 +3,7 @@ package folk.sisby.antique_atlas.client.gui;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.ImmutableMap.Builder;
 import folk.sisby.antique_atlas.client.AntiqueAtlasTextures;
-import folk.sisby.antique_atlas.client.gui.core.GuiComponent;
+import folk.sisby.antique_atlas.client.gui.core.Component;
 import folk.sisby.antique_atlas.client.texture.ITexture;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.util.math.MatrixStack;
@@ -17,7 +17,7 @@ import java.util.Map;
  * A scale bar that displays pixel-to-block ratio. To fit into the overall
  * Atlas style it is rendered at half-scale.
  */
-public class GuiScaleBar extends GuiComponent {
+public class BarScaleComponent extends Component {
     private static final int WIDTH = 20;
     private static final int HEIGHT = 8;
 
@@ -41,7 +41,7 @@ public class GuiScaleBar extends GuiComponent {
      */
     private double mapScale = 1;
 
-    GuiScaleBar() {
+    BarScaleComponent() {
         setSize(WIDTH, HEIGHT);
     }
 

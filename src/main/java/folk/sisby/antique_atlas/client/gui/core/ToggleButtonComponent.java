@@ -4,7 +4,7 @@ package folk.sisby.antique_atlas.client.gui.core;
  * A button that can be toggled on, and only toggled off by selecting
  * a different ToggleButton.
  */
-public class GuiToggleButton extends GuiComponentButton {
+public class ToggleButtonComponent extends ButtonComponent {
     private boolean selected;
 
     /**

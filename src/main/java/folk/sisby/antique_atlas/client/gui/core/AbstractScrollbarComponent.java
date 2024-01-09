@@ -6,7 +6,7 @@ import net.minecraft.client.util.math.MatrixStack;
 import org.lwjgl.opengl.GL11;
 
 
-public abstract class AGuiScrollbar extends GuiComponent {
+public abstract class AbstractScrollbarComponent extends Component {
     ITexture texture;
     int textureWidth;
     int textureHeight;
@@ -55,9 +55,9 @@ public abstract class AGuiScrollbar extends GuiComponent {
     /**
      * The attached viewport that this scrollbar scrolls.
      */
-    final GuiViewport viewport;
+    final ViewportComponent viewport;
 
-    AGuiScrollbar(GuiViewport viewport) {
+    AbstractScrollbarComponent(ViewportComponent viewport) {
         this.viewport = viewport;
     }
 

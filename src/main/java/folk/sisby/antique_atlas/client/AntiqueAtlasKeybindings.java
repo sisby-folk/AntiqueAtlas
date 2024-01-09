@@ -1,6 +1,6 @@
 package folk.sisby.antique_atlas.client;
 
-import folk.sisby.antique_atlas.client.gui.GuiAtlas;
+import folk.sisby.antique_atlas.client.gui.AtlasScreen;
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
 import net.fabricmc.fabric.api.client.keybinding.v1.KeyBindingHelper;
 import net.minecraft.client.MinecraftClient;
@@ -20,10 +20,10 @@ public class AntiqueAtlasKeybindings {
     public static void onClientTick(MinecraftClient client) {
         while (ATLAS_KEYMAPPING.wasPressed()) {
             Screen currentScreen = client.currentScreen;
-            if (currentScreen instanceof GuiAtlas) {
+            if (currentScreen instanceof AtlasScreen) {
                 currentScreen.close();
             } else {
-                AntiqueAtlasClient.openAtlasGUI();
+                AntiqueAtlasClient.openAtlasScreen();
             }
         }
     }

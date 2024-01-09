@@ -2,10 +2,8 @@ package folk.sisby.antique_atlas.client.gui;
 
 import com.mojang.blaze3d.systems.RenderSystem;
 import folk.sisby.antique_atlas.client.AntiqueAtlasTextures;
-import folk.sisby.antique_atlas.client.gui.core.GuiComponentButton;
+import folk.sisby.antique_atlas.client.gui.core.ToggleButtonComponent;
 import folk.sisby.antique_atlas.client.texture.ITexture;
-import folk.sisby.antique_atlas.marker.Marker;
-import folk.sisby.antique_atlas.client.resource.MarkerType;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.text.Text;
@@ -17,21 +15,23 @@ import java.util.Collections;
  * Bookmark-button in the journal. When a bookmark is selected, it will not
  * bulge on mouseover.
  */
-public class GuiMarkerBookmark extends GuiComponentButton {
+public class BookmarkComponent extends ToggleButtonComponent {
     private static final int WIDTH = 21;
     private static final int HEIGHT = 18;
 
     private final int colorIndex;
     private ITexture iconTexture;
-    private final Marker marker;
+    private Text title;
 
-    GuiMarkerBookmark(Marker marker) {
-        this.colorIndex = 3;
-        this.marker = marker;
-
-        MarkerType type = MarkerType.REGISTRY.get(marker.getType());
-        setIconTexture(type.getTexture());
-
+    /**
+     * @param colorIndex  0=red, 1=blue, 2=yellow, 3=green
+     * @param iconTexture the path to the 16x16 texture to be drawn on top of the bookmark.
+     * @param title       hovering text.
+     */
+    BookmarkComponent(int colorIndex, ITexture iconTexture, Text title) {
+        this.colorIndex = colorIndex;
+        setIconTexture(iconTexture);
+        setTitle(title);
         setSize(WIDTH, HEIGHT);
     }
 
@@ -40,9 +40,12 @@ public class GuiMarkerBookmark extends GuiComponentButton {
     }
 
     public Text getTitle() {
-        return marker.getLabel();
+        return title;
     }
 
+    void setTitle(Text title) {
+        this.title = title;
+    }
 
     @Override
     public void render(MatrixStack matrices, int mouseX, int mouseY, float partialTick) {
@@ -50,14 +53,14 @@ public class GuiMarkerBookmark extends GuiComponentButton {
 
         // Render background:
         int u = colorIndex * WIDTH;
-        int v = isMouseOver ? 0 : HEIGHT;
-        AntiqueAtlasTextures.BOOKMARKS_LEFT.draw(matrices, getGuiX(), getGuiY(), u, v, WIDTH, HEIGHT);
+        int v = isMouseOver || isSelected() ? 0 : HEIGHT;
+        AntiqueAtlasTextures.BOOKMARKS.draw(matrices, getGuiX(), getGuiY(), u, v, WIDTH, HEIGHT);
 
         // Render the icon:
-        iconTexture.draw(matrices, getGuiX() - (isMouseOver ? 3 : 2), getGuiY() - 3, 24, 24);
+        iconTexture.draw(matrices, getGuiX() + (isMouseOver || isSelected() ? 3 : 2), getGuiY() + 1);
 
-        if (isMouseOver && !getTitle().getString().isEmpty()) {
-            drawTooltip(Collections.singletonList(getTitle()), MinecraftClient.getInstance().textRenderer);
+        if (isMouseOver) {
+            drawTooltip(Collections.singletonList(title), MinecraftClient.getInstance().textRenderer);
         }
     }
 }

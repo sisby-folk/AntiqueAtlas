@@ -2,9 +2,9 @@ package folk.sisby.antique_atlas.client.gui.core;
 
 import net.minecraft.client.util.math.MatrixStack;
 
-public class GuiHScrollbar extends AGuiScrollbar {
+public class HScrollbarComponent extends AbstractScrollbarComponent {
 
-    public GuiHScrollbar(GuiViewport viewport) {
+    public HScrollbarComponent(ViewportComponent viewport) {
         super(viewport);
     }
 

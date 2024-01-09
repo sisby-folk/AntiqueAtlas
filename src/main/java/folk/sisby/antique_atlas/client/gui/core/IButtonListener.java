@@ -3,7 +3,7 @@ package folk.sisby.antique_atlas.client.gui.core;
 /**
  * Listener for left click on a button.
  */
-public interface IButtonListener<B extends GuiComponentButton> {
+public interface IButtonListener<B extends ButtonComponent> {
     /**
      * Called when the button was left-clicked on.
      *

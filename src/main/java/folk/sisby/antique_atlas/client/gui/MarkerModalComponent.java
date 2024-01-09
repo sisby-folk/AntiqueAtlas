@@ -2,9 +2,9 @@ package folk.sisby.antique_atlas.client.gui;
 
 import folk.sisby.antique_atlas.AntiqueAtlas;
 import folk.sisby.antique_atlas.client.api.AtlasClientAPI;
-import folk.sisby.antique_atlas.client.gui.core.GuiComponent;
-import folk.sisby.antique_atlas.client.gui.core.GuiScrollingContainer;
-import folk.sisby.antique_atlas.client.gui.core.ToggleGroup;
+import folk.sisby.antique_atlas.client.gui.core.Component;
+import folk.sisby.antique_atlas.client.gui.core.ScrollBoxComponent;
+import folk.sisby.antique_atlas.client.gui.core.ToggleButtonRadioGroup;
 import folk.sisby.antique_atlas.client.resource.MarkerType;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.widget.ButtonWidget;
@@ -25,7 +25,7 @@ import java.util.List;
  *
  * @author Hunternif
  */
-public class GuiMarkerFinalizer extends GuiComponent {
+public class MarkerModalComponent extends Component {
     private World world;
     private int atlasID;
     private int markerX;
@@ -42,12 +42,12 @@ public class GuiMarkerFinalizer extends GuiComponent {
     private ButtonWidget btnDone;
     private ButtonWidget btnCancel;
     private TextFieldWidget textField;
-    private GuiScrollingContainer scroller;
-    private ToggleGroup<GuiMarkerInList> typeRadioGroup;
+    private ScrollBoxComponent scroller;
+    private ToggleButtonRadioGroup<MarkerTypeSelectorComponent> typeRadioGroup;
 
     private final List<IMarkerTypeSelectListener> markerListeners = new ArrayList<>();
 
-    GuiMarkerFinalizer() {
+    MarkerModalComponent() {
     }
 
     void setMarkerData(World world, int atlasID, int markerX, int markerZ) {
@@ -80,7 +80,7 @@ public class GuiMarkerFinalizer extends GuiComponent {
         textField.setEditable(true);
         textField.setText("");
 
-        scroller = new GuiScrollingContainer();
+        scroller = new ScrollBoxComponent();
         scroller.setWheelScrollsHorizontally();
         this.addChild(scroller);
 
@@ -90,12 +90,12 @@ public class GuiMarkerFinalizer extends GuiComponent {
                 typeCount++;
         }
         int allTypesWidth = typeCount *
-            (GuiMarkerInList.FRAME_SIZE + TYPE_SPACING) - TYPE_SPACING;
+            (MarkerTypeSelectorComponent.FRAME_SIZE + TYPE_SPACING) - TYPE_SPACING;
         int scrollerWidth = Math.min(allTypesWidth, 240);
-        scroller.setViewportSize(scrollerWidth, GuiMarkerInList.FRAME_SIZE + TYPE_SPACING);
+        scroller.setViewportSize(scrollerWidth, MarkerTypeSelectorComponent.FRAME_SIZE + TYPE_SPACING);
         scroller.setGuiCoords((this.width - scrollerWidth) / 2, this.height / 2 - 25);
 
-        typeRadioGroup = new ToggleGroup<>();
+        typeRadioGroup = new ToggleButtonRadioGroup<>();
         typeRadioGroup.addListener(button -> {
             selectedType = button.getMarkerType();
             for (IMarkerTypeSelectListener listener : markerListeners) {
@@ -106,13 +106,13 @@ public class GuiMarkerFinalizer extends GuiComponent {
         for (MarkerType markerType : MarkerType.REGISTRY) {
             if (markerType.isTechnical())
                 continue;
-            GuiMarkerInList markerGui = new GuiMarkerInList(markerType);
+            MarkerTypeSelectorComponent markerGui = new MarkerTypeSelectorComponent(markerType);
             typeRadioGroup.addButton(markerGui);
             if (selectedType.equals(markerType)) {
                 typeRadioGroup.setSelectedButton(markerGui);
             }
             scroller.addContent(markerGui).setRelativeX(contentX);
-            contentX += GuiMarkerInList.FRAME_SIZE + TYPE_SPACING;
+            contentX += MarkerTypeSelectorComponent.FRAME_SIZE + TYPE_SPACING;
         }
     }
 

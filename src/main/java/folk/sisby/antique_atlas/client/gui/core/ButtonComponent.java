@@ -12,7 +12,7 @@ import java.util.List;
  * A GuiComponent that can act like a button.
  */
 @SuppressWarnings("rawtypes")
-public class GuiComponentButton extends GuiComponent {
+public class ButtonComponent extends Component {
     private final List<IButtonListener> listeners = new ArrayList<>();
 
     private boolean enabled = true;
