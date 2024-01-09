@@ -1,20 +1,18 @@
 package folk.sisby.antique_atlas.client.resource.reloader;
 
 import folk.sisby.antique_atlas.AntiqueAtlas;
+import folk.sisby.antique_atlas.client.AntiqueAtlasTextures;
 import folk.sisby.antique_atlas.client.texture.ITexture;
 import folk.sisby.antique_atlas.client.texture.TileTexture;
-import folk.sisby.antique_atlas.resource.reloader.ResourceReloadListener;
+import net.fabricmc.fabric.api.resource.IdentifiableResourceReloadListener;
 import net.minecraft.resource.ResourceManager;
+import net.minecraft.resource.SinglePreparationResourceReloader;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.InvalidIdentifierException;
 import net.minecraft.util.profiler.Profiler;
 
-import java.util.Collection;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.concurrent.CompletableFuture;
-import java.util.concurrent.Executor;
 
 /**
  * Reads all png files available under assets/(?modid)/textures/gui/tiles/(?tex).png as Textures that
@@ -24,58 +22,42 @@ import java.util.concurrent.Executor;
  * - The identifier of the physical location in modid:texture/gui/tiles/tex.png
  * - The logical identifier modid:tex referenced by TextureSets
  */
-public class TextureConfig implements ResourceReloadListener<Map<Identifier, ITexture>> {
+public class TextureConfig extends SinglePreparationResourceReloader<Map<Identifier, ITexture>> implements IdentifiableResourceReloadListener {
     public static final Identifier ID = AntiqueAtlas.id("textures");
-    private final Map<Identifier, ITexture> texture_map;
-
-    public TextureConfig(Map<Identifier, ITexture> texture_map) {
-        this.texture_map = texture_map;
-    }
 
     @Override
-    public CompletableFuture<Map<Identifier, ITexture>> load(ResourceManager manager, Profiler profiler, Executor executor) {
-        return CompletableFuture.supplyAsync(() -> {
-            Map<Identifier, ITexture> textures = new HashMap<>();
+    protected Map<Identifier, ITexture> prepare(ResourceManager manager, Profiler profiler) {
+        Map<Identifier, ITexture> outMap = new HashMap<>();
 
-            for (Identifier id : manager.findResources("textures/gui/tiles", id -> id.toString().endsWith(".png")).keySet()) {
-                // id now contains the physical file path of the texture
-                try {
+        for (Identifier id : manager.findResources("textures/gui/tiles", id -> id.toString().endsWith(".png")).keySet()) {
+            try {
+                Identifier texture_id = new Identifier(
+                    id.getNamespace(),
+                    id.getPath().replace("textures/gui/tiles/", "").replace(".png", "")
+                );
 
-                    // texture_id is the logical identifier, as it will be referenced by TextureSets
-                    Identifier texture_id = new Identifier(
-                        id.getNamespace(),
-                        id.getPath().replace("textures/gui/tiles/", "").replace(".png", "")
-                    );
-
-                    textures.put(texture_id, new TileTexture(id));
-                } catch (InvalidIdentifierException e) {
-                    AntiqueAtlas.LOG.warn("Failed to read texture!", e);
-                }
+                outMap.put(texture_id, new TileTexture(id));
+            } catch (InvalidIdentifierException e) {
+                AntiqueAtlas.LOG.warn("Failed to read texture!", e);
             }
+        }
 
-            return textures;
-        }, executor);
+        return outMap;
     }
 
     @Override
-    public CompletableFuture<Void> apply(Map<Identifier, ITexture> textures, ResourceManager manager, Profiler profiler, Executor executor) {
-        return CompletableFuture.runAsync(() -> {
-            texture_map.clear();
-            for (Map.Entry<Identifier, ITexture> entry : textures.entrySet()) {
-                texture_map.put(entry.getKey(), entry.getValue());
-                if (AntiqueAtlas.CONFIG.Performance.resourcePackLogging)
-                    AntiqueAtlas.LOG.info("Loaded texture {} with path {}", entry.getKey(), entry.getValue().getTexture());
+    protected void apply(Map<Identifier, ITexture> prepared, ResourceManager manager, Profiler profiler) {
+        AntiqueAtlasTextures.TILE_TEXTURES_MAP.clear();
+        prepared.forEach((key, value) -> {
+            AntiqueAtlasTextures.TILE_TEXTURES_MAP.put(key, value);
+            if (AntiqueAtlas.CONFIG.Performance.resourcePackLogging) {
+                AntiqueAtlas.LOG.info("Loaded texture {} with path {}", key, value.getTexture());
             }
-        }, executor);
+        });
     }
 
     @Override
-    public Identifier getId() {
+    public Identifier getFabricId() {
         return ID;
-    }
-
-    @Override
-    public Collection<Identifier> getDependencies() {
-        return Collections.emptyList();
     }
 }
