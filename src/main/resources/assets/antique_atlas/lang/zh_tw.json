@@ -5,17 +5,11 @@
   "gui.antique_atlas.addMarker": "增加標記",
   "gui.antique_atlas.delMarker": "移除標記",
   "gui.antique_atlas.followPlayer": "跟隨玩家",
-  "gui.antique_atlas.exportImage": "匯出地圖",
   "gui.antique_atlas.hideMarkers": "隱藏標記",
   "gui.antique_atlas.showMarkers": "顯示標記",
   "gui.antique_atlas.marker.label": "標籤:",
   "gui.antique_atlas.marker.type": "類型:",
   "gui.antique_atlas.marker.village": "村莊",
   "gui.antique_atlas.marker.netherPortal": "虛空之門",
-  "gui.antique_atlas.marker.tomb": "%s在此長眠",
-  "gui.antique_atlas.export.opening": "開啟系統資料夾...",
-  "gui.antique_atlas.export.selectFile": "選擇PNG圖像並另存新檔",
-  "gui.antique_atlas.export.tooLarge": "抱歉! 圖像太大，無法呈現，請嘗試增加Java內存空間。",
-  "gui.antique_atlas.export.rendering": "正在讀取...",
-  "gui.antique_atlas.export.writing": "儲存中..."
+  "gui.antique_atlas.marker.tomb": "%s在此長眠"
 }
