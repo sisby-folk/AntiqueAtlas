@@ -53,7 +53,7 @@ If that's not enough and you (like us) keep opening the map to use as a compass,
 ### Compatibility
 
 `0.8.x` and `0.9.x` have a similar architecture to Antique Atlas for 1.16-1.18.<br/>
-These are itemless ports to 1.19 and 1.20 as-is. They still have bugs, and _won't_ be updated.<br/>
+These are itemless ports to 1.19 and 1.20 as-is. These won't receive future updates or fixes.<br/>
 
 `1.x` Uses the ID `antique-atlas`. Existing addons will not work, and the API should be considered unstable.<br/>
 This is a work-in-progress modernization of the codebase on fabric 1.20<br/>
