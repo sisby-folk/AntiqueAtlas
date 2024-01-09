@@ -119,14 +119,12 @@ public class AtlasScreen extends Component {
     private final IState DELETING_MARKER = new IState() {
         @Override
         public void onEnterState() {
-            // GuiComponent.v.a();
             addChild(eraser);
             btnDelMarker.setSelected(true);
         }
 
         @Override
         public void onExitState() {
-            // mc.v.b();
             removeChild(eraser);
             btnDelMarker.setSelected(false);
         }
