@@ -19,6 +19,9 @@ Locations can be marked on the map using a selection of icons, and optionally a 
 
 ### Design
 
+<details>
+<summary>Click to expand design notes</summary>
+
 We didn't make this mod, but we do have opinions about it.
 
 #### Abstract Landscapes
@@ -44,6 +47,8 @@ We spend the entire time making sure we're aligned _exactly_ towards our destina
 The atlas is pretty, but just bad enough at being a map to stop us from opening it every five seconds.
 
 If that's not enough and you (like us) keep opening the map to use as a compass, try [PicoHUD](https://modrinth.com/mod/picohud) as well.
+
+</details>
 
 ### Compatibility
 
