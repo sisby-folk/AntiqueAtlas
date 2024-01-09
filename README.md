@@ -58,8 +58,7 @@ This project is (attempting to be) a loveletter rewrite - we want to revive inte
 These are itemless ports to 1.19 and 1.20 as-is - They won't receive future updates or fixes.<br/>
 
 `1.x` Uses the ID `antique-atlas`. Existing addons will not work, and the API should be considered unstable.<br/>
-This is a work-in-progress modernization of the codebase on fabric 1.20<br/>
-Further opinionated changes will be made as we refactor the mod - such as removing the pan buttons.
+This is a work-in-progress cleanup of the codebase on fabric 1.20 - breaking changes will happen<br/>
 
 If `2.x` releases - that means we've broken the save format.<br/>
 This would (possibly) be a partial rewrite of the mod to operate primarily on the client side.<br/>
