@@ -72,7 +72,7 @@ if (System.getenv("MODRINTH_TOKEN")) {
     apply plugin: "com.modrinth.minotaur"
     modrinth {
         token = System.getenv("MODRINTH_TOKEN")
-        projectId = 'antique-atlas'
+        projectId = 'antique-atlas-4'
         versionNumber = project.version
         versionName = baseVersion
         versionType = 'release'
