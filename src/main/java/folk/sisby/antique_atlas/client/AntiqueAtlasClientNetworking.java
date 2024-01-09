@@ -1,7 +1,6 @@
 package folk.sisby.antique_atlas.client;
 
 import folk.sisby.antique_atlas.AntiqueAtlas;
-import folk.sisby.antique_atlas.client.gui.AtlasScreen;
 import folk.sisby.antique_atlas.client.resource.MarkerType;
 import folk.sisby.antique_atlas.core.AtlasData;
 import folk.sisby.antique_atlas.core.TileDataStorage;
@@ -71,9 +70,6 @@ public class AntiqueAtlasClientNetworking {
         if (clientWorld == null) return;
         AtlasData atlasData = AntiqueAtlas.tileData.getData(packet.atlasID(), clientWorld);
         atlasData.updateFromNbt(packet.data());
-        if (AntiqueAtlas.CONFIG.Gameplay.doSaveBrowsingPos && MinecraftClient.getInstance().currentScreen instanceof AtlasScreen atlasScreen) {
-            atlasScreen.loadSavedBrowsingPosition();
-        }
     }
 
     public static void handlePutGlobalTile(ClientWorld ignored, PutGlobalTileS2CPacket packet) {

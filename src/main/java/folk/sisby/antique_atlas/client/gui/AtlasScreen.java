@@ -18,7 +18,6 @@ import folk.sisby.antique_atlas.core.WorldData;
 import folk.sisby.antique_atlas.marker.DimensionMarkersData;
 import folk.sisby.antique_atlas.marker.Marker;
 import folk.sisby.antique_atlas.marker.MarkersData;
-import folk.sisby.antique_atlas.network.c2s.PutBrowsingPositionC2SPacket;
 import folk.sisby.antique_atlas.client.resource.MarkerRenderInfo;
 import folk.sisby.antique_atlas.client.resource.MarkerType;
 import folk.sisby.antique_atlas.util.MathUtil;
@@ -344,19 +343,8 @@ public class AtlasScreen extends Component {
 
         this.player = MinecraftClient.getInstance().player;
         updateAtlasData();
-        if (!followPlayer && AntiqueAtlas.CONFIG.Gameplay.doSaveBrowsingPos) {
-            loadSavedBrowsingPosition();
-        }
 
         return this;
-    }
-
-    public void loadSavedBrowsingPosition() {
-        // Apply zoom first, because browsing position depends on it:
-        setMapScale(biomeData.getBrowsingZoom());
-        mapOffsetX = biomeData.getBrowsingX();
-        mapOffsetY = biomeData.getBrowsingY();
-        isDragging = false;
     }
 
     @Override
@@ -981,10 +969,6 @@ public class AtlasScreen extends Component {
         super.close();
         markerFinalizer.closeChild();
         removeChild(blinkingIcon);
-        // Keyboard.enableRepeatEvents(false);
-        biomeData.setBrowsingPosition(mapOffsetX, mapOffsetY, mapScale);
-
-        new PutBrowsingPositionC2SPacket(getAtlasID(), player.getEntityWorld().getRegistryKey(), mapOffsetX, mapOffsetY, mapScale).send();
     }
 
     /**

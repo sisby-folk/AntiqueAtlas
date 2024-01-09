@@ -31,11 +31,6 @@ public class AtlasData extends PersistentState {
     public static final String TAG_WORLD_ID = "qWorldID";
     public static final String TAG_VISITED_CHUNKS = "qVisitedChunks";
 
-    // Navigation
-    public static final String TAG_BROWSING_X = "qBrowseX";
-    public static final String TAG_BROWSING_Y = "qBrowseY";
-    public static final String TAG_BROWSING_ZOOM = "qBrowseZoom";
-
     /**
      * This map contains, for each dimension, a map of chunks the player
      * has seen. This map is thread-safe.
@@ -73,10 +68,6 @@ public class AtlasData extends PersistentState {
             NbtList dimensionTag = (NbtList) worldTag.get(TAG_VISITED_CHUNKS);
             WorldData dimData = this.getWorldData(worldID);
             dimData.readFromNBT(dimensionTag);
-            double zoom = worldTag.getDouble(TAG_BROWSING_ZOOM);
-            if (zoom == 0) zoom = 0.5;
-            dimData.setBrowsingPosition(worldTag.getInt(TAG_BROWSING_X),
-                worldTag.getInt(TAG_BROWSING_Y), zoom);
         }
     }
 
@@ -95,9 +86,6 @@ public class AtlasData extends PersistentState {
             if (includeTileData) {
                 dimTag.put(TAG_VISITED_CHUNKS, dimData.writeToNBT());
             }
-            dimTag.putInt(TAG_BROWSING_X, dimData.getBrowsingX());
-            dimTag.putInt(TAG_BROWSING_Y, dimData.getBrowsingY());
-            dimTag.putDouble(TAG_BROWSING_ZOOM, dimData.getBrowsingZoom());
             dimensionMapList.add(dimTag);
         }
         compound.put(TAG_WORLD_MAP_LIST, dimensionMapList);
