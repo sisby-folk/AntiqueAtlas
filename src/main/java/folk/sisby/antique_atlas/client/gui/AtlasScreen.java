@@ -954,7 +954,7 @@ public class AtlasScreen extends Component {
 
         RenderSystem.setShaderColor(1, 1, 1, 1);
 
-        if (isMouseOver && mouseIsOverMarker && marker.getLabel().getString().length() > 0) {
+        if (isMouseOver && mouseIsOverMarker && !marker.getLabel().getString().isEmpty()) {
             drawTooltip(Collections.singletonList(marker.getLabel()), textRenderer);
         }
     }
