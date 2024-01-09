@@ -3,7 +3,6 @@ package folk.sisby.antique_atlas.client;
 import folk.sisby.antique_atlas.AntiqueAtlas;
 import folk.sisby.antique_atlas.client.gui.AtlasScreen;
 import folk.sisby.antique_atlas.client.resource.MarkerTypes;
-import folk.sisby.antique_atlas.client.resource.reloader.MarkerMipsConfig;
 import folk.sisby.antique_atlas.client.resource.reloader.MarkerTextureConfig;
 import folk.sisby.antique_atlas.client.resource.reloader.TextureConfig;
 import folk.sisby.antique_atlas.client.resource.reloader.TextureSetConfig;
@@ -70,10 +69,9 @@ public class AntiqueAtlasClient implements ClientModInitializer {
 
     @Override
     public void onInitializeClient() {
-        ResourceManagerHelper.get(ResourceType.CLIENT_RESOURCES).registerReloadListener(new TextureConfig(AntiqueAtlasTextures.TILE_TEXTURES_MAP));
+        ResourceManagerHelper.get(ResourceType.CLIENT_RESOURCES).registerReloadListener(new TextureConfig());
         ResourceManagerHelper.get(ResourceType.CLIENT_RESOURCES).registerReloadListener(new TextureSetConfig());
         ResourceManagerHelper.get(ResourceType.CLIENT_RESOURCES).registerReloadListener(new TileTextureReloader());
-        ResourceManagerHelper.get(ResourceType.CLIENT_RESOURCES).registerReloadListener(new MarkerMipsConfig());
         ResourceManagerHelper.get(ResourceType.CLIENT_RESOURCES).registerReloadListener(new MarkerTextureConfig());
 
         for (MarkerType type : MarkerTypes.REGISTRY) {
