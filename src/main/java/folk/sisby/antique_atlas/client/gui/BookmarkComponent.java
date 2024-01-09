@@ -2,7 +2,7 @@ package folk.sisby.antique_atlas.client.gui;
 
 import com.mojang.blaze3d.systems.RenderSystem;
 import folk.sisby.antique_atlas.client.AntiqueAtlasTextures;
-import folk.sisby.antique_atlas.client.gui.core.GuiToggleButton;
+import folk.sisby.antique_atlas.client.gui.core.ToggleButtonComponent;
 import folk.sisby.antique_atlas.client.texture.ITexture;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.DrawContext;
@@ -15,7 +15,7 @@ import java.util.Collections;
  * Bookmark-button in the journal. When a bookmark is selected, it will not
  * bulge on mouseover.
  */
-public class GuiBookmarkButton extends GuiToggleButton {
+public class BookmarkComponent extends ToggleButtonComponent {
     private static final int WIDTH = 21;
     private static final int HEIGHT = 18;
 
@@ -28,7 +28,7 @@ public class GuiBookmarkButton extends GuiToggleButton {
      * @param iconTexture the path to the 16x16 texture to be drawn on top of the bookmark.
      * @param title       hovering text.
      */
-    GuiBookmarkButton(int colorIndex, ITexture iconTexture, Text title) {
+    BookmarkComponent(int colorIndex, ITexture iconTexture, Text title) {
         this.colorIndex = colorIndex;
         setIconTexture(iconTexture);
         setTitle(title);

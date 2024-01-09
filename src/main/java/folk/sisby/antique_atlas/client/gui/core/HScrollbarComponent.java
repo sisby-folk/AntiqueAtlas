@@ -2,9 +2,9 @@ package folk.sisby.antique_atlas.client.gui.core;
 
 import net.minecraft.client.gui.DrawContext;
 
-public class GuiHScrollbar extends AGuiScrollbar {
+public class HScrollbarComponent extends AbstractScrollbarComponent {
 
-    public GuiHScrollbar(GuiViewport viewport) {
+    public HScrollbarComponent(ViewportComponent viewport) {
         super(viewport);
     }
 

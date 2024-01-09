@@ -2,7 +2,7 @@ package folk.sisby.antique_atlas.client.gui;
 
 import com.mojang.blaze3d.systems.RenderSystem;
 import folk.sisby.antique_atlas.client.AntiqueAtlasTextures;
-import folk.sisby.antique_atlas.client.gui.core.GuiComponentButton;
+import folk.sisby.antique_atlas.client.gui.core.ButtonComponent;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.DrawContext;
 import net.minecraft.text.Text;
@@ -10,11 +10,11 @@ import org.lwjgl.opengl.GL11;
 
 import java.util.Collections;
 
-public class GuiPositionButton extends GuiComponentButton {
+public class FollowButtonComponent extends ButtonComponent {
     private static final int WIDTH = 11;
     private static final int HEIGHT = 11;
 
-    public GuiPositionButton() {
+    public FollowButtonComponent() {
         setSize(WIDTH, HEIGHT);
     }
 

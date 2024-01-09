@@ -9,7 +9,7 @@ import net.minecraft.client.gui.DrawContext;
  *
  * @author Hunternif
  */
-public class GuiCursor extends GuiComponent {
+public class CursorComponent extends Component {
 
     private ITexture texture;
     private int textureWidth, textureHeight;

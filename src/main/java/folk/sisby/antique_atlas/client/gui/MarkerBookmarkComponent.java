@@ -2,7 +2,7 @@ package folk.sisby.antique_atlas.client.gui;
 
 import com.mojang.blaze3d.systems.RenderSystem;
 import folk.sisby.antique_atlas.client.AntiqueAtlasTextures;
-import folk.sisby.antique_atlas.client.gui.core.GuiComponentButton;
+import folk.sisby.antique_atlas.client.gui.core.ButtonComponent;
 import folk.sisby.antique_atlas.client.texture.ITexture;
 import folk.sisby.antique_atlas.marker.Marker;
 import folk.sisby.antique_atlas.client.resource.MarkerType;
@@ -17,7 +17,7 @@ import java.util.Collections;
  * Bookmark-button in the journal. When a bookmark is selected, it will not
  * bulge on mouseover.
  */
-public class GuiMarkerBookmark extends GuiComponentButton {
+public class MarkerBookmarkComponent extends ButtonComponent {
     private static final int WIDTH = 21;
     private static final int HEIGHT = 18;
 
@@ -25,7 +25,7 @@ public class GuiMarkerBookmark extends GuiComponentButton {
     private ITexture iconTexture;
     private final Marker marker;
 
-    GuiMarkerBookmark(Marker marker) {
+    MarkerBookmarkComponent(Marker marker) {
         this.colorIndex = 3;
         this.marker = marker;
 

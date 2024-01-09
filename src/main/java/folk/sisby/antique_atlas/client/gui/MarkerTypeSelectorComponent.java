@@ -1,18 +1,18 @@
 package folk.sisby.antique_atlas.client.gui;
 
 import folk.sisby.antique_atlas.client.AntiqueAtlasTextures;
-import folk.sisby.antique_atlas.client.gui.core.GuiToggleButton;
+import folk.sisby.antique_atlas.client.gui.core.ToggleButtonComponent;
 import folk.sisby.antique_atlas.client.texture.ITexture;
 import folk.sisby.antique_atlas.client.resource.MarkerType;
 import net.minecraft.client.gui.DrawContext;
 
 
-public class GuiMarkerInList extends GuiToggleButton {
+public class MarkerTypeSelectorComponent extends ToggleButtonComponent {
     public static final int FRAME_SIZE = 34;
 
     private final MarkerType markerType;
 
-    public GuiMarkerInList(MarkerType markerType) {
+    public MarkerTypeSelectorComponent(MarkerType markerType) {
         this.markerType = markerType;
         setSize(FRAME_SIZE, FRAME_SIZE);
     }

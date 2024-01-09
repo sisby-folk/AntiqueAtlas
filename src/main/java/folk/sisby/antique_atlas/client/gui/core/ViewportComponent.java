@@ -10,18 +10,18 @@ import net.minecraft.client.gui.DrawContext;
  *
  * @author Hunternif
  */
-public class GuiViewport extends GuiComponent {
+public class ViewportComponent extends Component {
     /**
      * The container component for content.
      */
-    final GuiComponent content = new GuiComponent();
+    final Component content = new Component();
 
     /**
      * Coordinate scale factor relative to the actual screen size.
      */
     private double screenScale;
 
-    public GuiViewport() {
+    public ViewportComponent() {
         this.addChild(content);
     }
 
@@ -30,7 +30,7 @@ public class GuiViewport extends GuiComponent {
      *
      * @return the child added
      */
-    public GuiComponent addContent(GuiComponent child) {
+    public Component addContent(Component child) {
         return content.addChild(child);
     }
 
@@ -75,7 +75,7 @@ public class GuiViewport extends GuiComponent {
     protected void validateSize() {
         super.validateSize();
         // Update the clipping flag on content's child components:
-        for (GuiComponent child : this.getChildren()) {
+        for (Component child : this.getChildren()) {
             child.setClipped(child.getGuiY() > getGuiY() + properHeight ||
                     child.getGuiY() + child.getHeight() < getGuiY() ||
                     child.getGuiX() > getGuiX() + properWidth ||

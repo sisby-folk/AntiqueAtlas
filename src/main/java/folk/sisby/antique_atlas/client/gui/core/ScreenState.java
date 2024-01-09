@@ -6,7 +6,7 @@ package folk.sisby.antique_atlas.client.gui.core;
  *
  * @author Hunternif
  */
-public class GuiStates {
+public class ScreenState {
     /**
      * Meant to declare anonymous classes.
      */

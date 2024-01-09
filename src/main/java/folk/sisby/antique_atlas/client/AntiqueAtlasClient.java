@@ -1,7 +1,7 @@
 package folk.sisby.antique_atlas.client;
 
 import folk.sisby.antique_atlas.AntiqueAtlas;
-import folk.sisby.antique_atlas.client.gui.GuiAtlas;
+import folk.sisby.antique_atlas.client.gui.AtlasScreen;
 import folk.sisby.antique_atlas.client.resource.MarkerType;
 import folk.sisby.antique_atlas.client.resource.reloader.MarkerMipsConfig;
 import folk.sisby.antique_atlas.client.resource.reloader.MarkerTextureConfig;
@@ -23,25 +23,25 @@ import net.minecraft.world.biome.Biome;
 import java.util.Map;
 
 public class AntiqueAtlasClient implements ClientModInitializer {
-    private static GuiAtlas guiAtlas;
+    private static AtlasScreen atlasScreen;
 
-    public static GuiAtlas getAtlasGUI() {
-        if (guiAtlas == null) {
-            guiAtlas = new GuiAtlas();
-            guiAtlas.setMapScale(AntiqueAtlas.CONFIG.Interface.defaultScale);
+    public static AtlasScreen getAtlasScreen() {
+        if (atlasScreen == null) {
+            atlasScreen = new AtlasScreen();
+            atlasScreen.setMapScale(AntiqueAtlas.CONFIG.Interface.defaultScale);
         }
-        return guiAtlas;
+        return atlasScreen;
     }
 
-    public static void openAtlasGUI() {
-        openAtlasGUI(getAtlasGUI().prepareToOpen());
+    public static void openAtlasScreen() {
+        openAtlasScreen(getAtlasScreen().prepareToOpen());
     }
 
-    private static void openAtlasGUI(GuiAtlas gui) {
+    private static void openAtlasScreen(AtlasScreen screen) {
         MinecraftClient mc = MinecraftClient.getInstance();
         if (mc.currentScreen == null) { // In-game screen
-            guiAtlas.updateL18n();
-            mc.setScreen(gui);
+            atlasScreen.updateL18n();
+            mc.setScreen(screen);
         }
     }
 

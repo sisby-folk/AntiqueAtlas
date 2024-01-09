@@ -9,7 +9,7 @@ import java.util.List;
 /**
  * A group of GuiToggleButtons only one of which can be selected at any time.
  */
-public class ToggleGroup<B extends GuiToggleButton> implements Iterable<B> {
+public class ToggleButtonRadioGroup<B extends ToggleButtonComponent> implements Iterable<B> {
     private final List<B> buttons = new ArrayList<>();
 
     private final List<ISelectListener<? extends B>> listeners = new ArrayList<>();
@@ -18,7 +18,7 @@ public class ToggleGroup<B extends GuiToggleButton> implements Iterable<B> {
 
     private final ClickListener clickListener;
 
-    public ToggleGroup() {
+    public ToggleButtonRadioGroup() {
         clickListener = this.new ClickListener();
     }
 

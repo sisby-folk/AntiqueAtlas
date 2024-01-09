@@ -12,7 +12,7 @@ import org.lwjgl.opengl.GL11;
  *
  * @author Hunternif
  */
-public class GuiBlinkingImage extends GuiComponent {
+public class BlinkingTextureComponent extends Component {
     private ITexture texture;
     /**
      * The number of milliseconds the icon spends visible or invisible.
@@ -27,13 +27,13 @@ public class GuiBlinkingImage extends GuiComponent {
      */
     private boolean isVisible;
 
-    public GuiBlinkingImage(long blinkTime, float visibleAlpha, float invisibleAlpha) {
+    public BlinkingTextureComponent(long blinkTime, float visibleAlpha, float invisibleAlpha) {
         this.blinkTime = blinkTime;
         this.visibleAlpha = visibleAlpha;
         this.invisibleAlpha = invisibleAlpha;
     }
 
-    public GuiBlinkingImage() {
+    public BlinkingTextureComponent() {
         this(500, 1, 0.25f);
     }
 

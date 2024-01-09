@@ -6,8 +6,8 @@ import folk.sisby.antique_atlas.client.api.AtlasClientAPI;
 import folk.sisby.antique_atlas.AntiqueAtlas;
 import folk.sisby.antique_atlas.client.*;
 import folk.sisby.antique_atlas.client.gui.core.*;
-import folk.sisby.antique_atlas.client.gui.core.GuiStates.IState;
-import folk.sisby.antique_atlas.client.gui.core.GuiStates.SimpleState;
+import folk.sisby.antique_atlas.client.gui.core.ScreenState.IState;
+import folk.sisby.antique_atlas.client.gui.core.ScreenState.SimpleState;
 import folk.sisby.antique_atlas.client.gui.tiles.SubTile;
 import folk.sisby.antique_atlas.client.gui.tiles.SubTileQuartet;
 import folk.sisby.antique_atlas.client.gui.tiles.TileRenderIterator;
@@ -43,7 +43,7 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
-public class GuiAtlas extends GuiComponent {
+public class AtlasScreen extends Component {
     public static final int WIDTH = 310;
     public static final int HEIGHT = 218;
 
@@ -70,7 +70,7 @@ public class GuiAtlas extends GuiComponent {
 
     // States ==================================================================
 
-    private final GuiStates state = new GuiStates();
+    private final ScreenState state = new ScreenState();
 
     /**
      * If on, navigate the map normally.
@@ -131,29 +131,29 @@ public class GuiAtlas extends GuiComponent {
             btnDelMarker.setSelected(false);
         }
     };
-    private final GuiCursor eraser = new GuiCursor();
+    private final CursorComponent eraser = new CursorComponent();
 
     // Buttons =================================================================
 
     /**
      * Button for placing a marker at current position, local to this Atlas instance.
      */
-    private final GuiBookmarkButton btnMarker;
+    private final BookmarkComponent btnMarker;
 
     /**
      * Button for deleting local markers.
      */
-    private final GuiBookmarkButton btnDelMarker;
+    private final BookmarkComponent btnDelMarker;
 
     /**
      * Button for showing/hiding all markers.
      */
-    private final GuiBookmarkButton btnShowMarkers;
+    private final BookmarkComponent btnShowMarkers;
 
     /**
      * Button for restoring player's position at the center of the Atlas.
      */
-    private final GuiPositionButton btnPosition;
+    private final FollowButtonComponent btnPosition;
 
 
     // Navigation ==============================================================
@@ -168,7 +168,7 @@ public class GuiAtlas extends GuiComponent {
      * navigation using the arrow buttons. Also used to prevent immediate
      * canceling of placing marker.
      */
-    private GuiComponentButton selectedButton = null;
+    private ButtonComponent selectedButton = null;
 
     /**
      * Set to true when dragging the map view.
@@ -196,9 +196,9 @@ public class GuiAtlas extends GuiComponent {
      */
     private boolean followPlayer;
 
-    private final GuiScaleBar scaleBar = new GuiScaleBar();
+    private final BarScaleComponent scaleBar = new BarScaleComponent();
 
-    private final GuiScrollingContainer markers = new GuiScrollingContainer();
+    private final ScrollBoxComponent markers = new ScrollBoxComponent();
 
     /**
      * Pixel-to-block ratio.
@@ -230,11 +230,11 @@ public class GuiAtlas extends GuiComponent {
      */
     private Marker hoveredMarker;
 
-    private final GuiMarkerFinalizer markerFinalizer = new GuiMarkerFinalizer();
+    private final MarkerModalComponent markerFinalizer = new MarkerModalComponent();
     /**
      * Displayed where the marker is about to be placed when the Finalizer GUI is on.
      */
-    private final GuiBlinkingMarker blinkingIcon = new GuiBlinkingMarker();
+    private final BlinkingMarkerComponent blinkingIcon = new BlinkingMarkerComponent();
 
     // Misc stuff ==============================================================
 
@@ -254,12 +254,12 @@ public class GuiAtlas extends GuiComponent {
     private final String[] zoomNames = new String[]{"256", "128", "64", "32", "16", "8", "4", "2", "1", "1/2", "1/4", "1/8", "1/16", "1/32", "1/64", "1/128", "1/256"};
 
     @SuppressWarnings("rawtypes")
-    public GuiAtlas() {
+    public AtlasScreen() {
         setSize(WIDTH, HEIGHT);
         setMapScale(0.5);
         followPlayer = true;
 
-        btnPosition = new GuiPositionButton();
+        btnPosition = new FollowButtonComponent();
         btnPosition.setEnabled(!followPlayer);
         addChild(btnPosition).offsetGuiCoords(283, 194);
         IButtonListener positionListener = button -> {
@@ -273,7 +273,7 @@ public class GuiAtlas extends GuiComponent {
         };
         btnPosition.addListener(positionListener);
 
-        btnMarker = new GuiBookmarkButton(0, AntiqueAtlasTextures.ICON_ADD_MARKER, Text.translatable("gui.antique_atlas.addMarker"));
+        btnMarker = new BookmarkComponent(0, AntiqueAtlasTextures.ICON_ADD_MARKER, Text.translatable("gui.antique_atlas.addMarker"));
         addChild(btnMarker).offsetGuiCoords(300, 14);
         btnMarker.addListener(button -> {
             if (state.is(PLACING_MARKER)) {
@@ -304,7 +304,7 @@ public class GuiAtlas extends GuiComponent {
                 }
             }
         });
-        btnDelMarker = new GuiBookmarkButton(2, AntiqueAtlasTextures.ICON_DELETE_MARKER, Text.translatable("gui.antique_atlas.delMarker"));
+        btnDelMarker = new BookmarkComponent(2, AntiqueAtlasTextures.ICON_DELETE_MARKER, Text.translatable("gui.antique_atlas.delMarker"));
         addChild(btnDelMarker).offsetGuiCoords(300, 33);
         btnDelMarker.addListener(button -> {
             if (state.is(DELETING_MARKER)) {
@@ -315,7 +315,7 @@ public class GuiAtlas extends GuiComponent {
                 state.switchTo(DELETING_MARKER);
             }
         });
-        btnShowMarkers = new GuiBookmarkButton(3, AntiqueAtlasTextures.ICON_HIDE_MARKERS, Text.translatable("gui.antique_atlas.hideMarkers"));
+        btnShowMarkers = new BookmarkComponent(3, AntiqueAtlasTextures.ICON_HIDE_MARKERS, Text.translatable("gui.antique_atlas.hideMarkers"));
         addChild(btnShowMarkers).offsetGuiCoords(300, 52);
         btnShowMarkers.addListener(button -> {
             selectedButton = null;
@@ -341,7 +341,7 @@ public class GuiAtlas extends GuiComponent {
         state.switchTo(NORMAL);
     }
 
-    public GuiAtlas prepareToOpen() {
+    public AtlasScreen prepareToOpen() {
         MinecraftClient.getInstance().getSoundManager().play(PositionedSoundInstance.master(SoundEvents.ITEM_BOOK_PAGE_TURN, 1.0F));
 
         this.player = MinecraftClient.getInstance().player;
@@ -383,7 +383,7 @@ public class GuiAtlas extends GuiComponent {
             if (!marker.isVisibleAhead() || marker.isGlobal()) {
                 continue;
             }
-            GuiMarkerBookmark bookmark = new GuiMarkerBookmark(marker);
+            MarkerBookmarkComponent bookmark = new MarkerBookmarkComponent(marker);
 
             bookmark.addListener(button -> {
                 if (state.is(NORMAL)) {
@@ -1012,7 +1012,7 @@ public class GuiAtlas extends GuiComponent {
     }
 
     @Override
-    protected void onChildClosed(GuiComponent child) {
+    protected void onChildClosed(Component child) {
         if (child.equals(markerFinalizer)) {
             removeChild(blinkingIcon);
         }

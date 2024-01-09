@@ -1,7 +1,7 @@
 package folk.sisby.antique_atlas.client;
 
 import folk.sisby.antique_atlas.AntiqueAtlas;
-import folk.sisby.antique_atlas.client.gui.GuiAtlas;
+import folk.sisby.antique_atlas.client.gui.AtlasScreen;
 import folk.sisby.antique_atlas.client.resource.MarkerType;
 import folk.sisby.antique_atlas.core.AtlasData;
 import folk.sisby.antique_atlas.core.TileDataStorage;
@@ -55,7 +55,7 @@ public class AntiqueAtlasClientNetworking {
         if (clientWorld == null) return;
         MarkersData data = packet.atlasID() == GLOBAL ? AntiqueAtlas.globalMarkersData.getData() : AntiqueAtlas.markersData.getMarkersData(packet.atlasID(), clientWorld);
         data.removeMarker(packet.markerID());
-        AntiqueAtlasClient.getAtlasGUI().updateBookmarkerList();
+        AntiqueAtlasClient.getAtlasScreen().updateBookmarkerList();
     }
 
     public static void handleDimensionUpdate(ClientWorld clientWorld, DimensionUpdateS2CPacket packet) {
@@ -71,7 +71,7 @@ public class AntiqueAtlasClientNetworking {
         if (clientWorld == null) return;
         AtlasData atlasData = AntiqueAtlas.tileData.getData(packet.atlasID(), clientWorld);
         atlasData.updateFromNbt(packet.data());
-        if (AntiqueAtlas.CONFIG.Gameplay.doSaveBrowsingPos && MinecraftClient.getInstance().currentScreen instanceof GuiAtlas atlasScreen) {
+        if (AntiqueAtlas.CONFIG.Gameplay.doSaveBrowsingPos && MinecraftClient.getInstance().currentScreen instanceof AtlasScreen atlasScreen) {
             atlasScreen.loadSavedBrowsingPosition();
         }
     }
@@ -89,7 +89,7 @@ public class AntiqueAtlasClientNetworking {
             MarkerType markerType = MarkerType.REGISTRY.get(entry.getKey());
             markersData.loadMarker(new Marker(MarkerType.REGISTRY.getId(markerType), packet.world(), entry.getValue()));
         }
-        AntiqueAtlasClient.getAtlasGUI().updateBookmarkerList();
+        AntiqueAtlasClient.getAtlasScreen().updateBookmarkerList();
     }
 
     public static void handlePutTile(ClientWorld clientWorld, PutTileS2CPacket packet) {

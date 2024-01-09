@@ -3,7 +3,7 @@ package folk.sisby.antique_atlas.client.gui.core;
 /**
  * Listener for button select in a RadioGroup.
  */
-public interface ISelectListener<B extends GuiToggleButton> {
+public interface ISelectListener<B extends ToggleButtonComponent> {
     /**
      * Called when a button in the group was selected.
      *

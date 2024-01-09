@@ -17,14 +17,14 @@ import java.util.concurrent.CopyOnWriteArrayList;
  * keyboard events, window resize and will be moved around together with the
  * parent component.
  */
-public class GuiComponent extends Screen {
+public class Component extends Screen {
     @FunctionalInterface
     interface UiCall {
-        boolean call(GuiComponent c);
+        boolean call(Component c);
     }
 
-    private GuiComponent parent = null;
-    private final List<GuiComponent> children = new CopyOnWriteArrayList<>();
+    private Component parent = null;
+    private final List<Component> children = new CopyOnWriteArrayList<>();
 
     /**
      * The component's own size.
@@ -55,7 +55,7 @@ public class GuiComponent extends Screen {
     private int guiX = 0, guiY = 0;
 
     // TODO
-    public GuiComponent() {
+    public Component() {
         super(Text.literal("component"));
     }
 
@@ -68,7 +68,7 @@ public class GuiComponent extends Screen {
         int dy = y - guiY;
         this.guiX = x;
         this.guiY = y;
-        for (GuiComponent child : children) {
+        for (Component child : children) {
             child.offsetGuiCoords(dx, dy);
         }
         if (parent != null && (dx != 0 || dy != 0)) {
@@ -176,7 +176,7 @@ public class GuiComponent extends Screen {
      *
      * @return the child added.
      */
-    protected GuiComponent addChild(GuiComponent child) {
+    protected Component addChild(Component child) {
         doAddChild(null, child, null);
         return child;
     }
@@ -189,12 +189,12 @@ public class GuiComponent extends Screen {
      *
      * @return the child added.
      */
-    protected GuiComponent addChildBehind(GuiComponent behind, GuiComponent child) {
+    protected Component addChildBehind(Component behind, Component child) {
         doAddChild(null, child, behind);
         return child;
     }
 
-    private void doAddChild(GuiComponent inFrontOf, GuiComponent child, GuiComponent behind) {
+    private void doAddChild(Component inFrontOf, Component child, Component behind) {
         if (child == null || children.contains(child) || parent == child) {
             return;
         }
@@ -220,7 +220,7 @@ public class GuiComponent extends Screen {
     /**
      * @return the child removed.
      */
-    protected GuiComponent removeChild(GuiComponent child) {
+    protected Component removeChild(Component child) {
         if (child != null && children.contains(child)) {
             child.parent = null;
             children.remove(child);
@@ -238,20 +238,20 @@ public class GuiComponent extends Screen {
     /**
      * Null if this is a top-level GUI.
      */
-    public GuiComponent getParent() {
+    public Component getParent() {
         return parent;
     }
 
-    List<GuiComponent> getChildren() {
+    List<Component> getChildren() {
         return children;
     }
 
     boolean iterateInput(UiCall callMethod) {
         // Traverse children backwards, because the topmost child should be the
         // first to process input:
-        ListIterator<GuiComponent> iter = children.listIterator(children.size());
+        ListIterator<Component> iter = children.listIterator(children.size());
         while (iter.hasPrevious()) {
-            GuiComponent child = iter.previous();
+            Component child = iter.previous();
             if (callMethod.call(child)) {
                 return true;
             }
@@ -358,7 +358,7 @@ public class GuiComponent extends Screen {
     @Override
     public void render(DrawContext context, int mouseX, int mouseY, float partialTick) {
         super.render(context, mouseX, mouseY, partialTick);
-        for (GuiComponent child : children) {
+        for (Component child : children) {
             if (!child.isClipped) {
                 child.render(context, mouseX, mouseY, partialTick);
             }
@@ -375,7 +375,7 @@ public class GuiComponent extends Screen {
      */
     @Override
     public void close() {
-        for (GuiComponent child : children) {
+        for (Component child : children) {
             child.close();
         }
         super.close();
@@ -387,7 +387,7 @@ public class GuiComponent extends Screen {
      */
     @Override
     public void tick() {
-        for (GuiComponent child : children) {
+        for (Component child : children) {
             child.tick();
         }
 
@@ -400,7 +400,7 @@ public class GuiComponent extends Screen {
     @Override
     public void init() {
         super.init();
-        for (GuiComponent child : children) {
+        for (Component child : children) {
             child.init(client, width, height);
         }
     }
@@ -447,7 +447,7 @@ public class GuiComponent extends Screen {
         int rightmost = Integer.MIN_VALUE;
         int topmost = Integer.MAX_VALUE;
         int bottommost = Integer.MIN_VALUE;
-        for (GuiComponent child : children) {
+        for (Component child : children) {
             int x = child.getGuiX();
             if (x < leftmost) {
                 leftmost = x;
@@ -496,8 +496,8 @@ public class GuiComponent extends Screen {
      * Returns the top level parent of this component, or itself if it has no
      * parent. Useful for correctly drawing hovering text.
      */
-    private GuiComponent getTopLevelParent() {
-        GuiComponent component = this;
+    private Component getTopLevelParent() {
+        Component component = this;
         while (component.parent != null) {
             component = component.parent;
         }
@@ -518,7 +518,7 @@ public class GuiComponent extends Screen {
      * </p>
      */
     protected void drawTooltip(List<Text> lines, TextRenderer font) {
-        GuiComponent topLevel = getTopLevelParent();
+        Component topLevel = getTopLevelParent();
         topLevel.hoveringTextInfo.lines = lines;
         topLevel.hoveringTextInfo.x = getMouseX();
         topLevel.hoveringTextInfo.y = getMouseY();
@@ -558,7 +558,7 @@ public class GuiComponent extends Screen {
     /**
      * Called when a child removes itself from this component.
      */
-    protected void onChildClosed(GuiComponent child) {
+    protected void onChildClosed(Component child) {
     }
 
     /**
