@@ -5,7 +5,8 @@ import folk.sisby.antique_atlas.client.api.AtlasClientAPI;
 import folk.sisby.antique_atlas.client.gui.core.Component;
 import folk.sisby.antique_atlas.client.gui.core.ScrollBoxComponent;
 import folk.sisby.antique_atlas.client.gui.core.ToggleButtonRadioGroup;
-import folk.sisby.antique_atlas.client.resource.MarkerType;
+import folk.sisby.antique_atlas.client.MarkerType;
+import folk.sisby.antique_atlas.client.resource.MarkerTypes;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.gui.widget.ButtonWidget;
@@ -31,7 +32,7 @@ public class MarkerModalComponent extends Component {
     private int markerX;
     private int markerZ;
 
-    MarkerType selectedType = MarkerType.REGISTRY.get(MarkerType.REGISTRY.getDefaultId());
+    MarkerType selectedType = MarkerTypes.REGISTRY.get(MarkerTypes.REGISTRY.getDefaultId());
 
     private static final int BUTTON_WIDTH = 100;
     private static final int BUTTON_SPACING = 4;
@@ -66,7 +67,7 @@ public class MarkerModalComponent extends Component {
         super.init();
 
         addDrawableChild(btnDone = ButtonWidget.builder(Text.translatable("gui.done"), (button) -> {
-            AtlasClientAPI.getMarkerAPI().putMarker(world, true, atlasID, MarkerType.REGISTRY.getId(selectedType), Text.literal(textField.getText()), markerX, markerZ);
+            AtlasClientAPI.getMarkerAPI().putMarker(world, true, atlasID, MarkerTypes.REGISTRY.getId(selectedType), Text.literal(textField.getText()), markerX, markerZ);
             AntiqueAtlas.LOG.info("Put marker in Atlas #{} \"{}\" at ({}, {})", atlasID, textField.getText(), markerX, markerZ);
 
             ClientPlayerEntity player = MinecraftClient.getInstance().player;
@@ -87,7 +88,7 @@ public class MarkerModalComponent extends Component {
         this.addChild(scroller);
 
         int typeCount = 0;
-        for (MarkerType type : MarkerType.REGISTRY) {
+        for (MarkerType type : MarkerTypes.REGISTRY) {
             if (!type.isTechnical())
                 typeCount++;
         }
@@ -105,7 +106,7 @@ public class MarkerModalComponent extends Component {
             }
         });
         int contentX = 0;
-        for (MarkerType markerType : MarkerType.REGISTRY) {
+        for (MarkerType markerType : MarkerTypes.REGISTRY) {
             if (markerType.isTechnical())
                 continue;
             MarkerTypeSelectorComponent markerGui = new MarkerTypeSelectorComponent(markerType);

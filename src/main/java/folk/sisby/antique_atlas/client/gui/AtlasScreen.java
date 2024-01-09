@@ -11,15 +11,15 @@ import folk.sisby.antique_atlas.client.gui.core.ScreenState.SimpleState;
 import folk.sisby.antique_atlas.client.gui.tiles.SubTile;
 import folk.sisby.antique_atlas.client.gui.tiles.SubTileQuartet;
 import folk.sisby.antique_atlas.client.gui.tiles.TileRenderIterator;
-import folk.sisby.antique_atlas.client.resource.TileTextureMap;
+import folk.sisby.antique_atlas.client.resource.MarkerTypes;
+import folk.sisby.antique_atlas.client.resource.TileTextures;
 import folk.sisby.antique_atlas.client.texture.ITexture;
 import folk.sisby.antique_atlas.client.texture.TileTexture;
 import folk.sisby.antique_atlas.core.WorldData;
 import folk.sisby.antique_atlas.marker.DimensionMarkersData;
 import folk.sisby.antique_atlas.marker.Marker;
 import folk.sisby.antique_atlas.marker.MarkersData;
-import folk.sisby.antique_atlas.client.resource.MarkerRenderInfo;
-import folk.sisby.antique_atlas.client.resource.MarkerType;
+import folk.sisby.antique_atlas.client.MarkerType;
 import folk.sisby.antique_atlas.util.MathUtil;
 import folk.sisby.antique_atlas.util.Rect;
 import net.minecraft.client.MinecraftClient;
@@ -737,7 +737,7 @@ public class AtlasScreen extends Component {
         for (SubTileQuartet subtiles : tiles) {
             for (SubTile subtile : subtiles) {
                 if (subtile == null || subtile.tile == null) continue;
-                ITexture texture = TileTextureMap.instance().getTexture(subtile);
+                ITexture texture = TileTextures.getInstance().getTexture(subtile);
                 if (texture instanceof TileTexture tileTexture) {
                     tileTexture.bind();
                     tileTexture.drawSubTile(context, subtile, tileHalfSize);
@@ -782,7 +782,7 @@ public class AtlasScreen extends Component {
         if (state.is(PLACING_MARKER)) {
             RenderSystem.setShaderColor(1, 1, 1, 0.5f);
             markerFinalizer.selectedType.calculateMip(iconScale, mapScale);
-            MarkerRenderInfo renderInfo = markerFinalizer.selectedType.getRenderInfo(iconScale, mapScale);
+            MarkerRenderInfo renderInfo = MarkerRenderInfo.ofType(markerFinalizer.selectedType, iconScale, mapScale);
             markerFinalizer.selectedType.resetMip();
             renderInfo.tex.draw(context, mouseX + renderInfo.x, mouseY + renderInfo.y);
             RenderSystem.setShaderColor(1, 1, 1, 1);
@@ -802,7 +802,7 @@ public class AtlasScreen extends Component {
             if (tile == null) {
                 drawTooltip(Arrays.asList(Text.literal(coords), Text.literal(chunks)), textRenderer);
             } else {
-                String texture_set = TileTextureMap.instance().getTextureSet(tile).name.toString();
+                String texture_set = TileTextures.getInstance().getTextureSet(tile).name.toString();
                 drawTooltip(Arrays.asList(
                         Text.literal(coords),
                         Text.literal(chunks),
@@ -896,7 +896,7 @@ public class AtlasScreen extends Component {
     }
 
     private void renderMarker(DrawContext context, Marker marker, double scale) {
-        MarkerType type = MarkerType.REGISTRY.get(marker.getType());
+        MarkerType type = MarkerTypes.REGISTRY.get(marker.getType());
         if (type.shouldHide(state.is(HIDING_MARKERS), scaleClipIndex)) {
             return;
         }
@@ -908,7 +908,7 @@ public class AtlasScreen extends Component {
             return;
         }
         type.calculateMip(scale, mapScale);
-        MarkerRenderInfo info = type.getRenderInfo(scale, mapScale);
+        MarkerRenderInfo info = MarkerRenderInfo.ofType(type, scale, mapScale);
 
         boolean mouseIsOverMarker = type.shouldHover((getMouseX() - (markerX + info.x)) / info.tex.width(), (getMouseY() - (markerY + info.y)) / info.tex.height());
         type.resetMip();

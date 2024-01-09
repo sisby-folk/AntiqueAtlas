@@ -2,14 +2,13 @@ package folk.sisby.antique_atlas.client;
 
 import folk.sisby.antique_atlas.AntiqueAtlas;
 import folk.sisby.antique_atlas.client.gui.AtlasScreen;
-import folk.sisby.antique_atlas.client.resource.MarkerType;
+import folk.sisby.antique_atlas.client.resource.MarkerTypes;
 import folk.sisby.antique_atlas.client.resource.reloader.MarkerMipsConfig;
 import folk.sisby.antique_atlas.client.resource.reloader.MarkerTextureConfig;
 import folk.sisby.antique_atlas.client.resource.reloader.TextureConfig;
 import folk.sisby.antique_atlas.client.resource.reloader.TextureSetConfig;
-import folk.sisby.antique_atlas.client.resource.reloader.TileTextureConfig;
-import folk.sisby.antique_atlas.client.resource.TextureSetMap;
-import folk.sisby.antique_atlas.client.resource.TileTextureMap;
+import folk.sisby.antique_atlas.client.resource.reloader.TileTextureReloader;
+import folk.sisby.antique_atlas.client.resource.TileTextures;
 import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.fabric.api.resource.ResourceManagerHelper;
 import net.minecraft.client.MinecraftClient;
@@ -54,15 +53,15 @@ public class AntiqueAtlasClient implements ClientModInitializer {
     public static void assignCustomBiomeTextures(ClientWorld world) {
         for (Map.Entry<RegistryKey<Biome>, Biome> biome : world.getRegistryManager().get(RegistryKeys.BIOME).getEntrySet()) {
             Identifier id = world.getRegistryManager().get(RegistryKeys.BIOME).getId(biome.getValue());
-            if (!TileTextureMap.instance().isRegistered(id)) {
-                TileTextureMap.instance().autoRegister(id, biome.getKey());
+            if (!TileTextures.getInstance().isRegistered(id)) {
+                TileTextures.getInstance().autoRegister(id, biome.getKey());
             }
         }
 
         for (Map.Entry<RegistryKey<Biome>, Biome> entry : world.getRegistryManager().get(RegistryKeys.BIOME).getEntrySet()) {
             Identifier id = world.getRegistryManager().get(RegistryKeys.BIOME).getId(entry.getValue());
-            if (!TileTextureMap.instance().isRegistered(id)) {
-                TileTextureMap.instance().autoRegister(id, entry.getKey());
+            if (!TileTextures.getInstance().isRegistered(id)) {
+                TileTextures.getInstance().autoRegister(id, entry.getKey());
             }
         }
     }
@@ -71,14 +70,12 @@ public class AntiqueAtlasClient implements ClientModInitializer {
     @Override
     public void onInitializeClient() {
         ResourceManagerHelper.get(ResourceType.CLIENT_RESOURCES).registerReloadListener(new TextureConfig(AntiqueAtlasTextures.TILE_TEXTURES_MAP));
-        TextureSetMap textureSetMap = TextureSetMap.instance();
-        ResourceManagerHelper.get(ResourceType.CLIENT_RESOURCES).registerReloadListener(new TextureSetConfig(textureSetMap));
-        TileTextureMap tileTextureMap = TileTextureMap.instance();
-        ResourceManagerHelper.get(ResourceType.CLIENT_RESOURCES).registerReloadListener(new TileTextureConfig(tileTextureMap, textureSetMap));
+        ResourceManagerHelper.get(ResourceType.CLIENT_RESOURCES).registerReloadListener(new TextureSetConfig());
+        ResourceManagerHelper.get(ResourceType.CLIENT_RESOURCES).registerReloadListener(new TileTextureReloader());
         ResourceManagerHelper.get(ResourceType.CLIENT_RESOURCES).registerReloadListener(new MarkerMipsConfig());
         ResourceManagerHelper.get(ResourceType.CLIENT_RESOURCES).registerReloadListener(new MarkerTextureConfig());
 
-        for (MarkerType type : MarkerType.REGISTRY) {
+        for (MarkerType type : MarkerTypes.REGISTRY) {
             type.initMips();
         }
         AntiqueAtlasKeybindings.init();

@@ -3,7 +3,8 @@ package folk.sisby.antique_atlas.client.resource.reloader;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import folk.sisby.antique_atlas.AntiqueAtlas;
-import folk.sisby.antique_atlas.client.resource.MarkerType;
+import folk.sisby.antique_atlas.client.MarkerType;
+import folk.sisby.antique_atlas.client.resource.MarkerTypes;
 import folk.sisby.antique_atlas.resource.reloader.ResourceReloadListener;
 import net.minecraft.resource.Resource;
 import net.minecraft.resource.ResourceManager;
@@ -72,7 +73,7 @@ public class MarkerTextureConfig implements ResourceReloadListener<Map<Identifie
     public CompletableFuture<Void> apply(Map<Identifier, MarkerType> data, ResourceManager manager, Profiler profiler, Executor executor) {
         return CompletableFuture.runAsync(() -> {
             for (Map.Entry<Identifier, MarkerType> entry : data.entrySet()) {
-                MarkerType.register(entry.getKey(), entry.getValue());
+                MarkerTypes.register(entry.getKey(), entry.getValue());
             }
         }, executor);
     }

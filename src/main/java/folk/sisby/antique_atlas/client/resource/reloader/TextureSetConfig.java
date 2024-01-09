@@ -4,8 +4,8 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import folk.sisby.antique_atlas.AntiqueAtlas;
-import folk.sisby.antique_atlas.client.resource.TextureSet;
-import folk.sisby.antique_atlas.client.resource.TextureSetMap;
+import folk.sisby.antique_atlas.client.TextureSet;
+import folk.sisby.antique_atlas.client.resource.TextureSets;
 import folk.sisby.antique_atlas.resource.reloader.ResourceReloadListener;
 import net.minecraft.resource.Resource;
 import net.minecraft.resource.ResourceManager;
@@ -27,11 +27,6 @@ public class TextureSetConfig implements ResourceReloadListener<Collection<Textu
     public static final Identifier ID = AntiqueAtlas.id("texture_sets");
     private static final int VERSION = 1;
     private static final JsonParser PARSER = new JsonParser();
-    private final TextureSetMap textureSetMap;
-
-    public TextureSetConfig(TextureSetMap textureSetMap) {
-        this.textureSetMap = textureSetMap;
-    }
 
     @Override
     public CompletableFuture<Collection<TextureSet>> load(ResourceManager manager, Profiler profiler, Executor executor) {
@@ -125,7 +120,7 @@ public class TextureSetConfig implements ResourceReloadListener<Collection<Textu
             for (TextureSet set : sets) {
                 try {
                     set.loadTextures();
-                    textureSetMap.register(set);
+                    TextureSets.getInstance().register(set);
                     if (AntiqueAtlas.CONFIG.Performance.resourcePackLogging)
                         AntiqueAtlas.LOG.info("Loaded texture set {} with {} custom texture(s)", set.name, set.getTexturePaths().length);
                 } catch (Throwable e) {

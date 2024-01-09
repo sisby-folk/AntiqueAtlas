@@ -1,6 +1,7 @@
 package folk.sisby.antique_atlas.client.resource;
 
 import folk.sisby.antique_atlas.AntiqueAtlas;
+import folk.sisby.antique_atlas.client.TextureSet;
 import folk.sisby.antique_atlas.client.gui.tiles.SubTile;
 import folk.sisby.antique_atlas.client.texture.ITexture;
 import folk.sisby.antique_atlas.core.scanning.TileHeightType;
@@ -24,12 +25,12 @@ import java.util.Optional;
  *
  * @author Hunternif
  */
-public class TileTextureMap {
-    private static final TileTextureMap INSTANCE = new TileTextureMap();
+public class TileTextures {
+    private static final TileTextures INSTANCE = new TileTextures();
 
     public static final Identifier DEFAULT_TEXTURE = AntiqueAtlas.id("test");
 
-    public static TileTextureMap instance() {
+    public static TileTextures getInstance() {
         return INSTANCE;
     }
 
@@ -66,7 +67,7 @@ public class TileTextureMap {
     }
 
     public TextureSet getDefaultTexture() {
-        return TextureSetMap.instance().getByName(DEFAULT_TEXTURE);
+        return TextureSets.getInstance().getByName(DEFAULT_TEXTURE);
     }
 
     /**
@@ -82,7 +83,7 @@ public class TileTextureMap {
         Optional<Identifier> texture_set = guessFittingTextureSet(biome);
 
         if (texture_set.isPresent()) {
-            setAllTextures(id, TextureSetMap.instance().getByName(texture_set.get()));
+            setAllTextures(id, TextureSets.getInstance().getByName(texture_set.get()));
             AntiqueAtlas.LOG.info("Auto-registered standard texture set for biome {}: {}", id, texture_set.get());
         } else {
             AntiqueAtlas.LOG.error("Failed to auto-register a standard texture set for the biome '{}'. This is most likely caused by errors in the TextureSet configurations, check your resource packs first before reporting it as an issue!", id.toString());

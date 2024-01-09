@@ -1,7 +1,7 @@
 package folk.sisby.antique_atlas.client.gui;
 
 import folk.sisby.antique_atlas.client.gui.core.BlinkingTextureComponent;
-import folk.sisby.antique_atlas.client.resource.MarkerType;
+import folk.sisby.antique_atlas.client.MarkerType;
 
 public class BlinkingMarkerComponent extends BlinkingTextureComponent implements MarkerModalComponent.IMarkerTypeSelectListener {
     public void onSelectMarkerType(MarkerType markerType) {

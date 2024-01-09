@@ -1,7 +1,7 @@
 package folk.sisby.antique_atlas.client.gui.tiles;
 
-import folk.sisby.antique_atlas.client.resource.TextureSet;
-import folk.sisby.antique_atlas.client.resource.TileTextureMap;
+import folk.sisby.antique_atlas.client.TextureSet;
+import folk.sisby.antique_atlas.client.resource.TileTextures;
 import folk.sisby.antique_atlas.client.gui.tiles.SubTile.Part;
 import folk.sisby.antique_atlas.client.gui.tiles.SubTile.Shape;
 import folk.sisby.antique_atlas.core.ITileStorage;
@@ -205,8 +205,8 @@ public class TileRenderIterator implements Iterator<SubTileQuartet>, Iterable<Su
      */
     private static boolean shouldStitchTo(Identifier tile, Identifier to) {
         if (tile == null) return false;
-        TextureSet set = TileTextureMap.instance().getTextureSet(tile);
-        TextureSet toSet = TileTextureMap.instance().getTextureSet(to);
+        TextureSet set = TileTextures.getInstance().getTextureSet(tile);
+        TextureSet toSet = TileTextures.getInstance().getTextureSet(to);
         return set != null && set.shouldStitchTo(toSet);
     }
 
@@ -216,8 +216,8 @@ public class TileRenderIterator implements Iterator<SubTileQuartet>, Iterable<Su
      */
     private static boolean shouldStitchToHorizontally(Identifier tile, Identifier to) {
         if (tile == null) return false;
-        TextureSet set = TileTextureMap.instance().getTextureSet(tile);
-        TextureSet toSet = TileTextureMap.instance().getTextureSet(to);
+        TextureSet set = TileTextures.getInstance().getTextureSet(tile);
+        TextureSet toSet = TileTextures.getInstance().getTextureSet(to);
         return set != null && set.shouldStitchToHorizontally(toSet);
     }
 
@@ -227,8 +227,8 @@ public class TileRenderIterator implements Iterator<SubTileQuartet>, Iterable<Su
      */
     private static boolean shouldStitchToVertically(Identifier tile, Identifier to) {
         if (tile == null) return false;
-        TextureSet set = TileTextureMap.instance().getTextureSet(tile);
-        TextureSet toSet = TileTextureMap.instance().getTextureSet(to);
+        TextureSet set = TileTextures.getInstance().getTextureSet(tile);
+        TextureSet toSet = TileTextures.getInstance().getTextureSet(to);
         return set != null && set.shouldStitchToVertically(toSet);
     }
 
