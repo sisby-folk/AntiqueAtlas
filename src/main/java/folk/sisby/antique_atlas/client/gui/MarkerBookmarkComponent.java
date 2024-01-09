@@ -3,9 +3,10 @@ package folk.sisby.antique_atlas.client.gui;
 import com.mojang.blaze3d.systems.RenderSystem;
 import folk.sisby.antique_atlas.client.AntiqueAtlasTextures;
 import folk.sisby.antique_atlas.client.gui.core.ButtonComponent;
+import folk.sisby.antique_atlas.client.resource.MarkerTypes;
 import folk.sisby.antique_atlas.client.texture.ITexture;
 import folk.sisby.antique_atlas.marker.Marker;
-import folk.sisby.antique_atlas.client.resource.MarkerType;
+import folk.sisby.antique_atlas.client.MarkerType;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.text.Text;
@@ -29,7 +30,7 @@ public class MarkerBookmarkComponent extends ButtonComponent {
         this.colorIndex = 3;
         this.marker = marker;
 
-        MarkerType type = MarkerType.REGISTRY.get(marker.getType());
+        MarkerType type = MarkerTypes.REGISTRY.get(marker.getType());
         setIconTexture(type.getTexture());
 
         setSize(WIDTH, HEIGHT);

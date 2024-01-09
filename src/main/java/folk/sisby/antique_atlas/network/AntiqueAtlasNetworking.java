@@ -4,7 +4,6 @@ import folk.sisby.antique_atlas.AntiqueAtlas;
 import folk.sisby.antique_atlas.api.AtlasAPI;
 import folk.sisby.antique_atlas.network.c2s.C2SPacket;
 import folk.sisby.antique_atlas.network.c2s.DeleteMarkerC2SPacket;
-import folk.sisby.antique_atlas.network.c2s.PutBrowsingPositionC2SPacket;
 import folk.sisby.antique_atlas.network.c2s.PutMarkerC2SPacket;
 import folk.sisby.antique_atlas.network.c2s.PutTileC2SPacket;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
@@ -17,7 +16,6 @@ import java.util.function.Function;
 
 public class AntiqueAtlasNetworking {
     public static final Identifier C2S_DELETE_MARKER = AntiqueAtlas.id("packet.c2s.marker.delete");
-    public static final Identifier C2S_PUT_BROWSING_POSITION = AntiqueAtlas.id("packet.c2s.browsing_position.put");
     public static final Identifier C2S_PUT_MARKER = AntiqueAtlas.id("packet.c2s.marker.put");
     public static final Identifier C2S_PUT_TILE = AntiqueAtlas.id("packet.c2s.tile.put");
 
@@ -32,17 +30,12 @@ public class AntiqueAtlasNetworking {
 
     public static void init() {
         ServerPlayNetworking.registerGlobalReceiver(C2S_DELETE_MARKER, (sv, p, h, b, se) -> handleServer(p, b, DeleteMarkerC2SPacket::new, AntiqueAtlasNetworking::handleDeleteMarker));
-        ServerPlayNetworking.registerGlobalReceiver(C2S_PUT_BROWSING_POSITION, (sv, p, h, b, se) -> handleServer(p, b, PutBrowsingPositionC2SPacket::new, AntiqueAtlasNetworking::handlePutBrowsingPosition));
         ServerPlayNetworking.registerGlobalReceiver(C2S_PUT_MARKER, (sv, p, h, b, se) -> handleServer(p, b, PutMarkerC2SPacket::new, AntiqueAtlasNetworking::handlePutMarker));
         ServerPlayNetworking.registerGlobalReceiver(C2S_PUT_TILE, (sv, p, h, b, se) -> handleServer(p, b, PutTileC2SPacket::new, AntiqueAtlasNetworking::handlePutTile));
     }
 
     public static void handleDeleteMarker(ServerWorld world, DeleteMarkerC2SPacket packet) {
         AtlasAPI.getMarkerAPI().deleteMarker(world, packet.atlasID(), packet.markerID());
-    }
-
-    public static void handlePutBrowsingPosition(ServerWorld world, PutBrowsingPositionC2SPacket packet) {
-        AntiqueAtlas.tileData.getData(packet.atlasID(), world).getWorldData(packet.world()).setBrowsingPosition(packet.x(), packet.y(), packet.zoom());
     }
 
     public static void handlePutMarker(ServerWorld world, PutMarkerC2SPacket packet) {

@@ -11,10 +11,6 @@ public class AntiqueAtlasConfig extends WrappedConfig {
     public final PerformanceSettings Performance = new PerformanceSettings();
 
     public static final class GameplaySettings implements Section {
-        @Comment("Whether to remember last open browsing position and zoom level for each dimension in every atlas.")
-        @Comment("If disabled, all dimensions and all atlases will be \"synchronized\" at the same coordinates and zoom level, and map will \"follow\" player by default.")
-        public final Boolean doSaveBrowsingPos = true;
-
         @Comment("Whether to add local marker for the spot where the player died.")
         public final Boolean autoDeathMarker = true;
 

@@ -1,8 +1,7 @@
 package folk.sisby.antique_atlas.client;
 
 import folk.sisby.antique_atlas.AntiqueAtlas;
-import folk.sisby.antique_atlas.client.gui.AtlasScreen;
-import folk.sisby.antique_atlas.client.resource.MarkerType;
+import folk.sisby.antique_atlas.client.resource.MarkerTypes;
 import folk.sisby.antique_atlas.core.AtlasData;
 import folk.sisby.antique_atlas.core.TileDataStorage;
 import folk.sisby.antique_atlas.core.TileGroup;
@@ -71,9 +70,6 @@ public class AntiqueAtlasClientNetworking {
         if (clientWorld == null) return;
         AtlasData atlasData = AntiqueAtlas.tileData.getData(packet.atlasID(), clientWorld);
         atlasData.updateFromNbt(packet.data());
-        if (AntiqueAtlas.CONFIG.Gameplay.doSaveBrowsingPos && MinecraftClient.getInstance().currentScreen instanceof AtlasScreen atlasScreen) {
-            atlasScreen.loadSavedBrowsingPosition();
-        }
     }
 
     public static void handlePutGlobalTile(ClientWorld ignored, PutGlobalTileS2CPacket packet) {
@@ -86,8 +82,8 @@ public class AntiqueAtlasClientNetworking {
     public static void handlePutMarkers(ClientWorld ignored, PutMarkersS2CPacket packet) {
         MarkersData markersData = packet.atlasID() == GLOBAL ? AntiqueAtlas.globalMarkersData.getData() : AntiqueAtlas.markersData.getMarkersDataCached(packet.atlasID(), packet.world());
         for (Map.Entry<Identifier, MarkerData> entry : packet.markers().entries()) {
-            MarkerType markerType = MarkerType.REGISTRY.get(entry.getKey());
-            markersData.loadMarker(new Marker(MarkerType.REGISTRY.getId(markerType), packet.world(), entry.getValue()));
+            MarkerType markerType = MarkerTypes.REGISTRY.get(entry.getKey());
+            markersData.loadMarker(new Marker(MarkerTypes.REGISTRY.getId(markerType), packet.world(), entry.getValue()));
         }
         AntiqueAtlasClient.getAtlasScreen().updateBookmarkerList();
     }

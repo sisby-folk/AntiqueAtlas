@@ -1,7 +1,8 @@
 package folk.sisby.antique_atlas.client.resource.reloader;
 
 import folk.sisby.antique_atlas.AntiqueAtlas;
-import folk.sisby.antique_atlas.client.resource.MarkerType;
+import folk.sisby.antique_atlas.client.MarkerType;
+import folk.sisby.antique_atlas.client.resource.MarkerTypes;
 import net.fabricmc.fabric.api.resource.IdentifiableResourceReloadListener;
 import net.minecraft.resource.ResourceManager;
 import net.minecraft.resource.ResourceReloader;
@@ -15,7 +16,7 @@ public class MarkerMipsConfig implements ResourceReloader, IdentifiableResourceR
     @Override
     public CompletableFuture<Void> reload(ResourceReloader.Synchronizer synchronizer, ResourceManager manager, Profiler prepareProfiler, Profiler applyProfiler, Executor prepareExecutor, Executor applyExecutor) {
         return CompletableFuture.completedFuture(null).thenCompose(synchronizer::whenPrepared).thenCompose(t -> CompletableFuture.runAsync(() -> {
-            for (MarkerType type : MarkerType.REGISTRY) {
+            for (MarkerType type : MarkerTypes.REGISTRY) {
                 type.initMips();
             }
         }, applyExecutor));

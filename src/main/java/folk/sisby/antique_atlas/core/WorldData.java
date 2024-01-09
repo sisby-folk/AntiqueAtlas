@@ -24,9 +24,6 @@ public class WorldData implements ITileStorage {
     public final AtlasData parent;
     public final RegistryKey<World> world;
 
-    private int browsingX, browsingY;
-    private double browsingZoom = 0.5;
-
     /**
      * a map of chunks the player has seen. This map is thread-safe. CAREFUL!
      * Don't modify chunk coordinates that are already put in the map!
@@ -43,32 +40,6 @@ public class WorldData implements ITileStorage {
     public WorldData(AtlasData parent, RegistryKey<World> world) {
         this.parent = parent;
         this.world = world;
-    }
-
-    /**
-     * Set world coordinates that are in the center of the GUI.
-     */
-    public void setBrowsingPosition(int x, int y, double zoom) {
-        this.browsingX = x;
-        this.browsingY = y;
-        this.browsingZoom = zoom;
-        if (browsingZoom <= 0) {
-            AntiqueAtlas.LOG.warn("Setting map zoom to invalid value of {}", zoom);
-            browsingZoom = AntiqueAtlas.CONFIG.Interface.minScale;
-        }
-        parent.markDirty();
-    }
-
-    public int getBrowsingX() {
-        return browsingX;
-    }
-
-    public int getBrowsingY() {
-        return browsingY;
-    }
-
-    public double getBrowsingZoom() {
-        return browsingZoom;
     }
 
     public void setTile(int x, int y, Identifier tile) {

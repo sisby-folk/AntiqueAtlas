@@ -1,15 +1,16 @@
-package folk.sisby.antique_atlas.client.resource;
+package folk.sisby.antique_atlas.client;
 
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
-import com.mojang.serialization.Lifecycle;
 import folk.sisby.antique_atlas.AntiqueAtlas;
+import folk.sisby.antique_atlas.client.resource.MarkerTypes;
 import folk.sisby.antique_atlas.client.texture.ITexture;
 import folk.sisby.antique_atlas.client.texture.Texture;
 import folk.sisby.antique_atlas.util.BitMatrix;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.texture.NativeImage;
 import net.minecraft.client.texture.TextureManager;
+import net.minecraft.resource.Resource;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.registry.*;
 
@@ -18,15 +19,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.OptionalInt;
 
-import net.minecraft.resource.Resource;
-
 public class MarkerType {
-    public static final RegistryKey<Registry<MarkerType>> KEY = RegistryKey.ofRegistry(AntiqueAtlas.id("marker"));
-    public static final DefaultedRegistry<MarkerType> REGISTRY = new DefaultedRegistry<>(AntiqueAtlas.id("red_x_small").toString(),
-        KEY,
-        Lifecycle.experimental(),
-        null);
-
     private Identifier[] icons;
     private BitMatrix[] iconPixels;
     private int[] iconSizes = null;
@@ -46,16 +39,6 @@ public class MarkerType {
 
     public MarkerType(Identifier... icons) {
         this.icons = icons;
-    }
-
-    public static void register(Identifier location, MarkerType type) {
-        type.initMips();
-        if (REGISTRY.containsId(location)) {
-            int id = REGISTRY.getRawId(REGISTRY.get(location));
-            REGISTRY.replace(OptionalInt.of(id), RegistryKey.of(KEY, location), type, Lifecycle.stable());
-        } else {
-            REGISTRY.add(RegistryKey.of(KEY, location), type, Lifecycle.stable());
-        }
     }
 
     public boolean isTechnical() {
@@ -98,28 +81,28 @@ public class MarkerType {
     /**
      * The size of the icon, in chunks
      */
-    private int viewSize() {
+    public int viewSize() {
         return viewSize;
     }
 
     /**
      * Whether the marker is a tile, and as such should scale with the map
      */
-    private boolean isTile() {
+    public boolean isTile() {
         return isTile;
     }
 
     /**
      * The X position (0-1) of the icon that should be at the marker location
      */
-    private double getCenterX() {
+    public double getCenterX() {
         return centerX;
     }
 
     /**
      * The Y position (0-1) of the icon that should be at the marker location
      */
-    private double getCenterY() {
+    public double getCenterY() {
         return centerY;
     }
 
@@ -162,19 +145,6 @@ public class MarkerType {
         iconIndex = 0;
     }
 
-    public MarkerRenderInfo getRenderInfo(double scale, double mapScale) {
-        boolean isTile = isTile();
-
-        int size = (int) (16 * scale * viewSize());
-        if (isTile) {
-            size *= (int) mapScale;
-        }
-        int x = -(int) (size * getCenterX());
-        int y = -(int) (size * getCenterY());
-
-        return new MarkerRenderInfo(getTexture(), x, y, size, size);
-    }
-
     public void initMips() {
         iconSizes = new int[icons.length];
         iconPixels = new BitMatrix[icons.length];
@@ -182,7 +152,7 @@ public class MarkerType {
         for (int i = 0; i < icons.length; i++) {
             iconSizes[i] = -1;
             if (icons[i] == null) {
-                AntiqueAtlas.LOG.warn("Marker {} -- Texture location is null at index {}!", MarkerType.REGISTRY.getId(this).toString(), i);
+                AntiqueAtlas.LOG.warn("Marker {} -- Texture location is null at index {}!", MarkerTypes.REGISTRY.getId(this).toString(), i);
             }
 
             NativeImage bufferedimage = null;
@@ -220,7 +190,7 @@ public class MarkerType {
                 iconPixels[i] = matrix;
             } catch (IOException e) {
                 AntiqueAtlas.LOG.warn("Marker {} -- Error getting texture size data for index {} - {}",
-                    MarkerType.REGISTRY.getId(this).toString(), i, icons[i].toString(), e);
+                    MarkerTypes.REGISTRY.getId(this).toString(), i, icons[i].toString(), e);
             } finally {
                 if (bufferedimage != null) {
                     bufferedimage.close();
@@ -263,7 +233,7 @@ public class MarkerType {
             if (object.entrySet().isEmpty())
                 return;
 
-            Identifier typeName = MarkerType.REGISTRY.getId(type);
+            Identifier typeName = MarkerTypes.REGISTRY.getId(type);
             String workingOn = NONE;
             try {
                 if (object.has(ICONS) && object.get(ICONS).isJsonArray()) {

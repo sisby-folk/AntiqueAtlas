@@ -1,7 +1,7 @@
-package folk.sisby.antique_atlas.client.resource;
+package folk.sisby.antique_atlas.client;
 
 import folk.sisby.antique_atlas.AntiqueAtlas;
-import folk.sisby.antique_atlas.client.AntiqueAtlasTextures;
+import folk.sisby.antique_atlas.client.resource.TextureSets;
 import folk.sisby.antique_atlas.client.texture.ITexture;
 import net.minecraft.util.Identifier;
 
@@ -115,11 +115,11 @@ public class TextureSet implements Comparable<TextureSet> {
      * This method goes through the list of all TextureSets this should stitch to and assert that these TextureSet exist
      */
     public void checkStitching() {
-        stitchTo.stream().filter(identifier -> !TextureSetMap.isRegistered(identifier)).forEach(identifier ->
+        stitchTo.stream().filter(identifier -> !TextureSets.isRegistered(identifier)).forEach(identifier ->
             AntiqueAtlas.LOG.error("The texture set {} tries to stitch to {}, which does not exists.", name, identifier));
-        stitchToVertical.stream().filter(identifier -> !TextureSetMap.isRegistered(identifier)).forEach(identifier ->
+        stitchToVertical.stream().filter(identifier -> !TextureSets.isRegistered(identifier)).forEach(identifier ->
             AntiqueAtlas.LOG.error("The texture set {} tries to stitch vertically to {}, which does not exists.", name, identifier));
-        stitchToHorizontal.stream().filter(identifier -> !TextureSetMap.isRegistered(identifier)).forEach(identifier ->
+        stitchToHorizontal.stream().filter(identifier -> !TextureSets.isRegistered(identifier)).forEach(identifier ->
             AntiqueAtlas.LOG.error("The texture set {} tries to stitch horizontally to {}, which does not exists.", name, identifier));
     }
 
@@ -136,7 +136,7 @@ public class TextureSet implements Comparable<TextureSet> {
         }
 
         public void loadWater() {
-            water = TextureSetMap.instance().getByName(waterName);
+            water = TextureSets.getInstance().getByName(waterName);
         }
 
         @Override

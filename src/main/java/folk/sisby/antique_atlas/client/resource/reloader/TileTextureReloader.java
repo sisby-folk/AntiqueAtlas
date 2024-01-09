@@ -3,9 +3,9 @@ package folk.sisby.antique_atlas.client.resource.reloader;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import folk.sisby.antique_atlas.AntiqueAtlas;
-import folk.sisby.antique_atlas.client.resource.TextureSet;
-import folk.sisby.antique_atlas.client.resource.TextureSetMap;
-import folk.sisby.antique_atlas.client.resource.TileTextureMap;
+import folk.sisby.antique_atlas.client.TextureSet;
+import folk.sisby.antique_atlas.client.resource.TextureSets;
+import folk.sisby.antique_atlas.client.resource.TileTextures;
 import folk.sisby.antique_atlas.core.scanning.TileHeightType;
 import folk.sisby.antique_atlas.resource.reloader.ResourceReloadListener;
 import net.minecraft.resource.Resource;
@@ -29,15 +29,8 @@ import java.util.concurrent.Executor;
  *
  * @author Hunternif
  */
-public class TileTextureConfig implements ResourceReloadListener<Map<Identifier, Identifier>> {
+public class TileTextureReloader implements ResourceReloadListener<Map<Identifier, Identifier>> {
     public static final Identifier ID = AntiqueAtlas.id("tile_textures");
-    private final TileTextureMap tileTextureMap;
-    private final TextureSetMap textureSetMap;
-
-    public TileTextureConfig(TileTextureMap biomeTextureMap, TextureSetMap textureSetMap) {
-        this.tileTextureMap = biomeTextureMap;
-        this.textureSetMap = textureSetMap;
-    }
 
     @Override
     public CompletableFuture<Map<Identifier, Identifier>> load(ResourceManager manager, Profiler profiler, Executor executor) {
@@ -63,7 +56,7 @@ public class TileTextureConfig implements ResourceReloadListener<Map<Identifier,
                                     map.put(Identifier.tryParse(tile_id + "_" + layer.getName()), texture_set);
                                 }
                             } else if (version == 2) {
-                                Identifier default_entry = TileTextureMap.DEFAULT_TEXTURE;
+                                Identifier default_entry = TileTextures.DEFAULT_TEXTURE;
 
                                 try {
                                     default_entry = new Identifier(object.getAsJsonObject("texture_sets").get("default").getAsString());
@@ -105,15 +98,15 @@ public class TileTextureConfig implements ResourceReloadListener<Map<Identifier,
             for (Map.Entry<Identifier, Identifier> entry : tileMap.entrySet()) {
                 Identifier tile_id = entry.getKey();
                 Identifier texture_set = entry.getValue();
-                TextureSet set = textureSetMap.getByName(entry.getValue());
+                TextureSet set = TextureSets.getInstance().getByName(entry.getValue());
 
                 if (set == null) {
                     AntiqueAtlas.LOG.error("Missing texture set `{}` for tile `{}`. Using default.", texture_set, tile_id);
 
-                    set = tileTextureMap.getDefaultTexture();
+                    set = TileTextures.getInstance().getDefaultTexture();
                 }
 
-                tileTextureMap.setTexture(entry.getKey(), set);
+                TileTextures.getInstance().setTexture(entry.getKey(), set);
                 if (AntiqueAtlas.CONFIG.Performance.resourcePackLogging)
                     AntiqueAtlas.LOG.info("Loaded tile {} with texture set {}", tile_id, set.name);
             }

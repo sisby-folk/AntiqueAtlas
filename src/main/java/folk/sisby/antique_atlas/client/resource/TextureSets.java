@@ -1,5 +1,6 @@
 package folk.sisby.antique_atlas.client.resource;
 
+import folk.sisby.antique_atlas.client.TextureSet;
 import net.minecraft.util.Identifier;
 
 import java.util.HashMap;
@@ -10,10 +11,10 @@ import java.util.Map;
  *
  * @author Hunternif
  */
-public class TextureSetMap {
-    private static final TextureSetMap INSTANCE = new TextureSetMap();
+public class TextureSets {
+    private static final TextureSets INSTANCE = new TextureSets();
 
-    public static TextureSetMap instance() {
+    public static TextureSets getInstance() {
         return INSTANCE;
     }
 
