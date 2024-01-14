@@ -27,6 +27,8 @@ dependencies {
     modImplementation libs.fl
     modImplementation libs.fapi
     modImplementation libs.kaleidoConfig
+
+    include libs.kaleidoConfig
 }
 
 processResources {
