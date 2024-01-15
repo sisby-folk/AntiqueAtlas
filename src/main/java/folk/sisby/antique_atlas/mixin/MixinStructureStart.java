@@ -1,6 +1,6 @@
 package folk.sisby.antique_atlas.mixin;
 
-import folk.sisby.antique_atlas.structure.StructureHandler;
+import folk.sisby.antique_atlas.data.StructureTiles;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.structure.StructurePiece;
 import net.minecraft.structure.StructurePiecesList;
@@ -34,7 +34,7 @@ public abstract class MixinStructureStart {
             world = ((ChunkRegion) serverWorldAccess).world;
         }
 
-        StructureHandler.resolve(structurePiece, world);
+        StructureTiles.getInstance().resolve(structurePiece, world);
         structurePiece.generate(serverWorldAccess, structureAccessor, chunkGenerator, random, boundingBox, chunkPos, blockPos);
     }
 
@@ -52,7 +52,7 @@ public abstract class MixinStructureStart {
         synchronized (this.children) {
             if (this.children.isEmpty()) return;
 
-            StructureHandler.resolve((StructureStart) (Object) this, world);
+            StructureTiles.getInstance().resolve((StructureStart) (Object) this, world);
         }
     }
 }

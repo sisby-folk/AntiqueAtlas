@@ -1,13 +1,13 @@
 package folk.sisby.antique_atlas.client.gui.core;
 
 import com.mojang.blaze3d.systems.RenderSystem;
-import folk.sisby.antique_atlas.client.texture.ITexture;
+import folk.sisby.antique_atlas.client.texture.Drawable;
 import net.minecraft.client.util.math.MatrixStack;
 import org.lwjgl.opengl.GL11;
 
 
 public abstract class AbstractScrollbarComponent extends Component {
-    ITexture texture;
+    Drawable texture;
     int textureWidth;
     int textureHeight;
     /**
@@ -67,7 +67,7 @@ public abstract class AbstractScrollbarComponent extends Component {
      * @param height    height of the texture image
      * @param capLength length of the non-scaling caps at the beginning and end of the anchor
      */
-    public void setTexture(ITexture texture, int width, int height, int capLength) {
+    public void setTexture(Drawable texture, int width, int height, int capLength) {
         this.texture = texture;
         this.textureWidth = width;
         this.textureHeight = height;

@@ -1,22 +1,25 @@
 package folk.sisby.antique_atlas.client;
 
 import folk.sisby.antique_atlas.AntiqueAtlas;
-import folk.sisby.antique_atlas.client.resource.TextureSets;
-import folk.sisby.antique_atlas.client.texture.ITexture;
+import folk.sisby.antique_atlas.client.assets.TextureSets;
+import folk.sisby.antique_atlas.client.texture.TileTexture;
 import net.minecraft.util.Identifier;
 
-import java.util.*;
+import java.util.Collections;
+import java.util.HashSet;
+import java.util.Map;
+import java.util.Set;
 
 public class TextureSet implements Comparable<TextureSet> {
     /**
      * Name of the texture pack to write in the config file.
      */
-    public final Identifier name;
+    public final Identifier id;
 
     /**
      * The actual textures in this set.
      */
-    public final ITexture[] textures;
+    public final TileTexture[] textures;
 
     /**
      * Texture sets that a tile rendered with this set can be stitched to,
@@ -32,10 +35,10 @@ public class TextureSet implements Comparable<TextureSet> {
     /**
      * Name has to be unique, it is used for equals() tests.
      */
-    public TextureSet(Identifier name, Identifier... textures) {
-        this.name = name;
+    public TextureSet(Identifier id, Identifier... textures) {
+        this.id = id;
         this.texturePaths = textures;
-        this.textures = new ITexture[textures.length];
+        this.textures = new TileTexture[textures.length];
     }
 
     /**
@@ -68,33 +71,33 @@ public class TextureSet implements Comparable<TextureSet> {
      * Actually used when stitching along the diagonal.
      */
     public boolean shouldStitchTo(TextureSet toSet) {
-        return toSet == this || stitchesToNull && toSet == null || stitchTo.contains(toSet.name);
+        return toSet == this || stitchesToNull && toSet == null || stitchTo.contains(toSet.id);
     }
 
     public boolean shouldStitchToHorizontally(TextureSet toSet) {
         if (toSet == this || stitchesToNull && toSet == null) return true;
-        if (anisotropicStitching) return stitchToHorizontal.contains(toSet.name);
-        else return stitchTo.contains(toSet.name);
+        if (anisotropicStitching) return stitchToHorizontal.contains(toSet.id);
+        else return stitchTo.contains(toSet.id);
     }
 
     public boolean shouldStitchToVertically(TextureSet toSet) {
         if (toSet == this || stitchesToNull && toSet == null) return true;
-        if (anisotropicStitching) return stitchToVertical.contains(toSet.name);
-        else return stitchTo.contains(toSet.name);
+        if (anisotropicStitching) return stitchToVertical.contains(toSet.id);
+        else return stitchTo.contains(toSet.id);
     }
 
     @Override
     public boolean equals(Object obj) {
         if (!(obj instanceof TextureSet set)) return false;
-        return this.name.equals(set.name);
+        return this.id.equals(set.id);
     }
 
     @Override
     public int compareTo(TextureSet textureSet) {
-        return name.toString().compareTo(textureSet.name.toString());
+        return id.toString().compareTo(textureSet.id.toString());
     }
 
-    public ITexture getTexture(int variationNumber) {
+    public TileTexture getTexture(int variationNumber) {
         return textures[variationNumber % textures.length];
     }
 
@@ -102,12 +105,12 @@ public class TextureSet implements Comparable<TextureSet> {
         return texturePaths;
     }
 
-    public void loadTextures() {
+    public void loadTextures(Map<Identifier, TileTexture> tileTextures) {
         for (int i = 0; i < texturePaths.length; i++) {
-            if (!AntiqueAtlasTextures.TILE_TEXTURES_MAP.containsKey(texturePaths[i])) {
+            if (!tileTextures.containsKey(texturePaths[i])) {
                 throw new RuntimeException("Couldn't find the specified texture: " + texturePaths[i].toString());
             }
-            textures[i] = AntiqueAtlasTextures.TILE_TEXTURES_MAP.get(texturePaths[i]);
+            textures[i] = tileTextures.get(texturePaths[i]);
         }
     }
 
@@ -115,12 +118,12 @@ public class TextureSet implements Comparable<TextureSet> {
      * This method goes through the list of all TextureSets this should stitch to and assert that these TextureSet exist
      */
     public void checkStitching() {
-        stitchTo.stream().filter(identifier -> !TextureSets.isRegistered(identifier)).forEach(identifier ->
-            AntiqueAtlas.LOG.error("The texture set {} tries to stitch to {}, which does not exists.", name, identifier));
-        stitchToVertical.stream().filter(identifier -> !TextureSets.isRegistered(identifier)).forEach(identifier ->
-            AntiqueAtlas.LOG.error("The texture set {} tries to stitch vertically to {}, which does not exists.", name, identifier));
-        stitchToHorizontal.stream().filter(identifier -> !TextureSets.isRegistered(identifier)).forEach(identifier ->
-            AntiqueAtlas.LOG.error("The texture set {} tries to stitch horizontally to {}, which does not exists.", name, identifier));
+        stitchTo.stream().filter(identifier -> !TextureSets.getInstance().contains(identifier)).forEach(identifier ->
+            AntiqueAtlas.LOG.error("The texture set {} tries to stitch to {}, which does not exist.", id, identifier));
+        stitchToVertical.stream().filter(identifier -> !TextureSets.getInstance().contains(identifier)).forEach(identifier ->
+            AntiqueAtlas.LOG.error("The texture set {} tries to stitch vertically to {}, which does not exist.", id, identifier));
+        stitchToHorizontal.stream().filter(identifier -> !TextureSets.getInstance().contains(identifier)).forEach(identifier ->
+            AntiqueAtlas.LOG.error("The texture set {} tries to stitch horizontally to {}, which does not exist.", id, identifier));
     }
 
     /**
@@ -130,13 +133,13 @@ public class TextureSet implements Comparable<TextureSet> {
         public final Identifier waterName;
         private TextureSet water;
 
-        public TextureSetShore(Identifier name, Identifier water, Identifier... textures) {
-            super(name, textures);
+        public TextureSetShore(Identifier id, Identifier water, Identifier... textures) {
+            super(id, textures);
             this.waterName = water;
         }
 
         public void loadWater() {
-            water = TextureSets.getInstance().getByName(waterName);
+            water = TextureSets.getInstance().get(waterName);
         }
 
         @Override

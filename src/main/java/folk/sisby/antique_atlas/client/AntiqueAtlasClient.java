@@ -2,12 +2,9 @@ package folk.sisby.antique_atlas.client;
 
 import folk.sisby.antique_atlas.AntiqueAtlas;
 import folk.sisby.antique_atlas.client.gui.AtlasScreen;
-import folk.sisby.antique_atlas.client.resource.MarkerTypes;
-import folk.sisby.antique_atlas.client.resource.reloader.MarkerTextureConfig;
-import folk.sisby.antique_atlas.client.resource.reloader.TextureConfig;
-import folk.sisby.antique_atlas.client.resource.reloader.TextureSetConfig;
-import folk.sisby.antique_atlas.client.resource.reloader.TileTextureReloader;
-import folk.sisby.antique_atlas.client.resource.TileTextures;
+import folk.sisby.antique_atlas.client.assets.BiomeTextures;
+import folk.sisby.antique_atlas.client.assets.MarkerTypes;
+import folk.sisby.antique_atlas.client.assets.TextureSets;
 import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.fabric.api.resource.ResourceManagerHelper;
 import net.minecraft.client.MinecraftClient;
@@ -45,23 +42,14 @@ public class AntiqueAtlasClient implements ClientModInitializer {
     }
 
     /**
-     * Assign default textures to biomes defined in the client world, but
-     * not part of the BuiltinRegistries.BIOME. This happens for all biomes
-     * defined in data packs. Also, as these are only available per world,
-     * we need the ClientWorld loaded here.
+     * Register fallback texture sets for any biomes present in the client world that don't have explicit sets.
+     * Doing this on world join catches data-biomes that might not be registered in other worlds.
      */
-    public static void assignCustomBiomeTextures(ClientWorld world) {
+    public static void registerFallbackTextures(ClientWorld world) {
         for (Map.Entry<RegistryKey<Biome>, Biome> biome : BuiltinRegistries.BIOME.getEntrySet()) {
             Identifier id = BuiltinRegistries.BIOME.getId(biome.getValue());
-            if (!TileTextures.getInstance().isRegistered(id)) {
-                TileTextures.getInstance().autoRegister(id, biome.getKey());
-            }
-        }
-
-        for (Map.Entry<RegistryKey<Biome>, Biome> entry : world.getRegistryManager().get(Registry.BIOME_KEY).getEntrySet()) {
-            Identifier id = world.getRegistryManager().get(Registry.BIOME_KEY).getId(entry.getValue());
-            if (!TileTextures.getInstance().isRegistered(id)) {
-                TileTextures.getInstance().autoRegister(id, entry.getKey());
+            if (!BiomeTextures.getInstance().contains(id)) {
+                BiomeTextures.getInstance().registerFallback(id, BuiltinRegistries.BIOME.entryOf(biome.getKey()));
             }
         }
     }
@@ -69,15 +57,10 @@ public class AntiqueAtlasClient implements ClientModInitializer {
 
     @Override
     public void onInitializeClient() {
-        ResourceManagerHelper.get(ResourceType.CLIENT_RESOURCES).registerReloadListener(new TextureConfig());
-        ResourceManagerHelper.get(ResourceType.CLIENT_RESOURCES).registerReloadListener(new TextureSetConfig());
-        ResourceManagerHelper.get(ResourceType.CLIENT_RESOURCES).registerReloadListener(new TileTextureReloader());
-        ResourceManagerHelper.get(ResourceType.CLIENT_RESOURCES).registerReloadListener(new MarkerTextureConfig());
-
-        for (MarkerType type : MarkerTypes.REGISTRY) {
-            type.initMips();
-        }
         AntiqueAtlasKeybindings.init();
         AntiqueAtlasClientNetworking.init();
+        ResourceManagerHelper.get(ResourceType.CLIENT_RESOURCES).registerReloadListener(TextureSets.getInstance());
+        ResourceManagerHelper.get(ResourceType.CLIENT_RESOURCES).registerReloadListener(BiomeTextures.getInstance());
+        ResourceManagerHelper.get(ResourceType.CLIENT_RESOURCES).registerReloadListener(MarkerTypes.getInstance());
     }
 }

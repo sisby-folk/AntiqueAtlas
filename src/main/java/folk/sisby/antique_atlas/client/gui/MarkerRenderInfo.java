@@ -2,14 +2,14 @@ package folk.sisby.antique_atlas.client.gui;
 
 
 import folk.sisby.antique_atlas.client.MarkerType;
-import folk.sisby.antique_atlas.client.texture.ITexture;
+import folk.sisby.antique_atlas.client.texture.Drawable;
 
 public class MarkerRenderInfo {
-    public final ITexture tex;
+    public final Drawable tex;
     public int x, y;
     public int width, height;
 
-    public MarkerRenderInfo(ITexture tex, int x, int y, int width, int height) {
+    public MarkerRenderInfo(Drawable tex, int x, int y, int width, int height) {
         this.tex = tex;
         this.x = x;
         this.y = y;

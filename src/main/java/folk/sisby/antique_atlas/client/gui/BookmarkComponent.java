@@ -3,7 +3,7 @@ package folk.sisby.antique_atlas.client.gui;
 import com.mojang.blaze3d.systems.RenderSystem;
 import folk.sisby.antique_atlas.client.AntiqueAtlasTextures;
 import folk.sisby.antique_atlas.client.gui.core.ToggleButtonComponent;
-import folk.sisby.antique_atlas.client.texture.ITexture;
+import folk.sisby.antique_atlas.client.texture.Drawable;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.text.Text;
@@ -20,7 +20,7 @@ public class BookmarkComponent extends ToggleButtonComponent {
     private static final int HEIGHT = 18;
 
     private final int colorIndex;
-    private ITexture iconTexture;
+    private Drawable iconTexture;
     private Text title;
 
     /**
@@ -28,14 +28,14 @@ public class BookmarkComponent extends ToggleButtonComponent {
      * @param iconTexture the path to the 16x16 texture to be drawn on top of the bookmark.
      * @param title       hovering text.
      */
-    BookmarkComponent(int colorIndex, ITexture iconTexture, Text title) {
+    BookmarkComponent(int colorIndex, Drawable iconTexture, Text title) {
         this.colorIndex = colorIndex;
         setIconTexture(iconTexture);
         setTitle(title);
         setSize(WIDTH, HEIGHT);
     }
 
-    void setIconTexture(ITexture iconTexture) {
+    void setIconTexture(Drawable iconTexture) {
         this.iconTexture = iconTexture;
     }
 

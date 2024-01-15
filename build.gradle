@@ -85,7 +85,7 @@ if (System.getenv("MODRINTH_TOKEN")) {
         dependencies {
             required.project "fabric-api"
         }
-        changelog = rootProject.file("CHANGELOG.md").text + "<br/>\nChangelog: https://github.com/sisby-folk/antique-atlas/releases/tag/v$baseVersion"
+        changelog = rootProject.file("CHANGELOG.md").text + "\n\n\nChangelog: https://github.com/sisby-folk/antique-atlas/releases/tag/v$baseVersion"
         syncBodyFrom = rootProject.file("README.md").text
     }
 }
@@ -104,7 +104,7 @@ if (System.getenv("GITHUB_TOKEN")) {
         releaseAssets remapJar.archiveFile
         allowUploadToExisting true
         generateReleaseNotes true
-        body rootProject.file("CHANGELOG.md").text
+        body rootProject.file("CHANGELOG.md").text + "\n"
     }
     tasks.githubRelease.dependsOn remapJar
 }

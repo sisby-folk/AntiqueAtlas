@@ -1,23 +1,17 @@
 package folk.sisby.antique_atlas.client;
 
 import folk.sisby.antique_atlas.AntiqueAtlas;
-import folk.sisby.antique_atlas.client.texture.ITexture;
-import folk.sisby.antique_atlas.client.texture.IconTexture;
+import folk.sisby.antique_atlas.client.texture.Drawable;
 import folk.sisby.antique_atlas.client.texture.Texture;
 import net.minecraft.util.Identifier;
 
-import java.util.HashMap;
-import java.util.Map;
-
 public class AntiqueAtlasTextures {
-    public final static Map<Identifier, ITexture> TILE_TEXTURES_MAP = new HashMap<>();
-
     private static final String MOD_PREFIX = AntiqueAtlas.ID + ":";
     private static final String GUI = MOD_PREFIX + "textures/gui/";
     private static final String GUI_ICONS = GUI + "icons/";
     private static final String GUI_SCALEBAR = GUI + "scalebar/";
 
-    public static final ITexture
+    public static final Drawable
         BOOK = gui("book.png", 310, 218),
         BOOK_FRAME = gui("book_frame.png", 310, 218),
         BOOK_FRAME_NARROW = gui("book_frame_narrow.png", 310, 218),
@@ -30,8 +24,7 @@ public class AntiqueAtlasTextures {
         MARKER_FRAME_ON = gui("marker_frame_on.png", 34, 34),
         MARKER_FRAME_OFF = gui("marker_frame_off.png", 34, 34),
         ERASER = gui("eraser.png", 24, 24),
-
-    SCALEBAR_4 = scaleBar("scalebar_4.png"),
+        SCALEBAR_4 = scaleBar("scalebar_4.png"),
         SCALEBAR_8 = scaleBar("scalebar_8.png"),
         SCALEBAR_16 = scaleBar("scalebar_16.png"),
         SCALEBAR_32 = scaleBar("scalebar_32.png"),
@@ -39,22 +32,21 @@ public class AntiqueAtlasTextures {
         SCALEBAR_128 = scaleBar("scalebar_128.png"),
         SCALEBAR_256 = scaleBar("scalebar_256.png"),
         SCALEBAR_512 = scaleBar("scalebar_512.png"),
-
-    ICON_ADD_MARKER = icon("add_marker.png"),
+        ICON_ADD_MARKER = icon("add_marker.png"),
         ICON_DELETE_MARKER = icon("del_marker.png"),
         ICON_SHOW_MARKERS = icon("show_markers.png"),
         ICON_HIDE_MARKERS = icon("hide_markers.png");
 
     // Constructor helpers:
-    private static ITexture gui(String fileName, int width, int height) {
+    private static Drawable gui(String fileName, int width, int height) {
         return new Texture(new Identifier(GUI + fileName), width, height);
     }
 
-    private static ITexture scaleBar(String fileName) {
+    private static Drawable scaleBar(String fileName) {
         return new Texture(new Identifier(GUI_SCALEBAR + fileName), 20, 8);
     }
 
-    private static ITexture icon(String fileName) {
-        return new IconTexture(new Identifier(GUI_ICONS + fileName));
+    private static Drawable icon(String fileName) {
+        return new Texture(new Identifier(GUI_ICONS + fileName), 16, 16);
     }
 }
