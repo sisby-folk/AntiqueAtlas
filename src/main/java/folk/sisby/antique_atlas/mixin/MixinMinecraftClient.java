@@ -12,6 +12,6 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 public abstract class MixinMinecraftClient {
     @Inject(method = "joinWorld", at = @At("TAIL"))
     void AntiqueAtlas_joinWorld(ClientWorld world, CallbackInfo info) {
-        AntiqueAtlasClient.assignCustomBiomeTextures(world);
+        AntiqueAtlasClient.registerFallbackTextures(world);
     }
 }

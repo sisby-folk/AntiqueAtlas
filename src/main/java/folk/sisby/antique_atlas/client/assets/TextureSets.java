@@ -1,11 +1,11 @@
-package folk.sisby.antique_atlas.client.resource.reloader;
+package folk.sisby.antique_atlas.client.assets;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import folk.sisby.antique_atlas.AntiqueAtlas;
 import folk.sisby.antique_atlas.client.TextureSet;
-import folk.sisby.antique_atlas.client.resource.TextureSets;
+import folk.sisby.antique_atlas.client.texture.TileTexture;
 import net.fabricmc.fabric.api.resource.IdentifiableResourceReloadListener;
 import net.minecraft.resource.JsonDataLoader;
 import net.minecraft.resource.ResourceManager;
@@ -13,28 +13,57 @@ import net.minecraft.util.Identifier;
 import net.minecraft.util.profiler.Profiler;
 
 import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Map.Entry;
 
 /**
- * Saves texture set names with the lists of texture variations.
+ * Maps texture sets to their names.
+ *
+ * @author Hunternif
  */
-public class TextureSetConfig extends JsonDataLoader implements IdentifiableResourceReloadListener {
-    public static final Identifier ID = AntiqueAtlas.id("texture_sets");
-    private static final int VERSION = 1;
+public class TextureSets extends JsonDataLoader implements IdentifiableResourceReloadListener {
+    private static final TextureSets INSTANCE = new TextureSets();
 
-    public TextureSetConfig() {
+    public static final Identifier ID = AntiqueAtlas.id("texture_sets");
+    public static final int VERSION = 1;
+
+    public static final Identifier DEFAULT = AntiqueAtlas.id("test");
+
+    public static TextureSets getInstance() {
+        return INSTANCE;
+    }
+
+    private final Map<Identifier, TextureSet> map = new HashMap<>();
+
+    public TextureSets() {
         super(new Gson(), "atlas/texture_sets");
+    }
+
+    public void register(TextureSet set) {
+        map.put(set.id, set);
+    }
+
+    public TextureSet get(Identifier id) {
+        return map.get(id);
+    }
+
+    public boolean contains(Identifier id) {
+        return map.containsKey(id);
+    }
+
+    public TextureSet getDefault() {
+        return get(DEFAULT);
     }
 
     @Override
     protected void apply(Map<Identifier, JsonElement> prepared, ResourceManager manager, Profiler profiler) {
         Map<Identifier, TextureSet> outMap = new HashMap<>();
-        for (Entry<Identifier, JsonElement> fileEntry : prepared.entrySet()) {
+
+        Map<Identifier, TileTexture> tileTextures = new HashMap<>();
+        manager.findResources("textures/gui/tiles", id -> id.getPath().endsWith(".png")).keySet().forEach(id -> tileTextures.put(id, new TileTexture(id)));
+
+        for (Map.Entry<Identifier, JsonElement> fileEntry : prepared.entrySet()) {
             Identifier fileId = fileEntry.getKey();
             try {
                 JsonObject fileJson = fileEntry.getValue().getAsJsonObject();
@@ -48,7 +77,7 @@ public class TextureSetConfig extends JsonDataLoader implements IdentifiableReso
 
                 List<Identifier> textures = new ArrayList<>();
 
-                for (Entry<String, JsonElement> entry : data.getAsJsonObject("textures").entrySet()) {
+                for (Map.Entry<String, JsonElement> entry : data.getAsJsonObject("textures").entrySet()) {
                     for (int i = 0; i < entry.getValue().getAsInt(); i++) {
                         textures.add(new Identifier(entry.getKey()));
                     }
@@ -96,8 +125,8 @@ public class TextureSetConfig extends JsonDataLoader implements IdentifiableReso
 
         outMap.forEach((id, set) -> {
             try {
-                set.loadTextures();
-                TextureSets.getInstance().register(set);
+                set.loadTextures(tileTextures);
+                register(set);
                 if (AntiqueAtlas.CONFIG.Performance.resourcePackLogging) {
                     AntiqueAtlas.LOG.info("Loaded texture set {} with {} custom texture(s)", id, set.getTexturePaths().length);
                 }
@@ -111,7 +140,7 @@ public class TextureSetConfig extends JsonDataLoader implements IdentifiableReso
             if (set instanceof TextureSet.TextureSetShore texture) {
                 texture.loadWater();
                 if (AntiqueAtlas.CONFIG.Performance.resourcePackLogging) {
-                    AntiqueAtlas.LOG.info("Loaded water texture `{}` for shore texture `{}` texture", texture.waterName, texture.name);
+                    AntiqueAtlas.LOG.info("Loaded water texture `{}` for shore texture `{}` texture", texture.waterName, texture.id);
                 }
             }
         });
@@ -120,10 +149,5 @@ public class TextureSetConfig extends JsonDataLoader implements IdentifiableReso
     @Override
     public Identifier getFabricId() {
         return ID;
-    }
-
-    @Override
-    public Collection<Identifier> getFabricDependencies() {
-        return Collections.singleton(TextureConfig.ID);
     }
 }

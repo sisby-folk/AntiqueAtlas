@@ -7,8 +7,8 @@ import folk.sisby.antique_atlas.core.scanning.WorldScanner;
 import folk.sisby.antique_atlas.marker.GlobalMarkersDataHandler;
 import folk.sisby.antique_atlas.marker.MarkersDataHandler;
 import folk.sisby.antique_atlas.network.AntiqueAtlasNetworking;
+import folk.sisby.antique_atlas.data.StructureTiles;
 import folk.sisby.antique_atlas.structure.EndCity;
-import folk.sisby.antique_atlas.resource.reloader.JigsawConfig;
 import folk.sisby.antique_atlas.structure.NetherFortress;
 import folk.sisby.antique_atlas.structure.Overworld;
 import folk.sisby.antique_atlas.structure.Village;
@@ -62,6 +62,6 @@ public class AntiqueAtlas implements ModInitializer {
         Village.registerMarkers();
         Overworld.registerPieces();
 
-        ResourceManagerHelper.get(ResourceType.SERVER_DATA).registerReloadListener(new JigsawConfig());
+        ResourceManagerHelper.get(ResourceType.SERVER_DATA).registerReloadListener(StructureTiles.getInstance());
     }
 }

@@ -50,7 +50,7 @@ public class AntiqueAtlasConfig extends WrappedConfig {
 
     public static final class PerformanceSettings implements Section {
         @Comment("The radius of the area around the player which is scanned by the Atlas at regular intervals.")
-        @Comment("Note that this will not force faraway chunks to load, unless force_chunk_loading is enabled.")
+        @Comment("Note that this will not force faraway chunks to load, unless forceChunkLoading is enabled.")
         @Comment("Lower value gives better performance.")
         public final Integer scanRadius = 11;
 

@@ -23,8 +23,8 @@ public class MarkerTypeSelectorComponent extends ToggleButtonComponent {
 
     @Override
     public void render(DrawContext context, int mouseX, int mouseY, float partialTick) {
-        ITexture frame_texture = isSelected() ? AntiqueAtlasTextures.MARKER_FRAME_ON : AntiqueAtlasTextures.MARKER_FRAME_OFF;
-        frame_texture.draw(context, getGuiX() + 1, getGuiY() + 1);
+        ITexture frameTexture = isSelected() ? AntiqueAtlasTextures.MARKER_FRAME_ON : AntiqueAtlasTextures.MARKER_FRAME_OFF;
+        frameTexture.draw(context, getGuiX() + 1, getGuiY() + 1);
 
         ITexture texture = markerType.getTexture();
         if (texture != null) {

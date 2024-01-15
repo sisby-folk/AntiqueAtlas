@@ -11,8 +11,8 @@ import folk.sisby.antique_atlas.client.gui.core.ScreenState.SimpleState;
 import folk.sisby.antique_atlas.client.gui.tiles.SubTile;
 import folk.sisby.antique_atlas.client.gui.tiles.SubTileQuartet;
 import folk.sisby.antique_atlas.client.gui.tiles.TileRenderIterator;
-import folk.sisby.antique_atlas.client.resource.MarkerTypes;
-import folk.sisby.antique_atlas.client.resource.TileTextures;
+import folk.sisby.antique_atlas.client.assets.MarkerTypes;
+import folk.sisby.antique_atlas.client.assets.BiomeTextures;
 import folk.sisby.antique_atlas.client.texture.ITexture;
 import folk.sisby.antique_atlas.client.texture.TileTexture;
 import folk.sisby.antique_atlas.core.WorldData;
@@ -737,7 +737,7 @@ public class AtlasScreen extends Component {
         for (SubTileQuartet subtiles : tiles) {
             for (SubTile subtile : subtiles) {
                 if (subtile == null || subtile.tile == null) continue;
-                ITexture texture = TileTextures.getInstance().getTexture(subtile);
+                ITexture texture = BiomeTextures.getInstance().getTexture(subtile);
                 if (texture instanceof TileTexture tileTexture) {
                     tileTexture.bind();
                     tileTexture.drawSubTile(context, subtile, tileHalfSize);
@@ -802,12 +802,12 @@ public class AtlasScreen extends Component {
             if (tile == null) {
                 drawTooltip(Arrays.asList(Text.literal(coords), Text.literal(chunks)), textRenderer);
             } else {
-                String texture_set = TileTextures.getInstance().getTextureSet(tile).name.toString();
+                String textureSet = BiomeTextures.getInstance().getTextureSet(tile).id.toString();
                 drawTooltip(Arrays.asList(
                         Text.literal(coords),
                         Text.literal(chunks),
                         Text.literal("Tile: " + tile),
-                        Text.literal("TSet: " + texture_set)),
+                        Text.literal("TSet: " + textureSet)),
                     textRenderer);
             }
         }
@@ -896,7 +896,7 @@ public class AtlasScreen extends Component {
     }
 
     private void renderMarker(DrawContext context, Marker marker, double scale) {
-        MarkerType type = MarkerTypes.REGISTRY.get(marker.getType());
+        MarkerType type = MarkerTypes.getInstance().get(marker.getType());
         if (type.shouldHide(state.is(HIDING_MARKERS), scaleClipIndex)) {
             return;
         }

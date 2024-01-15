@@ -3,7 +3,7 @@ package folk.sisby.antique_atlas.client;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import folk.sisby.antique_atlas.AntiqueAtlas;
-import folk.sisby.antique_atlas.client.resource.MarkerTypes;
+import folk.sisby.antique_atlas.client.assets.MarkerTypes;
 import folk.sisby.antique_atlas.client.texture.ITexture;
 import folk.sisby.antique_atlas.client.texture.Texture;
 import folk.sisby.antique_atlas.util.BitMatrix;
@@ -150,7 +150,7 @@ public class MarkerType {
         for (int i = 0; i < icons.length; i++) {
             iconSizes[i] = -1;
             if (icons[i] == null) {
-                AntiqueAtlas.LOG.warn("Marker {} -- Texture location is null at index {}!", MarkerTypes.REGISTRY.getId(this).toString(), i);
+                AntiqueAtlas.LOG.warn("Marker {} -- Texture location is null at index {}!", MarkerTypes.getInstance().getId(this).toString(), i);
             }
 
             NativeImage bufferedimage = null;
@@ -188,7 +188,7 @@ public class MarkerType {
                 iconPixels[i] = matrix;
             } catch (IOException e) {
                 AntiqueAtlas.LOG.warn("Marker {} -- Error getting texture size data for index {} - {}",
-                    MarkerTypes.REGISTRY.getId(this).toString(), i, icons[i].toString(), e);
+                    MarkerTypes.getInstance().getId(this).toString(), i, icons[i].toString(), e);
             } finally {
                 if (bufferedimage != null) {
                     bufferedimage.close();
@@ -231,7 +231,7 @@ public class MarkerType {
             if (object.entrySet().isEmpty())
                 return;
 
-            Identifier typeName = MarkerTypes.REGISTRY.getId(type);
+            Identifier typeName = MarkerTypes.getInstance().getId(type);
             String workingOn = NONE;
             try {
                 if (object.has(ICONS) && object.get(ICONS).isJsonArray()) {

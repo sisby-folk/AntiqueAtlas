@@ -1,6 +1,7 @@
 package folk.sisby.antique_atlas.structure;
 
 import folk.sisby.antique_atlas.core.BuiltinTiles;
+import folk.sisby.antique_atlas.data.StructureTiles;
 import net.minecraft.structure.StructurePiece;
 import net.minecraft.structure.StructurePieceType;
 import net.minecraft.structure.pool.StructurePoolElement;
@@ -57,26 +58,26 @@ public class NetherFortress {
 
 
     public static void registerPieces() {
-        StructureHandler.registerTile(StructurePieceType.NETHER_FORTRESS_BRIDGE_PLATFORM, 40, BuiltinTiles.NETHER_FORTRESS_BRIDGE_PLATFORM);
+        StructureTiles.getInstance().registerTile(StructurePieceType.NETHER_FORTRESS_BRIDGE_PLATFORM, 40, BuiltinTiles.NETHER_FORTRESS_BRIDGE_PLATFORM);
 
-        StructureHandler.registerTile(StructurePieceType.NETHER_FORTRESS_BRIDGE_STAIRS, 50, BuiltinTiles.NETHER_FORTRESS_BRIDGE_STAIRS);
-        StructureHandler.registerTile(StructurePieceType.NETHER_FORTRESS_CORRIDOR_NETHER_WARTS_ROOM, 50, BuiltinTiles.NETHER_FORTRESS_CORRIDOR_NETHER_WARTS_ROOM);
+        StructureTiles.getInstance().registerTile(StructurePieceType.NETHER_FORTRESS_BRIDGE_STAIRS, 50, BuiltinTiles.NETHER_FORTRESS_BRIDGE_STAIRS);
+        StructureTiles.getInstance().registerTile(StructurePieceType.NETHER_FORTRESS_CORRIDOR_NETHER_WARTS_ROOM, 50, BuiltinTiles.NETHER_FORTRESS_CORRIDOR_NETHER_WARTS_ROOM);
 
-        StructureHandler.registerTile(StructurePieceType.NETHER_FORTRESS_BRIDGE_SMALL_CROSSING, 60, BuiltinTiles.NETHER_FORTRESS_BRIDGE_SMALL_CROSSING);
+        StructureTiles.getInstance().registerTile(StructurePieceType.NETHER_FORTRESS_BRIDGE_SMALL_CROSSING, 60, BuiltinTiles.NETHER_FORTRESS_BRIDGE_SMALL_CROSSING);
 
-        StructureHandler.registerTile(StructurePieceType.NETHER_FORTRESS_CORRIDOR_BALCONY, 70, BuiltinTiles.NETHER_FORTRESS_WALL);
-        StructureHandler.registerTile(StructurePieceType.NETHER_FORTRESS_CORRIDOR_LEFT_TURN, 70, BuiltinTiles.NETHER_FORTRESS_WALL);
-        StructureHandler.registerTile(StructurePieceType.NETHER_FORTRESS_SMALL_CORRIDOR, 70, BuiltinTiles.NETHER_FORTRESS_WALL);
-        StructureHandler.registerTile(StructurePieceType.NETHER_FORTRESS_CORRIDOR_RIGHT_TURN, 70, BuiltinTiles.NETHER_FORTRESS_WALL);
-        StructureHandler.registerTile(StructurePieceType.NETHER_FORTRESS_START, 70, BuiltinTiles.NETHER_FORTRESS_WALL);
-        StructureHandler.registerTile(StructurePieceType.NETHER_FORTRESS_CORRIDOR_EXIT, 70, BuiltinTiles.NETHER_FORTRESS_EXIT);
+        StructureTiles.getInstance().registerTile(StructurePieceType.NETHER_FORTRESS_CORRIDOR_BALCONY, 70, BuiltinTiles.NETHER_FORTRESS_WALL);
+        StructureTiles.getInstance().registerTile(StructurePieceType.NETHER_FORTRESS_CORRIDOR_LEFT_TURN, 70, BuiltinTiles.NETHER_FORTRESS_WALL);
+        StructureTiles.getInstance().registerTile(StructurePieceType.NETHER_FORTRESS_SMALL_CORRIDOR, 70, BuiltinTiles.NETHER_FORTRESS_WALL);
+        StructureTiles.getInstance().registerTile(StructurePieceType.NETHER_FORTRESS_CORRIDOR_RIGHT_TURN, 70, BuiltinTiles.NETHER_FORTRESS_WALL);
+        StructureTiles.getInstance().registerTile(StructurePieceType.NETHER_FORTRESS_START, 70, BuiltinTiles.NETHER_FORTRESS_WALL);
+        StructureTiles.getInstance().registerTile(StructurePieceType.NETHER_FORTRESS_CORRIDOR_EXIT, 70, BuiltinTiles.NETHER_FORTRESS_EXIT);
 
-        StructureHandler.registerTile(StructurePieceType.NETHER_FORTRESS_BRIDGE_CROSSING, 80, BuiltinTiles.NETHER_FORTRESS_BRIDGE_CROSSING);
+        StructureTiles.getInstance().registerTile(StructurePieceType.NETHER_FORTRESS_BRIDGE_CROSSING, 80, BuiltinTiles.NETHER_FORTRESS_BRIDGE_CROSSING);
 
-        StructureHandler.registerTile(StructurePieceType.NETHER_FORTRESS_BRIDGE_END, 90, BuiltinTiles.NETHER_BRIDGE_END_X, NetherFortress::bridgeEndX);
-        StructureHandler.registerTile(StructurePieceType.NETHER_FORTRESS_BRIDGE_END, 90, BuiltinTiles.NETHER_BRIDGE_END_Z, NetherFortress::bridgeEndZ);
+        StructureTiles.getInstance().registerTile(StructurePieceType.NETHER_FORTRESS_BRIDGE_END, 90, BuiltinTiles.NETHER_BRIDGE_END_X, NetherFortress::bridgeEndX);
+        StructureTiles.getInstance().registerTile(StructurePieceType.NETHER_FORTRESS_BRIDGE_END, 90, BuiltinTiles.NETHER_BRIDGE_END_Z, NetherFortress::bridgeEndZ);
 
-        StructureHandler.registerTile(StructurePieceType.NETHER_FORTRESS_BRIDGE, 100, BuiltinTiles.NETHER_BRIDGE_X, NetherFortress::bridgeX);
-        StructureHandler.registerTile(StructurePieceType.NETHER_FORTRESS_BRIDGE, 100, BuiltinTiles.NETHER_BRIDGE_Z, NetherFortress::bridgeZ);
+        StructureTiles.getInstance().registerTile(StructurePieceType.NETHER_FORTRESS_BRIDGE, 100, BuiltinTiles.NETHER_BRIDGE_X, NetherFortress::bridgeX);
+        StructureTiles.getInstance().registerTile(StructurePieceType.NETHER_FORTRESS_BRIDGE, 100, BuiltinTiles.NETHER_BRIDGE_Z, NetherFortress::bridgeZ);
     }
 }

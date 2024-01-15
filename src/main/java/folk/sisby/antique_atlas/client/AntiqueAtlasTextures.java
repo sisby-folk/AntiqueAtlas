@@ -6,12 +6,7 @@ import folk.sisby.antique_atlas.client.texture.IconTexture;
 import folk.sisby.antique_atlas.client.texture.Texture;
 import net.minecraft.util.Identifier;
 
-import java.util.HashMap;
-import java.util.Map;
-
 public class AntiqueAtlasTextures {
-    public final static Map<Identifier, ITexture> TILE_TEXTURES_MAP = new HashMap<>();
-
     private static final String MOD_PREFIX = AntiqueAtlas.ID + ":";
     private static final String GUI = MOD_PREFIX + "textures/gui/";
     private static final String GUI_ICONS = GUI + "icons/";
@@ -30,8 +25,7 @@ public class AntiqueAtlasTextures {
         MARKER_FRAME_ON = gui("marker_frame_on.png", 34, 34),
         MARKER_FRAME_OFF = gui("marker_frame_off.png", 34, 34),
         ERASER = gui("eraser.png", 24, 24),
-
-    SCALEBAR_4 = scaleBar("scalebar_4.png"),
+        SCALEBAR_4 = scaleBar("scalebar_4.png"),
         SCALEBAR_8 = scaleBar("scalebar_8.png"),
         SCALEBAR_16 = scaleBar("scalebar_16.png"),
         SCALEBAR_32 = scaleBar("scalebar_32.png"),
@@ -39,8 +33,7 @@ public class AntiqueAtlasTextures {
         SCALEBAR_128 = scaleBar("scalebar_128.png"),
         SCALEBAR_256 = scaleBar("scalebar_256.png"),
         SCALEBAR_512 = scaleBar("scalebar_512.png"),
-
-    ICON_ADD_MARKER = icon("add_marker.png"),
+        ICON_ADD_MARKER = icon("add_marker.png"),
         ICON_DELETE_MARKER = icon("del_marker.png"),
         ICON_SHOW_MARKERS = icon("show_markers.png"),
         ICON_HIDE_MARKERS = icon("hide_markers.png");
