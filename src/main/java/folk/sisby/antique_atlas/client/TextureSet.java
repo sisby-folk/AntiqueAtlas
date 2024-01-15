@@ -2,11 +2,13 @@ package folk.sisby.antique_atlas.client;
 
 import folk.sisby.antique_atlas.AntiqueAtlas;
 import folk.sisby.antique_atlas.client.assets.TextureSets;
-import folk.sisby.antique_atlas.client.texture.ITexture;
 import folk.sisby.antique_atlas.client.texture.TileTexture;
 import net.minecraft.util.Identifier;
 
-import java.util.*;
+import java.util.Collections;
+import java.util.HashSet;
+import java.util.Map;
+import java.util.Set;
 
 public class TextureSet implements Comparable<TextureSet> {
     /**
@@ -17,7 +19,7 @@ public class TextureSet implements Comparable<TextureSet> {
     /**
      * The actual textures in this set.
      */
-    public final ITexture[] textures;
+    public final TileTexture[] textures;
 
     /**
      * Texture sets that a tile rendered with this set can be stitched to,
@@ -36,7 +38,7 @@ public class TextureSet implements Comparable<TextureSet> {
     public TextureSet(Identifier id, Identifier... textures) {
         this.id = id;
         this.texturePaths = textures;
-        this.textures = new ITexture[textures.length];
+        this.textures = new TileTexture[textures.length];
     }
 
     /**
@@ -95,7 +97,7 @@ public class TextureSet implements Comparable<TextureSet> {
         return id.toString().compareTo(textureSet.id.toString());
     }
 
-    public ITexture getTexture(int variationNumber) {
+    public TileTexture getTexture(int variationNumber) {
         return textures[variationNumber % textures.length];
     }
 

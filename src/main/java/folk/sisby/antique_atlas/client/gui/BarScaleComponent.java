@@ -4,7 +4,7 @@ import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.ImmutableMap.Builder;
 import folk.sisby.antique_atlas.client.AntiqueAtlasTextures;
 import folk.sisby.antique_atlas.client.gui.core.Component;
-import folk.sisby.antique_atlas.client.texture.ITexture;
+import folk.sisby.antique_atlas.client.texture.Drawable;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.DrawContext;
 import net.minecraft.text.Text;
@@ -21,10 +21,10 @@ public class BarScaleComponent extends Component {
     private static final int WIDTH = 20;
     private static final int HEIGHT = 8;
 
-    private static final Map<Double, ITexture> textureMap;
+    private static final Map<Double, Drawable> textureMap;
 
     static {
-        Builder<Double, ITexture> builder = ImmutableMap.builder();
+        Builder<Double, Drawable> builder = ImmutableMap.builder();
         builder.put(0.0625, AntiqueAtlasTextures.SCALEBAR_512);
         builder.put(0.125, AntiqueAtlasTextures.SCALEBAR_256);
         builder.put(0.25, AntiqueAtlasTextures.SCALEBAR_128);
@@ -52,13 +52,13 @@ public class BarScaleComponent extends Component {
     /**
      * Returns the background texture depending on the scale.
      */
-    private ITexture getTexture() {
+    private Drawable getTexture() {
         return textureMap.get(mapScale);
     }
 
     @Override
     public void render(DrawContext context, int mouseX, int mouseY, float partialTick) {
-        ITexture texture = getTexture();
+        Drawable texture = getTexture();
         if (texture == null) return;
 
         texture.draw(context, getGuiX(), getGuiY());

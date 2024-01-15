@@ -1,8 +1,7 @@
 package folk.sisby.antique_atlas.client;
 
 import folk.sisby.antique_atlas.AntiqueAtlas;
-import folk.sisby.antique_atlas.client.texture.ITexture;
-import folk.sisby.antique_atlas.client.texture.IconTexture;
+import folk.sisby.antique_atlas.client.texture.Drawable;
 import folk.sisby.antique_atlas.client.texture.Texture;
 import net.minecraft.util.Identifier;
 
@@ -12,7 +11,7 @@ public class AntiqueAtlasTextures {
     private static final String GUI_ICONS = GUI + "icons/";
     private static final String GUI_SCALEBAR = GUI + "scalebar/";
 
-    public static final ITexture
+    public static final Drawable
         BOOK = gui("book.png", 310, 218),
         BOOK_FRAME = gui("book_frame.png", 310, 218),
         BOOK_FRAME_NARROW = gui("book_frame_narrow.png", 310, 218),
@@ -39,15 +38,15 @@ public class AntiqueAtlasTextures {
         ICON_HIDE_MARKERS = icon("hide_markers.png");
 
     // Constructor helpers:
-    private static ITexture gui(String fileName, int width, int height) {
+    private static Drawable gui(String fileName, int width, int height) {
         return new Texture(new Identifier(GUI + fileName), width, height);
     }
 
-    private static ITexture scaleBar(String fileName) {
+    private static Drawable scaleBar(String fileName) {
         return new Texture(new Identifier(GUI_SCALEBAR + fileName), 20, 8);
     }
 
-    private static ITexture icon(String fileName) {
-        return new IconTexture(new Identifier(GUI_ICONS + fileName));
+    private static Drawable icon(String fileName) {
+        return new Texture(new Identifier(GUI_ICONS + fileName), 16, 16);
     }
 }

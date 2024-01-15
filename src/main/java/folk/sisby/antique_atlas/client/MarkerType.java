@@ -4,7 +4,7 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import folk.sisby.antique_atlas.AntiqueAtlas;
 import folk.sisby.antique_atlas.client.assets.MarkerTypes;
-import folk.sisby.antique_atlas.client.texture.ITexture;
+import folk.sisby.antique_atlas.client.texture.Drawable;
 import folk.sisby.antique_atlas.client.texture.Texture;
 import folk.sisby.antique_atlas.util.BitMatrix;
 import net.minecraft.client.MinecraftClient;
@@ -111,7 +111,7 @@ public class MarkerType {
         return icons.length == 0 || iconIndex < 0 ? TextureManager.MISSING_IDENTIFIER : icons[iconIndex];
     }
 
-    public ITexture getTexture() {
+    public Drawable getTexture() {
         if (icons.length == 0 || iconIndex < 0) return null;
         return new Texture(getIcon(), iconSizes[iconIndex], iconSizes[iconIndex]);
     }

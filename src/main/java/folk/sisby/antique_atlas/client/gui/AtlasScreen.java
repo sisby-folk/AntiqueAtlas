@@ -1,25 +1,29 @@
 package folk.sisby.antique_atlas.client.gui;
 
 import com.mojang.blaze3d.systems.RenderSystem;
-import folk.sisby.antique_atlas.api.AtlasAPI;
-import folk.sisby.antique_atlas.client.api.AtlasClientAPI;
 import folk.sisby.antique_atlas.AntiqueAtlas;
-import folk.sisby.antique_atlas.client.*;
-import folk.sisby.antique_atlas.client.gui.core.*;
+import folk.sisby.antique_atlas.api.AtlasAPI;
+import folk.sisby.antique_atlas.client.AntiqueAtlasTextures;
+import folk.sisby.antique_atlas.client.MarkerType;
+import folk.sisby.antique_atlas.client.api.AtlasClientAPI;
+import folk.sisby.antique_atlas.client.assets.BiomeTextures;
+import folk.sisby.antique_atlas.client.assets.MarkerTypes;
+import folk.sisby.antique_atlas.client.gui.core.ButtonComponent;
+import folk.sisby.antique_atlas.client.gui.core.Component;
+import folk.sisby.antique_atlas.client.gui.core.CursorComponent;
+import folk.sisby.antique_atlas.client.gui.core.IButtonListener;
+import folk.sisby.antique_atlas.client.gui.core.ScreenState;
 import folk.sisby.antique_atlas.client.gui.core.ScreenState.IState;
 import folk.sisby.antique_atlas.client.gui.core.ScreenState.SimpleState;
+import folk.sisby.antique_atlas.client.gui.core.ScrollBoxComponent;
 import folk.sisby.antique_atlas.client.gui.tiles.SubTile;
 import folk.sisby.antique_atlas.client.gui.tiles.SubTileQuartet;
 import folk.sisby.antique_atlas.client.gui.tiles.TileRenderIterator;
-import folk.sisby.antique_atlas.client.assets.MarkerTypes;
-import folk.sisby.antique_atlas.client.assets.BiomeTextures;
-import folk.sisby.antique_atlas.client.texture.ITexture;
 import folk.sisby.antique_atlas.client.texture.TileTexture;
 import folk.sisby.antique_atlas.core.WorldData;
 import folk.sisby.antique_atlas.marker.DimensionMarkersData;
 import folk.sisby.antique_atlas.marker.Marker;
 import folk.sisby.antique_atlas.marker.MarkersData;
-import folk.sisby.antique_atlas.client.MarkerType;
 import folk.sisby.antique_atlas.util.MathUtil;
 import folk.sisby.antique_atlas.util.Rect;
 import net.minecraft.client.MinecraftClient;
@@ -737,11 +741,8 @@ public class AtlasScreen extends Component {
         for (SubTileQuartet subtiles : tiles) {
             for (SubTile subtile : subtiles) {
                 if (subtile == null || subtile.tile == null) continue;
-                ITexture texture = BiomeTextures.getInstance().getTexture(subtile);
-                if (texture instanceof TileTexture tileTexture) {
-                    tileTexture.bind();
-                    tileTexture.drawSubTile(context, subtile, tileHalfSize);
-                }
+                TileTexture texture = BiomeTextures.getInstance().getTexture(subtile);
+                texture.drawSubTile(context, subtile, tileHalfSize);
             }
         }
 

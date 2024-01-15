@@ -1,7 +1,7 @@
 package folk.sisby.antique_atlas.client.gui.core;
 
 import com.mojang.blaze3d.systems.RenderSystem;
-import folk.sisby.antique_atlas.client.texture.ITexture;
+import folk.sisby.antique_atlas.client.texture.Drawable;
 import net.minecraft.client.gui.DrawContext;
 import org.lwjgl.opengl.GL11;
 
@@ -13,7 +13,7 @@ import org.lwjgl.opengl.GL11;
  * @author Hunternif
  */
 public class BlinkingTextureComponent extends Component {
-    private ITexture texture;
+    private Drawable texture;
     /**
      * The number of milliseconds the icon spends visible or invisible.
      */
@@ -37,7 +37,7 @@ public class BlinkingTextureComponent extends Component {
         this(500, 1, 0.25f);
     }
 
-    public void setTexture(ITexture texture, int width, int height) {
+    public void setTexture(Drawable texture, int width, int height) {
         this.texture = texture;
         setSize(width, height);
         // Set up the timer so that the image appears visible at the first moment:
