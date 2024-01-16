@@ -61,7 +61,10 @@ public class TextureSets extends JsonDataLoader implements IdentifiableResourceR
         Map<Identifier, TextureSet> outMap = new HashMap<>();
 
         Map<Identifier, TileTexture> tileTextures = new HashMap<>();
-        manager.findResources("textures/gui/tiles", id -> id.getPath().endsWith(".png")).keySet().forEach(id -> tileTextures.put(id, new TileTexture(id)));
+        manager.findResources("textures/gui/tiles", id -> id.getPath().endsWith(".png")).keySet().forEach(fileId -> {
+            Identifier id = new Identifier(fileId.getNamespace(), fileId.getPath().substring("textures/gui/tiles/".length(), fileId.getPath().length() - ".png".length()));
+            tileTextures.put(id, new TileTexture(fileId));
+        });
 
         for (Map.Entry<Identifier, JsonElement> fileEntry : prepared.entrySet()) {
             Identifier fileId = fileEntry.getKey();
