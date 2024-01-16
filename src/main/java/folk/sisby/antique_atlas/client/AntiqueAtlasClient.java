@@ -8,6 +8,7 @@ import folk.sisby.antique_atlas.client.gui.AtlasScreen;
 import folk.sisby.antique_atlas.core.PlayerEventHandler;
 import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
+import net.fabricmc.fabric.api.client.networking.v1.ClientPlayConnectionEvents;
 import net.fabricmc.fabric.api.resource.ResourceManagerHelper;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.world.ClientWorld;
@@ -63,6 +64,10 @@ public class AntiqueAtlasClient implements ClientModInitializer {
         ResourceManagerHelper.get(ResourceType.CLIENT_RESOURCES).registerReloadListener(TextureSets.getInstance());
         ResourceManagerHelper.get(ResourceType.CLIENT_RESOURCES).registerReloadListener(BiomeTextures.getInstance());
         ResourceManagerHelper.get(ResourceType.CLIENT_RESOURCES).registerReloadListener(MarkerTypes.getInstance());
+
+        ClientPlayConnectionEvents.JOIN.register((h, s, c) -> AntiqueAtlas.tileData.onClientConnectedToServer());
+        ClientPlayConnectionEvents.JOIN.register((h, s, c) -> AntiqueAtlas.markersData.onClientConnectedToServer());
+        ClientPlayConnectionEvents.JOIN.register((h, s, c) -> {if (!c.isIntegratedServerRunning()) AntiqueAtlas.globalMarkersData.onClientConnectedToRemoteServer();});
 
         ClientTickEvents.END_WORLD_TICK.register(world -> world.getPlayers().forEach(PlayerEventHandler::onPlayerTick));
     }

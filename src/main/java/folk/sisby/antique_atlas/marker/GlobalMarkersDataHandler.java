@@ -1,8 +1,6 @@
 package folk.sisby.antique_atlas.marker;
 
 import net.fabricmc.fabric.api.networking.v1.PacketSender;
-import net.minecraft.client.MinecraftClient;
-import net.minecraft.client.network.ClientPlayNetworkHandler;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.network.ServerPlayNetworkHandler;
 import net.minecraft.server.world.ServerWorld;
@@ -16,7 +14,7 @@ import net.minecraft.world.World;
  * </p>
  * <p>
  * When connecting to a remote server, data has to be reset, see
- * {@link #onClientConnectedToServer(ClientPlayNetworkHandler, PacketSender, MinecraftClient)}
+ * {@link #onClientConnectedToRemoteServer()}
  * </p>
  *
  * @author Hunternif
@@ -45,10 +43,8 @@ public class GlobalMarkersDataHandler {
      * form post, the latter event isn't actually fired on the client.
      * </p>
      */
-    public void onClientConnectedToServer(ClientPlayNetworkHandler handler, PacketSender sender, MinecraftClient client) {
-        if (!client.isIntegratedServerRunning()) {
-            data = null;
-        }
+    public void onClientConnectedToRemoteServer() {
+        data = null;
     }
 
     public GlobalMarkersData getData() {

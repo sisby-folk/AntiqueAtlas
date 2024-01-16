@@ -8,7 +8,7 @@
     "MixinStructureStart"
   ],
   "client": [
-    "MixinMinecraftClient"
+    "client.MixinMinecraftClient"
   ],
   "injectors": {
     "defaultRequire": 1

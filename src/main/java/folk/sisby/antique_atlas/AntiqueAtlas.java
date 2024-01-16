@@ -4,16 +4,15 @@ import folk.sisby.antique_atlas.core.GlobalTileDataHandler;
 import folk.sisby.antique_atlas.core.PlayerEventHandler;
 import folk.sisby.antique_atlas.core.TileDataHandler;
 import folk.sisby.antique_atlas.core.scanning.WorldScanner;
+import folk.sisby.antique_atlas.data.StructureTiles;
 import folk.sisby.antique_atlas.marker.GlobalMarkersDataHandler;
 import folk.sisby.antique_atlas.marker.MarkersDataHandler;
 import folk.sisby.antique_atlas.network.AntiqueAtlasNetworking;
-import folk.sisby.antique_atlas.data.StructureTiles;
 import folk.sisby.antique_atlas.structure.EndCity;
 import folk.sisby.antique_atlas.structure.NetherFortress;
 import folk.sisby.antique_atlas.structure.Overworld;
 import folk.sisby.antique_atlas.structure.Village;
 import net.fabricmc.api.ModInitializer;
-import net.fabricmc.fabric.api.client.networking.v1.ClientPlayConnectionEvents;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerTickEvents;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerWorldEvents;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayConnectionEvents;
@@ -46,10 +45,6 @@ public class AntiqueAtlas implements ModInitializer {
     @Override
     public void onInitialize() {
         AntiqueAtlasNetworking.init();
-
-        ClientPlayConnectionEvents.JOIN.register(tileData::onClientConnectedToServer);
-        ClientPlayConnectionEvents.JOIN.register(markersData::onClientConnectedToServer);
-        ClientPlayConnectionEvents.JOIN.register(globalMarkersData::onClientConnectedToServer);
 
         ServerPlayConnectionEvents.JOIN.register(globalMarkersData::onPlayerLogin);
         ServerPlayConnectionEvents.JOIN.register(globalTileData::onPlayerLogin);
