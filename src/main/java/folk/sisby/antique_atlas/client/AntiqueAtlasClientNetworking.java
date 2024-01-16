@@ -11,7 +11,6 @@ import folk.sisby.antique_atlas.marker.Marker;
 import folk.sisby.antique_atlas.marker.MarkerData;
 import folk.sisby.antique_atlas.marker.MarkersData;
 import folk.sisby.antique_atlas.network.AntiqueAtlasNetworking;
-import folk.sisby.antique_atlas.network.s2c.S2CPacket;
 import folk.sisby.antique_atlas.network.s2c.DeleteGlobalTileS2CPacket;
 import folk.sisby.antique_atlas.network.s2c.DeleteMarkerS2CPacket;
 import folk.sisby.antique_atlas.network.s2c.DimensionUpdateS2CPacket;
@@ -19,6 +18,7 @@ import folk.sisby.antique_atlas.network.s2c.MapDataS2CPacket;
 import folk.sisby.antique_atlas.network.s2c.PutGlobalTileS2CPacket;
 import folk.sisby.antique_atlas.network.s2c.PutMarkersS2CPacket;
 import folk.sisby.antique_atlas.network.s2c.PutTileS2CPacket;
+import folk.sisby.antique_atlas.network.s2c.S2CPacket;
 import folk.sisby.antique_atlas.network.s2c.TileGroupsS2CPacket;
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
 import net.minecraft.client.MinecraftClient;
@@ -35,6 +35,8 @@ public class AntiqueAtlasClientNetworking {
     private static final int GLOBAL = -1;
 
     public static void init() {
+        AntiqueAtlasNetworking.C2S_SENDER = p -> ClientPlayNetworking.send(p.getId(), p.toBuf());
+
         ClientPlayNetworking.registerGlobalReceiver(AntiqueAtlasNetworking.S2C_DELETE_GLOBAL_TILE, (c, h, b, s) -> handleClient(b, DeleteGlobalTileS2CPacket::new, AntiqueAtlasClientNetworking::handleDeleteGlobalTile));
         ClientPlayNetworking.registerGlobalReceiver(AntiqueAtlasNetworking.S2C_DELETE_MARKER, (c, h, b, s) -> handleClient(b, DeleteMarkerS2CPacket::new, AntiqueAtlasClientNetworking::handleDeleteMarker));
         ClientPlayNetworking.registerGlobalReceiver(AntiqueAtlasNetworking.S2C_DIMENSION_UPDATE, (c, h, b, s) -> handleClient(b, DimensionUpdateS2CPacket::new, AntiqueAtlasClientNetworking::handleDimensionUpdate));

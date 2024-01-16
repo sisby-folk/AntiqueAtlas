@@ -12,6 +12,7 @@ import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.util.Identifier;
 
+import java.util.function.Consumer;
 import java.util.function.Function;
 
 public class AntiqueAtlasNetworking {
@@ -27,6 +28,8 @@ public class AntiqueAtlasNetworking {
     public static final Identifier S2C_PUT_MARKERS = AntiqueAtlas.id("packet.s2c.marker.put");
     public static final Identifier S2C_PUT_TILE = AntiqueAtlas.id("packet.s2c.tile.put");
     public static final Identifier S2C_TILE_GROUPS = AntiqueAtlas.id("packet.s2c.tile.groups");
+
+    public static Consumer<C2SPacket> C2S_SENDER = p -> {};
 
     public static void init() {
         ServerPlayNetworking.registerGlobalReceiver(C2S_DELETE_MARKER, (sv, p, h, b, se) -> handleServer(p, b, DeleteMarkerC2SPacket::new, AntiqueAtlasNetworking::handleDeleteMarker));

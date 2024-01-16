@@ -1,4 +1,4 @@
-package folk.sisby.antique_atlas.mixin;
+package folk.sisby.antique_atlas.mixin.client;
 
 import folk.sisby.antique_atlas.client.AntiqueAtlasClient;
 import net.minecraft.client.MinecraftClient;
