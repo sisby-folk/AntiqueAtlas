@@ -6,6 +6,15 @@ import folk.sisby.kaleido.lib.quiltconfig.api.annotations.FloatRange;
 import folk.sisby.kaleido.lib.quiltconfig.api.annotations.IntegerRange;
 
 public class AntiqueAtlasConfig extends WrappedConfig {
+    public enum GraveVerb {
+        DIED,
+        TOTALLED,
+        WIPED,
+        FAINTED,
+        LOST,
+        LOST_GEAR
+    }
+
     public final GameplaySettings Gameplay = new GameplaySettings();
     public final InterfaceSettings Interface = new InterfaceSettings();
     public final PerformanceSettings Performance = new PerformanceSettings();
@@ -46,6 +55,9 @@ public class AntiqueAtlasConfig extends WrappedConfig {
         @Comment("If false (by default), then mousewheel up is zoom in, mousewheel down is zoom out.")
         @Comment("If true, then the direction is reversed.")
         public final Boolean doReverseWheelZoom = false;
+
+        @Comment("Which verb to use to describe player death locations.")
+        public final GraveVerb graveVerb = GraveVerb.LOST_GEAR;
     }
 
     public static final class PerformanceSettings implements Section {
