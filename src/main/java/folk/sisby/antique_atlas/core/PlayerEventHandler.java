@@ -9,11 +9,11 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.network.ServerPlayNetworkHandler;
 import net.minecraft.server.network.ServerPlayerEntity;
+import net.minecraft.text.MutableText;
 import net.minecraft.text.Text;
 import net.minecraft.util.Formatting;
+import net.minecraft.util.Identifier;
 import net.minecraft.world.World;
-
-import java.util.Locale;
 
 public class PlayerEventHandler {
     public static void onPlayerLogin(ServerPlayNetworkHandler handler, PacketSender sender, MinecraftServer server) {
@@ -44,9 +44,18 @@ public class PlayerEventHandler {
     public static void onPlayerDeath(PlayerEntity player) {
         if (AntiqueAtlas.CONFIG.Gameplay.autoDeathMarker) {
             int atlasID = AtlasAPI.getPlayerAtlasId(player);
-            AtlasAPI.getMarkerAPI().putMarker(player.getEntityWorld(), true, atlasID, AntiqueAtlas.CONFIG.Interface.graveVerb == AntiqueAtlasConfig.GraveVerb.DIED ? AntiqueAtlas.id("tomb") : AntiqueAtlas.id("bundle"),
-                Text.translatable("gui.antique_atlas.marker.tomb", Text.translatable("gui.antique_atlas.marker.tomb.%s".formatted(AntiqueAtlas.CONFIG.Interface.graveVerb.toString().toLowerCase(Locale.ROOT))).formatted(Formatting.RED), Text.literal(String.valueOf(1 + (player.getEntityWorld().getTimeOfDay()  / 24000))).formatted(Formatting.WHITE)).formatted(Formatting.GRAY),
-                (int) player.getX(), (int) player.getZ());
+            AntiqueAtlasConfig.GraveStyle style = AntiqueAtlas.CONFIG.Interface.graveStyle;
+            MutableText timeText = Text.literal(String.valueOf(1 + (player.getEntityWorld().getTimeOfDay()  / 24000))).formatted(Formatting.WHITE);
+            MutableText text = switch (style) {
+                case GRAVE, ITEMS, DIED -> Text.translatable("gui.antique_atlas.marker.death.%s".formatted(style.toString().toLowerCase()), Text.translatable("gui.antique_atlas.marker.death.%s.verb".formatted(style.toString().toLowerCase())).formatted(Formatting.RED), timeText).formatted(Formatting.GRAY);
+                case EUPHEMISMS -> Text.translatable("gui.antique_atlas.marker.death.%s".formatted(style.toString().toLowerCase()), Text.translatable("gui.antique_atlas.marker.death.%s.verb.%s".formatted(style.toString().toLowerCase(), player.getRandom().nextInt(11))).formatted(Formatting.RED), timeText).formatted(Formatting.GRAY);
+            };
+            Identifier icon = switch (style) {
+                case GRAVE, DIED, EUPHEMISMS -> AntiqueAtlas.id("tomb");
+                case ITEMS ->  AntiqueAtlas.id("bundle");
+            };
+
+            AtlasAPI.getMarkerAPI().putMarker(player.getEntityWorld(), true, atlasID, icon, text, (int) player.getX(), (int) player.getZ());
         }
     }
 }

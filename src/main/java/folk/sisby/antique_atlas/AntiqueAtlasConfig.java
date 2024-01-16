@@ -6,13 +6,11 @@ import folk.sisby.kaleido.lib.quiltconfig.api.annotations.FloatRange;
 import folk.sisby.kaleido.lib.quiltconfig.api.annotations.IntegerRange;
 
 public class AntiqueAtlasConfig extends WrappedConfig {
-    public enum GraveVerb {
+    public enum GraveStyle {
+        GRAVE,
+        ITEMS,
         DIED,
-        TOTALLED,
-        WIPED,
-        FAINTED,
-        LOST,
-        LOST_GEAR
+        EUPHEMISMS
     }
 
     public final GameplaySettings Gameplay = new GameplaySettings();
@@ -57,7 +55,7 @@ public class AntiqueAtlasConfig extends WrappedConfig {
         public final Boolean doReverseWheelZoom = false;
 
         @Comment("Which verb to use to describe player death locations.")
-        public final GraveVerb graveVerb = GraveVerb.LOST_GEAR;
+        public final GraveStyle graveStyle = GraveStyle.EUPHEMISMS;
     }
 
     public static final class PerformanceSettings implements Section {
