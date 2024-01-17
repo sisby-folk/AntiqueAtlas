@@ -19,7 +19,7 @@ import java.util.concurrent.ConcurrentHashMap;
 /**
  * All tiles seen in dimension. Thread-safe (probably)
  */
-public class WorldData implements ITileStorage {
+public class WorldData implements TileStorage {
     public final AtlasData parent;
     public final RegistryKey<World> world;
 

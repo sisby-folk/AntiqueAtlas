@@ -22,7 +22,7 @@ import net.minecraft.world.chunk.Chunk;
  *
  * @author Hunternif
  */
-public class TileDetectorNether extends TileDetectorBase implements ITileDetector {
+public class TileDetectorNether extends TileDetectorBase implements BiomeScanner {
     /**
      * The Nether will be checked for air/ground at this level.
      */

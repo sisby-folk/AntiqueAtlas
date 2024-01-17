@@ -3,7 +3,7 @@ package folk.sisby.antique_atlas.core.scanning;
 import folk.sisby.antique_atlas.api.AtlasAPI;
 import folk.sisby.antique_atlas.AntiqueAtlas;
 import folk.sisby.antique_atlas.core.AtlasData;
-import folk.sisby.antique_atlas.core.ITileStorage;
+import folk.sisby.antique_atlas.core.TileStorage;
 import folk.sisby.antique_atlas.core.TileInfo;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.registry.RegistryKey;
@@ -19,7 +19,7 @@ public class WorldScanner {
     /**
      * Maps dimension ID to biomeAnalyzer.
      */
-    private final Map<RegistryKey<World>, ITileDetector> biomeAnalyzers = new HashMap<>();
+    private final Map<RegistryKey<World>, BiomeScanner> biomeAnalyzers = new HashMap<>();
     private final TileDetectorBase tileDetectorOverworld = new TileDetectorBase();
 
     public WorldScanner() {
@@ -32,13 +32,13 @@ public class WorldScanner {
     /**
      * If not found, returns the analyzer for overworld.
      */
-    private ITileDetector getBiomeDetectorForWorld(RegistryKey<World> world) {
-        ITileDetector biomeAnalyzer = biomeAnalyzers.get(world);
+    private BiomeScanner getBiomeDetectorForWorld(RegistryKey<World> world) {
+        BiomeScanner biomeAnalyzer = biomeAnalyzers.get(world);
 
         return biomeAnalyzer == null ? tileDetectorOverworld : biomeAnalyzer;
     }
 
-    private void setBiomeDetectorForWorld(RegistryKey<World> world, ITileDetector biomeAnalyzer) {
+    private void setBiomeDetectorForWorld(RegistryKey<World> world, BiomeScanner biomeAnalyzer) {
         biomeAnalyzers.put(world, biomeAnalyzer);
     }
 
@@ -60,7 +60,7 @@ public class WorldScanner {
         int rescanInterval = newScanInterval * AntiqueAtlas.CONFIG.Performance.rescanRate;
         boolean rescanRequired = AntiqueAtlas.CONFIG.Performance.doRescan && player.getEntityWorld().getTime() % rescanInterval == 0;
 
-        ITileDetector biomeDetector = getBiomeDetectorForWorld(player.getEntityWorld().getRegistryKey());
+        BiomeScanner biomeDetector = getBiomeDetectorForWorld(player.getEntityWorld().getRegistryKey());
 
         int scanRadius = biomeDetector.getScanRadius();
 
@@ -84,7 +84,7 @@ public class WorldScanner {
     }
 
     private TileInfo updateAtlasForChunk(AtlasData data, World world, int x, int z, boolean rescanRequired) {
-        ITileStorage storedData = data.getWorldData(world.getRegistryKey());
+        TileStorage storedData = data.getWorldData(world.getRegistryKey());
         Identifier oldTile = storedData.getTile(x, z);
 
         // Check if there's a custom tile at the location:
@@ -110,7 +110,7 @@ public class WorldScanner {
                 return null;
             }
 
-            ITileDetector biomeDetector = getBiomeDetectorForWorld(world.getRegistryKey());
+            BiomeScanner biomeDetector = getBiomeDetectorForWorld(world.getRegistryKey());
             tile = biomeDetector.getBiomeID(world, chunk);
 
             if (oldTile != null) {

@@ -27,29 +27,32 @@ import net.minecraft.world.chunk.Chunk;
  *
  * @author Hunternif
  */
-public class TileDetectorBase implements ITileDetector {
+public class TileDetectorBase implements BiomeScanner {
     /**
      * Biome used for occasional pools of water.
      * This used our own representation of biomes, but this was switched to Minecraft biomes.
      * So in absence of a better idea, this will just count as River from now on.
      */
     private static final Identifier waterPoolBiome = BiomeKeys.RIVER.getValue();
+
     /**
      * Increment the counter for water biomes by this much during iteration.
      * This is done so that water pools are more visible.
      */
-    private static final int priorityRavine = 12, priorityWaterPool = 4, priorityLavaPool = 6;
+    private static final int priorityRavine = 12;
+    private static final int priorityWaterPool = 4;
+    private static final int priorityLavaPool = 6;
 
     /**
      * Minimum depth in the ground to be considered a ravine
      */
     private static final int ravineMinDepth = 7;
 
-    public static boolean hasSwampWater(RegistryEntry<Biome> biomeTag) {
+    protected static boolean hasSwampWater(RegistryEntry<Biome> biomeTag) {
         return biomeTag.isIn(ConventionalBiomeTags.SWAMP);
     }
 
-    static int priorityForBiome(RegistryEntry<Biome> biomeTag) {
+    protected static int priorityForBiome(RegistryEntry<Biome> biomeTag) {
         if (biomeTag.isIn(BiomeTags.IS_OCEAN) || biomeTag.isIn(BiomeTags.IS_RIVER) || biomeTag.isIn(BiomeTags.IS_DEEP_OCEAN)) {
             return 4;
         } else if (biomeTag.isIn(BiomeTags.IS_BEACH)) {
@@ -59,22 +62,21 @@ public class TileDetectorBase implements ITileDetector {
         }
     }
 
-    protected static TileHeightType getHeightTypeFromY(int y, int sealevel) {
-        if (y < sealevel + 10) {
+    protected static TileHeightType getHeightTypeFromY(int y, int seaLevel) {
+        if (y < seaLevel + 10) {
             return TileHeightType.VALLEY;
         }
-        if (y < sealevel + 20) {
+        if (y < seaLevel + 20) {
             return TileHeightType.LOW;
         }
-        if (y < sealevel + 35) {
+        if (y < seaLevel + 35) {
             return TileHeightType.MID;
         }
-        if (y < sealevel + 50) {
+        if (y < seaLevel + 50) {
             return TileHeightType.HIGH;
         }
         return TileHeightType.PEAK;
     }
-
 
     protected static Identifier getBiomeIdentifier(World world, Biome biome) {
         return world.getRegistryManager().get(RegistryKeys.BIOME).getId(biome);

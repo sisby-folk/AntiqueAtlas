@@ -19,7 +19,7 @@ import net.minecraft.world.chunk.Chunk;
  *
  * @author Hunternif
  */
-public class TileDetectorEnd extends TileDetectorBase implements ITileDetector {
+public class TileDetectorEnd extends TileDetectorBase implements BiomeScanner {
 
     @Override
     public Identifier getBiomeID(World world, Chunk chunk) {
