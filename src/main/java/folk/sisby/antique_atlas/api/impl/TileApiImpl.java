@@ -7,7 +7,6 @@ import folk.sisby.antique_atlas.core.TileDataStorage;
 import folk.sisby.antique_atlas.network.s2c.DeleteGlobalTileS2CPacket;
 import folk.sisby.antique_atlas.network.s2c.PutGlobalTileS2CPacket;
 import folk.sisby.antique_atlas.network.s2c.PutTileS2CPacket;
-import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.registry.RegistryKey;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.server.world.ServerWorld;
@@ -28,8 +27,8 @@ public class TileApiImpl implements TileAPI {
         RegistryKey<World> dimension = world.getRegistryKey();
         AtlasData data = AntiqueAtlas.tileData.getData(atlasID, world);
         data.setTile(dimension, chunkX, chunkZ, tile);
-        for (PlayerEntity syncedPlayer : data.getSyncedPlayers()) {
-            new PutTileS2CPacket(atlasID, dimension, chunkX, chunkZ, tile).send((ServerPlayerEntity) syncedPlayer);
+        for (ServerPlayerEntity syncedPlayer : data.getSyncedPlayers()) {
+            new PutTileS2CPacket(atlasID, dimension, chunkX, chunkZ, tile).send(syncedPlayer);
         }
     }
 

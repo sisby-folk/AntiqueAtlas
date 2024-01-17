@@ -4,7 +4,6 @@ import folk.sisby.antique_atlas.AntiqueAtlas;
 import folk.sisby.antique_atlas.network.s2c.TileGroupsS2CPacket;
 import folk.sisby.antique_atlas.util.Rect;
 import folk.sisby.antique_atlas.util.Streams;
-import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.nbt.NbtList;
 import net.minecraft.registry.RegistryKey;
@@ -125,14 +124,14 @@ public class WorldData implements ITileStorage {
         }
     }
 
-    public void syncToPlayer(int atlasID, PlayerEntity player) {
+    public void syncToPlayer(int atlasID, ServerPlayerEntity player) {
         AntiqueAtlas.LOG.info("Sending dimension #{}", this.world.toString());
 
         Streams.chunked(this.tileGroups.values().stream(), TileGroupsS2CPacket.TILE_GROUPS_PER_PACKET).forEach(
-            chunk -> new TileGroupsS2CPacket(atlasID, this.world, chunk).send((ServerPlayerEntity) player)
+            chunk -> new TileGroupsS2CPacket(atlasID, this.world, chunk).send(player)
         );
 
-        AntiqueAtlas.LOG.info("Sent dimension #{} ({} tiles)", this.world.toString(), this.tileGroups.size());
+        AntiqueAtlas.LOG.info("Sent dimension #{} ({} groups)", this.world.toString(), this.tileGroups.size());
     }
 
     @Override

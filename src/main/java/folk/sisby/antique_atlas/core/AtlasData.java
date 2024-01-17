@@ -2,7 +2,6 @@ package folk.sisby.antique_atlas.core;
 
 import folk.sisby.antique_atlas.AntiqueAtlas;
 import folk.sisby.antique_atlas.network.s2c.MapDataS2CPacket;
-import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.nbt.NbtElement;
 import net.minecraft.nbt.NbtList;
@@ -42,7 +41,7 @@ public class AtlasData extends PersistentState {
     /**
      * Set of players this Atlas data has been sent to.
      */
-    private final Set<PlayerEntity> playersSentTo = new HashSet<>();
+    private final Set<ServerPlayerEntity> playersSentTo = new HashSet<>();
 
     public AtlasData() {
     }
@@ -120,20 +119,20 @@ public class AtlasData extends PersistentState {
     /**
      * The set of players this AtlasData has already been sent to.
      */
-    public Collection<PlayerEntity> getSyncedPlayers() {
+    public Collection<ServerPlayerEntity> getSyncedPlayers() {
         return Collections.unmodifiableCollection(playersSentTo);
     }
 
     /**
      * Send all data to the player in several zipped packets. Called once on login.
      */
-    public void syncToPlayer(int atlasID, PlayerEntity player) {
+    public void syncToPlayer(int atlasID, ServerPlayerEntity player) {
         NbtCompound data = new NbtCompound();
 
         // Before syncing make sure the changes are written to the nbt.
         // Do not include dimension tile data.  This will happen later.
         writeToNBT(data, false);
-        new MapDataS2CPacket(atlasID, data).send((ServerPlayerEntity) player);
+        new MapDataS2CPacket(atlasID, data).send(player);
 
         for (RegistryKey<World> world : worldMap.keySet()) {
             worldMap.get(world).syncToPlayer(atlasID, player);
