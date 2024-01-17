@@ -106,7 +106,8 @@ public class AntiqueAtlasClientNetworking {
     }
 
     private static <T extends S2CPacket> void handleClient(PacketByteBuf buf, Function<PacketByteBuf, T> reader, ClientPacketHandler<T> handler) {
-        handler.handle(MinecraftClient.getInstance().world, reader.apply(buf));
+        T packet = reader.apply(buf);
+        MinecraftClient.getInstance().execute(() -> handler.handle(MinecraftClient.getInstance().world, packet));
     }
 
     public interface ClientPacketHandler<T extends S2CPacket> {

@@ -3,7 +3,6 @@ package folk.sisby.antique_atlas.core;
 import folk.sisby.antique_atlas.AntiqueAtlas;
 import folk.sisby.antique_atlas.network.s2c.PutGlobalTileS2CPacket;
 import folk.sisby.antique_atlas.util.Streams;
-import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.nbt.NbtElement;
 import net.minecraft.nbt.NbtList;
@@ -99,9 +98,9 @@ public class TileDataStorage extends PersistentState {
     /**
      * Send all data to player in several zipped packets.
      */
-    public void syncToPlayer(PlayerEntity player, RegistryKey<World> world) {
+    public void syncToPlayer(ServerPlayerEntity player, RegistryKey<World> world) {
         Streams.chunked(tiles.entrySet().stream(), CHUNK_SIZE)
-            .forEach(chunk -> new PutGlobalTileS2CPacket(world, chunk.stream().map(e -> new Pair<>(e.getKey(), e.getValue())).toList()).send((ServerPlayerEntity) player));
+            .forEach(chunk -> new PutGlobalTileS2CPacket(world, chunk.stream().map(e -> new Pair<>(e.getKey(), e.getValue())).toList()).send(player));
 
         AntiqueAtlas.LOG.info("Sent custom biome data to player {}", player.getCommandSource().getName());
     }
