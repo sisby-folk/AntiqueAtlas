@@ -66,9 +66,9 @@ public class AntiqueAtlasClient implements ClientModInitializer {
         ResourceManagerHelper.get(ResourceType.CLIENT_RESOURCES).registerReloadListener(BiomeTextures.getInstance());
         ResourceManagerHelper.get(ResourceType.CLIENT_RESOURCES).registerReloadListener(MarkerTypes.getInstance());
 
-        ClientPlayConnectionEvents.JOIN.register((h, s, c) -> AntiqueAtlas.tileData.onClientConnectedToServer());
-        ClientPlayConnectionEvents.JOIN.register((h, s, c) -> AntiqueAtlas.markersData.onClientConnectedToServer());
-        ClientPlayConnectionEvents.JOIN.register((h, s, c) -> {if (!c.isIntegratedServerRunning()) AntiqueAtlas.globalMarkersData.onClientConnectedToRemoteServer();});
+        ClientPlayConnectionEvents.INIT.register((h, c) -> AntiqueAtlas.tileData.onClientConnectedToServer());
+        ClientPlayConnectionEvents.INIT.register((h, c) -> AntiqueAtlas.markersData.onClientConnectedToServer());
+        ClientPlayConnectionEvents.INIT.register((h, c) -> {if (!c.isIntegratedServerRunning()) AntiqueAtlas.globalMarkersData.onClientConnectedToRemoteServer();});
 
         ClientTickEvents.END_WORLD_TICK.register(world -> world.getPlayers().forEach(PlayerEventHandler::onPlayerTick));
     }
