@@ -5,7 +5,7 @@ import folk.sisby.antique_atlas.client.assets.BiomeTextures;
 import folk.sisby.antique_atlas.client.assets.MarkerTypes;
 import folk.sisby.antique_atlas.client.assets.TextureSets;
 import folk.sisby.antique_atlas.client.gui.AtlasScreen;
-import folk.sisby.antique_atlas.core.PlayerEventHandler;
+import folk.sisby.antique_atlas.player.PlayerEventHandler;
 import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayConnectionEvents;

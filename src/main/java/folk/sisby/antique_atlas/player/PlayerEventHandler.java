@@ -1,8 +1,9 @@
-package folk.sisby.antique_atlas.core;
+package folk.sisby.antique_atlas.player;
 
 import folk.sisby.antique_atlas.AntiqueAtlas;
 import folk.sisby.antique_atlas.AntiqueAtlasConfig;
 import folk.sisby.antique_atlas.api.AtlasAPI;
+import folk.sisby.antique_atlas.core.AtlasData;
 import folk.sisby.antique_atlas.marker.MarkersData;
 import net.fabricmc.fabric.api.networking.v1.PacketSender;
 import net.minecraft.entity.player.PlayerEntity;

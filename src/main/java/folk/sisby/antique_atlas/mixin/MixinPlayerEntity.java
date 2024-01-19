@@ -1,6 +1,6 @@
 package folk.sisby.antique_atlas.mixin;
 
-import folk.sisby.antique_atlas.core.PlayerEventHandler;
+import folk.sisby.antique_atlas.player.PlayerEventHandler;
 import folk.sisby.antique_atlas.player.AntiqueAtlasPlayer;
 import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.entity.player.PlayerEntity;

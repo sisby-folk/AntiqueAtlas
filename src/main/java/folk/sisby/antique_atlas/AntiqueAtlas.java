@@ -2,7 +2,7 @@ package folk.sisby.antique_atlas;
 
 import folk.sisby.antique_atlas.chunk.ChunkSummaryState;
 import folk.sisby.antique_atlas.core.GlobalTileDataHandler;
-import folk.sisby.antique_atlas.core.PlayerEventHandler;
+import folk.sisby.antique_atlas.player.PlayerEventHandler;
 import folk.sisby.antique_atlas.core.TileDataHandler;
 import folk.sisby.antique_atlas.core.scanning.WorldScanner;
 import folk.sisby.antique_atlas.data.StructureTiles;
