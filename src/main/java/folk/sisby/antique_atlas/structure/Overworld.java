@@ -1,6 +1,6 @@
 package folk.sisby.antique_atlas.structure;
 
-import folk.sisby.antique_atlas.core.BuiltinTiles;
+import folk.sisby.antique_atlas.tile.TileTypes;
 import folk.sisby.antique_atlas.data.StructureTiles;
 import net.minecraft.structure.StructurePiece;
 import net.minecraft.structure.StructurePieceType;
@@ -16,7 +16,7 @@ import java.util.Collections;
 public class Overworld {
 
     public static void registerPieces() {
-        StructureTiles.getInstance().registerTile(StructurePieceType.RUINED_PORTAL, 10, BuiltinTiles.RUINED_PORTAL, Overworld::aboveGround);
+        StructureTiles.getInstance().registerTile(StructurePieceType.RUINED_PORTAL, 10, TileTypes.RUINED_PORTAL.getId(), Overworld::aboveGround);
     }
 
     private static Collection<ChunkPos> aboveGround(World world, @SuppressWarnings("unused") StructurePoolElement structurePoolElement, BlockBox blockBox, StructurePiece piece) {

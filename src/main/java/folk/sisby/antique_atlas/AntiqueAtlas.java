@@ -1,5 +1,6 @@
 package folk.sisby.antique_atlas;
 
+import folk.sisby.antique_atlas.chunk.ChunkSummaryState;
 import folk.sisby.antique_atlas.core.GlobalTileDataHandler;
 import folk.sisby.antique_atlas.core.PlayerEventHandler;
 import folk.sisby.antique_atlas.core.TileDataHandler;
@@ -13,6 +14,7 @@ import folk.sisby.antique_atlas.structure.NetherFortress;
 import folk.sisby.antique_atlas.structure.Overworld;
 import folk.sisby.antique_atlas.structure.Village;
 import net.fabricmc.api.ModInitializer;
+import net.fabricmc.fabric.api.event.lifecycle.v1.ServerChunkEvents;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerTickEvents;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerWorldEvents;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayConnectionEvents;
@@ -52,6 +54,10 @@ public class AntiqueAtlas implements ModInitializer {
 
         ServerWorldEvents.LOAD.register(globalMarkersData::onWorldLoad);
         ServerWorldEvents.LOAD.register(globalTileData::onWorldLoad);
+        ServerWorldEvents.LOAD.register((s, world) -> ChunkSummaryState.getOrCreate(world));
+
+        ServerChunkEvents.CHUNK_LOAD.register(ChunkSummaryState::onChunkLoad);
+        ServerChunkEvents.CHUNK_UNLOAD.register(ChunkSummaryState::onChunkUnload);
 
         ServerTickEvents.END_WORLD_TICK.register(world -> world.getPlayers().forEach(PlayerEventHandler::onPlayerTick));
 
