@@ -8,7 +8,6 @@ import com.google.gson.JsonObject;
 import folk.sisby.antique_atlas.AntiqueAtlas;
 import folk.sisby.antique_atlas.api.AtlasAPI;
 import folk.sisby.antique_atlas.structure.StructurePieceTile;
-import folk.sisby.antique_atlas.structure.StructurePieceTileXZ;
 import net.fabricmc.fabric.api.resource.IdentifiableResourceReloadListener;
 import net.minecraft.registry.Registries;
 import net.minecraft.registry.Registry;
@@ -24,7 +23,6 @@ import net.minecraft.structure.StructurePiece;
 import net.minecraft.structure.StructurePieceType;
 import net.minecraft.structure.StructureStart;
 import net.minecraft.structure.pool.SinglePoolElement;
-import net.minecraft.structure.pool.StructurePoolElement;
 import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.Pair;
@@ -55,44 +53,48 @@ public class StructureTiles extends JsonDataLoader implements IdentifiableResour
         return INSTANCE;
     }
 
-    public interface Setter {
-        Collection<ChunkPos> matches(World world, StructurePoolElement element, BlockBox box, StructurePiece rotation);
+    public static Collection<ChunkPos> ALWAYS(World world, BlockBox box) {
+        return Collections.singleton(new ChunkPos(box.getCenter()));
     }
 
-    public static final Setter ALWAYS = (world, element, box, rotation) -> Collections.singleton(new ChunkPos(box.getCenter().getX() >> 4, box.getCenter().getZ() >> 4));
+    public interface PieceMatcher {
+        Collection<ChunkPos> matches(World world, BlockBox box);
+    }
 
-    public static Collection<ChunkPos> IF_X_DIRECTION(World ignoredWorld, StructurePoolElement ignoredElement, BlockBox box, StructurePiece piece) {
+    public static Optional<ChunkPos> chunkPosIfX(StructurePiece piece) {
         if (piece instanceof PoolStructurePiece poolPiece) {
             List<JigsawJunction> junctions = poolPiece.getJunctions();
             if (junctions.size() == 2) {
                 if (junctions.get(0).getSourceX() == junctions.get(1).getSourceX() || junctions.get(0).getSourceZ() != junctions.get(1).getSourceZ()) {
-                    return Collections.singleton(new ChunkPos(box.getCenter()));
+                    return Optional.of(new ChunkPos(piece.getBoundingBox().getCenter()));
                 }
             } else {
-                return Collections.singleton(new ChunkPos(box.getCenter()));
+                return Optional.of(new ChunkPos(piece.getBoundingBox().getCenter()));
             }
         }
-        return Collections.emptyList();
+        return Optional.empty();
     }
 
-    public static Collection<ChunkPos> IF_Z_DIRECTION(World ignoredWorld, StructurePoolElement ignoredElement, BlockBox box, StructurePiece piece) {
+    public static Optional<ChunkPos> chunkPosIfZ(StructurePiece piece) {
         if (piece instanceof PoolStructurePiece poolPiece) {
             List<JigsawJunction> junctions = poolPiece.getJunctions();
             if (junctions.size() == 2) {
                 if (junctions.get(0).getSourceZ() == junctions.get(1).getSourceZ() || junctions.get(0).getSourceX() != junctions.get(1).getSourceX()) {
-                    return Collections.singleton(new ChunkPos(box.getCenter()));
+                    return Optional.of(new ChunkPos(piece.getBoundingBox().getCenter()));
                 }
             } else {
-                return Collections.singleton(new ChunkPos(box.getCenter()));
+                return Optional.of(new ChunkPos(piece.getBoundingBox().getCenter()));
             }
         }
-        return Collections.emptyList();
+        return Optional.empty();
     }
 
-    private final HashMultimap<Identifier, Pair<Identifier, Setter>> structurePieceTiles = HashMultimap.create();
-    private final Multimap<Identifier, Pair<Identifier, Setter>> jigsawTiles = HashMultimap.create();
-    private final Map<Identifier, Pair<Identifier, Text>> structurePieceMarkers = new HashMap<>();
-    private final Map<TagKey<Structure>, Pair<Identifier, Text>> structureTagMarkers = new HashMap<>();
+    private final Map<Identifier, Pair<Identifier, Text>> structureMarkers = new HashMap<>(); // Structure Start
+    private final Map<TagKey<Structure>, Pair<Identifier, Text>> structureTagMarkers = new HashMap<>(); // Structure Start
+
+    private final Multimap<Identifier, Pair<Identifier, PieceMatcher>> structurePieceTiles = HashMultimap.create();
+    private final Multimap<Identifier, StructurePieceTile> jigsawTiles = HashMultimap.create();
+
     private final Map<Identifier, Integer> structurePiecePriority = new HashMap<>();
 
     private final Set<Triple<Integer, Integer, Identifier>> VISITED_STRUCTURES = Collections.newSetFromMap(new ConcurrentHashMap<>());
@@ -101,27 +103,20 @@ public class StructureTiles extends JsonDataLoader implements IdentifiableResour
         super(new Gson(), "atlas/structures");
     }
 
-    public void registerTile(StructurePieceType structurePieceType, int priority, Identifier textureId, Setter setter) {
+    public void registerTile(StructurePieceType structurePieceType, int priority, Identifier textureId, PieceMatcher pieceMatcher) {
         Identifier id = Registries.STRUCTURE_PIECE.getId(structurePieceType);
-        structurePieceTiles.put(id, new Pair<>(textureId, setter));
+        structurePieceTiles.put(id, new Pair<>(textureId, pieceMatcher));
         structurePiecePriority.put(textureId, priority);
     }
 
-    public void registerTile(StructurePieceType structurePieceType, int priority, Identifier textureId) {
-        registerTile(structurePieceType, priority, textureId, ALWAYS);
-    }
-
-    public void registerJigsawTile(Identifier jigsawPattern, int priority, Identifier tileID, Setter setter) {
-        jigsawTiles.put(jigsawPattern, new Pair<>(tileID, setter));
-        structurePiecePriority.put(tileID, priority);
-    }
-
-    public void registerJigsawTile(Identifier jigsawPattern, int priority, Identifier tileID) {
-        registerJigsawTile(jigsawPattern, priority, tileID, ALWAYS);
+    public void registerJigsawTile(Identifier id, StructurePieceTile tile) {
+        jigsawTiles.put(id, tile);
+        structurePiecePriority.put(tile.tileX(), tile.priority());
+        structurePiecePriority.put(tile.tileZ(), tile.priority());
     }
 
     public void registerMarker(StructureType<?> structureFeature, Identifier markerType, Text name) {
-        structurePieceMarkers.put(Registries.STRUCTURE_TYPE.getId(structureFeature), new Pair<>(markerType, name));
+        structureMarkers.put(Registries.STRUCTURE_TYPE.getId(structureFeature), new Pair<>(markerType, name));
     }
 
     public void registerMarker(TagKey<Structure> structureTag, Identifier markerType, Text name) {
@@ -130,21 +125,22 @@ public class StructureTiles extends JsonDataLoader implements IdentifiableResour
 
     public void resolve(StructurePiece structurePiece, ServerWorld world) {
         if (structurePiece.getType() == StructurePieceType.JIGSAW) {
-            resolveJigsaw(structurePiece, world);
+            if (structurePiece instanceof PoolStructurePiece pool && pool.getPoolElement() instanceof SinglePoolElement element) {
+                Optional<Identifier> jigsawId = element.location.left();
+                if (jigsawId.isPresent()) {
+                    for (StructurePieceTile pieceTile : jigsawTiles.get(jigsawId.get())) {
+                        chunkPosIfX(structurePiece).ifPresent(pos -> put(world, pos.x, pos.z, pieceTile.tileX()));
+                        chunkPosIfZ(structurePiece).ifPresent(pos -> put(world, pos.x, pos.z, pieceTile.tileZ()));
+                    }
+                }
+            }
             return;
         }
 
         Identifier structurePieceId = Registries.STRUCTURE_PIECE.getId(structurePiece.getType());
         if (structurePieceTiles.containsKey(structurePieceId)) {
-            for (Pair<Identifier, Setter> entry : structurePieceTiles.get(structurePieceId)) {
-                Collection<ChunkPos> matches;
-                if (structurePiece instanceof PoolStructurePiece pool) {
-                    matches = entry.getRight().matches(world, pool.getPoolElement(), pool.getBoundingBox(), structurePiece);
-                } else {
-                    matches = entry.getRight().matches(world, null, structurePiece.getBoundingBox(), structurePiece);
-                }
-
-                for (ChunkPos pos : matches) {
+            for (Pair<Identifier, PieceMatcher> entry : structurePieceTiles.get(structurePieceId)) {
+                for (ChunkPos pos : entry.getRight().matches(world, structurePiece.getBoundingBox())) {
                     put(world, pos.x, pos.z, entry.getLeft());
                 }
             }
@@ -154,11 +150,10 @@ public class StructureTiles extends JsonDataLoader implements IdentifiableResour
     public void resolve(StructureStart structureStart, ServerWorld world) {
         Identifier structureId = Registries.STRUCTURE_TYPE.getId(structureStart.getStructure().getType());
 
-
         Pair<Identifier, Text> foundMarker = null;
 
-        if (structurePieceMarkers.containsKey(structureId)) {
-            foundMarker = structurePieceMarkers.get(structureId);
+        if (structureMarkers.containsKey(structureId)) {
+            foundMarker = structureMarkers.get(structureId);
         } else {
             Registry<Structure> structureRegistry = world.getRegistryManager().get(RegistryKeys.STRUCTURE);
             RegistryEntry<Structure> structureTag = structureRegistry.entryOf(structureRegistry.getKey(structureStart.getStructure()).orElse(null));
@@ -202,25 +197,6 @@ public class StructureTiles extends JsonDataLoader implements IdentifiableResour
         }
     }
 
-    private void resolveJigsaw(StructurePiece jigsawPiece, ServerWorld world) {
-        if (jigsawPiece instanceof PoolStructurePiece pool) {
-            if (pool.getPoolElement() instanceof SinglePoolElement singlePoolElement) {
-                Optional<Identifier> left = singlePoolElement.location.left();
-
-                if (left.isPresent()) {
-                    for (Pair<Identifier, Setter> entry : jigsawTiles.get(left.get())) {
-                        Identifier tile = entry.getLeft();
-                        Setter setter = entry.getRight();
-                        for (ChunkPos pos : setter.matches(world, singlePoolElement, pool.getBoundingBox(), jigsawPiece)) {
-                            put(world, pos.x, pos.z, tile);
-                        }
-                    }
-                }
-            }
-
-        }
-    }
-
     @Override
     protected void apply(Map<Identifier, JsonElement> prepared, ResourceManager manager, Profiler profiler) {
         Map<Identifier, StructurePieceTile> outMap = new HashMap<>();
@@ -234,10 +210,11 @@ public class StructureTiles extends JsonDataLoader implements IdentifiableResour
                 if (version == 1) {
                     structurePieceTile = new StructurePieceTile(
                         Identifier.tryParse(fileJson.get("tile").getAsString()),
+                        Identifier.tryParse(fileJson.get("tile").getAsString()),
                         fileJson.get("priority").getAsInt()
                     );
                 } else if (version == VERSION) {
-                    structurePieceTile = new StructurePieceTileXZ(
+                    structurePieceTile = new StructurePieceTile(
                         Identifier.tryParse(fileJson.get("tile_x").getAsString()),
                         Identifier.tryParse(fileJson.get("tile_z").getAsString()),
                         fileJson.get("priority").getAsInt()
@@ -252,17 +229,7 @@ public class StructureTiles extends JsonDataLoader implements IdentifiableResour
             }
         }
 
-        outMap.forEach((id, piece) -> {
-            if (AntiqueAtlas.CONFIG.Performance.resourcePackLogging) {
-                AntiqueAtlas.LOG.info("Apply structure piece config: " + id);
-            }
-            if (piece instanceof StructurePieceTileXZ) {
-                registerJigsawTile(id, piece.getPriority(), piece.getTileX(), StructureTiles::IF_X_DIRECTION);
-                registerJigsawTile(id, piece.getPriority(), piece.getTileZ(), StructureTiles::IF_Z_DIRECTION);
-            } else {
-                registerJigsawTile(id, piece.getPriority(), piece.getTile());
-            }
-        });
+        outMap.forEach(this::registerJigsawTile);
     }
 
     @Override

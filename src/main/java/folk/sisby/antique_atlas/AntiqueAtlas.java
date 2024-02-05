@@ -9,10 +9,7 @@ import folk.sisby.antique_atlas.data.StructureTiles;
 import folk.sisby.antique_atlas.marker.GlobalMarkersDataHandler;
 import folk.sisby.antique_atlas.marker.MarkersDataHandler;
 import folk.sisby.antique_atlas.network.AntiqueAtlasNetworking;
-import folk.sisby.antique_atlas.structure.EndCity;
-import folk.sisby.antique_atlas.structure.NetherFortress;
-import folk.sisby.antique_atlas.structure.Overworld;
-import folk.sisby.antique_atlas.structure.Village;
+import folk.sisby.antique_atlas.structure.BuiltinStructures;
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerChunkEvents;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerTickEvents;
@@ -61,10 +58,7 @@ public class AntiqueAtlas implements ModInitializer {
 
         ServerTickEvents.END_WORLD_TICK.register(world -> world.getPlayers().forEach(PlayerEventHandler::onPlayerTick));
 
-        NetherFortress.registerPieces();
-        EndCity.registerMarkers();
-        Village.registerMarkers();
-        Overworld.registerPieces();
+        BuiltinStructures.init();
 
         ResourceManagerHelper.get(ResourceType.SERVER_DATA).registerReloadListener(StructureTiles.getInstance());
     }
