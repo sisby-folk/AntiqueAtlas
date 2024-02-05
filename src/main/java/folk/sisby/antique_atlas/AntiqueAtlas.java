@@ -10,6 +10,7 @@ import folk.sisby.antique_atlas.marker.GlobalMarkersDataHandler;
 import folk.sisby.antique_atlas.marker.MarkersDataHandler;
 import folk.sisby.antique_atlas.network.AntiqueAtlasNetworking;
 import folk.sisby.antique_atlas.structure.BuiltinStructures;
+import folk.sisby.antique_atlas.structure.StructureSummaryState;
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerChunkEvents;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerTickEvents;
@@ -52,8 +53,10 @@ public class AntiqueAtlas implements ModInitializer {
         ServerWorldEvents.LOAD.register(globalMarkersData::onWorldLoad);
         ServerWorldEvents.LOAD.register(globalTileData::onWorldLoad);
         ServerWorldEvents.LOAD.register((s, world) -> ChunkSummaryState.getOrCreate(world));
+        ServerWorldEvents.LOAD.register((s, world) -> StructureSummaryState.getOrCreate(world));
 
         ServerChunkEvents.CHUNK_LOAD.register(ChunkSummaryState::onChunkLoad);
+        ServerChunkEvents.CHUNK_LOAD.register(StructureSummaryState::onChunkLoad);
         ServerChunkEvents.CHUNK_UNLOAD.register(ChunkSummaryState::onChunkUnload);
 
         ServerTickEvents.END_WORLD_TICK.register(world -> world.getPlayers().forEach(PlayerEventHandler::onPlayerTick));
