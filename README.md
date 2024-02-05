@@ -4,6 +4,7 @@
 <center>
 An always-accessible abstract world map.<br/>
 A shredded up port of <a href="https://modrinth.com/mod/antique-atlas">Antique Atlas</a> by hunternif, as continued by kenkron, asiekierkierka, and tyra314.<br/>
+Requires <a href="https://modrinth.com/mod/connector">Connector</a> and <a href="https://modrinth.com/mod/forgified-fabric-api">FFAPI</a> on forge.<br/>
 <i>Colloquially: Tinkerer's Atlas / Lay of the Land / antique-atlas</i>
 </center>
 
