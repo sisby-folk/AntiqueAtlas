@@ -65,7 +65,7 @@ public class StructureTiles extends JsonDataLoader implements IdentifiableResour
         if (piece instanceof PoolStructurePiece poolPiece) {
             List<JigsawJunction> junctions = poolPiece.getJunctions();
             if (junctions.size() == 2) {
-                if (junctions.get(0).getSourceX() == junctions.get(1).getSourceX() || junctions.get(0).getSourceZ() != junctions.get(1).getSourceZ()) {
+                if (junctions.get(0).getSourceZ() == junctions.get(1).getSourceZ() || junctions.get(0).getSourceX() != junctions.get(1).getSourceX()) {
                     return Optional.of(new ChunkPos(piece.getBoundingBox().getCenter()));
                 }
             } else {
@@ -79,7 +79,7 @@ public class StructureTiles extends JsonDataLoader implements IdentifiableResour
         if (piece instanceof PoolStructurePiece poolPiece) {
             List<JigsawJunction> junctions = poolPiece.getJunctions();
             if (junctions.size() == 2) {
-                if (junctions.get(0).getSourceZ() == junctions.get(1).getSourceZ() || junctions.get(0).getSourceX() != junctions.get(1).getSourceX()) {
+                if (junctions.get(0).getSourceX() == junctions.get(1).getSourceX() || junctions.get(0).getSourceZ() != junctions.get(1).getSourceZ()) {
                     return Optional.of(new ChunkPos(piece.getBoundingBox().getCenter()));
                 }
             } else {
