@@ -1,12 +1,11 @@
 package folk.sisby.antique_atlas.mixin;
 
-import folk.sisby.antique_atlas.player.PlayerEventHandler;
 import folk.sisby.antique_atlas.player.AntiqueAtlasPlayer;
+import folk.sisby.antique_atlas.player.PlayerEventHandler;
 import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.nbt.NbtCompound;
-import net.minecraft.nbt.NbtElement;
-import net.minecraft.nbt.NbtList;
+import net.minecraft.nbt.NbtIntArray;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.util.math.ChunkPos;
 import org.spongepowered.asm.mixin.Mixin;
@@ -15,7 +14,9 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 @Mixin(ServerPlayerEntity.class)
@@ -30,22 +31,22 @@ public class MixinPlayerEntity implements AntiqueAtlasPlayer {
     @Inject(at = @At("TAIL"), method = "writeCustomDataToNbt")
     public void writeExploredChunks(NbtCompound nbt, CallbackInfo ci) {
         NbtCompound modCompound = new NbtCompound();
-        NbtList chunkList = new NbtList();
-        for (ChunkPos pos : antiqueAtlas$exploredChunks) {
-            NbtCompound chunkCompound = new NbtCompound();
-            chunkCompound.putInt(KEY_X, pos.x);
-            chunkCompound.putInt(KEY_Z, pos.z);
-            chunkList.add(chunkCompound);
-        }
-        modCompound.put(KEY_EXPLORED_CHUNKS, chunkList);
+        List<Integer> coordList = new ArrayList<>();
+        antiqueAtlas$exploredChunks.forEach(pos -> {
+            coordList.add(pos.x);
+            coordList.add(pos.z);
+        });
+        NbtIntArray coordArray = new NbtIntArray(coordList);
+        modCompound.put(KEY_EXPLORED_CHUNKS, coordArray);
         nbt.put(KEY_DATA, modCompound);
     }
 
     @Inject(at = @At("TAIL"), method = "readCustomDataFromNbt")
     public void readExploredChunks(NbtCompound nbt, CallbackInfo ci) {
         antiqueAtlas$exploredChunks.clear();
-        for (NbtElement posElement : nbt.getCompound(KEY_DATA).getList(KEY_EXPLORED_CHUNKS, NbtElement.COMPOUND_TYPE)) {
-            antiqueAtlas$exploredChunks.add(new ChunkPos(((NbtCompound) posElement).getInt(KEY_X), ((NbtCompound) posElement).getInt(KEY_Z)));
+        int[] coordArray = nbt.getCompound(KEY_DATA).getIntArray(KEY_EXPLORED_CHUNKS);
+        for (int i = 1; i < coordArray.length; i += 2) {
+            antiqueAtlas$exploredChunks.add(new ChunkPos(coordArray[i - 1], coordArray[i]));
         }
     }
 
