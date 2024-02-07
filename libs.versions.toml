@@ -8,6 +8,7 @@ fl = "0.15.0"
 yarn = "1.20.1+build.10"
 fapi = "0.83.0+1.20.1"
 kaleidoConfig = "0.1.1+1.1.0-beta.3"
+surveyor = "0.1.0-alpha.1+1.20"
 
 [plugins]
 loom = { id = "fabric-loom", version.ref = "loom" }
@@ -20,3 +21,4 @@ fl = { group = "net.fabricmc", name = "fabric-loader", version.ref = "fl" }
 yarn = { group = "net.fabricmc", name = "yarn", version.ref = "yarn" }
 fapi = { group = "net.fabricmc.fabric-api", name = "fabric-api", version.ref = "fapi" }
 kaleidoConfig = { group = "folk.sisby", name = "kaleido-config", version.ref = "kaleidoConfig" }
+surveyor = { group = "folk.sisby", name = "surveyor", version.ref = "surveyor" }

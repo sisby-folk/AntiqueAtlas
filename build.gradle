@@ -19,6 +19,7 @@ group = 'folk.sisby'
 
 repositories {
     maven { url 'https://repo.sleeping.town/' } // Kaleido
+    mavenLocal()
 }
 
 dependencies {
@@ -26,17 +27,19 @@ dependencies {
     mappings variantOf(libs.yarn) { classifier "v2" }
     modImplementation libs.fl
     modImplementation libs.fapi
-    modImplementation libs.kaleidoConfig
+    implementation libs.kaleidoConfig
+    modImplementation libs.surveyor
 
     include libs.kaleidoConfig
 }
 
 processResources {
     final Map<String, String> map = [
-            "version": version.toString(),
-            "mc"     : libs.versions.mc.get(),
-            "fl"     : libs.versions.fl.get(),
-            "fapi"   : libs.versions.fapi.get()
+        "version" : version.toString(),
+        "mc"      : libs.versions.mc.get(),
+        "fl"      : libs.versions.fl.get(),
+        "fapi"    : libs.versions.fapi.get(),
+        "surveyor": libs.versions.surveyor.get()
     ]
 
     inputs.properties(map)
