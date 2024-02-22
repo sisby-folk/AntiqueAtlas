@@ -12,6 +12,6 @@
   "gui.antique_atlas.marker.village": "Aldea",
   "gui.antique_atlas.marker.netherPortal": "Portal del Nether",
   "gui.antique_atlas.marker.tomb": "Aquí yace %s",
-  "key.openatlas.desc": "Abrir Atlas",
+  "key.antique_atlas.open": "Abrir Atlas",
   "key.antique_atlas.category": "Antique Atlas"
 }

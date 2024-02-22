@@ -1,7 +1,7 @@
 package folk.sisby.antique_atlas.tile;
 
-import folk.sisby.antique_atlas.AntiqueAtlas;
 
+import folk.sisby.antique_atlas.AntiqueAtlas;
 
 /**
  * Just a collection of Identifiers used when tiles are referenced from code

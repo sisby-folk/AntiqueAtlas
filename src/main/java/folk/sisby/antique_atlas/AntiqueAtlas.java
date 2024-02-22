@@ -1,59 +1,83 @@
 package folk.sisby.antique_atlas;
 
-import folk.sisby.antique_atlas.core.GlobalTileDataHandler;
-import folk.sisby.antique_atlas.core.TileDataHandler;
-import folk.sisby.antique_atlas.core.scanning.WorldScanner;
-import folk.sisby.antique_atlas.data.StructureTiles;
-import folk.sisby.antique_atlas.marker.GlobalMarkersDataHandler;
-import folk.sisby.antique_atlas.marker.MarkersDataHandler;
-import folk.sisby.antique_atlas.network.AntiqueAtlasNetworking;
-import folk.sisby.antique_atlas.player.PlayerEventHandler;
+import folk.sisby.antique_atlas.reloader.BiomeTextures;
+import folk.sisby.antique_atlas.reloader.MarkerTypes;
+import folk.sisby.antique_atlas.reloader.TextureSets;
+import folk.sisby.antique_atlas.gui.AtlasScreen;
+import folk.sisby.antique_atlas.reloader.StructureTiles;
 import folk.sisby.antique_atlas.structure.BuiltinStructures;
-import net.fabricmc.api.ModInitializer;
-import net.fabricmc.fabric.api.event.lifecycle.v1.ServerTickEvents;
-import net.fabricmc.fabric.api.event.lifecycle.v1.ServerWorldEvents;
-import net.fabricmc.fabric.api.networking.v1.ServerPlayConnectionEvents;
+import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.fabric.api.resource.ResourceManagerHelper;
 import net.fabricmc.loader.api.FabricLoader;
+import net.minecraft.client.MinecraftClient;
+import net.minecraft.client.world.ClientWorld;
+import net.minecraft.registry.RegistryKey;
+import net.minecraft.registry.RegistryKeys;
 import net.minecraft.resource.ResourceType;
 import net.minecraft.util.Identifier;
+import net.minecraft.world.biome.Biome;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-public class AntiqueAtlas implements ModInitializer {
+import java.util.Map;
+
+public class AntiqueAtlas implements ClientModInitializer {
     public static final String ID = "antique_atlas";
     public static final String NAME = "Antique Atlas";
 
-    public static final Logger LOG = LogManager.getLogger(NAME);
-
-    public static final WorldScanner worldScanner = new WorldScanner();
-    public static final TileDataHandler tileData = new TileDataHandler();
-    public static final MarkersDataHandler markersData = new MarkersDataHandler();
-
-    public static final GlobalTileDataHandler globalTileData = new GlobalTileDataHandler();
-    public static final GlobalMarkersDataHandler globalMarkersData = new GlobalMarkersDataHandler();
+    public static final Logger LOGGER = LogManager.getLogger(NAME);
 
     public static final AntiqueAtlasConfig CONFIG = AntiqueAtlasConfig.createToml(FabricLoader.getInstance().getConfigDir(), "", "antique-atlas", AntiqueAtlasConfig.class);
+
+    private static AtlasScreen atlasScreen;
 
     public static Identifier id(String path) {
         return path.contains(":") ? new Identifier(path) : new Identifier(ID, path);
     }
 
+
+    public static AtlasScreen getAtlasScreen() {
+        if (atlasScreen == null) {
+            atlasScreen = new AtlasScreen();
+            atlasScreen.setMapScale(CONFIG.Interface.defaultScale);
+        }
+        return atlasScreen;
+    }
+
+    public static void openAtlasScreen() {
+        openAtlasScreen(getAtlasScreen().prepareToOpen());
+    }
+
+    private static void openAtlasScreen(AtlasScreen screen) {
+        MinecraftClient mc = MinecraftClient.getInstance();
+        if (mc.currentScreen == null) { // In-game screen
+            atlasScreen.updateL18n();
+            mc.setScreen(screen);
+        }
+    }
+
+    /**
+     * Register fallback texture sets for any biomes present in the client world that don't have explicit sets.
+     * Doing this on world join catches data-biomes that might not be registered in other worlds.
+     */
+    public static void registerFallbackTextures(ClientWorld world) {
+        for (Map.Entry<RegistryKey<Biome>, Biome> biome : world.getRegistryManager().get(RegistryKeys.BIOME).getEntrySet()) {
+            Identifier id = world.getRegistryManager().get(RegistryKeys.BIOME).getId(biome.getValue());
+            if (!BiomeTextures.getInstance().contains(id)) {
+                BiomeTextures.getInstance().registerFallback(id, world.getRegistryManager().get(RegistryKeys.BIOME).entryOf(biome.getKey()));
+            }
+        }
+    }
+
+
     @Override
-    public void onInitialize() {
-        AntiqueAtlasNetworking.init();
-
-        ServerPlayConnectionEvents.JOIN.register(globalMarkersData::onPlayerLogin);
-        ServerPlayConnectionEvents.JOIN.register(globalTileData::onPlayerLogin);
-        ServerPlayConnectionEvents.JOIN.register(PlayerEventHandler::onPlayerLogin);
-
-        ServerWorldEvents.LOAD.register(globalMarkersData::onWorldLoad);
-        ServerWorldEvents.LOAD.register(globalTileData::onWorldLoad);
-
-        ServerTickEvents.END_WORLD_TICK.register(world -> world.getPlayers().forEach(PlayerEventHandler::onPlayerTick));
-
+    public void onInitializeClient() {
+        AntiqueAtlasKeybindings.init();
         BuiltinStructures.init();
+        ResourceManagerHelper.get(ResourceType.CLIENT_RESOURCES).registerReloadListener(TextureSets.getInstance());
+        ResourceManagerHelper.get(ResourceType.CLIENT_RESOURCES).registerReloadListener(BiomeTextures.getInstance());
+        ResourceManagerHelper.get(ResourceType.CLIENT_RESOURCES).registerReloadListener(MarkerTypes.getInstance());
+        ResourceManagerHelper.get(ResourceType.CLIENT_RESOURCES).registerReloadListener(StructureTiles.getInstance());
 
-        ResourceManagerHelper.get(ResourceType.SERVER_DATA).registerReloadListener(StructureTiles.getInstance());
     }
 }

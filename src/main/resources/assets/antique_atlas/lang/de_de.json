@@ -12,6 +12,6 @@
   "gui.antique_atlas.marker.village": "Dorf",
   "gui.antique_atlas.marker.netherPortal": "Nether-Portal",
   "gui.antique_atlas.marker.tomb": "Hier ruht %s",
-  "key.openatlas.desc": "Atlas öffnen",
+  "key.antique_atlas.open": "Atlas öffnen",
   "key.antique_atlas.category": "Antique Atlas"
 }

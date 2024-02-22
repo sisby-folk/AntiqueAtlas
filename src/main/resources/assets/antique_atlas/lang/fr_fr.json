@@ -12,6 +12,6 @@
   "gui.antique_atlas.marker.village": "Village",
   "gui.antique_atlas.marker.netherPortal": "Portail du Nether",
   "gui.antique_atlas.marker.tomb": "Ici repose %s",
-  "key.openatlas.desc": "Ouvrir l'Atlas",
+  "key.antique_atlas.open": "Ouvrir l'Atlas",
   "key.antique_atlas.category": "Antique Atlas"
 }

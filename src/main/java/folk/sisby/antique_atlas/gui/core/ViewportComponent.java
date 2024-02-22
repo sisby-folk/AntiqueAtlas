@@ -1,0 +1,86 @@
+package folk.sisby.antique_atlas.gui.core;
+
+import com.mojang.blaze3d.systems.RenderSystem;
+import net.minecraft.client.MinecraftClient;
+import net.minecraft.client.gui.DrawContext;
+
+/**
+ * The children of this component are rendered and process input only inside
+ * the viewport frame. Use {@link #setSize(int, int)} to set its bounds.
+ *
+ * @author Hunternif
+ */
+public class ViewportComponent extends Component {
+    /**
+     * The container component for content.
+     */
+    final Component content = new Component();
+
+    /**
+     * Coordinate scale factor relative to the actual screen size.
+     */
+    private double screenScale;
+
+    public ViewportComponent() {
+        this.addChild(content);
+    }
+
+    /**
+     * Add scrolling content. Use removeContent to remove it.
+     *
+     * @return the child added
+     */
+    public Component addContent(Component child) {
+        return content.addChild(child);
+    }
+
+    public void removeAllContent() {
+        content.removeAllChildren();
+    }
+
+    @Override
+    public void init() {
+        super.init();
+        screenScale = client.getWindow().getScaleFactor();
+    }
+
+    @Override
+    public void render(DrawContext context, int mouseX, int mouseY, float par3) {
+        RenderSystem.enableScissor((int) (getGuiX() * screenScale),
+            (int) (MinecraftClient.getInstance().getWindow().getFramebufferHeight() - (getGuiY() + properHeight) * screenScale),
+            (int) (properWidth * screenScale), (int) (properHeight * screenScale));
+
+        // Draw the content (child GUIs):
+        super.render(context, mouseX, mouseY, par3);
+
+        RenderSystem.disableScissor();
+    }
+
+    @Override
+    boolean iterateMouseInput(UiCall callMethod) {
+        return iterateInput(callMethod);
+    }
+
+    @Override
+    public int getWidth() {
+        return properWidth;
+    }
+
+    @Override
+    public int getHeight() {
+        return properHeight;
+    }
+
+    @Override
+    protected void validateSize() {
+        super.validateSize();
+        // Update the clipping flag on content's child components:
+        for (Component child : this.getChildren()) {
+            child.setClipped(child.getGuiY() > getGuiY() + properHeight ||
+                    child.getGuiY() + child.getHeight() < getGuiY() ||
+                    child.getGuiX() > getGuiX() + properWidth ||
+                    child.getGuiX() + child.getWidth() < getGuiX()
+            );
+        }
+    }
+}

@@ -27,11 +27,8 @@
   "icon": "assets/antique_atlas/icon.png",
   "license": "LGPL-3.0-only",
   "entrypoints": {
-    "main": [
-      "folk.sisby.antique_atlas.AntiqueAtlas"
-    ],
     "client": [
-      "folk.sisby.antique_atlas.client.AntiqueAtlasClient"
+      "folk.sisby.antique_atlas.AntiqueAtlas"
     ]
   },
   "depends": {

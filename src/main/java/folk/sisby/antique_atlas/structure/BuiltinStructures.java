@@ -1,7 +1,7 @@
 package folk.sisby.antique_atlas.structure;
 
 import folk.sisby.antique_atlas.AntiqueAtlas;
-import folk.sisby.antique_atlas.data.StructureTiles;
+import folk.sisby.antique_atlas.reloader.StructureTiles;
 import folk.sisby.antique_atlas.tile.TileTypes;
 import net.minecraft.registry.tag.StructureTags;
 import net.minecraft.structure.StructurePieceType;
@@ -20,9 +20,7 @@ public class BuiltinStructures {
     public static void init () {
         // Overworld
         StructureTiles.getInstance().registerTile(StructurePieceType.RUINED_PORTAL, 10, TileTypes.RUINED_PORTAL.getId(), BuiltinStructures::aboveGround);
-        if (AntiqueAtlas.CONFIG.Gameplay.autoVillageMarkers) {
-            StructureTiles.getInstance().registerMarker(StructureTags.VILLAGE, AntiqueAtlas.id("village"), Text.translatable("gui.antique_atlas.marker.village"));
-        }
+        StructureTiles.getInstance().registerMarker(StructureTags.VILLAGE, AntiqueAtlas.id("village"), Text.translatable("gui.antique_atlas.marker.village"));
 
         // Nether
         StructureTiles.getInstance().registerTile(StructurePieceType.NETHER_FORTRESS_BRIDGE_PLATFORM, 40, TileTypes.NETHER_FORTRESS_BRIDGE_PLATFORM.getId(), StructureTiles::ALWAYS);

@@ -12,6 +12,6 @@
   "gui.antique_atlas.marker.village": "村",
   "gui.antique_atlas.marker.netherPortal": "ネザーポータル",
   "gui.antique_atlas.marker.tomb": "%sの墓",
-  "key.openatlas.desc": "アトラスを開く",
+  "key.antique_atlas.open": "アトラスを開く",
   "key.antique_atlas.category": "アンティークアトラスの"
 }

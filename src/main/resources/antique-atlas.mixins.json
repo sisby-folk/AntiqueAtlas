@@ -4,11 +4,10 @@
   "package": "folk.sisby.antique_atlas.mixin",
   "compatibilityLevel": "JAVA_17",
   "mixins": [
-    "MixinPlayerEntity",
-    "MixinStructureStart"
   ],
   "client": [
-    "client.MixinMinecraftClient"
+    "MixinClientWorld",
+    "MixinMinecraftClient"
   ],
   "injectors": {
     "defaultRequire": 1

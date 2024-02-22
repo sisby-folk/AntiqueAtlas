@@ -15,6 +15,6 @@
   "gui.antique_atlas.marker.treasure": "Скарб",
   "gui.antique_atlas.marker.monument": "Океанічний монумент",
   "gui.antique_atlas.marker.mansion": "Лісовий маєток",
-  "key.openatlas.desc": "Відкрити атлас",
+  "key.antique_atlas.open": "Відкрити атлас",
   "key.antique_atlas.category": "Антикварний атлас"
 }

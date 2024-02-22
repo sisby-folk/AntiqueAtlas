@@ -24,9 +24,6 @@ public class Rect {
         return this;
     }
 
-    /**
-     * Extend the bounds to include the given point.
-     */
     public void extendTo(int x, int y) {
         if (x < minX) minX = x;
         if (x > maxX) maxX = x;

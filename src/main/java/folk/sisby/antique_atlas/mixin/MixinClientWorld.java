@@ -1,0 +1,20 @@
+package folk.sisby.antique_atlas.mixin;
+
+import folk.sisby.antique_atlas.AntiqueAtlasWorld;
+import folk.sisby.antique_atlas.WorldTiles;
+import net.minecraft.client.world.ClientWorld;
+import org.spongepowered.asm.mixin.Mixin;
+import org.spongepowered.asm.mixin.Unique;
+
+@Mixin(ClientWorld.class)
+public class MixinClientWorld implements AntiqueAtlasWorld {
+    private @Unique WorldTiles antiqueAtlas$worldTiles;
+
+    @Override
+    public WorldTiles antiqueAtlas$getWorldTiles() {
+        if (antiqueAtlas$worldTiles == null) {
+            antiqueAtlas$worldTiles = new WorldTiles((ClientWorld) (Object) this);
+        }
+        return antiqueAtlas$worldTiles;
+    }
+}

@@ -12,6 +12,6 @@
   "gui.antique_atlas.marker.village": "村庄",
   "gui.antique_atlas.marker.netherPortal": "下界传送门",
   "gui.antique_atlas.marker.tomb": "%s 在此长眠",
-  "key.openatlas.desc": "打开古式地图",
+  "key.antique_atlas.open": "打开古式地图",
   "key.antique_atlas.category": "古式地图"
 }

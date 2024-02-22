@@ -1,21 +1,17 @@
 package folk.sisby.antique_atlas.marker;
 
 import folk.sisby.antique_atlas.AntiqueAtlas;
-import folk.sisby.antique_atlas.api.MarkerAPI;
-import folk.sisby.antique_atlas.network.s2c.PutMarkersS2CPacket;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.nbt.NbtElement;
 import net.minecraft.nbt.NbtList;
 import net.minecraft.registry.RegistryKey;
 import net.minecraft.registry.RegistryKeys;
-import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
 import net.minecraft.world.PersistentState;
 import net.minecraft.world.World;
 
 import java.util.Map;
-import java.util.Map.Entry;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicInteger;
 
@@ -81,7 +77,7 @@ public class MarkersData extends PersistentState {
 
         int version = compound.getInt(TAG_VERSION);
         if (version < VERSION) {
-            AntiqueAtlas.LOG.warn("Outdated atlas data format! Was {} but current is {}", version, VERSION);
+            AntiqueAtlas.LOGGER.warn("Outdated atlas data format! Was {} but current is {}", version, VERSION);
             return;
         }
 
@@ -97,7 +93,7 @@ public class MarkersData extends PersistentState {
 
                 int id = markerTag.getInt(TAG_MARKER_ID);
                 if (data.getMarkerByID(id) != null) {
-                    AntiqueAtlas.LOG.warn("Loading marker with duplicate id {}. Getting new id", id);
+                    AntiqueAtlas.LOGGER.warn("Loading marker with duplicate id {}. Getting new id", id);
                     id = data.getNewID();
                 }
                 data.markDirty();
@@ -120,7 +116,7 @@ public class MarkersData extends PersistentState {
 
     @Override
     public NbtCompound writeNbt(NbtCompound compound) {
-        AntiqueAtlas.LOG.info("Saving local markers data to NBT");
+        AntiqueAtlas.LOGGER.info("Saving local markers data to NBT");
         compound.putInt(TAG_VERSION, VERSION);
         NbtList dimensionMapList = new NbtList();
         for (RegistryKey<World> world : worldMap.keySet()) {
@@ -168,20 +164,6 @@ public class MarkersData extends PersistentState {
     }
 
     /**
-     * For internal use. Use the {@link MarkerAPI} to put markers! This method
-     * creates a new marker from the given data, saves and returns it.
-     * Server side only!
-     */
-    public Marker createAndSaveMarker(Identifier type, RegistryKey<World> world, int x, int z, boolean visibleAhead, Text label) {
-        Marker marker = new Marker(getNewID(), type, label, world, x, z, visibleAhead);
-        AntiqueAtlas.LOG.info("Created new marker {}", marker.toString());
-        idMap.put(marker.getId(), marker);
-        getMarkersDataInWorld(world).insertMarker(marker);
-        markDirty();
-        return marker;
-    }
-
-    /**
      * For internal use, when markers are loaded from NBT or sent from the
      * server. IF a marker's id is conflicting, the marker will not load!
      *
@@ -190,33 +172,12 @@ public class MarkersData extends PersistentState {
     public Marker loadMarker(Marker marker) {
         if (!idMap.containsKey(marker.getId())) {
             idMap.put(marker.getId(), marker);
-            int totalMarkers = 0;
-            for (Entry<RegistryKey<World>, DimensionMarkersData> e : worldMap.entrySet()) {
-                totalMarkers += e.getValue().getAllMarkers().size();
-            }
-            if (totalMarkers < AntiqueAtlas.CONFIG.Performance.markerLimit) {
-                getMarkersDataInWorld(marker.getWorld()).insertMarker(marker);
-            } else {
-                AntiqueAtlas.LOG.warn("Could not add new marker. Atlas is at it's limit of {} markers", AntiqueAtlas.CONFIG.Performance.markerLimit);
-            }
+            getMarkersDataInWorld(marker.getWorld()).insertMarker(marker);
         }
         return marker;
-    }
-
-    /**
-     * Send all data to the player in several packets. Called once on login.
-     */
-    public void syncToPlayer(int atlasID, ServerPlayerEntity player) {
-        for (RegistryKey<World> world : worldMap.keySet()) {
-            DimensionMarkersData data = getMarkersDataInWorld(world);
-
-            new PutMarkersS2CPacket(atlasID, world, data.getAllMarkers()).send(player);
-        }
-        AntiqueAtlas.LOG.info("Sent markers data #{} to player {}", atlasID, player.getCommandSource().getName());
     }
 
     public boolean isEmpty() {
         return idMap.isEmpty();
     }
-
 }

@@ -15,6 +15,6 @@
   "gui.antique_atlas.marker.treasure": "Tesoro enterrado",
   "gui.antique_atlas.marker.monument": "Monumento oceánico",
   "gui.antique_atlas.marker.mansion": "Mansión del bosque",
-  "key.openatlas.desc": "Abrir atlas",
+  "key.antique_atlas.open": "Abrir atlas",
   "key.antique_atlas.category": "Atlas Antiguo"
 }

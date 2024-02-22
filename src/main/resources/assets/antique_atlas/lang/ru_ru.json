@@ -15,6 +15,6 @@
   "gui.antique_atlas.marker.treasure": "Зарытый клад",
   "gui.antique_atlas.marker.monument": "Морской монумент",
   "gui.antique_atlas.marker.mansion": "Лесной особняк",
-  "key.openatlas.desc": "Открыть атлас",
+  "key.antique_atlas.open": "Открыть атлас",
   "key.antique_atlas.category": "Antique Atlas"
 }
