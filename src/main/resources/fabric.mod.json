@@ -37,7 +37,8 @@
   "depends": {
     "minecraft": ">=${mc}",
     "fabricloader": ">=${fl}",
-    "fabric-api": ">=${fapi}"
+    "fabric-api": ">=${fapi}",
+    "surveyor": ">=${surveyor}"
   },
   "mixins": [
     "antique-atlas.mixins.json"
