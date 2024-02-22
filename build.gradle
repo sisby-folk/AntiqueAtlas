@@ -31,6 +31,7 @@ dependencies {
     modImplementation libs.surveyor
 
     include libs.kaleidoConfig
+    include libs.surveyor
 }
 
 processResources {
