@@ -5,8 +5,7 @@
   "compatibilityLevel": "JAVA_17",
   "mixins": [
     "MixinPlayerEntity",
-    "MixinStructureStart",
-    "MixinThreadedAnvilChunkStorage"
+    "MixinStructureStart"
   ],
   "client": [
     "client.MixinMinecraftClient"
