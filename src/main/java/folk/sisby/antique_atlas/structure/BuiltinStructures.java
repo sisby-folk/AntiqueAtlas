@@ -23,6 +23,7 @@ public class BuiltinStructures {
         if (AntiqueAtlas.CONFIG.Gameplay.autoVillageMarkers) {
             StructureTiles.getInstance().registerMarker(StructureTags.VILLAGE, AntiqueAtlas.id("village"), Text.translatable("gui.antique_atlas.marker.village"));
         }
+        StructureTiles.getInstance().registerTile(StructurePieceType.SWAMP_HUT, 10, TileTypes.SWAMP_HUT.getId(), BuiltinStructures::aboveGround);
 
         // Nether
         StructureTiles.getInstance().registerTile(StructurePieceType.NETHER_FORTRESS_BRIDGE_PLATFORM, 40, TileTypes.NETHER_FORTRESS_BRIDGE_PLATFORM.getId(), StructureTiles::ALWAYS);
