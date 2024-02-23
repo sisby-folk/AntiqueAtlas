@@ -12,8 +12,9 @@ public class TileTypes {
     public static final TileType
         TILE_RAVINE = TileType.of(AntiqueAtlas.id("ravine")),
         SWAMP_WATER = TileType.of(AntiqueAtlas.id("swamp_water")),
-        RUINED_PORTAL = TileType.of(AntiqueAtlas.id("ruined_portal")),
         SWAMP_HUT = TileType.of(AntiqueAtlas.id("swamp_hut")),
+        IGLOO = TileType.of(AntiqueAtlas.id("igloo")),
+        RUINED_PORTAL = TileType.of(AntiqueAtlas.id("ruined_portal")),
         TILE_LAVA = TileType.of(AntiqueAtlas.id("lava")),
         TILE_LAVA_SHORE = TileType.of(AntiqueAtlas.id("lava_shore")),
         NETHER_FORTRESS_BRIDGE_CROSSING = TileType.of(AntiqueAtlas.id("nether_bridge")),
