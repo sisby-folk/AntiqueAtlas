@@ -21,14 +21,13 @@ import net.minecraft.structure.JigsawJunction;
 import net.minecraft.structure.StructurePieceType;
 import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
-import net.minecraft.util.Pair;
 import net.minecraft.util.math.BlockBox;
 import net.minecraft.util.math.ChunkPos;
 import net.minecraft.util.profiler.Profiler;
 import net.minecraft.world.World;
 import net.minecraft.world.gen.structure.Structure;
 import net.minecraft.world.gen.structure.StructureType;
-import org.apache.commons.lang3.tuple.Triple;
+import org.apache.commons.lang3.tuple.Pair;
 
 import java.util.Collection;
 import java.util.Collections;
@@ -58,25 +57,25 @@ public class StructureTiles extends JsonDataLoader implements IdentifiableResour
     }
 
     public static Optional<ChunkPos> chunkPosIfX(JigsawPieceSummary piece) {
-        List<JigsawJunction> junctions = piece.junctions;
+        List<JigsawJunction> junctions = piece.getJunctions();
         if (junctions.size() == 2) {
             if (junctions.get(0).getSourceZ() == junctions.get(1).getSourceZ() || junctions.get(0).getSourceX() != junctions.get(1).getSourceX()) {
-                return Optional.of(new ChunkPos(piece.boundingBox.getCenter()));
+                return Optional.of(new ChunkPos(piece.getBoundingBox().getCenter()));
             }
         } else {
-            return Optional.of(new ChunkPos(piece.boundingBox.getCenter()));
+            return Optional.of(new ChunkPos(piece.getBoundingBox().getCenter()));
         }
         return Optional.empty();
     }
 
     public static Optional<ChunkPos> chunkPosIfZ(JigsawPieceSummary piece) {
-        List<JigsawJunction> junctions = piece.junctions;
+        List<JigsawJunction> junctions = piece.getJunctions();
         if (junctions.size() == 2) {
             if (junctions.get(0).getSourceX() == junctions.get(1).getSourceX() || junctions.get(0).getSourceZ() != junctions.get(1).getSourceZ()) {
-                return Optional.of(new ChunkPos(piece.boundingBox.getCenter()));
+                return Optional.of(new ChunkPos(piece.getBoundingBox().getCenter()));
             }
         } else {
-            return Optional.of(new ChunkPos(piece.boundingBox.getCenter()));
+            return Optional.of(new ChunkPos(piece.getBoundingBox().getCenter()));
         }
         return Optional.empty();
     }
@@ -89,7 +88,7 @@ public class StructureTiles extends JsonDataLoader implements IdentifiableResour
 
     private final Map<Identifier, Integer> structurePiecePriority = new HashMap<>();
 
-    private final Set<Triple<RegistryKey<Structure>, StructureType<?>, ChunkPos>> VISITED_STRUCTURES = Collections.newSetFromMap(new ConcurrentHashMap<>());
+    private final Set<Pair<RegistryKey<Structure>, ChunkPos>> VISITED_STRUCTURES = Collections.newSetFromMap(new ConcurrentHashMap<>());
 
     public StructureTiles() {
         super(new Gson(), "atlas/structures");
@@ -105,7 +104,7 @@ public class StructureTiles extends JsonDataLoader implements IdentifiableResour
 
     public void registerTile(StructurePieceType structurePieceType, int priority, Identifier textureId, PieceMatcher pieceMatcher) {
         Identifier id = Registries.STRUCTURE_PIECE.getId(structurePieceType);
-        structurePieceTiles.put(id, new Pair<>(textureId, pieceMatcher));
+        structurePieceTiles.put(id, Pair.of(textureId, pieceMatcher));
         structurePiecePriority.put(textureId, priority);
     }
 
@@ -116,26 +115,26 @@ public class StructureTiles extends JsonDataLoader implements IdentifiableResour
     }
 
     public void registerMarker(StructureType<?> structureFeature, Identifier markerType, Text name) {
-        structureMarkers.put(Registries.STRUCTURE_TYPE.getId(structureFeature), new Pair<>(markerType, name));
+        structureMarkers.put(Registries.STRUCTURE_TYPE.getId(structureFeature), Pair.of(markerType, name));
     }
 
     public void registerMarker(TagKey<Structure> structureTag, Identifier markerType, Text name) {
-        structureTagMarkers.put(structureTag, new Pair<>(markerType, name));
+        structureTagMarkers.put(structureTag, Pair.of(markerType, name));
     }
 
     public Map<ChunkPos, TileType> resolve(Map<ChunkPos, TileType> tiles, StructurePieceSummary piece, World world) {
         if (piece instanceof JigsawPieceSummary jigsawPiece) {
-            for (StructurePieceTile pieceTile : jigsawTiles.get(jigsawPiece.id)) {
+            for (StructurePieceTile pieceTile : jigsawTiles.get(jigsawPiece.getId())) {
                 chunkPosIfX(jigsawPiece).ifPresent(pos -> putIfPriority(tiles, new ChunkPos(pos.x, pos.z), TileType.of(pieceTile.tileX())));
                 chunkPosIfZ(jigsawPiece).ifPresent(pos -> putIfPriority(tiles, new ChunkPos(pos.x, pos.z), TileType.of(pieceTile.tileZ())));
             }
             return tiles;
         }
 
-        Identifier structurePieceId = Registries.STRUCTURE_PIECE.getId(piece.type);
+        Identifier structurePieceId = Registries.STRUCTURE_PIECE.getId(piece.getType());
         if (structurePieceTiles.containsKey(structurePieceId)) {
             for (Pair<Identifier, PieceMatcher> entry : structurePieceTiles.get(structurePieceId)) {
-                for (ChunkPos pos : entry.getRight().matches(world, piece.boundingBox)) {
+                for (ChunkPos pos : entry.getRight().matches(world, piece.getBoundingBox())) {
                     putIfPriority(tiles, pos, TileType.of(entry.getLeft()));
                 }
             }
@@ -144,7 +143,7 @@ public class StructureTiles extends JsonDataLoader implements IdentifiableResour
     }
 
     public Map<ChunkPos, TileType> resolve(Map<ChunkPos, TileType> tiles, StructureSummary structure, World world) {
-        Identifier structureId = structure.key().getValue();
+        Identifier structureId = structure.getKey().getValue();
 
         Pair<Identifier, Text> foundMarker = null;
 
@@ -163,14 +162,14 @@ public class StructureTiles extends JsonDataLoader implements IdentifiableResour
         }
 
         if (foundMarker != null) {
-            Triple<RegistryKey<Structure>, StructureType<?>, ChunkPos> key = Triple.of(structure.key(), structure.type(), structure.pos());
+            Pair<RegistryKey<Structure>, ChunkPos> key = Pair.of(structure.getKey(), structure.getPos());
             if (!VISITED_STRUCTURES.contains(key)) {
                 VISITED_STRUCTURES.add(key);
                 // TODO: AtlasAPI.getMarkerAPI().putGlobalMarker(world, false, foundMarker.getLeft(), foundMarker.getRight(), structureStart.getBoundingBox().getCenter().getX(), structureStart.getBoundingBox().getCenter().getZ());
             }
         }
 
-        structure.pieces().forEach(p -> resolve(tiles, p, world));
+        structure.getChildren().forEach(p -> resolve(tiles, p, world));
 
         return tiles;
     }
