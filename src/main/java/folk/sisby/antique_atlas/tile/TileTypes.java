@@ -14,6 +14,8 @@ public class TileTypes {
         SWAMP_WATER = TileType.of(AntiqueAtlas.id("swamp_water")),
         SWAMP_HUT = TileType.of(AntiqueAtlas.id("swamp_hut")),
         IGLOO = TileType.of(AntiqueAtlas.id("igloo")),
+        DESERT_TEMPLE = TileType.of(AntiqueAtlas.id("desert_pyramid")),
+        JUNGLE_TEMPLE = TileType.of(AntiqueAtlas.id("jungle_pyramid")),
         RUINED_PORTAL = TileType.of(AntiqueAtlas.id("ruined_portal")),
         TILE_LAVA = TileType.of(AntiqueAtlas.id("lava")),
         TILE_LAVA_SHORE = TileType.of(AntiqueAtlas.id("lava_shore")),

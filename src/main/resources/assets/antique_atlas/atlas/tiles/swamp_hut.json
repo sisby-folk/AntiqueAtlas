@@ -1,5 +1,5 @@
 {
   "version": 1,
-  "tile": "antique_atlas:swamp_hut",
+  "texture_set": "antique_atlas:swamp_hut",
   "priority": 100
 }
