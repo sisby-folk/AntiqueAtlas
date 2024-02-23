@@ -7,21 +7,18 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import folk.sisby.antique_atlas.AntiqueAtlas;
 import folk.sisby.antique_atlas.structure.StructurePieceTile;
+import folk.sisby.antique_atlas.tile.TileType;
+import folk.sisby.surveyor.structure.JigsawPieceSummary;
+import folk.sisby.surveyor.structure.StructurePieceSummary;
+import folk.sisby.surveyor.structure.StructureSummary;
 import net.fabricmc.fabric.api.resource.IdentifiableResourceReloadListener;
 import net.minecraft.registry.Registries;
-import net.minecraft.registry.Registry;
-import net.minecraft.registry.RegistryKeys;
-import net.minecraft.registry.entry.RegistryEntry;
+import net.minecraft.registry.RegistryKey;
 import net.minecraft.registry.tag.TagKey;
 import net.minecraft.resource.JsonDataLoader;
 import net.minecraft.resource.ResourceManager;
-import net.minecraft.server.world.ServerWorld;
 import net.minecraft.structure.JigsawJunction;
-import net.minecraft.structure.PoolStructurePiece;
-import net.minecraft.structure.StructurePiece;
 import net.minecraft.structure.StructurePieceType;
-import net.minecraft.structure.StructureStart;
-import net.minecraft.structure.pool.SinglePoolElement;
 import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.Pair;
@@ -60,30 +57,26 @@ public class StructureTiles extends JsonDataLoader implements IdentifiableResour
         Collection<ChunkPos> matches(World world, BlockBox box);
     }
 
-    public static Optional<ChunkPos> chunkPosIfX(StructurePiece piece) {
-        if (piece instanceof PoolStructurePiece poolPiece) {
-            List<JigsawJunction> junctions = poolPiece.getJunctions();
-            if (junctions.size() == 2) {
-                if (junctions.get(0).getSourceZ() == junctions.get(1).getSourceZ() || junctions.get(0).getSourceX() != junctions.get(1).getSourceX()) {
-                    return Optional.of(new ChunkPos(piece.getBoundingBox().getCenter()));
-                }
-            } else {
-                return Optional.of(new ChunkPos(piece.getBoundingBox().getCenter()));
+    public static Optional<ChunkPos> chunkPosIfX(JigsawPieceSummary piece) {
+        List<JigsawJunction> junctions = piece.junctions;
+        if (junctions.size() == 2) {
+            if (junctions.get(0).getSourceZ() == junctions.get(1).getSourceZ() || junctions.get(0).getSourceX() != junctions.get(1).getSourceX()) {
+                return Optional.of(new ChunkPos(piece.boundingBox.getCenter()));
             }
+        } else {
+            return Optional.of(new ChunkPos(piece.boundingBox.getCenter()));
         }
         return Optional.empty();
     }
 
-    public static Optional<ChunkPos> chunkPosIfZ(StructurePiece piece) {
-        if (piece instanceof PoolStructurePiece poolPiece) {
-            List<JigsawJunction> junctions = poolPiece.getJunctions();
-            if (junctions.size() == 2) {
-                if (junctions.get(0).getSourceX() == junctions.get(1).getSourceX() || junctions.get(0).getSourceZ() != junctions.get(1).getSourceZ()) {
-                    return Optional.of(new ChunkPos(piece.getBoundingBox().getCenter()));
-                }
-            } else {
-                return Optional.of(new ChunkPos(piece.getBoundingBox().getCenter()));
+    public static Optional<ChunkPos> chunkPosIfZ(JigsawPieceSummary piece) {
+        List<JigsawJunction> junctions = piece.junctions;
+        if (junctions.size() == 2) {
+            if (junctions.get(0).getSourceX() == junctions.get(1).getSourceX() || junctions.get(0).getSourceZ() != junctions.get(1).getSourceZ()) {
+                return Optional.of(new ChunkPos(piece.boundingBox.getCenter()));
             }
+        } else {
+            return Optional.of(new ChunkPos(piece.boundingBox.getCenter()));
         }
         return Optional.empty();
     }
@@ -96,10 +89,18 @@ public class StructureTiles extends JsonDataLoader implements IdentifiableResour
 
     private final Map<Identifier, Integer> structurePiecePriority = new HashMap<>();
 
-    private final Set<Triple<Integer, Integer, Identifier>> VISITED_STRUCTURES = Collections.newSetFromMap(new ConcurrentHashMap<>());
+    private final Set<Triple<RegistryKey<Structure>, StructureType<?>, ChunkPos>> VISITED_STRUCTURES = Collections.newSetFromMap(new ConcurrentHashMap<>());
 
     public StructureTiles() {
         super(new Gson(), "atlas/structures");
+    }
+
+    public void putIfPriority(Map<ChunkPos, TileType> tiles, ChunkPos pos, TileType newTile) {
+        if (!tiles.containsKey(pos)) {
+            tiles.put(pos, newTile);
+        } else if (structurePiecePriority.getOrDefault(newTile.getId(), Integer.MAX_VALUE) < structurePiecePriority.getOrDefault(tiles.get(pos).getId(), Integer.MAX_VALUE)) {
+            tiles.put(pos, newTile);
+        }
     }
 
     public void registerTile(StructurePieceType structurePieceType, int priority, Identifier textureId, PieceMatcher pieceMatcher) {
@@ -122,72 +123,56 @@ public class StructureTiles extends JsonDataLoader implements IdentifiableResour
         structureTagMarkers.put(structureTag, new Pair<>(markerType, name));
     }
 
-    public void resolve(StructurePiece structurePiece, ServerWorld world) {
-        if (structurePiece.getType() == StructurePieceType.JIGSAW) {
-            if (structurePiece instanceof PoolStructurePiece pool && pool.getPoolElement() instanceof SinglePoolElement element) {
-                Optional<Identifier> jigsawId = element.location.left();
-                if (jigsawId.isPresent()) {
-                    for (StructurePieceTile pieceTile : jigsawTiles.get(jigsawId.get())) {
-                        chunkPosIfX(structurePiece).ifPresent(pos -> put(world, pos.x, pos.z, pieceTile.tileX()));
-                        chunkPosIfZ(structurePiece).ifPresent(pos -> put(world, pos.x, pos.z, pieceTile.tileZ()));
-                    }
-                }
+    public Map<ChunkPos, TileType> resolve(Map<ChunkPos, TileType> tiles, StructurePieceSummary piece, World world) {
+        if (piece instanceof JigsawPieceSummary jigsawPiece) {
+            for (StructurePieceTile pieceTile : jigsawTiles.get(jigsawPiece.id)) {
+                chunkPosIfX(jigsawPiece).ifPresent(pos -> putIfPriority(tiles, new ChunkPos(pos.x, pos.z), TileType.of(pieceTile.tileX())));
+                chunkPosIfZ(jigsawPiece).ifPresent(pos -> putIfPriority(tiles, new ChunkPos(pos.x, pos.z), TileType.of(pieceTile.tileZ())));
             }
-            return;
+            return tiles;
         }
 
-        Identifier structurePieceId = Registries.STRUCTURE_PIECE.getId(structurePiece.getType());
+        Identifier structurePieceId = Registries.STRUCTURE_PIECE.getId(piece.type);
         if (structurePieceTiles.containsKey(structurePieceId)) {
             for (Pair<Identifier, PieceMatcher> entry : structurePieceTiles.get(structurePieceId)) {
-                for (ChunkPos pos : entry.getRight().matches(world, structurePiece.getBoundingBox())) {
-                    put(world, pos.x, pos.z, entry.getLeft());
+                for (ChunkPos pos : entry.getRight().matches(world, piece.boundingBox)) {
+                    putIfPriority(tiles, pos, TileType.of(entry.getLeft()));
                 }
             }
         }
+        return tiles;
     }
 
-    public void resolve(StructureStart structureStart, ServerWorld world) {
-        Identifier structureId = Registries.STRUCTURE_TYPE.getId(structureStart.getStructure().getType());
+    public Map<ChunkPos, TileType> resolve(Map<ChunkPos, TileType> tiles, StructureSummary structure, World world) {
+        Identifier structureId = structure.key().getValue();
 
         Pair<Identifier, Text> foundMarker = null;
 
         if (structureMarkers.containsKey(structureId)) {
             foundMarker = structureMarkers.get(structureId);
         } else {
-            Registry<Structure> structureRegistry = world.getRegistryManager().get(RegistryKeys.STRUCTURE);
-            RegistryEntry<Structure> structureTag = structureRegistry.entryOf(structureRegistry.getKey(structureStart.getStructure()).orElse(null));
-            for (Map.Entry<TagKey<Structure>, Pair<Identifier, Text>> entry : structureTagMarkers.entrySet()) {
-                if (structureTag.isIn(entry.getKey())) {
-                    foundMarker = entry.getValue();
-                    break;
-                }
-            }
+            // TODO: something. we don't have structure tags anymore, naturally.
+//            Registry<Structure> structureRegistry = world.getRegistryManager().get(RegistryKeys.STRUCTURE);
+//            RegistryEntry<Structure> structureTag = structureRegistry.entryOf(structure.key());
+//            for (Map.Entry<TagKey<Structure>, Pair<Identifier, Text>> entry : structureTagMarkers.entrySet()) {
+//                if (structureTag.isIn(entry.getKey())) {
+//                    foundMarker = entry.getValue();
+//                    break;
+//                }
+//            }
         }
 
         if (foundMarker != null) {
-            Triple<Integer, Integer, Identifier> key = Triple.of(
-                structureStart.getBoundingBox().getCenter().getX(),
-                structureStart.getBoundingBox().getCenter().getY(),
-                structureId);
-
-            if (VISITED_STRUCTURES.contains(key)) return;
-            VISITED_STRUCTURES.add(key);
-
-            //TODO: AtlasAPI.getMarkerAPI().putGlobalMarker(world, false, foundMarker.getLeft(), foundMarker.getRight(), structureStart.getBoundingBox().getCenter().getX(), structureStart.getBoundingBox().getCenter().getZ());
+            Triple<RegistryKey<Structure>, StructureType<?>, ChunkPos> key = Triple.of(structure.key(), structure.type(), structure.pos());
+            if (!VISITED_STRUCTURES.contains(key)) {
+                VISITED_STRUCTURES.add(key);
+                // TODO: AtlasAPI.getMarkerAPI().putGlobalMarker(world, false, foundMarker.getLeft(), foundMarker.getRight(), structureStart.getBoundingBox().getCenter().getX(), structureStart.getBoundingBox().getCenter().getZ());
+            }
         }
-    }
 
-    private int getPriority(Identifier structurePieceId) {
-        return structurePiecePriority.getOrDefault(structurePieceId, Integer.MAX_VALUE);
-    }
+        structure.pieces().forEach(p -> resolve(tiles, p, world));
 
-    private void put(World world, int chunkX, int chunkZ, Identifier textureId) {
-        // TODO this
-//        Identifier existingTile = AtlasAPI.getTileAPI().getGlobalTile(world, chunkX, chunkZ);
-//
-//        if (getPriority(textureId) < getPriority(existingTile)) {
-//            AtlasAPI.getTileAPI().putGlobalTile(world, textureId, chunkX, chunkZ);
-//        }
+        return tiles;
     }
 
     @Override

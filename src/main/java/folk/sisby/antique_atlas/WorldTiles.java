@@ -1,9 +1,11 @@
 package folk.sisby.antique_atlas;
 
+import folk.sisby.antique_atlas.reloader.StructureTiles;
 import folk.sisby.antique_atlas.terrain.SurveyorChunkUtil;
 import folk.sisby.antique_atlas.tile.TileType;
 import folk.sisby.antique_atlas.util.Rect;
 import folk.sisby.surveyor.SurveyorWorld;
+import folk.sisby.surveyor.structure.StructureSummary;
 import net.minecraft.client.world.ClientWorld;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.math.ChunkPos;
@@ -14,6 +16,7 @@ import java.util.Map;
 
 public class WorldTiles {
     private final Map<ChunkPos, TileType> biomeTiles = new HashMap<>();
+    private final Map<ChunkPos, TileType> structureTiles = new HashMap<>();
     private final Rect tileScope = new Rect(0, 0, 0, 0);
 
     public WorldTiles(ClientWorld world) {
@@ -24,6 +27,10 @@ public class WorldTiles {
                 biomeTiles.put(pos, tile);
             }
         }
+
+        for (StructureSummary summary : ((SurveyorWorld) world).surveyor$getWorldSummary().getStructures()) {
+            StructureTiles.getInstance().resolve(structureTiles, summary, world);
+        }
     }
 
     public Rect getScope() {
@@ -31,7 +38,7 @@ public class WorldTiles {
     }
 
     public Identifier getTile(int x, int z) {
-        TileType tile = biomeTiles.get(new ChunkPos(x, z));
-        return tile == null ? null : tile.getId();
+        ChunkPos pos = new ChunkPos(x, z);
+        return structureTiles.containsKey(pos) ? structureTiles.get(pos).getId() : biomeTiles.containsKey(pos) ? biomeTiles.get(pos).getId() : null;
     }
 }
