@@ -1,0 +1,11 @@
+{
+  "version": 1,
+  "data": {
+    "textures": {
+      "antique_atlas:mangrove_swamp": 3
+    },
+    "stitch": {
+      "antique_atlas:swamp_hills": "both"
+    }
+  }
+}
