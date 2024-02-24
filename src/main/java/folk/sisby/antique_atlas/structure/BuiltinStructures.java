@@ -22,7 +22,7 @@ public class BuiltinStructures {
         StructureTiles.getInstance().registerTile(StructurePieceType.RUINED_PORTAL, 10, TileTypes.RUINED_PORTAL.getId(), BuiltinStructures::aboveGround);
         StructureTiles.getInstance().registerMarker(StructureTags.VILLAGE, AntiqueAtlas.id("village"), Text.translatable("gui.antique_atlas.marker.village"));
         StructureTiles.getInstance().registerTile(StructurePieceType.SWAMP_HUT, 10, TileTypes.SWAMP_HUT.getId(), BuiltinStructures::aboveGround);
-        StructureTiles.getInstance().registerTile(StructurePieceType.IGLOO, 10, TileTypes.IGLOO.getId(), BuiltinStructures::aboveGround);
+        StructureTiles.getInstance().registerTile(StructurePieceType.IGLOO, 10, TileTypes.IGLOO.getId(), BuiltinStructures::topAboveGround);
         StructureTiles.getInstance().registerTile(StructurePieceType.DESERT_TEMPLE, 10, TileTypes.DESERT_TEMPLE.getId(), BuiltinStructures::aboveGround);
         StructureTiles.getInstance().registerTile(StructurePieceType.JUNGLE_TEMPLE, 10, TileTypes.JUNGLE_TEMPLE.getId(), BuiltinStructures::aboveGround);
         StructureTiles.getInstance().registerTile(StructurePieceType.SHIPWRECK, 10, TileTypes.SHIPWRECK_BEACHED.getId(), BuiltinStructures::aboveGround);
@@ -52,6 +52,14 @@ public class BuiltinStructures {
 
         // End
         StructureTiles.getInstance().registerMarker(StructureType.END_CITY, AntiqueAtlas.id("end_city"), Text.literal(""));
+    }
+
+    private static Collection<ChunkPos> topAboveGround(World world, BlockBox box) {
+        if (world.getSeaLevel() <= box.getMaxY()) {
+            return Collections.singleton(new ChunkPos(box.getCenter()));
+        }
+
+        return Collections.emptyList();
     }
 
     private static Collection<ChunkPos> aboveGround(World world, BlockBox box) {
