@@ -18,6 +18,7 @@ import net.minecraft.structure.PoolStructurePiece;
 import net.minecraft.structure.StructurePiece;
 import net.minecraft.structure.StructurePieceType;
 import net.minecraft.structure.StructureStart;
+import net.minecraft.structure.pool.ListPoolElement;
 import net.minecraft.structure.pool.SinglePoolElement;
 import net.minecraft.structure.pool.StructurePoolElement;
 import net.minecraft.tag.TagKey;
@@ -123,16 +124,24 @@ public class StructureTiles extends JsonDataLoader implements IdentifiableResour
         structureTagMarkers.put(structureTag, new Pair<>(markerType, name));
     }
 
+    private void resolve(StructurePoolElement element, StructurePiece structurePiece, ServerWorld world) {
+        if (element instanceof SinglePoolElement singleElement) {
+            Optional<Identifier> jigsawId = singleElement.location.left();
+            if (jigsawId.isPresent()) {
+                for (StructurePieceTile pieceTile : jigsawTiles.get(jigsawId.get())) {
+                    chunkPosIfX(structurePiece).ifPresent(pos -> put(world, pos.x, pos.z, pieceTile.tileX()));
+                    chunkPosIfZ(structurePiece).ifPresent(pos -> put(world, pos.x, pos.z, pieceTile.tileZ()));
+                }
+            }
+        } else if (element instanceof ListPoolElement listElement) {
+            listElement.elements.forEach(e -> resolve(e, structurePiece, world));
+        }
+    }
+
     public void resolve(StructurePiece structurePiece, ServerWorld world) {
         if (structurePiece.getType() == StructurePieceType.JIGSAW) {
-            if (structurePiece instanceof PoolStructurePiece pool && pool.getPoolElement() instanceof SinglePoolElement element) {
-                Optional<Identifier> jigsawId = element.location.left();
-                if (jigsawId.isPresent()) {
-                    for (StructurePieceTile pieceTile : jigsawTiles.get(jigsawId.get())) {
-                        chunkPosIfX(structurePiece).ifPresent(pos -> put(world, pos.x, pos.z, pieceTile.tileX()));
-                        chunkPosIfZ(structurePiece).ifPresent(pos -> put(world, pos.x, pos.z, pieceTile.tileZ()));
-                    }
-                }
+            if (structurePiece instanceof PoolStructurePiece pool) {
+                resolve(pool.getPoolElement(), structurePiece, world);
             }
             return;
         }
