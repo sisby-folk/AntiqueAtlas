@@ -61,8 +61,10 @@ These are itemless ports to 1.19 and 1.20 as-is - They won't receive future upda
 `1.x` Uses the ID `antique-atlas`. Existing addons will not work, and the API should be considered unstable.<br/>
 This is a work-in-progress cleanup of the codebase on fabric 1.20 - breaking changes will happen<br/>
 
-`2.x` is a WIP rewrite for [Surveyor Map Framework](https://github.com/sisby-folk/surveyor) - this will fully break the save format.<br/>
-Thanks to this, 2.x will work client-side, with structures visible when installed on both sides.
+`2.x` is a WIP rewrite for [Surveyor Map Framework](https://github.com/sisby-folk/surveyor) - this will break the save and respack format.<br/>
+Thanks to this, 2.x will work client-side, with structures visible when installed on both sides.<br/>
+Surveyor is being written with this mod in mind, and won't compromise its features or presentation.
+
 
 ### Afterword
 
