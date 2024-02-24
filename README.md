@@ -4,6 +4,7 @@
 <center>
 An always-accessible abstract world map.<br/>
 A shredded up port of <a href="https://modrinth.com/mod/antique-atlas">Antique Atlas</a> by hunternif, as continued by kenkron, asiekierkierka, and tyra314.<br/>
+Requires <a href="https://modrinth.com/mod/connector">Connector</a> and <a href="https://modrinth.com/mod/forgified-fabric-api">FFAPI</a> on forge.<br/>
 <i>Colloquially: Tinkerer's Atlas / Lay of the Land / antique-atlas</i>
 </center>
 
@@ -60,9 +61,10 @@ These are itemless ports to 1.19 and 1.20 as-is - They won't receive future upda
 `1.x` Uses the ID `antique-atlas`. Existing addons will not work, and the API should be considered unstable.<br/>
 This is a work-in-progress cleanup of the codebase on fabric 1.20 - breaking changes will happen<br/>
 
-If `2.x` releases - that means we've broken the save format.<br/>
-This would (possibly) be a partial rewrite of the mod to operate primarily on the client side.<br/>
-The mod would still need to be on the server in order to identify visited structures, or share maps.
+`2.x` is a WIP rewrite for [Surveyor Map Framework](https://github.com/sisby-folk/surveyor) - this will break the save and respack format.<br/>
+Thanks to this, 2.x will work client-side, with structures visible when installed on both sides.<br/>
+Surveyor is being written with this mod in mind, and won't compromise its features or presentation.
+
 
 ### Afterword
 
