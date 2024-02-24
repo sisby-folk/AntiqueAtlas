@@ -3,7 +3,7 @@ package folk.sisby.antique_atlas.core;
 import folk.sisby.antique_atlas.util.Rect;
 import net.minecraft.util.Identifier;
 
-public interface ITileStorage {
+public interface TileStorage {
 
     /**
      * Retrieves the tile set a given position

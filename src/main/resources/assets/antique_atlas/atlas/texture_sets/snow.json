@@ -17,7 +17,9 @@
       "antique_atlas:snow_pines_hills": "both",
       "antique_atlas:ravine": "both",
       "antique_atlas:lava": "both",
-      "antique_atlas:water": "both"
+      "antique_atlas:water": "both",
+      "antique_atlas:igloo": "both",
+      "antique_atlas:pillager_outpost": "both"
     }
   }
 }

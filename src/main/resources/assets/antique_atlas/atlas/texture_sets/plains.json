@@ -8,7 +8,8 @@
       "antique_atlas:grass4": 1
     },
     "stitch": {
-      "antique_atlas:sunflowers": "both"
+      "antique_atlas:sunflowers": "both",
+      "antique_atlas:pillager_outpost": "both"
     }
   }
 }

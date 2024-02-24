@@ -4,7 +4,8 @@ import com.google.common.collect.HashMultiset;
 import com.google.common.collect.Multiset;
 import com.google.common.collect.Ordering;
 import folk.sisby.antique_atlas.AntiqueAtlas;
-import folk.sisby.antique_atlas.core.BuiltinTiles;
+import folk.sisby.antique_atlas.tile.TileTypes;
+import folk.sisby.antique_atlas.tile.TileElevation;
 import net.fabricmc.fabric.api.tag.convention.v1.ConventionalBiomeTags;
 import net.minecraft.block.Block;
 import net.minecraft.block.Blocks;
@@ -27,29 +28,28 @@ import net.minecraft.world.chunk.Chunk;
  *
  * @author Hunternif
  */
-public class TileDetectorBase implements ITileDetector {
+public class TileDetectorBase implements BiomeScanner {
     /**
      * Biome used for occasional pools of water.
      * This used our own representation of biomes, but this was switched to Minecraft biomes.
      * So in absence of a better idea, this will just count as River from now on.
      */
     private static final Identifier waterPoolBiome = BiomeKeys.RIVER.getValue();
+
     /**
      * Increment the counter for water biomes by this much during iteration.
      * This is done so that water pools are more visible.
      */
-    private static final int priorityRavine = 12, priorityWaterPool = 4, priorityLavaPool = 6;
+    private static final int priorityRavine = 12;
+    private static final int priorityWaterPool = 4;
+    private static final int priorityLavaPool = 6;
 
     /**
      * Minimum depth in the ground to be considered a ravine
      */
     private static final int ravineMinDepth = 7;
 
-    public static boolean hasSwampWater(RegistryEntry<Biome> biomeTag) {
-        return biomeTag.isIn(ConventionalBiomeTags.SWAMP);
-    }
-
-    static int priorityForBiome(RegistryEntry<Biome> biomeTag) {
+    protected static int priorityForBiome(RegistryEntry<Biome> biomeTag) {
         if (biomeTag.isIn(BiomeTags.IS_OCEAN) || biomeTag.isIn(BiomeTags.IS_RIVER) || biomeTag.isIn(BiomeTags.IS_DEEP_OCEAN)) {
             return 4;
         } else if (biomeTag.isIn(BiomeTags.IS_BEACH)) {
@@ -59,22 +59,21 @@ public class TileDetectorBase implements ITileDetector {
         }
     }
 
-    protected static TileHeightType getHeightTypeFromY(int y, int sealevel) {
-        if (y < sealevel + 10) {
-            return TileHeightType.VALLEY;
+    protected static TileElevation getHeightTypeFromY(int y, int seaLevel) {
+        if (y < seaLevel + 10) {
+            return TileElevation.VALLEY;
         }
-        if (y < sealevel + 20) {
-            return TileHeightType.LOW;
+        if (y < seaLevel + 20) {
+            return TileElevation.LOW;
         }
-        if (y < sealevel + 35) {
-            return TileHeightType.MID;
+        if (y < seaLevel + 35) {
+            return TileElevation.MID;
         }
-        if (y < sealevel + 50) {
-            return TileHeightType.HIGH;
+        if (y < seaLevel + 50) {
+            return TileElevation.HIGH;
         }
-        return TileHeightType.PEAK;
+        return TileElevation.PEAK;
     }
-
 
     protected static Identifier getBiomeIdentifier(World world, Biome biome) {
         return world.getRegistryManager().get(Registry.BIOME_KEY).getId(biome);
@@ -84,7 +83,7 @@ public class TileDetectorBase implements ITileDetector {
         map.add(biome, weight);
     }
 
-    protected static void updateOccurrencesMap(Multiset<Identifier> map, World world, Biome biome, TileHeightType type, int weight) {
+    protected static void updateOccurrencesMap(Multiset<Identifier> map, World world, Biome biome, TileElevation type, int weight) {
         Identifier id = getBiomeIdentifier(world, biome);
         id = new Identifier(id.getNamespace(), id.getPath() + "_" + type.getName());
         map.add(id, weight);
@@ -120,20 +119,20 @@ public class TileDetectorBase implements ITileDetector {
                         // Check if there's surface of water at (x, z), but not swamp
                         if (topBlock == Blocks.WATER) {
 
-                            if (hasSwampWater(biomeTag)) {
-                                updateOccurrencesMap(biomeOccurrences, BuiltinTiles.SWAMP_WATER, priorityWaterPool);
+                            if (biomeTag.isIn(ConventionalBiomeTags.SWAMP)) {
+                                updateOccurrencesMap(biomeOccurrences, TileTypes.SWAMP_WATER.getId(), priorityWaterPool);
                             } else {
                                 updateOccurrencesMap(biomeOccurrences, waterPoolBiome, priorityWaterPool);
                             }
                         } else if (topBlock == Blocks.LAVA) {
-                            updateOccurrencesMap(biomeOccurrences, BuiltinTiles.TILE_LAVA, priorityLavaPool);
+                            updateOccurrencesMap(biomeOccurrences, TileTypes.TILE_LAVA.getId(), priorityLavaPool);
                         }
                     }
                 }
 
                 if (AntiqueAtlas.CONFIG.Performance.doScanRavines) {
                     if (y > 0 && y < world.getSeaLevel() - ravineMinDepth) {
-                        updateOccurrencesMap(biomeOccurrences, BuiltinTiles.TILE_RAVINE, priorityRavine);
+                        updateOccurrencesMap(biomeOccurrences, TileTypes.TILE_RAVINE.getId(), priorityRavine);
                     }
                 }
 

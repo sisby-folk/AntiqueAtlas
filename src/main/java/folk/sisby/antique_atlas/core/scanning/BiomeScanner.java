@@ -11,7 +11,7 @@ import org.jetbrains.annotations.Nullable;
  *
  * @author Hunternif
  */
-public interface ITileDetector {
+public interface BiomeScanner {
     /**
      * Finds the biome ID to be used for a given chunk.
      */

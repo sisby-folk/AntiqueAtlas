@@ -4,7 +4,7 @@ import folk.sisby.antique_atlas.client.TextureSet;
 import folk.sisby.antique_atlas.client.assets.BiomeTextures;
 import folk.sisby.antique_atlas.client.gui.tiles.SubTile.Part;
 import folk.sisby.antique_atlas.client.gui.tiles.SubTile.Shape;
-import folk.sisby.antique_atlas.core.ITileStorage;
+import folk.sisby.antique_atlas.core.TileStorage;
 import folk.sisby.antique_atlas.util.Rect;
 import net.minecraft.util.Identifier;
 import org.jetbrains.annotations.NotNull;
@@ -21,7 +21,7 @@ import java.util.Iterator;
  */
 public class TileRenderIterator implements Iterator<SubTileQuartet>, Iterable<SubTileQuartet> {
 
-    private final ITileStorage tiles;
+    private final TileStorage tiles;
 
     /**
      * How many chunks a tile spans. Used for viewing the map at a scale below
@@ -79,7 +79,7 @@ public class TileRenderIterator implements Iterator<SubTileQuartet>, Iterable<Su
      */
     private int subtileX = -1, subtileY = -1;
 
-    public TileRenderIterator(ITileStorage tiles) {
+    public TileRenderIterator(TileStorage tiles) {
         this.tiles = tiles;
         setScope(tiles.getScope());
     }

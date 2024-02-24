@@ -4,5 +4,8 @@
     "textures": {
       "antique_atlas:ice_noborder": 1
     }
+  },
+  "stitch": {
+    "antique_atlas:igloo": "both"
   }
 }

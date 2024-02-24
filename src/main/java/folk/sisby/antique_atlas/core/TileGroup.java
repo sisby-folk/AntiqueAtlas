@@ -10,7 +10,7 @@ import net.minecraft.util.Identifier;
 /**
  * Represents a group of tiles that may be sent/stored as a single NBT
  */
-public class TileGroup implements ITileStorage {
+public class TileGroup implements TileStorage {
 
     public static final String TAG_POSITION = "p";
     public static final String TAG_TILES = "t";

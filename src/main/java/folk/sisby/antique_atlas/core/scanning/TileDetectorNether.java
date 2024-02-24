@@ -3,7 +3,7 @@ package folk.sisby.antique_atlas.core.scanning;
 import com.google.common.collect.HashMultiset;
 import com.google.common.collect.Multiset;
 import com.google.common.collect.Ordering;
-import folk.sisby.antique_atlas.core.BuiltinTiles;
+import folk.sisby.antique_atlas.tile.TileTypes;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
@@ -22,7 +22,7 @@ import net.minecraft.world.chunk.Chunk;
  *
  * @author Hunternif
  */
-public class TileDetectorNether extends TileDetectorBase implements ITileDetector {
+public class TileDetectorNether extends TileDetectorBase implements BiomeScanner {
     /**
      * The Nether will be checked for air/ground at this level.
      */
@@ -51,11 +51,11 @@ public class TileDetectorNether extends TileDetectorBase implements ITileDetecto
                     // The Nether!
                     Block seaLevelBlock = chunk.getBlockState(new BlockPos(x, lavaSeaLevel, z)).getBlock();
                     if (seaLevelBlock == Blocks.LAVA) {
-                        updateOccurrencesMap(biomeOccurrences, BuiltinTiles.TILE_LAVA, priorityLava);
+                        updateOccurrencesMap(biomeOccurrences, TileTypes.TILE_LAVA.getId(), priorityLava);
                     } else {
                         BlockState airProbeBlock = chunk.getBlockState(new BlockPos(x, airProbeLevel, z));
                         if (airProbeBlock.isAir()) {
-                            updateOccurrencesMap(biomeOccurrences, BuiltinTiles.TILE_LAVA_SHORE, 1);
+                            updateOccurrencesMap(biomeOccurrences, TileTypes.TILE_LAVA_SHORE.getId(), 1);
                         } else {
                             // cave walls
                             updateOccurrencesMap(biomeOccurrences, getBiomeIdentifier(world, biome), 2);

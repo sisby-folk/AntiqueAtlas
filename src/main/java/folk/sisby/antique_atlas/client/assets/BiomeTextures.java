@@ -7,7 +7,7 @@ import folk.sisby.antique_atlas.AntiqueAtlas;
 import folk.sisby.antique_atlas.client.TextureSet;
 import folk.sisby.antique_atlas.client.gui.tiles.SubTile;
 import folk.sisby.antique_atlas.client.texture.TileTexture;
-import folk.sisby.antique_atlas.core.scanning.TileHeightType;
+import folk.sisby.antique_atlas.tile.TileElevation;
 import net.fabricmc.fabric.api.resource.IdentifiableResourceReloadListener;
 import net.fabricmc.fabric.api.tag.convention.v1.ConventionalBiomeTags;
 import net.minecraft.client.MinecraftClient;
@@ -107,7 +107,7 @@ public class BiomeTextures extends JsonDataLoader implements IdentifiableResourc
     private void setAllTextures(Identifier tileId, TextureSet textureSet) {
         setTexture(tileId, textureSet);
 
-        for (TileHeightType layer : TileHeightType.values()) {
+        for (TileElevation layer : TileElevation.values()) {
             setTexture(Identifier.tryParse(tileId + "_" + layer), textureSet);
         }
     }
@@ -262,7 +262,7 @@ public class BiomeTextures extends JsonDataLoader implements IdentifiableResourc
 
                     outMap.put(fileId, textureSet);
 
-                    for (TileHeightType layer : TileHeightType.values()) {
+                    for (TileElevation layer : TileElevation.values()) {
                         outMap.put(Identifier.tryParse(fileId + "_" + layer.getName()), textureSet);
                     }
                 } else if (version == VERSION) {
@@ -276,7 +276,7 @@ public class BiomeTextures extends JsonDataLoader implements IdentifiableResourc
                     // insert the old-style texture set with the default one
                     outMap.put(fileId, defaultSet);
 
-                    for (TileHeightType layer : TileHeightType.values()) {
+                    for (TileElevation layer : TileElevation.values()) {
                         Identifier textureSet = defaultSet;
 
                         try {
