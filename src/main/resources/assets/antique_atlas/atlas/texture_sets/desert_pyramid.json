@@ -4,5 +4,10 @@
     "textures": {
       "antique_atlas:desert_pyramid": 1
     }
+  },
+  "stitch": {
+    "antique_atlas:desert": "both",
+    "antique_atlas:mesa": "both",
+    "antique_atlas:bryce": "both"
   }
 }

@@ -4,5 +4,10 @@
     "textures": {
       "antique_atlas:igloo": 1
     }
+  },
+  "stitch": {
+    "antique_atlas:snow": "both",
+    "antique_atlas:ice": "both",
+    "antique_atlas:snow_pines": "both"
   }
 }
