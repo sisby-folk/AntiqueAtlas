@@ -18,6 +18,7 @@ import net.minecraft.structure.PoolStructurePiece;
 import net.minecraft.structure.StructurePiece;
 import net.minecraft.structure.StructurePieceType;
 import net.minecraft.structure.StructureStart;
+import net.minecraft.structure.pool.FeaturePoolElement;
 import net.minecraft.structure.pool.ListPoolElement;
 import net.minecraft.structure.pool.SinglePoolElement;
 import net.minecraft.structure.pool.StructurePoolElement;
@@ -132,6 +133,13 @@ public class StructureTiles extends JsonDataLoader implements IdentifiableResour
                     chunkPosIfX(structurePiece).ifPresent(pos -> put(world, pos.x, pos.z, pieceTile.tileX()));
                     chunkPosIfZ(structurePiece).ifPresent(pos -> put(world, pos.x, pos.z, pieceTile.tileZ()));
                 }
+            }
+        }
+        else if (element instanceof FeaturePoolElement featureElement && featureElement.feature.getKey().isPresent()) {
+            Identifier jigsawId = featureElement.feature.getKey().orElseThrow().getValue();
+            for (StructurePieceTile pieceTile : jigsawTiles.get(jigsawId)) {
+                chunkPosIfX(structurePiece).ifPresent(pos -> put(world, pos.x, pos.z, pieceTile.tileX()));
+                chunkPosIfZ(structurePiece).ifPresent(pos -> put(world, pos.x, pos.z, pieceTile.tileZ()));
             }
         } else if (element instanceof ListPoolElement listElement) {
             listElement.elements.forEach(e -> resolve(e, structurePiece, world));
