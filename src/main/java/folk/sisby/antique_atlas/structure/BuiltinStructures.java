@@ -21,6 +21,11 @@ public class BuiltinStructures {
         // Overworld
         StructureTiles.getInstance().registerTile(StructurePieceType.RUINED_PORTAL, 10, TileTypes.RUINED_PORTAL.getId(), BuiltinStructures::aboveGround);
         StructureTiles.getInstance().registerMarker(StructureTags.VILLAGE, AntiqueAtlas.id("village"), Text.translatable("gui.antique_atlas.marker.village"));
+        StructureTiles.getInstance().registerTile(StructurePieceType.SWAMP_HUT, 10, TileTypes.SWAMP_HUT.getId(), BuiltinStructures::aboveGround);
+        StructureTiles.getInstance().registerTile(StructurePieceType.IGLOO, 10, TileTypes.IGLOO.getId(), BuiltinStructures::aboveGround);
+        StructureTiles.getInstance().registerTile(StructurePieceType.DESERT_TEMPLE, 10, TileTypes.DESERT_TEMPLE.getId(), BuiltinStructures::aboveGround);
+        StructureTiles.getInstance().registerTile(StructurePieceType.JUNGLE_TEMPLE, 10, TileTypes.JUNGLE_TEMPLE.getId(), BuiltinStructures::aboveGround);
+        StructureTiles.getInstance().registerTile(StructurePieceType.SHIPWRECK, 10, TileTypes.SHIPWRECK_BEACHED.getId(), BuiltinStructures::aboveGround);
 
         // Nether
         StructureTiles.getInstance().registerTile(StructurePieceType.NETHER_FORTRESS_BRIDGE_PLATFORM, 40, TileTypes.NETHER_FORTRESS_BRIDGE_PLATFORM.getId(), StructureTiles::ALWAYS);
