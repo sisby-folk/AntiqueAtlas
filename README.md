@@ -71,7 +71,7 @@ Surveyor is being written with this mod in mind, and won't compromise its featur
 All mods are built on the work of many others.
 
 The art for antique atlas was created by Hunternif and lumiscosity.<br/>
-[Click here](https://github.com/sisby-folk/antique-atlas/blob/1.20/credits.txt)  for more info.
+[Click here](https://github.com/sisby-folk/antique-atlas/blob/1.20/credits.txt) for more info.
 
 This mod is a fourth-gen offshoot, and relies heavily on contributions of many developers and artists before us.<br/>[We can't draw autotile to save our lives](https://github.com/AntiqueAtlasTeam/AntiqueAtlas/wiki/Editing-Textures) - feel free to contribute!
 
