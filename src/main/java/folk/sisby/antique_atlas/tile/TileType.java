@@ -1,7 +1,7 @@
 package folk.sisby.antique_atlas.tile;
 
-import net.minecraft.registry.RegistryKey;
 import net.minecraft.util.Identifier;
+import net.minecraft.util.registry.RegistryKey;
 import net.minecraft.world.biome.Biome;
 import org.jetbrains.annotations.Nullable;
 
