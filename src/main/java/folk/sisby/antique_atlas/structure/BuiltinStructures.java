@@ -57,8 +57,9 @@ public class BuiltinStructures {
     }
 
     private static Collection<ChunkPos> aboveGround(World world, BlockBox box) {
-        if (world.getSeaLevel() <= box.getMaxY()) {
-            return Collections.singleton(new ChunkPos(box.getCenter()));
+        BlockPos center = new BlockPos(box.getCenter());
+        if (world.getSeaLevel() - 4 <= center.getY()) {
+            return Collections.singleton(new ChunkPos(center));
         }
 
         return Collections.emptyList();
