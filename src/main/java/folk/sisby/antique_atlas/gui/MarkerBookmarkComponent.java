@@ -4,7 +4,7 @@ import com.mojang.blaze3d.systems.RenderSystem;
 import folk.sisby.antique_atlas.AntiqueAtlasTextures;
 import folk.sisby.antique_atlas.gui.core.ButtonComponent;
 import folk.sisby.antique_atlas.reloader.MarkerTypes;
-import folk.sisby.antique_atlas.marker.Marker;
+import folk.sisby.antique_atlas.Marker;
 import folk.sisby.antique_atlas.MarkerType;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.DrawContext;
@@ -29,7 +29,7 @@ public class MarkerBookmarkComponent extends ButtonComponent {
         this.colorIndex = 3;
         this.marker = marker;
 
-        MarkerType type = MarkerTypes.getInstance().get(marker.getType());
+        MarkerType type = MarkerTypes.getInstance().get(marker.type());
         setIconTexture(type.getTexture());
 
         setSize(WIDTH, HEIGHT);
@@ -40,7 +40,7 @@ public class MarkerBookmarkComponent extends ButtonComponent {
     }
 
     public Text getTitle() {
-        return marker.getLabel();
+        return marker.label();
     }
 
 

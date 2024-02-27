@@ -5,6 +5,7 @@ import folk.sisby.antique_atlas.AntiqueAtlas;
 import folk.sisby.antique_atlas.AntiqueAtlasTextures;
 import folk.sisby.antique_atlas.AntiqueAtlasWorld;
 import folk.sisby.antique_atlas.MarkerType;
+import folk.sisby.antique_atlas.WorldMarkers;
 import folk.sisby.antique_atlas.WorldTiles;
 import folk.sisby.antique_atlas.reloader.BiomeTextures;
 import folk.sisby.antique_atlas.reloader.MarkerTypes;
@@ -20,9 +21,7 @@ import folk.sisby.antique_atlas.gui.tiles.SubTile;
 import folk.sisby.antique_atlas.gui.tiles.SubTileQuartet;
 import folk.sisby.antique_atlas.gui.tiles.TileRenderIterator;
 import folk.sisby.antique_atlas.TileTexture;
-import folk.sisby.antique_atlas.marker.DimensionMarkersData;
-import folk.sisby.antique_atlas.marker.Marker;
-import folk.sisby.antique_atlas.marker.MarkersData;
+import folk.sisby.antique_atlas.Marker;
 import folk.sisby.antique_atlas.util.MathUtil;
 import folk.sisby.antique_atlas.util.Rect;
 import net.minecraft.client.MinecraftClient;
@@ -37,13 +36,13 @@ import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.ChunkPos;
+import net.minecraft.util.math.ColumnPos;
 import net.minecraft.util.math.MathHelper;
 import org.lwjgl.glfw.GLFW;
 import org.lwjgl.opengl.GL11;
 
 import java.util.Arrays;
 import java.util.Collections;
-import java.util.List;
 
 public class AtlasScreen extends Component {
     public static final int WIDTH = 310;
@@ -217,13 +216,9 @@ public class AtlasScreen extends Component {
     // Markers =================================================================
 
     /**
-     * Local markers in the current dimension
-     */
-    private DimensionMarkersData localMarkersData;
-    /**
      * Global markers in the current dimension
      */
-    private DimensionMarkersData globalMarkersData;
+    private WorldMarkers worldMarkers;
     /**
      * The marker highlighted by the eraser. Even though multiple markers may
      * be highlighted at the same time, only one of them will be deleted.
@@ -363,23 +358,23 @@ public class AtlasScreen extends Component {
         markers.removeAllContent();
         markers.scrollTo(0, 0);
 
-        if (localMarkersData == null) return;
-
+        if (worldMarkers == null) return;
 
         int contentY = 0;
-        for (Marker marker : localMarkersData.getAllMarkers()) {
-            if (!marker.isVisibleAhead() || marker.isGlobal()) {
+        for (Marker marker : worldMarkers.getAllMarkers()) {
+            if (!marker.visibleAhead() || marker.isGlobal()) {
                 continue;
             }
             MarkerBookmarkComponent bookmark = new MarkerBookmarkComponent(marker);
 
             bookmark.addListener(button -> {
                 if (state.is(NORMAL)) {
-                    setTargetPosition(marker.getX(), marker.getZ());
+                    setTargetPosition(marker.pos());
                     followPlayer = false;
                     btnPosition.setEnabled(true);
                 } else if (state.is(DELETING_MARKER)) {
-                    // TODO: AtlasClientAPI.getMarkerAPI().deleteMarker(player.getEntityWorld(), marker.getId());
+                    worldMarkers.deleteMarker(player.getEntityWorld(), marker);
+                    updateBookmarkerList();
                     player.getEntityWorld().playSound(player, player.getBlockPos(),
                         SoundEvents.UI_CARTOGRAPHY_TABLE_TAKE_RESULT, SoundCategory.AMBIENT,
                         1F, 0.5F);
@@ -431,7 +426,8 @@ public class AtlasScreen extends Component {
                 return true;
             } else if (state.is(DELETING_MARKER) // If clicked on a marker, delete it:
                 && hoveredMarker != null && !hoveredMarker.isGlobal() && isMouseOverMap && mouseState == 0) {
-                // TODO: AtlasClientAPI.getMarkerAPI().deleteMarker(player.getEntityWorld(), hoveredMarker.getId());
+                worldMarkers.deleteMarker(player.getEntityWorld(), hoveredMarker);
+                updateBookmarkerList();
                 hoveredMarker = null;
                 player.getEntityWorld().playSound(player, player.getBlockPos(),
                     SoundEvents.UI_CARTOGRAPHY_TABLE_TAKE_RESULT, SoundCategory.AMBIENT,
@@ -589,10 +585,7 @@ public class AtlasScreen extends Component {
     private void updateAtlasData() {
         if (MinecraftClient.getInstance().world != null) {
             worldTiles = ((AntiqueAtlasWorld) MinecraftClient.getInstance().world).antiqueAtlas$getWorldTiles();
-            // TODO
-//        globalMarkersData = AntiqueAtlas.globalMarkersData.getData().getMarkersDataInWorld(player.getEntityWorld().getRegistryKey());
-//        MarkersData markersData = AntiqueAtlas.markersData.getMarkersData(player.getEntityWorld());
-//        localMarkersData = markersData == null ? null : markersData.getMarkersDataInWorld(player.getEntityWorld().getRegistryKey());
+            worldMarkers = ((AntiqueAtlasWorld) MinecraftClient.getInstance().world).antiqueAtlas$getWorldMarkers();
         }
     }
 
@@ -611,9 +604,9 @@ public class AtlasScreen extends Component {
         mapOffsetY = (int) (-z * mapScale);
     }
 
-    private void setTargetPosition(int x, int z) {
-        targetOffsetX = x;
-        targetOffsetY = z;
+    private void setTargetPosition(ColumnPos pos) {
+        targetOffsetX = pos.x();
+        targetOffsetY = pos.z();
     }
 
     private int getTargetPositionX() {
@@ -728,11 +721,6 @@ public class AtlasScreen extends Component {
 
         context.getMatrices().pop();
 
-        int markersStartX = MathUtil.roundToBase(mapStartX, MarkersData.CHUNK_STEP) / MarkersData.CHUNK_STEP - 1;
-        int markersStartZ = MathUtil.roundToBase(mapStartZ, MarkersData.CHUNK_STEP) / MarkersData.CHUNK_STEP - 1;
-        int markersEndX = MathUtil.roundToBase(mapEndX, MarkersData.CHUNK_STEP) / MarkersData.CHUNK_STEP + 1;
-        int markersEndZ = MathUtil.roundToBase(mapEndZ, MarkersData.CHUNK_STEP) / MarkersData.CHUNK_STEP + 1;
-
         // Overlay the frame so that edges of the map are smooth:
         RenderSystem.setShaderColor(1, 1, 1, 1);
         AntiqueAtlasTextures.BOOK_FRAME.draw(context, getGuiX(), getGuiY());
@@ -740,8 +728,9 @@ public class AtlasScreen extends Component {
         double iconScale = getIconScale();
 
         // Draw global markers:
-        renderMarkers(context, markersStartX, markersStartZ, markersEndX, markersEndZ, globalMarkersData);
-        renderMarkers(context, markersStartX, markersStartZ, markersEndX, markersEndZ, localMarkersData);
+        for (Marker marker : worldMarkers.getAllMarkers()) {
+            renderMarker(context, marker, getIconScale());
+        }
 
         RenderSystem.disableScissor();
 
@@ -861,30 +850,15 @@ public class AtlasScreen extends Component {
         }
     }
 
-    private void renderMarkers(DrawContext context, int markersStartX, int markersStartZ,
-                               int markersEndX, int markersEndZ, DimensionMarkersData markersData) {
-        if (markersData == null) return;
-
-        for (int x = markersStartX; x <= markersEndX; x++) {
-            for (int z = markersStartZ; z <= markersEndZ; z++) {
-                List<Marker> markers = markersData.getMarkersAtChunk(x, z);
-                if (markers == null) continue;
-                for (Marker marker : markers) {
-                    renderMarker(context, marker, getIconScale());
-                }
-            }
-        }
-    }
-
     private void renderMarker(DrawContext context, Marker marker, double scale) {
-        MarkerType type = MarkerTypes.getInstance().get(marker.getType());
+        MarkerType type = MarkerTypes.getInstance().get(marker.type());
         if (type.shouldHide(state.is(HIDING_MARKERS), scaleClipIndex)) {
             return;
         }
 
-        int markerX = worldXToScreenX(marker.getX());
-        int markerY = worldZToScreenY(marker.getZ());
-        if (!marker.isVisibleAhead() && worldTiles.getTile(marker.getChunkX(), marker.getChunkZ()) == null) return;
+        int markerX = worldXToScreenX(marker.pos().x());
+        int markerY = worldZToScreenY(marker.pos().z());
+        if (!marker.visibleAhead() && worldTiles.getTile(marker.pos().toChunkPos()) == null) return;
         type.calculateMip(scale, mapScale);
         MarkerRenderInfo info = MarkerRenderInfo.ofType(type, scale, mapScale);
 
@@ -932,8 +906,8 @@ public class AtlasScreen extends Component {
 
         RenderSystem.setShaderColor(1, 1, 1, 1);
 
-        if (isMouseOver && mouseIsOverMarker && !marker.getLabel().getString().isEmpty()) {
-            drawTooltip(Collections.singletonList(marker.getLabel()), textRenderer);
+        if (isMouseOver && mouseIsOverMarker && !marker.label().getString().isEmpty()) {
+            drawTooltip(Collections.singletonList(marker.label()), textRenderer);
         }
     }
 
@@ -994,5 +968,9 @@ public class AtlasScreen extends Component {
             if (mapScale > 1) return 2;
         }
         return 1;
+    }
+
+    public WorldMarkers getWorldMarkers() {
+        return worldMarkers;
     }
 }

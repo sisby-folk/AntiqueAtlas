@@ -1,6 +1,7 @@
 package folk.sisby.antique_atlas.gui;
 
 import folk.sisby.antique_atlas.AntiqueAtlas;
+import folk.sisby.antique_atlas.Marker;
 import folk.sisby.antique_atlas.gui.core.Component;
 import folk.sisby.antique_atlas.gui.core.ScrollBoxComponent;
 import folk.sisby.antique_atlas.gui.core.ToggleButtonRadioGroup;
@@ -14,6 +15,7 @@ import net.minecraft.client.network.ClientPlayerEntity;
 import net.minecraft.sound.SoundCategory;
 import net.minecraft.sound.SoundEvents;
 import net.minecraft.text.Text;
+import net.minecraft.util.math.ColumnPos;
 import net.minecraft.world.World;
 
 import java.util.ArrayList;
@@ -64,7 +66,8 @@ public class MarkerModalComponent extends Component {
         super.init();
 
         addDrawableChild(btnDone = ButtonWidget.builder(Text.translatable("gui.done"), (button) -> {
-            // TODO AtlasClientAPI.getMarkerAPI().putMarker(world, true, MarkerTypes.getInstance().getId(selectedType), Text.literal(textField.getText()), markerX, markerZ);
+            AntiqueAtlas.getAtlasScreen().getWorldMarkers().addMarker(MinecraftClient.getInstance().player, world, new Marker(MarkerTypes.getInstance().getId(selectedType), Text.literal(textField.getText()), new ColumnPos(markerX, markerZ), true, false));
+            AntiqueAtlas.getAtlasScreen().updateBookmarkerList();
             AntiqueAtlas.LOGGER.info("Put marker \"{}\" at ({}, {})", textField.getText(), markerX, markerZ);
 
             ClientPlayerEntity player = MinecraftClient.getInstance().player;

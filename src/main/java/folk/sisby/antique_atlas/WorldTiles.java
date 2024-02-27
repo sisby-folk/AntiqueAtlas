@@ -38,7 +38,10 @@ public class WorldTiles {
     }
 
     public Identifier getTile(int x, int z) {
-        ChunkPos pos = new ChunkPos(x, z);
+        return getTile(new ChunkPos(x, z));
+    }
+
+    public Identifier getTile(ChunkPos pos) {
         return structureTiles.containsKey(pos) ? structureTiles.get(pos).getId() : biomeTiles.containsKey(pos) ? biomeTiles.get(pos).getId() : null;
     }
 }
