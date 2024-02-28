@@ -25,12 +25,14 @@ public class WorldTiles {
     private final Map<ChunkPos, TileType> structureTiles = new HashMap<>();
     private final Rect tileScope = new Rect(0, 0, 0, 0);
     private final Deque<ChunkPos> terrainDeque = new ConcurrentLinkedDeque<>();
+    boolean isFinished = false;
 
     public WorldTiles(PlayerEntity player, World world) {
         ((SurveyorWorld) world).surveyor$getWorldSummary().getChunks().stream().sorted(Comparator.comparingInt(p -> player == null ? 0 : player.getChunkPos().getChebyshevDistance(p))).forEach(terrainDeque::addLast);
         for (StructureSummary summary : ((SurveyorWorld) world).surveyor$getWorldSummary().getStructures()) {
             StructureTiles.getInstance().resolve(structureTiles, summary, world);
         }
+        AntiqueAtlas.LOGGER.info("[Antique Atlas] Beginning to load terrain for {} - {} chunks available.", world.getRegistryKey().getValue(), terrainDeque.size());
     }
 
     public void onChunkAdded(World world, WorldSummary ws, ChunkPos pos, ChunkSummary chunk) {
@@ -42,7 +44,6 @@ public class WorldTiles {
     }
 
     public void tick(World world) {
-        if ((world.getTime() % 20) == 0 && !terrainDeque.isEmpty()) AntiqueAtlas.LOGGER.info("[Antique Atlas] Loading Terrain {}/{}", biomeTiles.size(), biomeTiles.size() + terrainDeque.size());
         for (int i = 0; i < CHUNK_TICK_LIMIT; i++) {
             ChunkPos pos = terrainDeque.pollFirst();
             if (pos == null) break;
@@ -51,6 +52,10 @@ public class WorldTiles {
                 tileScope.extendTo(pos.x, pos.z);
                 biomeTiles.put(pos, tile);
             }
+        }
+        if (!isFinished && terrainDeque.isEmpty()) {
+            isFinished = true;
+            AntiqueAtlas.LOGGER.info("[Antique Atlas] Finished loading terrain for {} - {} tiles.", world.getRegistryKey().getValue(), biomeTiles.size());
         }
     }
 
