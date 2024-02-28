@@ -6,7 +6,9 @@ import folk.sisby.antique_atlas.reloader.TextureSets;
 import folk.sisby.antique_atlas.gui.AtlasScreen;
 import folk.sisby.antique_atlas.reloader.StructureTiles;
 import folk.sisby.antique_atlas.structure.BuiltinStructures;
+import folk.sisby.surveyor.SurveyorEvents;
 import net.fabricmc.api.ClientModInitializer;
+import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
 import net.fabricmc.fabric.api.resource.ResourceManagerHelper;
 import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.client.MinecraftClient;
@@ -79,5 +81,17 @@ public class AntiqueAtlas implements ClientModInitializer {
         ResourceManagerHelper.get(ResourceType.CLIENT_RESOURCES).registerReloadListener(MarkerTypes.getInstance());
         ResourceManagerHelper.get(ResourceType.CLIENT_RESOURCES).registerReloadListener(StructureTiles.getInstance());
 
+        SurveyorEvents.registerClientOnWorldLoad(id("world_tiles"), (world, ws) -> ((AntiqueAtlasWorld) world).antiqueAtlas$getWorldTiles());
+        SurveyorEvents.registerClientOnWorldLoad(id("world_markers"), (world, ws) -> ((AntiqueAtlasWorld) world).antiqueAtlas$getWorldMarkers());
+        SurveyorEvents.registerOnChunkAdded(id("world_tiles"), (world, ws, pos, chunk) -> {
+            if (MinecraftClient.getInstance().world != null) ((AntiqueAtlasWorld) MinecraftClient.getInstance().world).antiqueAtlas$getWorldTiles().onChunkAdded(MinecraftClient.getInstance().world, ws, pos, chunk);
+        });
+        SurveyorEvents.registerOnStructureAdded(id("world_tiles"), (world, ws, structure) -> {
+            if (MinecraftClient.getInstance().world != null) ((AntiqueAtlasWorld) MinecraftClient.getInstance().world).antiqueAtlas$getWorldTiles().onStructureAdded(MinecraftClient.getInstance().world, ws, structure);
+        });
+        SurveyorEvents.registerOnLandmarkAdded(id("world_markers"), (world, ws, landmark) -> {
+            if (MinecraftClient.getInstance().world != null) ((AntiqueAtlasWorld) MinecraftClient.getInstance().world).antiqueAtlas$getWorldMarkers().onLandmarkAdded(MinecraftClient.getInstance().world, ws, landmark);
+        });
+        ClientTickEvents.END_WORLD_TICK.register((world -> ((AntiqueAtlasWorld) world).antiqueAtlas$getWorldTiles().tick(world)));
     }
 }

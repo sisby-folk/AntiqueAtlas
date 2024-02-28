@@ -3,6 +3,7 @@ package folk.sisby.antique_atlas.mixin;
 import folk.sisby.antique_atlas.AntiqueAtlasWorld;
 import folk.sisby.antique_atlas.WorldMarkers;
 import folk.sisby.antique_atlas.WorldTiles;
+import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.world.ClientWorld;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Unique;
@@ -15,7 +16,7 @@ public class MixinClientWorld implements AntiqueAtlasWorld {
     @Override
     public WorldTiles antiqueAtlas$getWorldTiles() {
         if (antiqueAtlas$worldTiles == null) {
-            antiqueAtlas$worldTiles = new WorldTiles((ClientWorld) (Object) this);
+            antiqueAtlas$worldTiles = new WorldTiles(MinecraftClient.getInstance().player, (ClientWorld) (Object) this);
         }
         return antiqueAtlas$worldTiles;
     }

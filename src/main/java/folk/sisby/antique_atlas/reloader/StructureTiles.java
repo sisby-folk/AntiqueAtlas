@@ -97,7 +97,7 @@ public class StructureTiles extends JsonDataLoader implements IdentifiableResour
     public void putIfPriority(Map<ChunkPos, TileType> tiles, ChunkPos pos, TileType newTile) {
         if (!tiles.containsKey(pos)) {
             tiles.put(pos, newTile);
-        } else if (structurePiecePriority.getOrDefault(newTile.getId(), Integer.MAX_VALUE) < structurePiecePriority.getOrDefault(tiles.get(pos).getId(), Integer.MAX_VALUE)) {
+        } else if (structurePiecePriority.getOrDefault(newTile.id(), Integer.MAX_VALUE) < structurePiecePriority.getOrDefault(tiles.get(pos).id(), Integer.MAX_VALUE)) {
             tiles.put(pos, newTile);
         }
     }
@@ -125,8 +125,8 @@ public class StructureTiles extends JsonDataLoader implements IdentifiableResour
     public Map<ChunkPos, TileType> resolve(Map<ChunkPos, TileType> tiles, StructurePieceSummary piece, World world) {
         if (piece instanceof JigsawPieceSummary jigsawPiece) {
             for (StructurePieceTile pieceTile : jigsawTiles.get(jigsawPiece.getId())) {
-                chunkPosIfX(jigsawPiece).ifPresent(pos -> putIfPriority(tiles, new ChunkPos(pos.x, pos.z), TileType.of(pieceTile.tileX())));
-                chunkPosIfZ(jigsawPiece).ifPresent(pos -> putIfPriority(tiles, new ChunkPos(pos.x, pos.z), TileType.of(pieceTile.tileZ())));
+                chunkPosIfX(jigsawPiece).ifPresent(pos -> putIfPriority(tiles, new ChunkPos(pos.x, pos.z), new TileType(pieceTile.tileX())));
+                chunkPosIfZ(jigsawPiece).ifPresent(pos -> putIfPriority(tiles, new ChunkPos(pos.x, pos.z), new TileType(pieceTile.tileZ())));
             }
             return tiles;
         }
@@ -135,7 +135,7 @@ public class StructureTiles extends JsonDataLoader implements IdentifiableResour
         if (structurePieceTiles.containsKey(structurePieceId)) {
             for (Pair<Identifier, PieceMatcher> entry : structurePieceTiles.get(structurePieceId)) {
                 for (ChunkPos pos : entry.getRight().matches(world, piece.getBoundingBox())) {
-                    putIfPriority(tiles, pos, TileType.of(entry.getLeft()));
+                    putIfPriority(tiles, pos, new TileType(entry.getLeft()));
                 }
             }
         }

@@ -3,6 +3,7 @@ package folk.sisby.antique_atlas;
 import com.google.common.collect.HashMultimap;
 import com.google.common.collect.Multimap;
 import folk.sisby.surveyor.SurveyorWorld;
+import folk.sisby.surveyor.WorldSummary;
 import folk.sisby.surveyor.landmark.Landmark;
 import folk.sisby.surveyor.landmark.NetherPortalLandmark;
 import folk.sisby.surveyor.landmark.SimplePointLandmark;
@@ -40,15 +41,18 @@ public class WorldMarkers {
         }));
     }
 
+    public void onLandmarkAdded(World world, WorldSummary ws, Landmark<?> landmark) {
+        refresh(world);
+    }
+
     public void addMarker(PlayerEntity player, World world, Marker marker) {
-        ((SurveyorWorld) world).surveyor$getWorldSummary().putLandmark(new SimplePointLandmark(
+        ((SurveyorWorld) world).surveyor$getWorldSummary().putLandmark(world, new SimplePointLandmark(
             new BlockPos(marker.pos().x(), 0, marker.pos().z()),
             player.getUuid(),
             DyeColor.BLUE,
             marker.label(),
             marker.type()
         ));
-        refresh(world);
     }
 
     public void deleteMarker(World world, Marker marker) {

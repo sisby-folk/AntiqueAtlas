@@ -559,6 +559,7 @@ public class AtlasScreen extends Component {
     public void tick() {
         super.tick();
         if (player == null) return;
+
         if (followPlayer) {
             setMapPosition(player.getBlockX(), player.getBlockZ());
         }
