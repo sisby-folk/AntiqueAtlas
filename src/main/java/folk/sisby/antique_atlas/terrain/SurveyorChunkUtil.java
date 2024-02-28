@@ -106,13 +106,16 @@ public class SurveyorChunkUtil {
         IndexedIterable<Block> blockPalette = ((SurveyorWorld) world).surveyor$getWorldSummary().getBlockPalette(pos);
         if (summary == null) return null;
 
-        int elevationCount = TileElevation.values().length + 1;
-        int biomeCount = biomePalette.size() + CUSTOM_TILES.size();
-        int[][] possibleTiles = new int[elevationCount][biomeCount];
+
+        int elevationSize = TileElevation.values().length;
+        int elevationCount = elevationSize + 1;
+        int biomeCount = biomePalette.size();
+        int baseTileCount = biomeCount + CUSTOM_TILES.size();
+        int[][] possibleTiles = new int[elevationCount][baseTileCount];
 
         for (int i = 0; i < summary.depths().length; i++) {
             if (summary.depths()[i] == -1) {
-                possibleTiles[elevationCount - 1][defaultTile] += EMPTY_PRIORITY;
+                possibleTiles[elevationSize][defaultTile] += EMPTY_PRIORITY;
                 continue;
             }
             int height = worldHeight - summary.depths()[i] + summary.waterDepths()[i];
@@ -120,11 +123,11 @@ public class SurveyorChunkUtil {
             Biome biome = biomePalette.get(summary.biomes()[i]);
 
             if (height - world.getSeaLevel() < -7) {
-                possibleTiles[elevationCount - 1][CUSTOM_TILES.indexOf(TileTypes.TILE_RAVINE)] += RAVINE_PRIORITY;
+                possibleTiles[elevationSize][biomeCount + CUSTOM_TILES.indexOf(TileTypes.TILE_RAVINE)] += RAVINE_PRIORITY;
             } else if (summary.waterDepths()[i] > 0) {
-                possibleTiles[elevationCount - 1][CUSTOM_TILES.indexOf(isSwamp(biomeRegistry, biome) ? TileTypes.SWAMP_WATER : TileTypes.RIVER)] += WATER_PRIORITY;
+                possibleTiles[elevationSize][biomeCount + CUSTOM_TILES.indexOf(isSwamp(biomeRegistry, biome) ? TileTypes.SWAMP_WATER : TileTypes.RIVER)] += WATER_PRIORITY;
             } else if (block == Blocks.LAVA) {
-                possibleTiles[elevationCount - 1][CUSTOM_TILES.indexOf(TileTypes.TILE_LAVA)] += LAVA_PRIORITY;
+                possibleTiles[elevationSize][biomeCount + CUSTOM_TILES.indexOf(TileTypes.TILE_LAVA)] += LAVA_PRIORITY;
             }
             possibleTiles[TileElevation.fromBlocksAboveSea(height - world.getSeaLevel()).ordinal()][summary.biomes()[i]] += priorityForBiome(biomeRegistry, biome);
         }
@@ -142,9 +145,11 @@ public class SurveyorChunkUtil {
         IndexedIterable<Biome> biomePalette = ((SurveyorWorld) world).surveyor$getWorldSummary().getBiomePalette(pos);
         IndexedIterable<Block> blockPalette = ((SurveyorWorld) world).surveyor$getWorldSummary().getBlockPalette(pos);
 
-        int elevationCount = TileElevation.values().length + 1;
-        int biomeCount = biomePalette.size() + CUSTOM_TILES.size();
-        int[][] possibleTiles = new int[elevationCount][biomeCount];
+        int elevationSize = TileElevation.values().length;
+        int elevationCount = elevationSize + 1;
+        int biomeCount = biomePalette.size();
+        int baseTileCount = biomeCount + CUSTOM_TILES.size();
+        int[][] possibleTiles = new int[elevationCount][baseTileCount];
 
         if (fullSummary == null) {
             return CUSTOM_TILES.get(defaultTile);
@@ -153,23 +158,23 @@ public class SurveyorChunkUtil {
         if (lowSummary == null) {
             for (int i = 0; i < fullSummary.depths().length; i++) {
                 if (fullSummary.depths()[i] == -1) {
-                    possibleTiles[elevationCount - 1][defaultTile] += EMPTY_PRIORITY;
+                    possibleTiles[elevationSize][defaultTile] += EMPTY_PRIORITY;
                 } else {
                     Biome biome = biomePalette.get(i);
-                    possibleTiles[elevationCount - 1][fullSummary.biomes()[i]] += priorityForBiome(biomeRegistry, biome);
+                    possibleTiles[elevationSize][fullSummary.biomes()[i]] += priorityForBiome(biomeRegistry, biome);
                 }
             }
         } else {
             for (int i = 0; i < lowSummary.depths().length; i++) {
                 if (lowSummary.depths()[i] == -1) {
                     Biome biome = biomePalette.get(fullSummary.biomes()[i]);
-                    possibleTiles[elevationCount - 1][fullSummary.biomes()[i]] += priorityForBiome(biomeRegistry, biome);
+                    possibleTiles[elevationSize][fullSummary.biomes()[i]] += priorityForBiome(biomeRegistry, biome);
                 } else {
                     Block block = blockPalette.get(lowSummary.blocks()[i]);
                     if (block == Blocks.LAVA) { // Lava Sea
-                        possibleTiles[elevationCount - 1][CUSTOM_TILES.indexOf(TileTypes.TILE_LAVA)] += LAVA_PRIORITY;
+                        possibleTiles[elevationSize][biomeCount + CUSTOM_TILES.indexOf(TileTypes.TILE_LAVA)] += LAVA_PRIORITY;
                     } else { // Low Floor
-                        possibleTiles[elevationCount - 1][CUSTOM_TILES.indexOf(TileTypes.TILE_LAVA_SHORE)] += BEACH_PRIORITY;
+                        possibleTiles[elevationSize][biomeCount + CUSTOM_TILES.indexOf(TileTypes.TILE_LAVA_SHORE)] += BEACH_PRIORITY;
                     }
                 }
             }
