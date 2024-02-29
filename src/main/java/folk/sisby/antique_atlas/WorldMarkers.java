@@ -3,10 +3,12 @@ package folk.sisby.antique_atlas;
 import com.google.common.collect.HashMultimap;
 import com.google.common.collect.Multimap;
 import folk.sisby.surveyor.SurveyorWorld;
-import folk.sisby.surveyor.WorldSummary;
 import folk.sisby.surveyor.landmark.Landmark;
+import folk.sisby.surveyor.landmark.LandmarkType;
 import folk.sisby.surveyor.landmark.NetherPortalLandmark;
 import folk.sisby.surveyor.landmark.SimplePointLandmark;
+import folk.sisby.surveyor.landmark.WorldLandmarks;
+import net.minecraft.client.world.ClientWorld;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.util.DyeColor;
 import net.minecraft.util.math.BlockPos;
@@ -25,15 +27,15 @@ public class WorldMarkers {
 
     public void refresh(World world) {
         markers.clear();
-        ((SurveyorWorld) world).surveyor$getWorldSummary().getLandmarks().forEach(((landmarkType, pos) -> {
+        ((SurveyorWorld) world).surveyor$getWorldSummary().landmarks().keySet().forEach(((landmarkType, pos) -> {
             if (landmarkType == NetherPortalLandmark.TYPE) {
-                Landmark<?> landmark = ((SurveyorWorld) world).surveyor$getWorldSummary().getLandmark(landmarkType, pos);
+                Landmark<?> landmark = ((SurveyorWorld) world).surveyor$getWorldSummary().landmarks().get(landmarkType, pos);
                 markers.put(new ChunkPos(landmark.pos()), new Marker(
                     AntiqueAtlas.id("nether_portal"), landmark.name(), new ColumnPos(landmark.pos().getX(), landmark.pos().getZ()), true, true
                 ));
             }
             if (landmarkType == SimplePointLandmark.TYPE) {
-                Landmark<?> landmark = ((SurveyorWorld) world).surveyor$getWorldSummary().getLandmark(landmarkType, pos);
+                Landmark<?> landmark = ((SurveyorWorld) world).surveyor$getWorldSummary().landmarks().get(landmarkType, pos);
                 markers.put(new ChunkPos(landmark.pos()), new Marker(
                     landmark.texture(), landmark.name(), new ColumnPos(landmark.pos().getX(), landmark.pos().getZ()), true, landmark.owner() == null
                 ));
@@ -41,12 +43,16 @@ public class WorldMarkers {
         }));
     }
 
-    public void onLandmarkAdded(World world, WorldSummary ws, Landmark<?> landmark) {
+    public void onLandmarkAdded(World world, WorldLandmarks ws, Landmark<?> landmark) {
+        refresh(world);
+    }
+
+    public void onLandmarkRemoved(ClientWorld world, WorldLandmarks landmarks, LandmarkType<?> landmark, BlockPos pos) {
         refresh(world);
     }
 
     public void addMarker(PlayerEntity player, World world, Marker marker) {
-        ((SurveyorWorld) world).surveyor$getWorldSummary().putLandmark(world, new SimplePointLandmark(
+        ((SurveyorWorld) world).surveyor$getWorldSummary().landmarks().put(world, new SimplePointLandmark(
             new BlockPos(marker.pos().x(), 0, marker.pos().z()),
             player.getUuid(),
             DyeColor.BLUE,
@@ -57,7 +63,7 @@ public class WorldMarkers {
 
     public void deleteMarker(World world, Marker marker) {
         if (marker.isGlobal()) return;
-        ((SurveyorWorld) world).surveyor$getWorldSummary().removeLandmark(SimplePointLandmark.TYPE, new BlockPos(marker.pos().x(), 0, marker.pos().z()));
+        ((SurveyorWorld) world).surveyor$getWorldSummary().landmarks().remove(world, SimplePointLandmark.TYPE, new BlockPos(marker.pos().x(), 0, marker.pos().z()));
         refresh(world);
     }
 

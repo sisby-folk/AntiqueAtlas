@@ -4,8 +4,8 @@ import folk.sisby.antique_atlas.tile.TileElevation;
 import folk.sisby.antique_atlas.tile.TileType;
 import folk.sisby.antique_atlas.tile.TileTypes;
 import folk.sisby.surveyor.SurveyorWorld;
-import folk.sisby.surveyor.chunk.ChunkSummary;
-import folk.sisby.surveyor.chunk.LayerSummary;
+import folk.sisby.surveyor.terrain.ChunkSummary;
+import folk.sisby.surveyor.terrain.LayerSummary;
 import it.unimi.dsi.fastutil.objects.Reference2BooleanArrayMap;
 import it.unimi.dsi.fastutil.objects.Reference2IntArrayMap;
 import net.fabricmc.fabric.api.tag.convention.v1.ConventionalBiomeTags;
@@ -100,10 +100,10 @@ public class SurveyorChunkUtil {
         int defaultTile = CUSTOM_TILES.indexOf(world.getDimension().hasCeiling() ? TileTypes.NETHER_WASTES : TileTypes.THE_VOID);
 
         int worldHeight = world.getTopY();
-        ChunkSummary chunk = ((SurveyorWorld) world).surveyor$getWorldSummary().getChunk(pos);
+        ChunkSummary chunk = ((SurveyorWorld) world).surveyor$getWorldSummary().terrain().get(pos);
         @Nullable LayerSummary.Raw summary = chunk.toSingleLayer(null, null, world.getTopY());
-        IndexedIterable<Biome> biomePalette = ((SurveyorWorld) world).surveyor$getWorldSummary().getBiomePalette(pos);
-        IndexedIterable<Block> blockPalette = ((SurveyorWorld) world).surveyor$getWorldSummary().getBlockPalette(pos);
+        IndexedIterable<Biome> biomePalette = ((SurveyorWorld) world).surveyor$getWorldSummary().terrain().getBiomePalette(pos);
+        IndexedIterable<Block> blockPalette = ((SurveyorWorld) world).surveyor$getWorldSummary().terrain().getBlockPalette(pos);
         if (summary == null) return null;
 
 
@@ -139,11 +139,11 @@ public class SurveyorChunkUtil {
         Registry<Biome> biomeRegistry = world.getRegistryManager().get(RegistryKeys.BIOME);
         int defaultTile = CUSTOM_TILES.indexOf(world.getDimension().hasCeiling() ? TileTypes.NETHER_WASTES : TileTypes.THE_VOID);
 
-        ChunkSummary chunk = ((SurveyorWorld) world).surveyor$getWorldSummary().getChunk(pos);
+        ChunkSummary chunk = ((SurveyorWorld) world).surveyor$getWorldSummary().terrain().get(pos);
         @Nullable LayerSummary.Raw lowSummary = chunk.toSingleLayer(null, NETHER_SCAN_HEIGHT, world.getTopY());
         @Nullable LayerSummary.Raw fullSummary = chunk.toSingleLayer(null, world.getBottomY() + world.getDimension().logicalHeight() - 1, world.getTopY());
-        IndexedIterable<Biome> biomePalette = ((SurveyorWorld) world).surveyor$getWorldSummary().getBiomePalette(pos);
-        IndexedIterable<Block> blockPalette = ((SurveyorWorld) world).surveyor$getWorldSummary().getBlockPalette(pos);
+        IndexedIterable<Biome> biomePalette = ((SurveyorWorld) world).surveyor$getWorldSummary().terrain().getBiomePalette(pos);
+        IndexedIterable<Block> blockPalette = ((SurveyorWorld) world).surveyor$getWorldSummary().terrain().getBlockPalette(pos);
 
         int elevationSize = TileElevation.values().length;
         int elevationCount = elevationSize + 1;

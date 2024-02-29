@@ -81,16 +81,19 @@ public class AntiqueAtlas implements ClientModInitializer {
         ResourceManagerHelper.get(ResourceType.CLIENT_RESOURCES).registerReloadListener(MarkerTypes.getInstance());
         ResourceManagerHelper.get(ResourceType.CLIENT_RESOURCES).registerReloadListener(StructureTiles.getInstance());
 
-        SurveyorEvents.registerClientOnWorldLoad(id("world_tiles"), (world, ws) -> ((AntiqueAtlasWorld) world).antiqueAtlas$getWorldTiles());
-        SurveyorEvents.registerClientOnWorldLoad(id("world_markers"), (world, ws) -> ((AntiqueAtlasWorld) world).antiqueAtlas$getWorldMarkers());
-        SurveyorEvents.registerOnChunkAdded(id("world_tiles"), (world, ws, pos, chunk) -> {
-            if (MinecraftClient.getInstance().world != null) ((AntiqueAtlasWorld) MinecraftClient.getInstance().world).antiqueAtlas$getWorldTiles().onChunkAdded(MinecraftClient.getInstance().world, ws, pos, chunk);
+        SurveyorEvents.Register.clientWorldLoad(id("world_tiles"), (world, ws) -> ((AntiqueAtlasWorld) world).antiqueAtlas$getWorldTiles());
+        SurveyorEvents.Register.clientWorldLoad(id("world_markers"), (world, ws) -> ((AntiqueAtlasWorld) world).antiqueAtlas$getWorldMarkers());
+        SurveyorEvents.Register.chunkAdded(id("world_tiles"), (world, terrain, pos, chunk) -> {
+            if (MinecraftClient.getInstance().world != null) ((AntiqueAtlasWorld) MinecraftClient.getInstance().world).antiqueAtlas$getWorldTiles().onChunkAdded(MinecraftClient.getInstance().world, terrain, pos, chunk);
         });
-        SurveyorEvents.registerOnStructureAdded(id("world_tiles"), (world, ws, structure) -> {
-            if (MinecraftClient.getInstance().world != null) ((AntiqueAtlasWorld) MinecraftClient.getInstance().world).antiqueAtlas$getWorldTiles().onStructureAdded(MinecraftClient.getInstance().world, ws, structure);
+        SurveyorEvents.Register.structureAdded(id("world_tiles"), (world, structures, structure) -> {
+            if (MinecraftClient.getInstance().world != null) ((AntiqueAtlasWorld) MinecraftClient.getInstance().world).antiqueAtlas$getWorldTiles().onStructureAdded(MinecraftClient.getInstance().world, structures, structure);
         });
-        SurveyorEvents.registerOnLandmarkAdded(id("world_markers"), (world, ws, landmark) -> {
-            if (MinecraftClient.getInstance().world != null) ((AntiqueAtlasWorld) MinecraftClient.getInstance().world).antiqueAtlas$getWorldMarkers().onLandmarkAdded(MinecraftClient.getInstance().world, ws, landmark);
+        SurveyorEvents.Register.landmarkAdded(id("world_markers"), (world, landmarks, landmark) -> {
+            if (MinecraftClient.getInstance().world != null) ((AntiqueAtlasWorld) MinecraftClient.getInstance().world).antiqueAtlas$getWorldMarkers().onLandmarkAdded(MinecraftClient.getInstance().world, landmarks, landmark);
+        });
+        SurveyorEvents.Register.landmarkRemoved(id("world_markers"), (world, landmarks, type, pos) -> {
+            if (MinecraftClient.getInstance().world != null) ((AntiqueAtlasWorld) MinecraftClient.getInstance().world).antiqueAtlas$getWorldMarkers().onLandmarkRemoved(MinecraftClient.getInstance().world, landmarks, type, pos);
         });
         ClientTickEvents.END_WORLD_TICK.register((world -> ((AntiqueAtlasWorld) world).antiqueAtlas$getWorldTiles().tick(world)));
     }

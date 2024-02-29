@@ -5,9 +5,10 @@ import folk.sisby.antique_atlas.terrain.SurveyorChunkUtil;
 import folk.sisby.antique_atlas.tile.TileType;
 import folk.sisby.antique_atlas.util.Rect;
 import folk.sisby.surveyor.SurveyorWorld;
-import folk.sisby.surveyor.WorldSummary;
-import folk.sisby.surveyor.chunk.ChunkSummary;
 import folk.sisby.surveyor.structure.StructureSummary;
+import folk.sisby.surveyor.structure.WorldStructureSummary;
+import folk.sisby.surveyor.terrain.ChunkSummary;
+import folk.sisby.surveyor.terrain.WorldTerrainSummary;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.math.ChunkPos;
@@ -28,18 +29,18 @@ public class WorldTiles {
     boolean isFinished = false;
 
     public WorldTiles(PlayerEntity player, World world) {
-        ((SurveyorWorld) world).surveyor$getWorldSummary().getChunks().stream().sorted(Comparator.comparingInt(p -> player == null ? 0 : player.getChunkPos().getChebyshevDistance(p))).forEach(terrainDeque::addLast);
-        for (StructureSummary summary : ((SurveyorWorld) world).surveyor$getWorldSummary().getStructures()) {
+        ((SurveyorWorld) world).surveyor$getWorldSummary().terrain().keySet().stream().sorted(Comparator.comparingInt(p -> player == null ? 0 : player.getChunkPos().getChebyshevDistance(p))).forEach(terrainDeque::addLast);
+        for (StructureSummary summary : ((SurveyorWorld) world).surveyor$getWorldSummary().structures().values()) {
             StructureTiles.getInstance().resolve(structureTiles, summary, world);
         }
         AntiqueAtlas.LOGGER.info("[Antique Atlas] Beginning to load terrain for {} - {} chunks available.", world.getRegistryKey().getValue(), terrainDeque.size());
     }
 
-    public void onChunkAdded(World world, WorldSummary ws, ChunkPos pos, ChunkSummary chunk) {
+    public void onChunkAdded(World world, WorldTerrainSummary ws, ChunkPos pos, ChunkSummary chunk) {
         if (!terrainDeque.contains(pos)) terrainDeque.add(pos);
     }
 
-    public void onStructureAdded(World world, WorldSummary ws, StructureSummary structure) {
+    public void onStructureAdded(World world, WorldStructureSummary ws, StructureSummary structure) {
         StructureTiles.getInstance().resolve(structureTiles, structure, world);
     }
 
