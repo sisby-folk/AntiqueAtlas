@@ -1,4 +1,6 @@
 {
-  "version": 1,
-  "texture_set": "antique_atlas:desert_hills"
+  "version": 2,
+  "texture_sets": {
+    "default": "antique_atlas:desert_hills"
+  }
 }

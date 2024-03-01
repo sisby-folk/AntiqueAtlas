@@ -1,5 +1,7 @@
 {
-  "version": 1,
-  "texture_set": "antique_atlas:swamp_hut",
+  "version": 2,
+  "texture_sets": {
+    "default": "antique_atlas:swamp_hut"
+  },
   "priority": 100
 }
