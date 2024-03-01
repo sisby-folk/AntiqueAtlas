@@ -14,6 +14,7 @@
   "gui.antique_atlas.marker.treasure": "Buried treasure",
   "gui.antique_atlas.marker.monument": "Ocean Monument",
   "gui.antique_atlas.marker.mansion": "Woodland Mansion",
+  "gui.antique_atlas.marker.death.cause": "%s on Day %s",
   "gui.antique_atlas.marker.death.grave": "%s (Day %s)",
   "gui.antique_atlas.marker.death.grave.verb": "Grave",
   "gui.antique_atlas.marker.death.items": "%s (Day %s)",

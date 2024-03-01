@@ -41,7 +41,7 @@ public class AntiqueAtlas implements ClientModInitializer {
     public static AtlasScreen getAtlasScreen() {
         if (atlasScreen == null) {
             atlasScreen = new AtlasScreen();
-            atlasScreen.setMapScale(CONFIG.Interface.defaultScale);
+            atlasScreen.setMapScale(CONFIG.ui.defaultScale);
         }
         return atlasScreen;
     }

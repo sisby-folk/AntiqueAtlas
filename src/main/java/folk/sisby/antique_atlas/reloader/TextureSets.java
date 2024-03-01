@@ -130,7 +130,7 @@ public class TextureSets extends JsonDataLoader implements IdentifiableResourceR
             try {
                 set.loadTextures(tileTextures);
                 register(set);
-                if (AntiqueAtlas.CONFIG.Performance.resourcePackLogging) {
+                if (AntiqueAtlas.CONFIG.debug.debugRespack) {
                     AntiqueAtlas.LOGGER.info("Loaded texture set {} with {} custom texture(s)", id, set.getTexturePaths().length);
                 }
             } catch (Throwable e) {
@@ -142,7 +142,7 @@ public class TextureSets extends JsonDataLoader implements IdentifiableResourceR
             set.checkStitching();
             if (set instanceof TextureSet.TextureSetShore texture) {
                 texture.loadWater();
-                if (AntiqueAtlas.CONFIG.Performance.resourcePackLogging) {
+                if (AntiqueAtlas.CONFIG.debug.debugRespack) {
                     AntiqueAtlas.LOGGER.info("Loaded water texture `{}` for shore texture `{}` texture", texture.waterName, texture.id);
                 }
             }

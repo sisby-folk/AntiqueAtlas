@@ -303,7 +303,7 @@ public class BiomeTextures extends JsonDataLoader implements IdentifiableResourc
             }
 
             setTexture(id, set);
-            if (AntiqueAtlas.CONFIG.Performance.resourcePackLogging) {
+            if (AntiqueAtlas.CONFIG.debug.debugRespack) {
                 AntiqueAtlas.LOGGER.info("Loaded tile {} with texture set {}", id, set.id);
             }
         });

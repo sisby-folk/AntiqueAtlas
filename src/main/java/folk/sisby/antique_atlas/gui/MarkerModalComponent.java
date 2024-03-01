@@ -2,11 +2,12 @@ package folk.sisby.antique_atlas.gui;
 
 import folk.sisby.antique_atlas.AntiqueAtlas;
 import folk.sisby.antique_atlas.Marker;
+import folk.sisby.antique_atlas.MarkerType;
 import folk.sisby.antique_atlas.gui.core.Component;
 import folk.sisby.antique_atlas.gui.core.ScrollBoxComponent;
 import folk.sisby.antique_atlas.gui.core.ToggleButtonRadioGroup;
-import folk.sisby.antique_atlas.MarkerType;
 import folk.sisby.antique_atlas.reloader.MarkerTypes;
+import folk.sisby.surveyor.landmark.SimplePointLandmark;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.gui.widget.ButtonWidget;
@@ -15,7 +16,8 @@ import net.minecraft.client.network.ClientPlayerEntity;
 import net.minecraft.sound.SoundCategory;
 import net.minecraft.sound.SoundEvents;
 import net.minecraft.text.Text;
-import net.minecraft.util.math.ColumnPos;
+import net.minecraft.util.Uuids;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
 import java.util.ArrayList;
@@ -66,7 +68,7 @@ public class MarkerModalComponent extends Component {
         super.init();
 
         addDrawableChild(btnDone = ButtonWidget.builder(Text.translatable("gui.done"), (button) -> {
-            AntiqueAtlas.getAtlasScreen().getWorldMarkers().addMarker(MinecraftClient.getInstance().player, world, new Marker(MarkerTypes.getInstance().getId(selectedType), Text.literal(textField.getText()), new ColumnPos(markerX, markerZ), true, false));
+            AntiqueAtlas.getAtlasScreen().getWorldMarkers().addMarker(MinecraftClient.getInstance().player, world, new Marker(SimplePointLandmark.TYPE, MarkerTypes.getInstance().getId(selectedType), Text.literal(textField.getText()), new BlockPos(markerX, 0, markerZ), true, Uuids.getUuidFromProfile(MinecraftClient.getInstance().getSession().getProfile())));
             AntiqueAtlas.getAtlasScreen().updateBookmarkerList();
             AntiqueAtlas.LOGGER.info("Put marker \"{}\" at ({}, {})", textField.getText(), markerX, markerZ);
 
