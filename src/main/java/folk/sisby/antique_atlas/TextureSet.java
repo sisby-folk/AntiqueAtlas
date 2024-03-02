@@ -1,7 +1,6 @@
 package folk.sisby.antique_atlas;
 
 import folk.sisby.antique_atlas.reloader.TextureSets;
-import folk.sisby.antique_atlas.tile.TileTypes;
 import net.minecraft.util.Identifier;
 
 import java.util.Collections;
@@ -28,7 +27,7 @@ public class TextureSet implements Comparable<TextureSet> {
     private final Set<Identifier> stitchToHorizontal = new HashSet<>();
     private final Set<Identifier> stitchToVertical = new HashSet<>();
     private final Identifier[] texturePaths;
-    private final boolean stitchesToNull = false;
+    private final boolean stitchesToNull = true;
     private boolean anisotropicStitching = false;
 
     /**
@@ -70,17 +69,17 @@ public class TextureSet implements Comparable<TextureSet> {
      * Actually used when stitching along the diagonal.
      */
     public boolean shouldStitchTo(TextureSet toSet) {
-        return toSet == this || stitchesToNull && toSet == null || stitchTo.contains(toSet.id) || toSet.id == TileTypes.CLOUDS.id();
+        return toSet == this || stitchesToNull && toSet == null || stitchTo.contains(toSet.id);
     }
 
     public boolean shouldStitchToHorizontally(TextureSet toSet) {
-        if (toSet == this || stitchesToNull && toSet == null || toSet.id == TileTypes.CLOUDS.id()) return true;
+        if (toSet == this || stitchesToNull && toSet == null) return true;
         if (anisotropicStitching) return stitchToHorizontal.contains(toSet.id);
         else return stitchTo.contains(toSet.id);
     }
 
     public boolean shouldStitchToVertically(TextureSet toSet) {
-        if (toSet == this || stitchesToNull && toSet == null || toSet.id == TileTypes.CLOUDS.id()) return true;
+        if (toSet == this || stitchesToNull && toSet == null) return true;
         if (anisotropicStitching) return stitchToVertical.contains(toSet.id);
         else return stitchTo.contains(toSet.id);
     }
