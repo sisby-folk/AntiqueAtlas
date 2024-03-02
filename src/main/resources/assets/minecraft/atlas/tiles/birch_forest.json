@@ -1,6 +1,8 @@
 {
   "version": 2,
   "texture_sets": {
-    "default": "antique_atlas:birch"
+    "default": "antique_atlas:birch",
+    "high": "antique_atlas:birch_hills",
+    "peak": "antique_atlas:birch_hills"
   }
 }
