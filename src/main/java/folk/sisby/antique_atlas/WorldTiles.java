@@ -3,7 +3,6 @@ package folk.sisby.antique_atlas;
 import folk.sisby.antique_atlas.reloader.StructureTiles;
 import folk.sisby.antique_atlas.terrain.SurveyorChunkUtil;
 import folk.sisby.antique_atlas.tile.TileType;
-import folk.sisby.antique_atlas.tile.TileTypes;
 import folk.sisby.antique_atlas.util.Rect;
 import folk.sisby.surveyor.SurveyorWorld;
 import folk.sisby.surveyor.structure.StructureSummary;
@@ -68,6 +67,6 @@ public class WorldTiles {
     }
 
     public Identifier getTile(ChunkPos pos) {
-        return structureTiles.containsKey(pos) ? structureTiles.get(pos).id() : biomeTiles.containsKey(pos) ? biomeTiles.get(pos).id() : TileTypes.CLOUDS.id();
+        return structureTiles.containsKey(pos) ? structureTiles.get(pos).id() : biomeTiles.containsKey(pos) ? biomeTiles.get(pos).id() : null;
     }
 }
