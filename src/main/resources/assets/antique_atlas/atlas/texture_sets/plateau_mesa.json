@@ -2,8 +2,7 @@
   "version": 1,
   "data": {
     "textures": {
-      "antique_atlas:plateau_mesa": 1,
-      "antique_atlas:plateau_mesa2": 1
+      "antique_atlas:plateau_mesa": 1
     },
     "stitch": {
       "antique_atlas:plateau_mesa_trees": "both",
