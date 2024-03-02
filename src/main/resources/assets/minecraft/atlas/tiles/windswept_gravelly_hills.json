@@ -1,6 +1,6 @@
 {
   "version": 2,
   "texture_sets": {
-    "default": "antique_atlas:hills"
+    "default": "antique_atlas:hills_gravel"
   }
 }
