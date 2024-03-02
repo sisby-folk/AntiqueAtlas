@@ -10,8 +10,7 @@
     },
     "stitch": {
       "antique_atlas:mountains_naked": "both",
-      "antique_atlas:mountains_snow_caps": "both",
-      "antique_atlas:mountains_all": "both"
+      "antique_atlas:mountains_snow_caps": "both"
     }
   }
 }
