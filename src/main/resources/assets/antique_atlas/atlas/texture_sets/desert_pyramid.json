@@ -7,7 +7,6 @@
   },
   "stitch": {
     "antique_atlas:desert": "both",
-    "antique_atlas:mesa": "both",
-    "antique_atlas:bryce": "both"
+    "antique_atlas:mesa": "both"
   }
 }
