@@ -1,9 +1,8 @@
 {
   "version": 2,
   "texture_sets": {
-    "default": "antique_atlas:sparse_forest",
-    "mid": "antique_atlas:sparse_forest_hills",
-    "high": "antique_atlas:sparse_forest_hills",
-    "peak": "antique_atlas:mountains"
+    "default": "antique_atlas:jungle_edge",
+    "high": "antique_atlas:jungle_edge_hills",
+    "peak": "antique_atlas:jungle_edge_hills"
   }
 }
