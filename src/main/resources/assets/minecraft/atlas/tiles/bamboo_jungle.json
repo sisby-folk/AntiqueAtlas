@@ -1,6 +1,8 @@
 {
   "version": 2,
   "texture_sets": {
-    "default": "antique_atlas:bamboo_jungle"
+    "default": "antique_atlas:bamboo_jungle",
+    "high": "antique_atlas:bamboo_jungle_hills",
+    "peak": "antique_atlas:bamboo_jungle_hills"
   }
 }
