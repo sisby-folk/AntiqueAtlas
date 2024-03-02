@@ -9,12 +9,10 @@ import folk.sisby.surveyor.structure.StructureSummary;
 import folk.sisby.surveyor.structure.WorldStructureSummary;
 import folk.sisby.surveyor.terrain.ChunkSummary;
 import folk.sisby.surveyor.terrain.WorldTerrainSummary;
-import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.math.ChunkPos;
 import net.minecraft.world.World;
 
-import java.util.Comparator;
 import java.util.Deque;
 import java.util.HashMap;
 import java.util.Map;
@@ -28,8 +26,8 @@ public class WorldTiles {
     private final Deque<ChunkPos> terrainDeque = new ConcurrentLinkedDeque<>();
     boolean isFinished = false;
 
-    public WorldTiles(PlayerEntity player, World world) {
-        ((SurveyorWorld) world).surveyor$getWorldSummary().terrain().keySet().stream().sorted(Comparator.comparingInt(p -> player == null ? 0 : player.getChunkPos().getChebyshevDistance(p))).forEach(terrainDeque::addLast);
+    public WorldTiles(World world) {
+        ((SurveyorWorld) world).surveyor$getWorldSummary().terrain().keySet().forEach(terrainDeque::addLast);
         for (StructureSummary summary : ((SurveyorWorld) world).surveyor$getWorldSummary().structures().values()) {
             StructureTiles.getInstance().resolve(structureTiles, summary, world);
         }
