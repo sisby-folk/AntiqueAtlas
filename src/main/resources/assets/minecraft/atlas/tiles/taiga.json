@@ -1,6 +1,8 @@
 {
   "version": 2,
   "texture_sets": {
-    "default": "antique_atlas:pines"
+    "default": "antique_atlas:pines",
+    "high": "antique_atlas:pines_hills",
+    "peak": "antique_atlas:pines_hills"
   }
 }
