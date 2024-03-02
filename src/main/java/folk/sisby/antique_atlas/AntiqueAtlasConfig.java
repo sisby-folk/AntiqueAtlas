@@ -14,6 +14,7 @@ public class AntiqueAtlasConfig extends WrappedConfig {
     }
     public final UISection ui = new UISection();
     public final DebugSection debug = new DebugSection();
+    public final PerformanceSection performance = new PerformanceSection();
 
     public static final class UISection implements Section {
         public final Boolean doScaleMarkers = false;
@@ -43,6 +44,11 @@ public class AntiqueAtlasConfig extends WrappedConfig {
 
         @Comment("How to depict player death locations.")
         public final GraveStyle graveStyle = GraveStyle.EUPHEMISMS;
+    }
+
+    public static final class PerformanceSection implements Section {
+        @Comment("The maximum number of chunks to load onto the map per tick after entering a world.")
+        public final Integer chunkTickLimit = 100;
     }
 
     public static final class DebugSection implements Section {

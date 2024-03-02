@@ -21,7 +21,7 @@ import java.util.Map;
 import java.util.concurrent.ConcurrentLinkedDeque;
 
 public class WorldTiles {
-    private static final int CHUNK_TICK_LIMIT = 100;
+    private static final int CHUNK_TICK_LIMIT = AntiqueAtlas.CONFIG.performance.chunkTickLimit;
     private final Map<ChunkPos, TileType> biomeTiles = new HashMap<>();
     private final Map<ChunkPos, TileType> structureTiles = new HashMap<>();
     private final Rect tileScope = new Rect(0, 0, 0, 0);
