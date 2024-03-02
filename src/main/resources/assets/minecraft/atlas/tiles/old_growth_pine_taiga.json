@@ -1,9 +1,8 @@
 {
   "version": 2,
   "texture_sets": {
-    "default": "antique_atlas:pines",
-    "mid": "antique_atlas:pines_hills",
-    "high": "antique_atlas:pines_hills",
-    "peak": "antique_atlas:mountains"
+    "default": "antique_atlas:mega_taiga",
+    "high": "antique_atlas:mega_taiga_hills",
+    "peak": "antique_atlas:mega_taiga_hills"
   }
 }

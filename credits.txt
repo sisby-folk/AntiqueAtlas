@@ -106,6 +106,7 @@ Attributed to Hunternif:
     hills_bushes.png
     hills_cacti.png
     hills_grass.png
+    hills_gravel.png
     house.png
     house_small.png
     hut.png

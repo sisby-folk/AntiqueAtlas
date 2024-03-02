@@ -2,8 +2,7 @@
   "version": 2,
   "texture_sets": {
     "default": "antique_atlas:forest",
-    "mid": "antique_atlas:forest_hills",
     "high": "antique_atlas:forest_hills",
-    "peak": "antique_atlas:mountains"
+    "peak": "antique_atlas:sparse_forest_hills"
   }
 }

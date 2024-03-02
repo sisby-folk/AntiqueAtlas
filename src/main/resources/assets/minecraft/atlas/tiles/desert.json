@@ -1,4 +1,8 @@
 {
-  "version": 1,
-  "texture_set": "antique_atlas:desert"
+  "version": 2,
+  "texture_sets": {
+    "default": "antique_atlas:desert",
+    "high": "antique_atlas:desert_hills",
+    "peak": "antique_atlas:desert_hills"
+  }
 }

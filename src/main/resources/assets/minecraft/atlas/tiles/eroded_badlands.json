@@ -1,4 +1,8 @@
 {
-  "version": 1,
-  "texture_set": "antique_atlas:mesa"
+  "version": 2,
+  "texture_sets": {
+    "valley": "antique_atlas:soul_sand_valley",
+    "default": "antique_atlas:mesa",
+    "peak": "antique_atlas:plateau_mesa"
+  }
 }
