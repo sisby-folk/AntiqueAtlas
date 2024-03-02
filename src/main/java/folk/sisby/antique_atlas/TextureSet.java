@@ -27,7 +27,7 @@ public class TextureSet implements Comparable<TextureSet> {
     private final Set<Identifier> stitchToHorizontal = new HashSet<>();
     private final Set<Identifier> stitchToVertical = new HashSet<>();
     private final Identifier[] texturePaths;
-    private final boolean stitchesToNull = false;
+    private final boolean stitchesToNull = true;
     private boolean anisotropicStitching = false;
 
     /**

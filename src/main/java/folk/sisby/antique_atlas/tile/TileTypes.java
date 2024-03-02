@@ -14,6 +14,7 @@ public class TileTypes {
         NETHER_WASTES = new TileType(BiomeKeys.NETHER_WASTES.getValue()),
         THE_VOID = new TileType(BiomeKeys.THE_VOID.getValue()),
         RIVER = new TileType(BiomeKeys.RIVER.getValue()),
+        CLOUDS = new TileType(AntiqueAtlas.id("clouds")),
         TILE_RAVINE = new TileType(AntiqueAtlas.id("ravine")),
         SWAMP_WATER = new TileType(AntiqueAtlas.id("swamp_water")),
         SWAMP_HUT = new TileType(AntiqueAtlas.id("swamp_hut")),
