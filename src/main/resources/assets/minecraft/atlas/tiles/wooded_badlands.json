@@ -1,9 +1,9 @@
 {
   "version": 2,
   "texture_sets": {
-    "default": "antique_atlas:sparse_forest",
-    "mid": "antique_atlas:sparse_forest_hills",
-    "high": "antique_atlas:sparse_forest_hills",
+    "valley": "antique_atlas:soul_sand_valley",
+    "default": "antique_atlas:mesa",
+    "high": "antique_atlas:plateau_mesa_trees_low",
     "peak": "antique_atlas:plateau_mesa_trees"
   }
 }
