@@ -1,5 +1,6 @@
 package folk.sisby.antique_atlas;
 
+import com.google.common.collect.Multimap;
 import folk.sisby.surveyor.SurveyorWorld;
 import folk.sisby.surveyor.landmark.Landmark;
 import folk.sisby.surveyor.landmark.LandmarkType;
@@ -70,11 +71,11 @@ public class WorldMarkers {
         }));
     }
 
-    public void onLandmarkAdded(World world, WorldLandmarks ws, Landmark<?> landmark) {
+    public void onLandmarksAdded(World world, WorldLandmarks ws, Collection<Landmark<?>> landmark) {
         refresh(world);
     }
 
-    public void onLandmarkRemoved(ClientWorld world, WorldLandmarks landmarks, LandmarkType<?> landmark, BlockPos pos) {
+    public void onLandmarksRemoved(ClientWorld world, WorldLandmarks landmarks, Multimap<LandmarkType<?>, BlockPos> landmark) {
         refresh(world);
     }
 

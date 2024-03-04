@@ -7,12 +7,12 @@ import folk.sisby.antique_atlas.util.Rect;
 import folk.sisby.surveyor.SurveyorWorld;
 import folk.sisby.surveyor.structure.StructureSummary;
 import folk.sisby.surveyor.structure.WorldStructureSummary;
-import folk.sisby.surveyor.terrain.ChunkSummary;
 import folk.sisby.surveyor.terrain.WorldTerrainSummary;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.math.ChunkPos;
 import net.minecraft.world.World;
 
+import java.util.Collection;
 import java.util.Deque;
 import java.util.HashMap;
 import java.util.Map;
@@ -34,12 +34,14 @@ public class WorldTiles {
         AntiqueAtlas.LOGGER.info("[Antique Atlas] Beginning to load terrain for {} - {} chunks available.", world.getRegistryKey().getValue(), terrainDeque.size());
     }
 
-    public void onChunkAdded(World world, WorldTerrainSummary ws, ChunkPos pos, ChunkSummary chunk) {
-        if (!terrainDeque.contains(pos)) terrainDeque.add(pos);
+    public void onTerrainUpdated(World world, WorldTerrainSummary ws, Collection<ChunkPos> chunks) {
+        for (ChunkPos pos : chunks) {
+            if (!terrainDeque.contains(pos)) terrainDeque.add(pos);
+        }
     }
 
-    public void onStructureAdded(World world, WorldStructureSummary ws, StructureSummary structure) {
-        StructureTiles.getInstance().resolve(structureTiles, structure, world);
+    public void onStructuresAdded(World world, WorldStructureSummary ws, Collection<StructureSummary> summaries) {
+        summaries.forEach(structure -> StructureTiles.getInstance().resolve(structureTiles, structure, world));
     }
 
     public void tick(World world) {
