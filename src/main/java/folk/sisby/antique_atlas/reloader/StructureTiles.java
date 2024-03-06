@@ -6,8 +6,10 @@ import com.google.gson.Gson;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import folk.sisby.antique_atlas.AntiqueAtlas;
+import folk.sisby.antique_atlas.Marker;
 import folk.sisby.antique_atlas.structure.StructurePieceTile;
 import folk.sisby.antique_atlas.tile.TileType;
+import folk.sisby.surveyor.landmark.SimplePointLandmark;
 import folk.sisby.surveyor.structure.JigsawPieceSummary;
 import folk.sisby.surveyor.structure.StructurePieceSummary;
 import folk.sisby.surveyor.structure.StructureSummary;
@@ -35,8 +37,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
-import java.util.Set;
-import java.util.concurrent.ConcurrentHashMap;
 
 public class StructureTiles extends JsonDataLoader implements IdentifiableResourceReloadListener {
     private static final StructureTiles INSTANCE = new StructureTiles();
@@ -87,8 +87,6 @@ public class StructureTiles extends JsonDataLoader implements IdentifiableResour
     private final Multimap<Identifier, StructurePieceTile> jigsawTiles = HashMultimap.create();
 
     private final Map<Identifier, Integer> structurePiecePriority = new HashMap<>();
-
-    private final Set<Pair<RegistryKey<Structure>, ChunkPos>> VISITED_STRUCTURES = Collections.newSetFromMap(new ConcurrentHashMap<>());
 
     public StructureTiles() {
         super(new Gson(), "atlas/structures");
@@ -142,36 +140,16 @@ public class StructureTiles extends JsonDataLoader implements IdentifiableResour
         return tiles;
     }
 
-    public Map<ChunkPos, TileType> resolve(Map<ChunkPos, TileType> tiles, StructureSummary structure, World world) {
-        Identifier structureId = structure.getKey().getValue();
-
-        Pair<Identifier, Text> foundMarker = null;
-
-        if (structureMarkers.containsKey(structureId)) {
-            foundMarker = structureMarkers.get(structureId);
-        } else {
-            // TODO: something. we don't have structure tags anymore, naturally.
-//            Registry<Structure> structureRegistry = world.getRegistryManager().get(RegistryKeys.STRUCTURE);
-//            RegistryEntry<Structure> structureTag = structureRegistry.entryOf(structure.key());
-//            for (Map.Entry<TagKey<Structure>, Pair<Identifier, Text>> entry : structureTagMarkers.entrySet()) {
-//                if (structureTag.isIn(entry.getKey())) {
-//                    foundMarker = entry.getValue();
-//                    break;
-//                }
-//            }
+    public void resolve(Map<ChunkPos, TileType> outTiles, Map<RegistryKey<Structure>, Map<ChunkPos, Marker>> outMarkers, World world, RegistryKey<Structure> key, ChunkPos pos, StructureSummary summary, RegistryKey<StructureType<?>> type, Collection<TagKey<Structure>> tags) {
+        Pair<Identifier, Text> foundMarker = structureMarkers.get(key.getValue());
+        if (foundMarker == null) {
+            foundMarker = structureTagMarkers.entrySet().stream().filter(entry -> tags.contains(entry.getKey())).findFirst().map(Map.Entry::getValue).orElse(null);
         }
-
         if (foundMarker != null) {
-            Pair<RegistryKey<Structure>, ChunkPos> key = Pair.of(structure.getKey(), structure.getPos());
-            if (!VISITED_STRUCTURES.contains(key)) {
-                VISITED_STRUCTURES.add(key);
-                // TODO: AtlasAPI.getMarkerAPI().putGlobalMarker(world, false, foundMarker.getLeft(), foundMarker.getRight(), structureStart.getBoundingBox().getCenter().getX(), structureStart.getBoundingBox().getCenter().getZ());
-            }
+            outMarkers.computeIfAbsent(key, k -> new HashMap<>()).put(pos, new Marker(SimplePointLandmark.TYPE, foundMarker.getLeft(), foundMarker.getRight(), pos.getCenterAtY(0), false, null));
         }
 
-        structure.getChildren().forEach(p -> resolve(tiles, p, world));
-
-        return tiles;
+        summary.getChildren().forEach(p -> resolve(outTiles, p, world));
     }
 
     @Override

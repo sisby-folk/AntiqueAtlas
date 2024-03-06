@@ -1,30 +1,20 @@
 package folk.sisby.antique_atlas.mixin;
 
 import folk.sisby.antique_atlas.AntiqueAtlasWorld;
-import folk.sisby.antique_atlas.WorldMarkers;
-import folk.sisby.antique_atlas.WorldTiles;
+import folk.sisby.antique_atlas.WorldAtlasData;
 import net.minecraft.client.world.ClientWorld;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Unique;
 
 @Mixin(ClientWorld.class)
 public class MixinClientWorld implements AntiqueAtlasWorld {
-    private @Unique WorldTiles antiqueAtlas$worldTiles;
-    private @Unique WorldMarkers antiqueAtlas$worldMarkers;
+    private @Unique WorldAtlasData antiqueAtlas$worldAtlasData;
 
     @Override
-    public WorldTiles antiqueAtlas$getWorldTiles() {
-        if (antiqueAtlas$worldTiles == null) {
-            antiqueAtlas$worldTiles = new WorldTiles((ClientWorld) (Object) this);
+    public WorldAtlasData antiqueAtlas$getData() {
+        if (antiqueAtlas$worldAtlasData == null) {
+            antiqueAtlas$worldAtlasData = new WorldAtlasData((ClientWorld) (Object) this);
         }
-        return antiqueAtlas$worldTiles;
-    }
-
-    @Override
-    public WorldMarkers antiqueAtlas$getWorldMarkers() {
-        if (antiqueAtlas$worldMarkers == null) {
-            antiqueAtlas$worldMarkers = new WorldMarkers((ClientWorld) (Object) this);
-        }
-        return antiqueAtlas$worldMarkers;
+        return antiqueAtlas$worldAtlasData;
     }
 }

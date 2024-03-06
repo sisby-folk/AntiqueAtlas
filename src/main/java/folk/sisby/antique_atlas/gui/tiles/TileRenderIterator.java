@@ -1,7 +1,7 @@
 package folk.sisby.antique_atlas.gui.tiles;
 
 import folk.sisby.antique_atlas.TextureSet;
-import folk.sisby.antique_atlas.WorldTiles;
+import folk.sisby.antique_atlas.WorldAtlasData;
 import folk.sisby.antique_atlas.reloader.BiomeTextures;
 import folk.sisby.antique_atlas.gui.tiles.SubTile.Part;
 import folk.sisby.antique_atlas.gui.tiles.SubTile.Shape;
@@ -21,7 +21,7 @@ import java.util.Iterator;
  */
 public class TileRenderIterator implements Iterator<SubTileQuartet>, Iterable<SubTileQuartet> {
 
-    private final WorldTiles tiles;
+    private final WorldAtlasData tiles;
 
     /**
      * How many chunks a tile spans. Used for viewing the map at a scale below
@@ -79,7 +79,7 @@ public class TileRenderIterator implements Iterator<SubTileQuartet>, Iterable<Su
      */
     private int subtileX = -1, subtileY = -1;
 
-    public TileRenderIterator(WorldTiles tiles) {
+    public TileRenderIterator(WorldAtlasData tiles) {
         this.tiles = tiles;
         setScope(tiles.getScope());
     }

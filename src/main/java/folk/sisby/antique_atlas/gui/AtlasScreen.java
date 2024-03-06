@@ -5,8 +5,7 @@ import folk.sisby.antique_atlas.AntiqueAtlas;
 import folk.sisby.antique_atlas.AntiqueAtlasTextures;
 import folk.sisby.antique_atlas.AntiqueAtlasWorld;
 import folk.sisby.antique_atlas.MarkerType;
-import folk.sisby.antique_atlas.WorldMarkers;
-import folk.sisby.antique_atlas.WorldTiles;
+import folk.sisby.antique_atlas.WorldAtlasData;
 import folk.sisby.antique_atlas.reloader.BiomeTextures;
 import folk.sisby.antique_atlas.reloader.MarkerTypes;
 import folk.sisby.antique_atlas.gui.core.ButtonComponent;
@@ -216,10 +215,6 @@ public class AtlasScreen extends Component {
     // Markers =================================================================
 
     /**
-     * Global markers in the current dimension
-     */
-    private WorldMarkers worldMarkers;
-    /**
      * The marker highlighted by the eraser. Even though multiple markers may
      * be highlighted at the same time, only one of them will be deleted.
      */
@@ -234,7 +229,7 @@ public class AtlasScreen extends Component {
     // Misc stuff ==============================================================
 
     private PlayerEntity player;
-    private WorldTiles worldTiles;
+    private WorldAtlasData worldAtlasData;
 
     /**
      * Coordinate scale factor relative to the actual screen size.
@@ -358,10 +353,10 @@ public class AtlasScreen extends Component {
         markers.removeAllContent();
         markers.scrollTo(0, 0);
 
-        if (worldMarkers == null) return;
+        if (worldAtlasData == null) return;
 
         int contentY = 0;
-        for (Marker marker : worldMarkers.getAllMarkers()) {
+        for (Marker marker : worldAtlasData.getAllMarkers()) {
             if (!marker.visibleAhead() || marker.isGlobal()) {
                 continue;
             }
@@ -373,7 +368,7 @@ public class AtlasScreen extends Component {
                     followPlayer = false;
                     btnPosition.setEnabled(true);
                 } else if (state.is(DELETING_MARKER)) {
-                    if (!worldMarkers.deleteMarker(player.getEntityWorld(), marker)) return;
+                    if (!worldAtlasData.deleteMarker(player.getEntityWorld(), marker)) return;
                     updateBookmarkerList();
                     player.getEntityWorld().playSound(player, player.getBlockPos(),
                         SoundEvents.UI_CARTOGRAPHY_TABLE_TAKE_RESULT, SoundCategory.AMBIENT,
@@ -424,7 +419,7 @@ public class AtlasScreen extends Component {
                 state.switchTo(NORMAL);
                 return true;
             } else if (state.is(DELETING_MARKER) && hoveredMarker != null && isMouseOverMap && mouseState == 0) {
-                if (worldMarkers.deleteMarker(player.getEntityWorld(), hoveredMarker)) {
+                if (worldAtlasData.deleteMarker(player.getEntityWorld(), hoveredMarker)) {
                     updateBookmarkerList();
                     hoveredMarker = null;
                     player.getEntityWorld().playSound(player, player.getBlockPos(),
@@ -584,8 +579,7 @@ public class AtlasScreen extends Component {
 
     private void updateAtlasData() {
         if (MinecraftClient.getInstance().world != null) {
-            worldTiles = ((AntiqueAtlasWorld) MinecraftClient.getInstance().world).antiqueAtlas$getWorldTiles();
-            worldMarkers = ((AntiqueAtlasWorld) MinecraftClient.getInstance().world).antiqueAtlas$getWorldMarkers();
+            worldAtlasData = ((AntiqueAtlasWorld) MinecraftClient.getInstance().world).antiqueAtlas$getData();
         }
     }
 
@@ -682,7 +676,7 @@ public class AtlasScreen extends Component {
         RenderSystem.setShaderColor(1, 1, 1, 1);
         AntiqueAtlasTextures.BOOK.draw(context, getGuiX(), getGuiY());
 
-        if (worldTiles == null) return;
+        if (worldAtlasData == null) return;
 
         if (state.is(DELETING_MARKER)) {
             RenderSystem.setShaderColor(1, 1, 1, 0.5f);
@@ -704,7 +698,7 @@ public class AtlasScreen extends Component {
         int mapEndZ = MathUtil.roundToBase((int) Math.ceil(((double) MAP_HEIGHT / 2d - mapOffsetY + 2 * tileHalfSize) / mapScale / 16d), tile2ChunkScale);
         int mapStartScreenX = getGuiX() + WIDTH / 2 + (int) ((mapStartX << 4) * mapScale) + mapOffsetX;
         int mapStartScreenY = getGuiY() + HEIGHT / 2 + (int) ((mapStartZ << 4) * mapScale) + mapOffsetY;
-        TileRenderIterator tiles = new TileRenderIterator(worldTiles);
+        TileRenderIterator tiles = new TileRenderIterator(worldAtlasData);
         tiles.setScope(new Rect(mapStartX, mapStartZ, mapEndX, mapEndZ));
         tiles.setStep(tile2ChunkScale);
 
@@ -728,7 +722,7 @@ public class AtlasScreen extends Component {
         double iconScale = getIconScale();
 
         // Draw global markers:
-        for (Marker marker : worldMarkers.getAllMarkers()) {
+        for (Marker marker : worldAtlasData.getAllMarkers()) {
             renderMarker(context, marker, getIconScale());
         }
 
@@ -767,7 +761,7 @@ public class AtlasScreen extends Component {
 
             ChunkPos pos = new ChunkPos(new BlockPos(x, 0, z));
             String chunks = String.format("Chunks: %d / %d", pos.x, pos.z);
-            Identifier tile = worldTiles.getTile(pos.x, pos.z);
+            Identifier tile = worldAtlasData.getTile(pos.x, pos.z);
 
             if (tile == null) {
                 drawTooltip(Arrays.asList(Text.literal(coords), Text.literal(chunks)), textRenderer);
@@ -858,7 +852,7 @@ public class AtlasScreen extends Component {
 
         int markerX = worldXToScreenX(marker.pos().x());
         int markerY = worldZToScreenY(marker.pos().z());
-        if (!marker.visibleAhead() && worldTiles.getTile(marker.pos().toChunkPos()) == null) return;
+        if (!marker.visibleAhead() && worldAtlasData.getTile(marker.pos().toChunkPos()) == null) return;
         type.calculateMip(scale, mapScale);
         MarkerRenderInfo info = MarkerRenderInfo.ofType(type, scale, mapScale);
 
@@ -970,7 +964,7 @@ public class AtlasScreen extends Component {
         return 1;
     }
 
-    public WorldMarkers getWorldMarkers() {
-        return worldMarkers;
+    public WorldAtlasData getworldAtlasData() {
+        return worldAtlasData;
     }
 }
