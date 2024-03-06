@@ -3,7 +3,7 @@
 
 <center>
 An always-accessible abstract world map.<br/>
-A shredded up port of <a href="https://modrinth.com/mod/antique-atlas">Antique Atlas</a> by hunternif, as continued by kenkron, asiekierkierka, and tyra314.<br/>
+A shredded up port of <a href="https://modrinth.com/mod/antique-atlas">Antique Atlas</a> by Hunternif, as continued by Kenkron, asiekierkierka, and tyra314.<br/>
 Requires <a href="https://modrinth.com/mod/connector">Connector</a> and <a href="https://modrinth.com/mod/forgified-fabric-api">FFAPI</a> on forge.<br/>
 <i>Colloquially: Tinkerer's Atlas / Lay of the Land / antique-atlas</i>
 </center>
@@ -28,7 +28,7 @@ We didn't make this mod, but we do have opinions about it.
 #### Abstract Landscapes
 
 Tiles can reflect the biome, elevation, and water/lava content of that chunk. Structures will only appear once visited.<br/>
-Because individual blocks are not reprseented, this means players can't "peek" at the map for caves, structures, resources, or player bases.<br/>
+Because individual blocks are not represented, this means players can't "peek" at the map for caves, structures, resources, or player bases.<br/>
 
 #### Lay of the Land
 
@@ -70,8 +70,8 @@ Surveyor is being written with this mod in mind, and won't compromise its featur
 
 All mods are built on the work of many others.
 
-The art for antique atlas was created by Hunternif and lumiscosity.<br/>
-[Click here](https://github.com/sisby-folk/antique-atlas/blob/1.20/credits.txt) for more info.
+The art for antique atlas was created by [Hunternif](https://github.com/Hunternif) ([DA](https://www.deviantart.com/hunternif)) and [lumiscosity](https://github.com/lumiscosity) ([Neocities](https://lumiscosity.neocities.org/)).<br/>
+[Click here](https://github.com/sisby-folk/antique-atlas/blob/1.20/credits.txt) for detailed art credit.
 
 This mod is a fourth-gen offshoot, and relies heavily on contributions of many developers and artists before us.<br/>[We can't draw autotile to save our lives](https://github.com/AntiqueAtlasTeam/AntiqueAtlas/wiki/Editing-Textures) - feel free to contribute!
 
