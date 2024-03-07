@@ -2,9 +2,9 @@
   "version": 1,
   "data": {
     "textures": {
-      "antique_atlas:end_island": 1,
-      "antique_atlas:end_island_plants": 1,
-      "antique_atlas:end_island_plants2": 1
+      "antique_atlas:biome/end/islands/end_island": 1,
+      "antique_atlas:biome/end/highlands/end_island_plants": 1,
+      "antique_atlas:biome/end/highlands/end_island_plants2": 1
     },
     "stitch": {
       "antique_atlas:end_island": "both"

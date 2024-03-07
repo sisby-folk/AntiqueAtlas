@@ -2,9 +2,9 @@
   "version": 1,
   "data": {
     "textures": {
-      "antique_atlas:sand": 1,
-      "antique_atlas:sand2": 1,
-      "antique_atlas:sand_bushes": 1
+      "antique_atlas:biome/arid/desert/sand": 1,
+      "antique_atlas:biome/arid/desert/sand2": 1,
+      "antique_atlas:biome/arid/desert/sand_bushes": 1
     }
   }
 }

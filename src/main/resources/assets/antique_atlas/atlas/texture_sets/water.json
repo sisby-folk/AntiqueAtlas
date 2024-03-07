@@ -2,11 +2,13 @@
   "version": 1,
   "data": {
     "textures": {
-      "antique_atlas:water": 1,
-      "antique_atlas:water2": 1
+      "antique_atlas:feature/water/water": 1,
+      "antique_atlas:feature/water/water2": 1
     },
     "stitch": {
+      "antique_atlas:ice": "both",
       "antique_atlas:shore": "both",
+      "antique_atlas:snowy_shore": "both",
       "antique_atlas:rock_shore": "both",
       "antique_atlas:swamp": "both",
       "antique_atlas:swamp_water": "both"

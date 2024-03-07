@@ -2,9 +2,9 @@
   "version": 1,
   "data": {
     "textures": {
-      "antique_atlas:plateau_mesa_low": 1,
-      "antique_atlas:plateau_mesa_low2": 1,
-      "antique_atlas:plateau_trees_low": 1
+      "antique_atlas:biome/arid/badlands/plateau_mesa_low": 1,
+      "antique_atlas:biome/arid/badlands/plateau_mesa_low2": 1,
+      "antique_atlas:biome/arid/badlands/wooded/plateau_trees_low": 1
     },
     "stitch": {
       "antique_atlas:plateau_mesa_low": "both"

@@ -2,7 +2,7 @@
   "version": 1,
   "data": {
     "textures": {
-      "antique_atlas:fence": 1
+      "antique_atlas:structure/village/plains/fence": 1
     },
     "stitch": {
       "antique_atlas:house": "both"

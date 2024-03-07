@@ -2,8 +2,8 @@
   "version": 1,
   "data": {
     "textures": {
-      "antique_atlas:birch_hills": 1,
-      "antique_atlas:birch_hills2": 1
+      "antique_atlas:biome/woodland/forest/birch/birch_hills": 1,
+      "antique_atlas:biome/woodland/forest/birch/birch_hills2": 1
     }
   }
 }

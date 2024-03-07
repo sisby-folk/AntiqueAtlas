@@ -2,13 +2,13 @@
   "version": 1,
   "data": {
     "textures": {
-      "antique_atlas:savanna": 1,
-      "antique_atlas:savanna2": 1,
-      "antique_atlas:savanna3": 1,
-      "antique_atlas:grass": 1,
-      "antique_atlas:grass2": 2,
-      "antique_atlas:grass3": 2,
-      "antique_atlas:grass4": 2
+      "antique_atlas:biome/arid/savanna/savanna": 1,
+      "antique_atlas:biome/arid/savanna/savanna2": 1,
+      "antique_atlas:biome/arid/savanna/savanna3": 1,
+      "antique_atlas:biome/flatland/plains/grass": 1,
+      "antique_atlas:biome/flatland/plains/grass2": 2,
+      "antique_atlas:biome/flatland/plains/grass3": 2,
+      "antique_atlas:biome/flatland/plains/grass4": 2
     }
   }
 }

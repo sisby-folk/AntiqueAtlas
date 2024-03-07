@@ -2,10 +2,9 @@
   "version": 1,
   "data": {
     "textures": {
-      "antique_atlas:savanna_cliffs": 1,
-      "antique_atlas:savanna_cliffs2": 1,
-      "antique_atlas:savanna_cliffs3": 1,
-      "antique_atlas:cliffs": 1
+      "antique_atlas:biome/arid/savanna/windswept/savanna_cliffs": 1,
+      "antique_atlas:biome/arid/savanna/windswept/savanna_cliffs2": 1,
+      "antique_atlas:biome/arid/savanna/windswept/savanna_cliffs3": 1
     }
   }
 }

@@ -2,9 +2,9 @@
   "version": 1,
   "data": {
     "textures": {
-      "antique_atlas:forest": 1,
-      "antique_atlas:forest2": 1,
-      "antique_atlas:forest3": 1
+      "antique_atlas:biome/woodland/forest/forest": 1,
+      "antique_atlas:biome/woodland/forest/forest2": 1,
+      "antique_atlas:biome/woodland/forest/forest3": 1
     }
   }
 }

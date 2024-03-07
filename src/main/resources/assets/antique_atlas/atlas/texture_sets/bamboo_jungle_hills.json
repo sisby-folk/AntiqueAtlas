@@ -2,7 +2,7 @@
   "version": 1,
   "data": {
     "textures": {
-      "antique_atlas:bamboo_jungle_hills": 1
+      "antique_atlas:biome/woodland/jungle/bamboo/bamboo_jungle_hills": 1
     }
   }
 }

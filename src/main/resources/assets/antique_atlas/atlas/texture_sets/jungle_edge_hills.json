@@ -2,10 +2,10 @@
   "version": 1,
   "data": {
     "textures": {
-      "antique_atlas:jungle_edge_hills": 1,
-      "antique_atlas:jungle_edge_hills2": 1,
-      "antique_atlas:jungle_edge_hills3": 1,
-      "antique_atlas:hills_grass": 2
+      "antique_atlas:biome/woodland/jungle/sparse/jungle_edge_hills": 1,
+      "antique_atlas:biome/woodland/jungle/sparse/jungle_edge_hills2": 1,
+      "antique_atlas:biome/woodland/jungle/sparse/jungle_edge_hills3": 1,
+      "antique_atlas:biome/flatland/plains/grass_hills": 2
     }
   }
 }

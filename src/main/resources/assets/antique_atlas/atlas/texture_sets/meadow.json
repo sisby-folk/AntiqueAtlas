@@ -1,0 +1,20 @@
+{
+  "version": 1,
+  "data": {
+    "textures": {
+      "antique_atlas:biome/arid/savanna/plateau/plateau_grass": 1,
+      "antique_atlas:biome/arid/savanna/plateau/plateau_grass2": 1,
+      "antique_atlas:biome/arid/savanna/plateau/plateau_grass3": 1,
+      "antique_atlas:biome/highland/meadow/plateau_sparse_forest": 2,
+      "antique_atlas:biome/highland/meadow/plateau_sparse_forest2": 2
+    },
+    "stitch": {
+      "antique_atlas:plateau_mesa": "both",
+      "antique_atlas:plateau_mesa_trees": "both",
+      "antique_atlas:savanna_cliffs_clouds": "both",
+      "antique_atlas:mountains": "both",
+      "antique_atlas:mountains_naked": "both",
+      "antique_atlas:mountains_snow_caps": "both"
+    }
+  }
+}

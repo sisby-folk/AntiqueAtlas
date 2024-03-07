@@ -1,7 +1,7 @@
 {
   "version": 2,
   "texture_sets": {
-    "valley": "antique_atlas:soul_sand_valley",
+    "valley": "antique_atlas:mesa_desert",
     "default": "antique_atlas:mesa",
     "peak": "antique_atlas:plateau_mesa_low"
   }
