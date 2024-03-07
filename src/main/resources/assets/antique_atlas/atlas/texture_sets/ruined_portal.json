@@ -2,7 +2,7 @@
   "version": 1,
   "data": {
     "textures": {
-      "antique_atlas:ruined_portal": 1
+      "antique_atlas:structure/ruined_portal/ruined_portal": 1
     }
   }
 }

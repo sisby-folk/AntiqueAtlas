@@ -2,10 +2,13 @@
   "version": 1,
   "data": {
     "textures": {
-      "antique_atlas:grass": 1,
-      "antique_atlas:grass2": 1,
-      "antique_atlas:grass3": 1,
-      "antique_atlas:grass4": 1
+      "antique_atlas:biome/flatland/plains/grass": 1,
+      "antique_atlas:biome/flatland/plains/grass2": 1,
+      "antique_atlas:biome/flatland/plains/grass3": 1,
+      "antique_atlas:biome/flatland/plains/grass4": 1,
+      "antique_atlas:biome/flatland/plains/forest_sparse": 1,
+      "antique_atlas:biome/flatland/plains/forest_sparse2": 1,
+      "antique_atlas:biome/flatland/plains/forest_sparse3": 1
     },
     "stitch": {
       "antique_atlas:sunflowers": "both",

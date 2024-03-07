@@ -2,7 +2,7 @@
   "version": 1,
   "data": {
     "textures": {
-      "antique_atlas:church": 1
+      "antique_atlas:structure/village/plains/church": 1
     }
   }
 }

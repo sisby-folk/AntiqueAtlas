@@ -2,8 +2,8 @@
   "version": 1,
   "data": {
     "textures": {
-      "antique_atlas:lava": 1,
-      "antique_atlas:lava2": 1
+      "antique_atlas:feature/lava/lava": 1,
+      "antique_atlas:feature/lava/lava2": 1
     },
     "stitch": {
       "antique_atlas:lava_shore": "both",

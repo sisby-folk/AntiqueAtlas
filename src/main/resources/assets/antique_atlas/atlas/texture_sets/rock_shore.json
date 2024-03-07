@@ -5,7 +5,7 @@
       "water": "antique_atlas:water"
     },
     "textures": {
-      "antique_atlas:rock_shore": 1
+      "antique_atlas:biome/wetland/stony_shore/rock_shore": 1
     }
   }
 }

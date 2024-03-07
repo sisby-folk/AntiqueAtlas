@@ -2,9 +2,10 @@
   "version": 1,
   "data": {
     "textures": {
-      "antique_atlas:mesa": 1,
-      "antique_atlas:mesa3": 1,
-      "antique_atlas:mesa4": 1
+      "antique_atlas:biome/arid/badlands/mesa": 3,
+      "antique_atlas:biome/arid/badlands/mesa3": 3,
+      "antique_atlas:biome/arid/badlands/mesa2": 1,
+      "antique_atlas:biome/arid/badlands/mesa4": 3
     },
     "stitch": {
       "antique_atlas:plateau_mesa": "both",

@@ -2,9 +2,9 @@
   "version": 1,
   "data": {
     "textures": {
-      "antique_atlas:jungle_cliffs": 1,
-      "antique_atlas:jungle_cliffs2": 1,
-      "antique_atlas:bushes_cliffs": 1
+      "antique_atlas:biome/woodland/jungle/jungle_cliffs": 1,
+      "antique_atlas:biome/woodland/jungle/jungle_cliffs2": 1,
+      "antique_atlas:biome/woodland/jungle/jungle_cliffs3": 1
     }
   }
 }

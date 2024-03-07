@@ -5,9 +5,12 @@
       "water": "antique_atlas:water"
     },
     "textures": {
-      "antique_atlas:shore": 1,
-      "antique_atlas:shore2": 1,
-      "antique_atlas:shore3": 1
+      "antique_atlas:biome/wetland/beach/shore": 1,
+      "antique_atlas:biome/wetland/beach/shore2": 1,
+      "antique_atlas:biome/wetland/beach/shore3": 1
+    },
+    "stitch": {
+      "antique_atlas:snowy_shore": "both"
     }
   }
 }

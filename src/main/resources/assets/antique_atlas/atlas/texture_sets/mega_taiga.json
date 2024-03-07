@@ -2,8 +2,8 @@
   "version": 1,
   "data": {
     "textures": {
-      "antique_atlas:mega_taiga": 2,
-      "antique_atlas:mega_taiga2": 1
+      "antique_atlas:biome/woodland/taiga/old_growth_pine/mega_taiga": 2,
+      "antique_atlas:biome/woodland/taiga/old_growth_pine/mega_taiga2": 1
     }
   }
 }

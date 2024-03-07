@@ -2,8 +2,8 @@
   "version": 1,
   "data": {
     "textures": {
-      "antique_atlas:dense_forest": 1,
-      "antique_atlas:dense_forest2": 1
+      "antique_atlas:biome/woodland/forest/dark/dense_forest": 1,
+      "antique_atlas:biome/woodland/forest/dark/dense_forest2": 1
     }
   }
 }

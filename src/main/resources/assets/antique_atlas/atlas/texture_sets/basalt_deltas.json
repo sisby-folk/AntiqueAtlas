@@ -2,10 +2,10 @@
   "version": 1,
   "data": {
     "textures": {
-      "antique_atlas:basalt_columns1": 1,
-      "antique_atlas:basalt_columns2": 1,
-      "antique_atlas:basalt_columns3": 1,
-      "antique_atlas:basalt_columns_lava1": 1
+      "antique_atlas:biome/nether/basalt/basalt_columns1": 1,
+      "antique_atlas:biome/nether/basalt/basalt_columns2": 1,
+      "antique_atlas:biome/nether/basalt/basalt_columns3": 1,
+      "antique_atlas:biome/nether/basalt/basalt_columns_lava1": 1
     }
   }
 }

@@ -2,13 +2,13 @@
   "version": 1,
   "data": {
     "textures": {
-      "antique_atlas:snow": 5,
-      "antique_atlas:snow1": 3,
-      "antique_atlas:snow2": 3,
-      "antique_atlas:snow3": 1,
-      "antique_atlas:snow4": 1,
-      "antique_atlas:snow5": 1,
-      "antique_atlas:snow6": 1
+      "antique_atlas:biome/flatland/plains/snowy/snow": 5,
+      "antique_atlas:biome/flatland/plains/snowy/snow1": 3,
+      "antique_atlas:biome/flatland/plains/snowy/snow2": 3,
+      "antique_atlas:biome/flatland/plains/snowy/snow3": 1,
+      "antique_atlas:biome/flatland/plains/snowy/snow4": 1,
+      "antique_atlas:biome/flatland/plains/snowy/snow5": 1,
+      "antique_atlas:biome/flatland/plains/snowy/snow6": 1
     },
     "stitch": {
       "antique_atlas:snow_pines": "both",

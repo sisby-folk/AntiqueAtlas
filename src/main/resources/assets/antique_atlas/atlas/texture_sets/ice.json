@@ -2,10 +2,13 @@
   "version": 1,
   "data": {
     "textures": {
-      "antique_atlas:ice_noborder": 1
+      "antique_atlas:biome/nonland/ocean/frozen/ice": 1
+    },
+    "stitch": {
+      "antique_atlas:igloo": "both",
+      "antique_atlas:snow": "both",
+      "antique_atlas:snow_pines": "both",
+      "antique_atlas:ice_spikes": "both"
     }
-  },
-  "stitch": {
-    "antique_atlas:igloo": "both"
   }
 }

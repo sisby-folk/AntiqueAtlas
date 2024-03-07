@@ -2,9 +2,9 @@
   "version": 1,
   "data": {
     "textures": {
-      "antique_atlas:forest_flowers": 1,
-      "antique_atlas:forest_flowers2": 1,
-      "antique_atlas:forest_flowers3": 1
+      "antique_atlas:biome/woodland/forest/flower/forest_flowers": 1,
+      "antique_atlas:biome/woodland/forest/flower/forest_flowers2": 1,
+      "antique_atlas:biome/woodland/forest/flower/forest_flowers3": 1
     }
   }
 }

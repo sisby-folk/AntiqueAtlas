@@ -2,8 +2,8 @@
   "version": 1,
   "data": {
     "textures": {
-      "antique_atlas:ravine": 1,
-      "antique_atlas:ravine2": 1
+      "antique_atlas:feature/ravine/ravine": 1,
+      "antique_atlas:feature/ravine/ravine2": 1
     }
   }
 }

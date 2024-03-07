@@ -2,11 +2,11 @@
   "version": 1,
   "data": {
     "textures": {
-      "antique_atlas:swamp_hills": 1,
-      "antique_atlas:swamp_hills2": 1,
-      "antique_atlas:swamp_hills3": 1,
-      "antique_atlas:swamp_hills4": 1,
-      "antique_atlas:swamp_hills5": 1
+      "antique_atlas:biome/wetland/swamp/swamp_hills": 1,
+      "antique_atlas:biome/wetland/swamp/swamp_hills2": 1,
+      "antique_atlas:biome/wetland/swamp/swamp_hills3": 1,
+      "antique_atlas:biome/wetland/swamp/swamp_hills4": 1,
+      "antique_atlas:biome/wetland/swamp/swamp_hills5": 1
     }
   }
 }

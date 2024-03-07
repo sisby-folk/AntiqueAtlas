@@ -2,9 +2,9 @@
   "version": 1,
   "data": {
     "textures": {
-      "antique_atlas:mountains": 2,
-      "antique_atlas:mountains2": 2,
-      "antique_atlas:mountains5": 1
+      "antique_atlas:biome/highland/peaks/stony/mountains": 2,
+      "antique_atlas:biome/highland/peaks/frozen/mountains2": 2,
+      "antique_atlas:biome/highland/peaks/mountains5": 1
     },
     "stitch": {
       "antique_atlas:mountains": "both",
