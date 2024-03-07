@@ -6,7 +6,6 @@
       "antique_atlas:feature/water/water2": 1
     },
     "stitch": {
-      "antique_atlas:ice": "both",
       "antique_atlas:shore": "both",
       "antique_atlas:snowy_shore": "both",
       "antique_atlas:rock_shore": "both",

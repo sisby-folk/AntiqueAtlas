@@ -5,6 +5,7 @@
       "antique_atlas:biome/nonland/ocean/frozen/ice": 1
     },
     "stitch": {
+      "antique_atlas:water": "both",
       "antique_atlas:igloo": "both",
       "antique_atlas:snow": "both",
       "antique_atlas:snow_pines": "both",
