@@ -1,0 +1,16 @@
+{
+  "version": 1,
+  "data": {
+    "textures": {
+      "antique_atlas:biome/wetland/swamp/swamp_water_oak_swamp_1": 1,
+      "antique_atlas:biome/wetland/swamp/swamp_water_oak_swamp_2": 1,
+      "antique_atlas:biome/wetland/swamp/swamp_water_oak_swamp_3": 1
+    },
+    "stitch": {
+      "antique_atlas:biome/swamp_hills": "both",
+      "antique_atlas:feature/swamp_water": "both",
+      "antique_atlas:structure/swamp_hut": "both",
+      "antique_atlas:feature/water": "both"
+    }
+  }
+}

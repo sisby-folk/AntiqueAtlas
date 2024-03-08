@@ -1,0 +1,12 @@
+{
+  "version": 1,
+  "data": {
+    "textures": {
+      "antique_atlas:biome/arid/badlands/wooded/grass_oak_plateau": 1,
+      "antique_atlas:biome/arid/badlands/shrubs_plateau": 1
+    },
+    "stitch": {
+      "antique_atlas:biome/plateau_mesa_low": "both"
+    }
+  }
+}

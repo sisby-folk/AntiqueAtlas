@@ -1,0 +1,11 @@
+{
+  "version": 1,
+  "data": {
+    "textures": {
+      "antique_atlas:structure/village/plains/animal_pen": 1
+    },
+    "stitch": {
+      "antique_atlas:structure/house": "both"
+    }
+  }
+}

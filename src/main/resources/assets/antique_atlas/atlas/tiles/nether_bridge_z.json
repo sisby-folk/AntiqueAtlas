@@ -1,6 +1,6 @@
 {
   "version": 2,
   "texture_sets": {
-    "default": "antique_atlas:nether_bridge_z"
+    "default": "antique_atlas:structure/nether_bridge_z"
   }
 }

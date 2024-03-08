@@ -1,8 +1,8 @@
 {
   "version": 2,
   "texture_sets": {
-    "default": "antique_atlas:mega_spruce",
-    "high": "antique_atlas:mega_spruce_hills",
-    "peak": "antique_atlas:mega_spruce_hills"
+    "default": "antique_atlas:biome/mega_spruce",
+    "high": "antique_atlas:biome/mega_spruce_hills",
+    "peak": "antique_atlas:biome/mega_spruce_hills"
   }
 }

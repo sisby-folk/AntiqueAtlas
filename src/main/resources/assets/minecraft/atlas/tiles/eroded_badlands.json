@@ -1,7 +1,7 @@
 {
   "version": 2,
   "texture_sets": {
-    "default": "antique_atlas:bryce",
-    "peak": "antique_atlas:plateau_mesa"
+    "default": "antique_atlas:biome/bryce",
+    "peak": "antique_atlas:biome/plateau_mesa"
   }
 }

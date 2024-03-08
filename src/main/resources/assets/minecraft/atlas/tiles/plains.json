@@ -1,8 +1,8 @@
 {
   "version": 2,
   "texture_sets": {
-    "default": "antique_atlas:plains",
-    "high": "antique_atlas:plains_hills",
-    "peak": "antique_atlas:plains_hills"
+    "default": "antique_atlas:biome/plains",
+    "high": "antique_atlas:biome/plains_hills",
+    "peak": "antique_atlas:biome/plains_hills"
   }
 }

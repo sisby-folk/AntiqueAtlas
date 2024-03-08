@@ -1,0 +1,16 @@
+{
+  "version": 1,
+  "data": {
+    "textures": {
+      "antique_atlas:biome/highland/peaks/stony/smooth_mountains": 2,
+      "antique_atlas:biome/highland/peaks/frozen/rough_mountains": 2,
+      "antique_atlas:biome/highland/grove/smooth_spruce_mountains": 1,
+      "antique_atlas:biome/highland/windswept/forest/rough_oak_mountains": 1,
+      "antique_atlas:biome/highland/peaks/smooth_mountains_sparse": 2
+    },
+    "stitch": {
+      "antique_atlas:biome/mountains_naked": "both",
+      "antique_atlas:biome/mountains_snow_caps": "both"
+    }
+  }
+}

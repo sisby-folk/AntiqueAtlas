@@ -1,0 +1,23 @@
+{
+  "version": 1,
+  "data": {
+    "textures": {
+      "antique_atlas:feature/lava/crater_lava_1": 1,
+      "antique_atlas:feature/lava/crater_lava_2": 1
+    },
+    "stitch": {
+      "antique_atlas:biome/lava_shore": "both",
+      "antique_atlas:structure/nether_bridge": "both",
+      "antique_atlas:structure/nether_bridge_gate": "both",
+      "antique_atlas:structure/nether_tower": "both",
+      "antique_atlas:structure/nether_throne": "both",
+      "antique_atlas:structure/nether_wall": "both",
+      "antique_atlas:structure/nether_hall": "both",
+      "antique_atlas:structure/nether_fort_stairs": "both",
+      "antique_atlas:structure/nether_bridge_x": "both",
+      "antique_atlas:structure/nether_bridge_end_x": "both",
+      "antique_atlas:structure/nether_bridge_z": "both",
+      "antique_atlas:structure/nether_bridge_end_z": "both"
+    }
+  }
+}

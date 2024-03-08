@@ -1,8 +1,8 @@
 {
   "version": 2,
   "texture_sets": {
-    "default": "antique_atlas:tall_birch",
-    "high": "antique_atlas:tall_birch_hills",
-    "peak": "antique_atlas:tall_birch_hills"
+    "default": "antique_atlas:biome/tall_birch",
+    "high": "antique_atlas:biome/tall_birch_hills",
+    "peak": "antique_atlas:biome/tall_birch_hills"
   }
 }

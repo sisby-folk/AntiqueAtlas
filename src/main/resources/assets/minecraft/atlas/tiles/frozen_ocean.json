@@ -1,6 +1,6 @@
 {
   "version": 2,
   "texture_sets": {
-    "default": "antique_atlas:ice"
+    "default": "antique_atlas:biome/ice"
   }
 }
