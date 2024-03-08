@@ -1,6 +1,6 @@
 {
   "version": 2,
   "texture_sets": {
-    "default": "antique_atlas:nether_fort_stairs"
+    "default": "antique_atlas:structure/nether_fort_stairs"
   }
 }

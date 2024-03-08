@@ -1,6 +1,6 @@
 {
   "version": 2,
   "texture_sets": {
-    "default": "antique_atlas:ravine"
+    "default": "antique_atlas:feature/ravine"
   }
 }

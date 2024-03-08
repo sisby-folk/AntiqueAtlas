@@ -1,6 +1,6 @@
 {
   "version": 2,
   "texture_sets": {
-    "default": "antique_atlas:shore"
+    "default": "antique_atlas:biome/shore"
   }
 }

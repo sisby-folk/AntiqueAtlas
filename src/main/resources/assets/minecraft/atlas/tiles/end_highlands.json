@@ -1,6 +1,6 @@
 {
   "version": 2,
   "texture_sets": {
-    "default": "antique_atlas:end_island_plants"
+    "default": "antique_atlas:biome/end_island_plants"
   }
 }

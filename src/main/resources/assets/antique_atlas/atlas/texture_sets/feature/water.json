@@ -1,0 +1,16 @@
+{
+  "version": 1,
+  "data": {
+    "textures": {
+      "antique_atlas:feature/water/water_1": 1,
+      "antique_atlas:feature/water/water_2": 1
+    },
+    "stitch": {
+      "antique_atlas:biome/shore": "both",
+      "antique_atlas:biome/snowy_shore": "both",
+      "antique_atlas:biome/rock_shore": "both",
+      "antique_atlas:biome/swamp": "both",
+      "antique_atlas:feature/swamp_water": "both"
+    }
+  }
+}

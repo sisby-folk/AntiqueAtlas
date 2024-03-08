@@ -1,6 +1,6 @@
 {
   "version": 2,
   "texture_sets": {
-    "default": "antique_atlas:farmland_small"
+    "default": "antique_atlas:structure/farmland_small"
   }
 }

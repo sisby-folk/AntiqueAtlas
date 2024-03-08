@@ -1,8 +1,8 @@
 {
   "version": 2,
   "texture_sets": {
-    "default": "antique_atlas:snow",
-    "high": "antique_atlas:snow_hills",
-    "peak": "antique_atlas:snow_hills"
+    "default": "antique_atlas:biome/snow",
+    "high": "antique_atlas:biome/snow_hills",
+    "peak": "antique_atlas:biome/snow_hills"
   }
 }

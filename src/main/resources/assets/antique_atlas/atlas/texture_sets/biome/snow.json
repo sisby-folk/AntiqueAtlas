@@ -1,0 +1,25 @@
+{
+  "version": 1,
+  "data": {
+    "textures": {
+      "antique_atlas:biome/flatland/plains/snowy/snow_1": 5,
+      "antique_atlas:biome/flatland/plains/snowy/snow_2": 3,
+      "antique_atlas:biome/flatland/plains/snowy/snow_3": 3,
+      "antique_atlas:biome/flatland/plains/snowy/snow_pine_sparse_1": 1,
+      "antique_atlas:biome/flatland/plains/snowy/snow_pine_sparse_2": 1,
+      "antique_atlas:biome/flatland/plains/snowy/snow_spruce_sparse_1": 1,
+      "antique_atlas:biome/flatland/plains/snowy/snow_spruce_sparse_2": 1
+    },
+    "stitch": {
+      "antique_atlas:biome/snow_pines": "both",
+      "antique_atlas:biome/snow_hills": "both",
+      "antique_atlas:biome/ice_spikes": "both",
+      "antique_atlas:biome/snow_pines_hills": "both",
+      "antique_atlas:feature/ravine": "both",
+      "antique_atlas:feature/lava": "both",
+      "antique_atlas:feature/water": "both",
+      "antique_atlas:structure/igloo": "both",
+      "antique_atlas:structure/pillager_outpost": "both"
+    }
+  }
+}

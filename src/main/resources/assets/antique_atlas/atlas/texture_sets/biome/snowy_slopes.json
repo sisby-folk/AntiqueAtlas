@@ -1,0 +1,13 @@
+{
+  "version": 1,
+  "data": {
+    "textures": {
+      "antique_atlas:biome/highland/slopes/snowy/snow_cliffs": 1,
+      "antique_atlas:biome/highland/slopes/snowy/sharp_snow_hills_mountains": 1
+    },
+    "stitch": {
+      "antique_atlas:biome/mountains": "both",
+      "antique_atlas:biome/mountains_naked": "both"
+    }
+  }
+}

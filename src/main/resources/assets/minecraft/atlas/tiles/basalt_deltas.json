@@ -1,6 +1,6 @@
 {
   "version": 2,
   "texture_sets": {
-    "default": "antique_atlas:basalt_deltas"
+    "default": "antique_atlas:biome/basalt_deltas"
   }
 }

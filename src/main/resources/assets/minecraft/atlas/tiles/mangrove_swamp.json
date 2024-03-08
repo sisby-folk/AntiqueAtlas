@@ -1,6 +1,6 @@
 {
   "version": 2,
   "texture_sets": {
-    "default": "antique_atlas:mangrove_swamp"
+    "default": "antique_atlas:biome/mangrove_swamp"
   }
 }
