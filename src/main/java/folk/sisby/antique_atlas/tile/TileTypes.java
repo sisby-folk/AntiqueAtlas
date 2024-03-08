@@ -15,7 +15,7 @@ public class TileTypes {
         SWAMP_HUT = TileType.of(AntiqueAtlas.id("swamp_hut")),
         IGLOO = TileType.of(AntiqueAtlas.id("igloo")),
         DESERT_TEMPLE = TileType.of(AntiqueAtlas.id("desert_pyramid")),
-        JUNGLE_TEMPLE = TileType.of(AntiqueAtlas.id("jungle_pyramid")),
+        JUNGLE_TEMPLE = TileType.of(AntiqueAtlas.id("jungle_temple")),
         SHIPWRECK_BEACHED = TileType.of(AntiqueAtlas.id("shipwreck_beached")),
         RUINED_PORTAL = TileType.of(AntiqueAtlas.id("ruined_portal")),
         TILE_LAVA = TileType.of(AntiqueAtlas.id("lava")),
