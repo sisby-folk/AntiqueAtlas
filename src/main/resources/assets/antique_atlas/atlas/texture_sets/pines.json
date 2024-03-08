@@ -2,9 +2,9 @@
   "version": 1,
   "data": {
     "textures": {
-      "antique_atlas:biome/woodland/taiga/pines": 1,
-      "antique_atlas:biome/woodland/taiga/pines2": 1,
-      "antique_atlas:biome/woodland/taiga/pines3": 1
+      "antique_atlas:biome/woodland/taiga/pine": 1,
+      "antique_atlas:biome/woodland/taiga/pine_spruce_1": 1,
+      "antique_atlas:biome/woodland/taiga/pine_spruce_2": 1
     }
   }
 }

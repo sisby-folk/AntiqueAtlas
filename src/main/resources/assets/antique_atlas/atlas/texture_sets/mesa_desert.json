@@ -2,10 +2,10 @@
   "version": 1,
   "data": {
     "textures": {
-      "antique_atlas:biome/arid/desert/sand": 1,
-      "antique_atlas:biome/arid/desert/sand3": 1,
-      "antique_atlas:biome/arid/desert/sand_bushes": 1,
-      "antique_atlas:biome/arid/badlands/eroded/bryce3": 1
+      "antique_atlas:biome/arid/desert/sand_1": 1,
+      "antique_atlas:biome/arid/desert/sand_cacti_sparse": 1,
+      "antique_atlas:biome/arid/desert/sand_shrubs": 1,
+      "antique_atlas:biome/arid/badlands/eroded/sand_shrubs_terracotta_mixed": 1
     }
   }
 }

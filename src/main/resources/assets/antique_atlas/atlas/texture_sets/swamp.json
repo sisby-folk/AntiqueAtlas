@@ -2,9 +2,9 @@
   "version": 1,
   "data": {
     "textures": {
-      "antique_atlas:biome/wetland/swamp/swamp2": 1,
-      "antique_atlas:biome/wetland/swamp/swamp4": 1,
-      "antique_atlas:biome/wetland/swamp/swamp5": 1
+      "antique_atlas:biome/wetland/swamp/swamp_water_oak_swamp_1": 1,
+      "antique_atlas:biome/wetland/swamp/swamp_water_oak_swamp_2": 1,
+      "antique_atlas:biome/wetland/swamp/swamp_water_oak_swamp_3": 1
     },
     "stitch": {
       "antique_atlas:swamp_hills": "both",

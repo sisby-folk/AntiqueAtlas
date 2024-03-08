@@ -2,8 +2,8 @@
   "version": 1,
   "data": {
     "textures": {
-      "antique_atlas:biome/woodland/forest/dark/dense_forest_hills": 1,
-      "antique_atlas:biome/woodland/forest/dark/dense_forest_hills2": 1
+      "antique_atlas:biome/woodland/forest/dark/dark_oak_hills_1": 1,
+      "antique_atlas:biome/woodland/forest/dark/dark_oak_hills_2": 1
     }
   }
 }

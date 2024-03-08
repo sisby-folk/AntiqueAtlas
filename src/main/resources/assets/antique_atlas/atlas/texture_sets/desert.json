@@ -2,11 +2,11 @@
   "version": 1,
   "data": {
     "textures": {
-      "antique_atlas:biome/arid/desert/sand": 2,
-      "antique_atlas:biome/arid/desert/sand2": 2,
-      "antique_atlas:biome/arid/desert/sand3": 2,
-      "antique_atlas:biome/arid/desert/sand_bushes": 2,
-      "antique_atlas:biome/arid/desert/cacti": 1
+      "antique_atlas:biome/arid/desert/sand_1": 2,
+      "antique_atlas:biome/arid/desert/sand_2": 2,
+      "antique_atlas:biome/arid/desert/sand_cacti_sparse": 2,
+      "antique_atlas:biome/arid/desert/sand_shrubs": 2,
+      "antique_atlas:biome/arid/desert/sand_cacti": 1
     },
     "stitch": {
       "antique_atlas:mesa": "both"

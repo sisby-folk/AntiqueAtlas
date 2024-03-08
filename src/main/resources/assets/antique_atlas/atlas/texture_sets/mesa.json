@@ -2,10 +2,10 @@
   "version": 1,
   "data": {
     "textures": {
-      "antique_atlas:biome/arid/badlands/mesa": 3,
-      "antique_atlas:biome/arid/badlands/mesa3": 3,
-      "antique_atlas:biome/arid/badlands/mesa2": 1,
-      "antique_atlas:biome/arid/badlands/mesa4": 3
+      "antique_atlas:biome/arid/badlands/terracotta_fingers_shrubs": 3,
+      "antique_atlas:biome/arid/badlands/terracotta_tiered": 3,
+      "antique_atlas:biome/arid/badlands/terracotta_tiered_separate": 1,
+      "antique_atlas:biome/arid/badlands/terracotta_tiered_rough_fingers": 3
     },
     "stitch": {
       "antique_atlas:plateau_mesa": "both",

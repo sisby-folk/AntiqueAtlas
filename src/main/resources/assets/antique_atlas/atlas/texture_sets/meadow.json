@@ -2,11 +2,11 @@
   "version": 1,
   "data": {
     "textures": {
-      "antique_atlas:biome/arid/savanna/plateau/plateau_grass": 1,
-      "antique_atlas:biome/arid/savanna/plateau/plateau_grass2": 1,
-      "antique_atlas:biome/arid/savanna/plateau/plateau_grass3": 1,
-      "antique_atlas:biome/highland/meadow/plateau_sparse_forest": 2,
-      "antique_atlas:biome/highland/meadow/plateau_sparse_forest2": 2
+      "antique_atlas:biome/arid/savanna/plateau/grass_plateau_1": 1,
+      "antique_atlas:biome/arid/savanna/plateau/grass_plateau_2": 1,
+      "antique_atlas:biome/arid/savanna/plateau/grass_plateau_3": 1,
+      "antique_atlas:biome/highland/meadow/grass_oak_fancy_sparse_plateau_1": 2,
+      "antique_atlas:biome/highland/meadow/grass_oak_fancy_sparse_plateau_2": 2
     },
     "stitch": {
       "antique_atlas:plateau_mesa": "both",

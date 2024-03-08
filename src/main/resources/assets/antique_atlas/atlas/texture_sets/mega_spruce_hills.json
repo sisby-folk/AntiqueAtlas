@@ -2,8 +2,8 @@
   "version": 1,
   "data": {
     "textures": {
-      "antique_atlas:biome/woodland/taiga/old_growth_spruce/mega_spruce": 1,
-      "antique_atlas:biome/woodland/taiga/old_growth_spruce/mega_spruce2": 1
+      "antique_atlas:biome/woodland/taiga/old_growth_spruce/podzol_mega_spruce_spruce": 1,
+      "antique_atlas:biome/woodland/taiga/old_growth_spruce/podzol_spruce_mega_spruce": 1
     }
   }
 }

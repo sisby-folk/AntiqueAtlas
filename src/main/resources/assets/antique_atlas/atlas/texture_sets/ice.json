@@ -2,7 +2,7 @@
   "version": 1,
   "data": {
     "textures": {
-      "antique_atlas:biome/nonland/ocean/frozen/ice": 1
+      "antique_atlas:biome/nonland/ocean/frozen/ice_fluid": 1
     },
     "stitch": {
       "antique_atlas:water": "both",

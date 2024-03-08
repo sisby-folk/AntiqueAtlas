@@ -2,8 +2,8 @@
   "version": 1,
   "data": {
     "textures": {
-      "antique_atlas:feature/water/water": 1,
-      "antique_atlas:feature/water/water2": 1
+      "antique_atlas:feature/water/water_1": 1,
+      "antique_atlas:feature/water/water_2": 1
     },
     "stitch": {
       "antique_atlas:shore": "both",

@@ -2,9 +2,9 @@
   "version": 1,
   "data": {
     "textures": {
-      "antique_atlas:biome/highland/grove/cherry/cherry_grove": 3,
-      "antique_atlas:biome/highland/peaks/stony/mountains": 1,
-      "antique_atlas:biome/highland/peaks/frozen/mountains2": 1
+      "antique_atlas:biome/highland/grove/cherry/smooth_cherry_mountains": 3,
+      "antique_atlas:biome/highland/peaks/stony/smooth_mountains": 1,
+      "antique_atlas:biome/highland/peaks/frozen/rough_mountains": 1
     },
     "stitch": {
       "antique_atlas:mountains": "both",

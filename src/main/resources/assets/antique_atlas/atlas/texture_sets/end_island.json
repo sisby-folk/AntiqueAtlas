@@ -2,8 +2,8 @@
   "version": 1,
   "data": {
     "textures": {
-      "antique_atlas:biome/end/islands/end_island": 1,
-      "antique_atlas:biome/end/islands/end_island2": 1
+      "antique_atlas:biome/end/islands/end_island_1": 1,
+      "antique_atlas:biome/end/islands/end_island_2": 1
     },
     "stitch": {
       "antique_atlas:end_island_plants": "both"

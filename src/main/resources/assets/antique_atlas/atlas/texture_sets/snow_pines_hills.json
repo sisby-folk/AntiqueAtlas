@@ -2,9 +2,9 @@
   "version": 1,
   "data": {
     "textures": {
-      "antique_atlas:biome/woodland/taiga/snowy/snow_pines_hills": 1,
-      "antique_atlas:biome/woodland/taiga/snowy/snow_pines_hills2": 1,
-      "antique_atlas:biome/woodland/taiga/snowy/snow_pines_hills3": 1
+      "antique_atlas:biome/woodland/taiga/snowy/snow_pine_hills": 1,
+      "antique_atlas:biome/woodland/taiga/snowy/snow_pine_spruce_hills": 1,
+      "antique_atlas:biome/woodland/taiga/snowy/snow_spruce_pine_hills": 1
     },
     "stitch": {
       "antique_atlas:snow": "both",

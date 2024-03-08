@@ -3,7 +3,7 @@
   "data": {
     "textures": {
       "antique_atlas:biome/highland/windswept/hills/gravelly/hills": 1,
-      "antique_atlas:biome/highland/windswept/hills/gravelly/hills_gravel": 1
+      "antique_atlas:biome/highland/windswept/hills/gravelly/gravel_hills": 1
     }
   }
 }

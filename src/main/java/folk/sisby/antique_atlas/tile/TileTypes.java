@@ -18,7 +18,7 @@ public class TileTypes {
         SWAMP_WATER = new TileType(AntiqueAtlas.id("swamp_water")),
         SWAMP_HUT = new TileType(AntiqueAtlas.id("swamp_hut")),
         IGLOO = new TileType(AntiqueAtlas.id("igloo")),
-        DESERT_TEMPLE = new TileType(AntiqueAtlas.id("desert_pyramid")),
+        DESERT_PYRAMID = new TileType(AntiqueAtlas.id("desert_pyramid")),
         JUNGLE_TEMPLE = new TileType(AntiqueAtlas.id("jungle_temple")),
         SHIPWRECK_BEACHED = new TileType(AntiqueAtlas.id("shipwreck_beached")),
         RUINED_PORTAL = new TileType(AntiqueAtlas.id("ruined_portal")),

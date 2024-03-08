@@ -2,9 +2,9 @@
   "version": 1,
   "data": {
     "textures": {
-      "antique_atlas:biome/woodland/forest/flower/forest_flowers": 1,
-      "antique_atlas:biome/woodland/forest/flower/forest_flowers2": 1,
-      "antique_atlas:biome/woodland/forest/flower/forest_flowers3": 1
+      "antique_atlas:biome/woodland/forest/flower/daisies_hills": 1,
+      "antique_atlas:biome/woodland/forest/flower/cornflower_oak_hills": 1,
+      "antique_atlas:biome/woodland/forest/flower/dandelion_oak_sparse_hills": 1
     }
   }
 }
