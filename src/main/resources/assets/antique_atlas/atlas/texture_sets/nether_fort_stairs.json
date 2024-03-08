@@ -2,7 +2,7 @@
   "version": 1,
   "data": {
     "textures": {
-      "antique_atlas:structure/nether_fortress/nether_fort_stairs": 1
+      "antique_atlas:structure/fortress/nether/nether_fortress_corridor_nether_warts_room": 1
     },
     "stitch": {
       "antique_atlas:nether_bridge_gate": "both",

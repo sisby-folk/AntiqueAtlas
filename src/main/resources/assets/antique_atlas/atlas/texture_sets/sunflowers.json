@@ -2,10 +2,10 @@
   "version": 1,
   "data": {
     "textures": {
-      "antique_atlas:biome/flatland/plains/sunflower/sunflowers": 1,
-      "antique_atlas:biome/flatland/plains/sunflower/sunflowers2": 1,
-      "antique_atlas:biome/flatland/plains/grass3": 1,
-      "antique_atlas:biome/flatland/plains/grass4": 1
+      "antique_atlas:biome/flatland/plains/sunflower/sunflowers_1": 1,
+      "antique_atlas:biome/flatland/plains/sunflower/sunflowers_2": 1,
+      "antique_atlas:biome/flatland/plains/grass_2": 1,
+      "antique_atlas:biome/flatland/plains/grass_3": 1
     },
     "stitch": {
       "antique_atlas:plains": "both"

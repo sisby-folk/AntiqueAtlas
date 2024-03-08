@@ -2,8 +2,8 @@
   "version": 1,
   "data": {
     "textures": {
-      "antique_atlas:biome/flatland/ice_spikes/ice_spikes": 1,
-      "antique_atlas:biome/flatland/ice_spikes/ice_spikes2": 1
+      "antique_atlas:biome/flatland/ice_spikes/snow_ice_spikes": 1,
+      "antique_atlas:biome/flatland/ice_spikes/snow_ice_spikes_sparse": 1
     }
   }
 }

@@ -2,8 +2,8 @@
   "version": 1,
   "data": {
     "textures": {
-      "antique_atlas:biome/woodland/jungle/jungle": 1,
-      "antique_atlas:biome/woodland/jungle/jungle2": 1
+      "antique_atlas:biome/woodland/jungle/jungle_mega": 1,
+      "antique_atlas:biome/woodland/jungle/jungle_mega_palm": 1
     }
   }
 }

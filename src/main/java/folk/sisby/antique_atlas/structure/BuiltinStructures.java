@@ -25,7 +25,7 @@ public class BuiltinStructures {
         }
         StructureTiles.getInstance().registerTile(StructurePieceType.SWAMP_HUT, 10, TileTypes.SWAMP_HUT.getId(), BuiltinStructures::aboveGround);
         StructureTiles.getInstance().registerTile(StructurePieceType.IGLOO, 10, TileTypes.IGLOO.getId(), BuiltinStructures::topAboveGround);
-        StructureTiles.getInstance().registerTile(StructurePieceType.DESERT_TEMPLE, 10, TileTypes.DESERT_TEMPLE.getId(), BuiltinStructures::aboveGround);
+        StructureTiles.getInstance().registerTile(StructurePieceType.DESERT_TEMPLE, 10, TileTypes.DESERT_PYRAMID.getId(), BuiltinStructures::aboveGround);
         StructureTiles.getInstance().registerTile(StructurePieceType.JUNGLE_TEMPLE, 10, TileTypes.JUNGLE_TEMPLE.getId(), BuiltinStructures::aboveGround);
         StructureTiles.getInstance().registerTile(StructurePieceType.SHIPWRECK, 10, TileTypes.SHIPWRECK_BEACHED.getId(), BuiltinStructures::aboveGround);
 

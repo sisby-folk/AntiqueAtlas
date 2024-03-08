@@ -2,9 +2,9 @@
   "version": 1,
   "data": {
     "textures": {
-      "antique_atlas:biome/woodland/forest/forest_hills": 1,
-      "antique_atlas:biome/woodland/forest/forest_hills2": 1,
-      "antique_atlas:biome/woodland/forest/forest_hills3": 1
+      "antique_atlas:biome/woodland/forest/oak_fancy_mixed_hills_low": 1,
+      "antique_atlas:biome/woodland/forest/oak_mixed_hills_low": 1,
+      "antique_atlas:biome/woodland/forest/grass_oak_mixed_hills_low": 1
     }
   }
 }

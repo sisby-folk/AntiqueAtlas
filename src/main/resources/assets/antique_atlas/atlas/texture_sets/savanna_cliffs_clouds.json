@@ -2,15 +2,15 @@
   "version": 1,
   "data": {
     "textures": {
-      "antique_atlas:biome/arid/savanna/plateau/plateau_grass": 1,
-      "antique_atlas:biome/arid/savanna/plateau/plateau_grass2": 1,
-      "antique_atlas:biome/arid/savanna/plateau/plateau_grass3": 1,
-      "antique_atlas:biome/arid/savanna/plateau/plateau_savanna2": 1,
-      "antique_atlas:biome/arid/savanna/plateau/plateau_savanna3": 1,
+      "antique_atlas:biome/arid/savanna/plateau/grass_plateau_1": 1,
+      "antique_atlas:biome/arid/savanna/plateau/grass_plateau_2": 1,
+      "antique_atlas:biome/arid/savanna/plateau/grass_plateau_3": 1,
+      "antique_atlas:biome/arid/savanna/plateau/grass_acacia_plateau_2": 1,
+      "antique_atlas:biome/arid/savanna/plateau/grass_acacia_plateau_3": 1,
       "antique_atlas:biome/arid/savanna/windswept/cliffs_clouds": 1,
-      "antique_atlas:biome/arid/savanna/windswept/savanna_cliffs_clouds": 1,
-      "antique_atlas:biome/arid/savanna/windswept/savanna_cliffs_clouds2": 1,
-      "antique_atlas:biome/arid/savanna/windswept/savanna_cliffs_clouds3": 1
+      "antique_atlas:biome/arid/savanna/windswept/acacia_cliffs_clouds_1": 1,
+      "antique_atlas:biome/arid/savanna/windswept/acacia_cliffs_clouds_2": 1,
+      "antique_atlas:biome/arid/savanna/windswept/acacia_cliffs_clouds_3": 1
     },
     "stitch": {
       "antique_atlas:plateau_mesa": "both",

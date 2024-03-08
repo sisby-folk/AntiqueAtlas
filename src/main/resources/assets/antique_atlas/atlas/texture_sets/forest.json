@@ -2,9 +2,9 @@
   "version": 1,
   "data": {
     "textures": {
-      "antique_atlas:biome/woodland/forest/forest": 1,
-      "antique_atlas:biome/woodland/forest/forest2": 1,
-      "antique_atlas:biome/woodland/forest/forest3": 1
+      "antique_atlas:biome/woodland/forest/oak_fancy_mixed": 1,
+      "antique_atlas:biome/woodland/forest/oak_mixed": 1,
+      "antique_atlas:biome/woodland/forest/grass_oak_mixed": 1
     }
   }
 }

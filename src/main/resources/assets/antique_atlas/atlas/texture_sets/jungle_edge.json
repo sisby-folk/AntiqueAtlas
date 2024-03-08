@@ -2,12 +2,12 @@
   "version": 1,
   "data": {
     "textures": {
-      "antique_atlas:biome/woodland/jungle/sparse/jungle_edge": 1,
-      "antique_atlas:biome/woodland/jungle/sparse/jungle_edge2": 1,
-      "antique_atlas:biome/woodland/jungle/sparse/jungle_edge3": 1,
-      "antique_atlas:biome/flatland/plains/grass2": 1,
-      "antique_atlas:biome/flatland/plains/grass3": 1,
-      "antique_atlas:biome/flatland/plains/grass4": 1
+      "antique_atlas:biome/woodland/jungle/sparse/grass_palm": 1,
+      "antique_atlas:biome/woodland/jungle/sparse/grass_oak_swamp_1": 1,
+      "antique_atlas:biome/woodland/jungle/sparse/grass_oak_swamp_2": 1,
+      "antique_atlas:biome/flatland/plains/grass_1": 1,
+      "antique_atlas:biome/flatland/plains/grass_2": 1,
+      "antique_atlas:biome/flatland/plains/grass_3": 1
     }
   }
 }

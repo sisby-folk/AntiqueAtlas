@@ -2,7 +2,7 @@
   "version": 1,
   "data": {
     "textures": {
-      "antique_atlas:structure/nether_fortress/nether_bridge_end_z": 1
+      "antique_atlas:structure/fortress/nether/nether_fortress_bridge_end_vertical": 1
     },
     "stitch": {
       "antique_atlas:nether_bridge_gate": "vertical",

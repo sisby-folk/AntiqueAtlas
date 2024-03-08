@@ -5,8 +5,8 @@
       "water": "antique_atlas:lava"
     },
     "textures": {
-      "antique_atlas:biome/nether/wastes/lava_shore": 1,
-      "antique_atlas:biome/nether/wastes/lava_shore2": 1
+      "antique_atlas:biome/nether/wastes/nether_shore_lava_1": 1,
+      "antique_atlas:biome/nether/wastes/nether_shore_lava_2": 1
     }
   }
 }
