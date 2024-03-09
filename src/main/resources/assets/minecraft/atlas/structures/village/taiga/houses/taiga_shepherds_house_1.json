@@ -1,5 +1,5 @@
 {
   "version": 1,
-  "tile": "antique_atlas:npc_village_library",
+  "tile": "antique_atlas:structure/village/plains/small_house",
   "priority": 105
 }

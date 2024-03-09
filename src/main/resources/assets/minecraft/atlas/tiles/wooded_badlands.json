@@ -1,9 +1,9 @@
 {
   "version": 2,
   "texture_sets": {
-    "valley": "antique_atlas:biome/soul_sand_valley",
-    "default": "antique_atlas:biome/mesa",
-    "high": "antique_atlas:biome/plateau_mesa_trees_low",
-    "peak": "antique_atlas:biome/plateau_mesa_trees"
+    "valley": "antique_atlas:biome/badlands_valley",
+    "default": "antique_atlas:biome/badlands",
+    "high": "antique_atlas:biome/wooded_badlands_high",
+    "peak": "antique_atlas:biome/wooded_badlands_peak"
   }
 }

@@ -1,0 +1,19 @@
+{
+  "version": 1,
+  "data": {
+    "textures": {
+      "antique_atlas:structure/fortress/nether/nether_fortress_bridge_platform": 1
+    },
+    "stitch": {
+      "antique_atlas:structure/fortress/nether/nether_fortress_bridge_small_crossing": "both",
+      "antique_atlas:structure/fortress/nether/nether_fortress_bridge_crossing": "both",
+      "antique_atlas:structure/fortress/nether/nether_fortress_corridor_exit": "both",
+      "antique_atlas:structure/fortress/nether/nether_fortress_bridge_stairs": "both",
+      "antique_atlas:structure/fortress/nether/nether_fortress_corridor_nether_warts_room": "both",
+      "antique_atlas:structure/fortress/nether/nether_fortress_bridge_vertical": "vertical",
+      "antique_atlas:structure/fortress/nether/nether_fortress_bridge_end_vertical": "vertical",
+      "antique_atlas:structure/fortress/nether/nether_fortress_bridge_horizontal": "horizontal",
+      "antique_atlas:structure/fortress/nether/nether_fortress_bridge_end_horizontal": "horizontal"
+    }
+  }
+}

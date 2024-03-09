@@ -9,7 +9,7 @@
       "antique_atlas:biome/arid/desert/sand_cacti": 1
     },
     "stitch": {
-      "antique_atlas:biome/mesa": "both"
+      "antique_atlas:biome/badlands": "both"
     }
   }
 }

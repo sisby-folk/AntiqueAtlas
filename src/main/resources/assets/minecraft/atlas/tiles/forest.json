@@ -2,7 +2,7 @@
   "version": 2,
   "texture_sets": {
     "default": "antique_atlas:biome/forest",
-    "high": "antique_atlas:biome/forest_hills",
-    "peak": "antique_atlas:biome/forest_hills"
+    "high": "antique_atlas:biome/forest_high",
+    "peak": "antique_atlas:biome/forest_high"
   }
 }

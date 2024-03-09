@@ -1,0 +1,16 @@
+{
+  "version": 1,
+  "data": {
+    "textures": {
+      "antique_atlas:biome/nonland/ocean/frozen/ice": 1
+    },
+    "stitch": {
+      "antique_atlas:feature/water": "both",
+      "antique_atlas:structure/igloo": "both",
+      "antique_atlas:biome/snowy_plains": "both",
+      "antique_atlas:biome/snowy_taiga": "both",
+      "antique_atlas:biome/ice_spikes": "both",
+      "antique_atlas:biome/deep_frozen_ocean": "both"
+    }
+  }
+}

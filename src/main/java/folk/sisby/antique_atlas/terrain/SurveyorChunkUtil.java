@@ -37,6 +37,7 @@ public class SurveyorChunkUtil {
     public static final List<TileType> CUSTOM_TILES = List.of(
         TileTypes.NETHER_WASTES,
         TileTypes.THE_VOID,
+        TileTypes.END_VOID,
         TileTypes.RIVER,
         TileTypes.TILE_RAVINE,
         TileTypes.SWAMP_WATER,
@@ -97,15 +98,15 @@ public class SurveyorChunkUtil {
 
     public static TileType terrainToTile(World world, ChunkPos pos) {
         Registry<Biome> biomeRegistry = world.getRegistryManager().get(RegistryKeys.BIOME);
-        int defaultTile = CUSTOM_TILES.indexOf(world.getDimension().hasCeiling() ? TileTypes.NETHER_WASTES : TileTypes.THE_VOID);
+        int defaultTile = CUSTOM_TILES.indexOf(world.getDimension().hasCeiling() ? TileTypes.NETHER_WASTES : (world.getRegistryKey() == World.END ? TileTypes.END_VOID : TileTypes.THE_VOID));
+        boolean checkRavines = world.getDimension().hasSkyLight();
 
         int worldHeight = world.getTopY();
         ChunkSummary chunk = ((SurveyorWorld) world).surveyor$getWorldSummary().terrain().get(pos);
         @Nullable LayerSummary.Raw summary = chunk.toSingleLayer(null, null, world.getTopY());
         IndexedIterable<Biome> biomePalette = ((SurveyorWorld) world).surveyor$getWorldSummary().terrain().getBiomePalette(pos);
         IndexedIterable<Block> blockPalette = ((SurveyorWorld) world).surveyor$getWorldSummary().terrain().getBlockPalette(pos);
-        if (summary == null) return null;
-
+        if (summary == null) return CUSTOM_TILES.get(defaultTile);
 
         int elevationSize = TileElevation.values().length;
         int elevationCount = elevationSize + 1;
@@ -122,7 +123,7 @@ public class SurveyorChunkUtil {
             Block block = blockPalette.get(summary.blocks()[i]);
             Biome biome = biomePalette.get(summary.biomes()[i]);
 
-            if (height - world.getSeaLevel() < -7) {
+            if (checkRavines && height - world.getSeaLevel() < -7) {
                 possibleTiles[elevationSize][biomeCount + CUSTOM_TILES.indexOf(TileTypes.TILE_RAVINE)] += RAVINE_PRIORITY;
             } else if (summary.waterDepths()[i] > 0) {
                 possibleTiles[elevationSize][biomeCount + CUSTOM_TILES.indexOf(isSwamp(biomeRegistry, biome) ? TileTypes.SWAMP_WATER : TileTypes.RIVER)] += WATER_PRIORITY;
@@ -137,7 +138,7 @@ public class SurveyorChunkUtil {
 
     public static TileType terrainToTileNether(World world, ChunkPos pos) {
         Registry<Biome> biomeRegistry = world.getRegistryManager().get(RegistryKeys.BIOME);
-        int defaultTile = CUSTOM_TILES.indexOf(world.getDimension().hasCeiling() ? TileTypes.NETHER_WASTES : TileTypes.THE_VOID);
+        int defaultTile = CUSTOM_TILES.indexOf(world.getDimension().hasCeiling() ? TileTypes.NETHER_WASTES : (world.getRegistryKey() == World.END ? TileTypes.END_VOID : TileTypes.THE_VOID));
 
         ChunkSummary chunk = ((SurveyorWorld) world).surveyor$getWorldSummary().terrain().get(pos);
         @Nullable LayerSummary.Raw lowSummary = chunk.toSingleLayer(null, NETHER_SCAN_HEIGHT, world.getTopY());

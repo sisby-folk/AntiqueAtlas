@@ -1,0 +1,13 @@
+{
+  "version": 1,
+  "data": {
+    "textures": {
+      "antique_atlas:biome/arid/badlands/shrubs_plateau": 1
+    },
+    "stitch": {
+      "antique_atlas:biome/wooded_badlands_peak": "both",
+      "antique_atlas:biome/windswept_savanna_peak": "both",
+      "antique_atlas:biome/savanna_plateau": "both"
+    }
+  }
+}

@@ -878,10 +878,6 @@ public class AtlasScreen extends Component {
             RenderSystem.setShaderColor(1, 1, 1, 1);
         }
 
-        if (AntiqueAtlas.CONFIG.debug.debugRender) {
-            System.out.println("Rendering Marker: " + info.tex);
-        }
-
         if (markerX <= getGuiX() + MAP_BORDER_WIDTH || markerX >= getGuiX() + MAP_WIDTH + MAP_BORDER_WIDTH
             || markerY <= getGuiY() + MAP_BORDER_HEIGHT || markerY >= getGuiY() + MAP_HEIGHT + MAP_BORDER_HEIGHT
         ) {

@@ -1,5 +1,5 @@
 {
   "version": 1,
-  "tile": "antique_atlas:npc_village_butchers_shop",
+  "tile": "antique_atlas:structure/village/plains/butcher_shop",
   "priority": 90
 }

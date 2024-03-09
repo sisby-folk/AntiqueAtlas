@@ -1,0 +1,16 @@
+{
+  "version": 1,
+  "data": {
+    "shore": {
+      "water": "antique_atlas:feature/water"
+    },
+    "textures": {
+      "antique_atlas:biome/wetland/beach/sand_shore_water_1": 1,
+      "antique_atlas:biome/wetland/beach/sand_shore_water_2": 1,
+      "antique_atlas:biome/wetland/beach/sand_shore_water_3": 1
+    },
+    "stitch": {
+      "antique_atlas:biome/snowy_beach": "both"
+    }
+  }
+}

@@ -1,5 +1,5 @@
 {
   "version": 1,
-  "tile": "antique_atlas:npc_village_church",
+  "tile": "antique_atlas:structure/temple",
   "priority": 90
 }

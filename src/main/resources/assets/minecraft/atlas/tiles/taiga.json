@@ -1,8 +1,8 @@
 {
   "version": 2,
   "texture_sets": {
-    "default": "antique_atlas:biome/pines",
-    "high": "antique_atlas:biome/pines_hills",
-    "peak": "antique_atlas:biome/pines_hills"
+    "default": "antique_atlas:biome/taiga",
+    "high": "antique_atlas:biome/taiga_high",
+    "peak": "antique_atlas:biome/taiga_high"
   }
 }

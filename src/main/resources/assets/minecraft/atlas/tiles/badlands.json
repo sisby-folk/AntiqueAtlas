@@ -1,8 +1,8 @@
 {
   "version": 2,
   "texture_sets": {
-    "valley": "antique_atlas:biome/mesa_desert",
-    "default": "antique_atlas:biome/mesa",
-    "peak": "antique_atlas:biome/plateau_mesa_low"
+    "valley": "antique_atlas:biome/badlands_valley",
+    "default": "antique_atlas:biome/badlands",
+    "peak": "antique_atlas:biome/badlands_peak"
   }
 }

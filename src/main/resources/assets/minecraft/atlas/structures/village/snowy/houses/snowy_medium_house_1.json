@@ -1,5 +1,5 @@
 {
   "version": 1,
-  "tile": "antique_atlas:npc_village_small_house",
+  "tile": "antique_atlas:structure/village/desert/small_house",
   "priority": 100
 }

@@ -116,7 +116,7 @@ public class BiomeTextures extends JsonDataLoader implements IdentifiableResourc
         if (MinecraftClient.getInstance().world == null) return Optional.empty();
 
         if (biome.isIn(ConventionalBiomeTags.VOID)) {
-            return Optional.of(AntiqueAtlas.id("end_void"));
+            return Optional.of(AntiqueAtlas.id("the_void"));
         }
 
         if (biome.isIn(BiomeTags.IS_END) || biome.isIn(ConventionalBiomeTags.IN_THE_END) || biome.isIn(ConventionalBiomeTags.END_ISLANDS)) {

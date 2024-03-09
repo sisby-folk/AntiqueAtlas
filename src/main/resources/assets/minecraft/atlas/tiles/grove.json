@@ -1,9 +1,6 @@
 {
   "version": 2,
   "texture_sets": {
-    "default": "antique_atlas:biome/snow_pines",
-    "mid": "antique_atlas:biome/snow_pines_hills",
-    "high": "antique_atlas:biome/snow_pines_hills",
-    "peak": "antique_atlas:biome/snow_pines_hills"
+    "default": "antique_atlas:biome/grove"
   }
 }
