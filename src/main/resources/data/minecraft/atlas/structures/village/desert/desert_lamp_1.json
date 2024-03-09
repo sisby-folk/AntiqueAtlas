@@ -1,5 +1,5 @@
 {
   "version": 1,
-  "tile": "antique_atlas:npc_village_torch",
+  "tile": "antique_atlas:structure/village/plains/lamp",
   "priority": 120
 }

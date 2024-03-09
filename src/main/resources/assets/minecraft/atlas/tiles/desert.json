@@ -2,7 +2,7 @@
   "version": 2,
   "texture_sets": {
     "default": "antique_atlas:biome/desert",
-    "high": "antique_atlas:biome/desert_hills",
-    "peak": "antique_atlas:biome/desert_hills"
+    "high": "antique_atlas:biome/desert_high",
+    "peak": "antique_atlas:biome/desert_high"
   }
 }

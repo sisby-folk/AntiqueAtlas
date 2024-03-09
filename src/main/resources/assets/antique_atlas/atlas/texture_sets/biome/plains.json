@@ -11,8 +11,8 @@
       "antique_atlas:biome/flatland/plains/grass_oak_fancy_sparse": 1
     },
     "stitch": {
-      "antique_atlas:biome/sunflowers": "both",
-      "antique_atlas:structure/pillager_outpost": "both"
+      "antique_atlas:biome/sunflower_plains": "both",
+      "antique_atlas:structure/outpost/pillager_outpost": "both"
     }
   }
 }

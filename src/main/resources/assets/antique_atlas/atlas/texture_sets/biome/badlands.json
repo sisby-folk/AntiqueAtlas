@@ -1,0 +1,15 @@
+{
+  "version": 1,
+  "data": {
+    "textures": {
+      "antique_atlas:biome/arid/badlands/terracotta_fingers_shrubs": 3,
+      "antique_atlas:biome/arid/badlands/terracotta_tiered": 3,
+      "antique_atlas:biome/arid/badlands/terracotta_tiered_separate": 1,
+      "antique_atlas:biome/arid/badlands/terracotta_tiered_rough_fingers": 3
+    },
+    "stitch": {
+      "antique_atlas:biome/badlands_peak": "both",
+      "antique_atlas:biome/wooded_badlands_peak": "both"
+    }
+  }
+}

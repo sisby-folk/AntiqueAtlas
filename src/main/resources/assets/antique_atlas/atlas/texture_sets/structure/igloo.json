@@ -7,7 +7,8 @@
   },
   "stitch": {
     "antique_atlas:biome/snow": "both",
-    "antique_atlas:biome/ice": "both",
-    "antique_atlas:biome/snow_pines": "both"
+    "antique_atlas:biome/frozen_ocean": "both",
+    "antique_atlas:biome/frozen_river": "both",
+    "antique_atlas:biome/snowy_taiga": "both"
   }
 }

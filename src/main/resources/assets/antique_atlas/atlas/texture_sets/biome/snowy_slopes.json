@@ -6,8 +6,7 @@
       "antique_atlas:biome/highland/slopes/snowy/sharp_snow_hills_mountains": 1
     },
     "stitch": {
-      "antique_atlas:biome/mountains": "both",
-      "antique_atlas:biome/mountains_naked": "both"
+      "antique_atlas:biome/stony_peaks": "both"
     }
   }
 }

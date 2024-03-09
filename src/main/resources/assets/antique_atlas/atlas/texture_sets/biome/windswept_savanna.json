@@ -1,0 +1,10 @@
+{
+  "version": 1,
+  "data": {
+    "textures": {
+      "antique_atlas:biome/arid/savanna/windswept/acacia_cliffs_1": 1,
+      "antique_atlas:biome/arid/savanna/windswept/acacia_cliffs_2": 1,
+      "antique_atlas:biome/arid/savanna/windswept/acacia_cliffs_3": 1
+    }
+  }
+}

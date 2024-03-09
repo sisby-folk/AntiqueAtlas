@@ -2,7 +2,7 @@
   "version": 2,
   "texture_sets": {
     "default": "antique_atlas:biome/swamp",
-    "high": "antique_atlas:biome/swamp_hills",
-    "peak": "antique_atlas:biome/swamp_hills"
+    "high": "antique_atlas:biome/swamp_high",
+    "peak": "antique_atlas:biome/swamp_high"
   }
 }

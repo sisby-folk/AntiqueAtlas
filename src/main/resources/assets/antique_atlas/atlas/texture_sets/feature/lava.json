@@ -6,18 +6,18 @@
       "antique_atlas:feature/lava/crater_lava_2": 1
     },
     "stitch": {
-      "antique_atlas:biome/lava_shore": "both",
-      "antique_atlas:structure/nether_bridge": "both",
-      "antique_atlas:structure/nether_bridge_gate": "both",
-      "antique_atlas:structure/nether_tower": "both",
-      "antique_atlas:structure/nether_throne": "both",
-      "antique_atlas:structure/nether_wall": "both",
-      "antique_atlas:structure/nether_hall": "both",
-      "antique_atlas:structure/nether_fort_stairs": "both",
-      "antique_atlas:structure/nether_bridge_x": "both",
-      "antique_atlas:structure/nether_bridge_end_x": "both",
-      "antique_atlas:structure/nether_bridge_z": "both",
-      "antique_atlas:structure/nether_bridge_end_z": "both"
+      "antique_atlas:feature/lava_shore": "both",
+      "antique_atlas:structure/fortress/nether/nether_fortress_bridge_crossing": "both",
+      "antique_atlas:structure/fortress/nether/nether_fortress_bridge_small_crossing": "both",
+      "antique_atlas:structure/fortress/nether/nether_fortress_bridge_stairs": "both",
+      "antique_atlas:structure/fortress/nether/nether_fortress_bridge_platform": "both",
+      "antique_atlas:structure/fortress/nether/nether_fortress_corridor": "both",
+      "antique_atlas:structure/fortress/nether/nether_fortress_corridor_exit": "both",
+      "antique_atlas:structure/fortress/nether/nether_fortress_corridor_nether_warts_room": "both",
+      "antique_atlas:structure/fortress/nether/nether_fortress_bridge_horizontal": "both",
+      "antique_atlas:structure/fortress/nether/nether_fortress_bridge_end_horizontal": "both",
+      "antique_atlas:structure/fortress/nether/nether_fortress_bridge_vertical": "both",
+      "antique_atlas:structure/fortress/nether/nether_fortress_bridge_end_vertical": "both"
     }
   }
 }
