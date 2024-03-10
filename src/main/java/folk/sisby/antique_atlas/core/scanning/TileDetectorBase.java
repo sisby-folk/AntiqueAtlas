@@ -42,6 +42,7 @@ public class TileDetectorBase implements BiomeScanner {
      */
     private static final int priorityRavine = 12;
     private static final int priorityWaterPool = 4;
+    private static final int priorityIce = 3;
     private static final int priorityLavaPool = 6;
 
     /**
@@ -124,6 +125,8 @@ public class TileDetectorBase implements BiomeScanner {
                             } else {
                                 updateOccurrencesMap(biomeOccurrences, waterPoolBiome, priorityWaterPool);
                             }
+                        } else if (topBlock == Blocks.ICE) {
+                            updateOccurrencesMap(biomeOccurrences, TileTypes.FROZEN_RIVER.getId(), priorityIce);
                         } else if (topBlock == Blocks.LAVA) {
                             updateOccurrencesMap(biomeOccurrences, TileTypes.TILE_LAVA.getId(), priorityLavaPool);
                         }
