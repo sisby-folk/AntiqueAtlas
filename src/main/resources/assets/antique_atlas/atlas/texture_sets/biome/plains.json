@@ -12,7 +12,7 @@
     },
     "stitch": {
       "antique_atlas:biome/sunflower_plains": "both",
-      "antique_atlas:structure/outpost/pillager_outpost": "both"
+      "antique_atlas:structure/outpost/watchtower": "both"
     }
   }
 }

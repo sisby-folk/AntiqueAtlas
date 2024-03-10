@@ -7,11 +7,18 @@
       "antique_atlas:biome/wetland/swamp/swamp_water_oak_swamp_sparse_2": 1
     },
     "stitch": {
-      "antique_atlas:biome/swamp_high": "both",
-      "antique_atlas:biome/swamp": "both",
-      "antique_atlas:structure/swamp_hut": "both",
       "antique_atlas:feature/water": "both",
-      "antique_atlas:biome/deep_frozen_ocean": "both"
+      "antique_atlas:feature/ice": "both",
+      "antique_atlas:feature/swamp_water": "both",
+      "antique_atlas:structure/swamp_hut": "both",
+      "antique_atlas:biome/swamp": "both",
+      "antique_atlas:biome/swamp_high": "both",
+      "antique_atlas:biome/mangrove_swamp": "both",
+      "antique_atlas:biome/frozen_ocean": "both",
+      "antique_atlas:biome/deep_frozen_ocean": "both",
+      "antique_atlas:biome/beach": "both",
+      "antique_atlas:biome/snowy_beach": "both",
+      "antique_atlas:biome/stony_shore": "both"
     }
   }
 }

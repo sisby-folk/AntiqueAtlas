@@ -3,6 +3,6 @@
   "texture_sets": {
     "default": "antique_atlas:biome/snowy_plains",
     "high": "antique_atlas:biome/snowy_plains_high",
-    "peak": "antique_atlas:biome/snowy_plains_high"
+    "peak": "antique_atlas:biome/snowy_plains_peak"
   }
 }

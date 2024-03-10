@@ -2,11 +2,19 @@
   "version": 1,
   "data": {
     "textures": {
-      "antique_atlas:biome/highland/slopes/snowy/snow_cliffs": 1,
-      "antique_atlas:biome/highland/slopes/snowy/sharp_snow_hills_mountains": 1
+      "antique_atlas:biome/highland/slopes/snowy/snow_cliffs": 1
     },
     "stitch": {
-      "antique_atlas:biome/stony_peaks": "both"
+      "antique_atlas:biome/jungle_peak": "both",
+      "antique_atlas:biome/snowy_slopes": "both",
+      "antique_atlas:biome/windswept_hills": "both",
+      "antique_atlas:biome/windswept_savanna": "both",
+      "antique_atlas:biome/windswept_savanna_peak": "both",
+      "antique_atlas:biome/grove": "both",
+      "antique_atlas:biome/cherry_grove": "both",
+      "antique_atlas:biome/stony_peaks": "both",
+      "antique_atlas:biome/frozen_peaks": "both",
+      "antique_atlas:biome/jagged_peaks": "both"
     }
   }
 }

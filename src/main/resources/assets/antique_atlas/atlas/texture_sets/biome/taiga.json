@@ -5,6 +5,9 @@
       "antique_atlas:biome/woodland/taiga/pine": 1,
       "antique_atlas:biome/woodland/taiga/pine_spruce_1": 1,
       "antique_atlas:biome/woodland/taiga/pine_spruce_2": 1
+    },
+    "stitch": {
+      "antique_atlas:biome/taiga_high": "both"
     }
   }
 }
