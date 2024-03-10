@@ -32,6 +32,7 @@ public class SurveyorChunkUtil {
     public static final int RAVINE_PRIORITY = 12;
     public static final int LAVA_PRIORITY = 6;
     public static final int WATER_PRIORITY = 4;
+    public static final int ICE_PRIORITY = 3;
     public static final int BEACH_PRIORITY = 3;
 
     public static final List<TileType> CUSTOM_TILES = List.of(
@@ -39,6 +40,7 @@ public class SurveyorChunkUtil {
         TileTypes.THE_VOID,
         TileTypes.END_VOID,
         TileTypes.RIVER,
+        TileTypes.FROZEN_RIVER,
         TileTypes.TILE_RAVINE,
         TileTypes.SWAMP_WATER,
         TileTypes.TILE_LAVA,
@@ -52,9 +54,7 @@ public class SurveyorChunkUtil {
     protected static int priorityForBiome(Registry<Biome> biomeRegistry, Biome biome) {
         if (!priorityCache.containsKey(biome)) {
             RegistryEntry<Biome> biomeEntry = biomeRegistry.getEntry(biome);
-            if (biomeEntry.isIn(BiomeTags.IS_OCEAN) || biomeEntry.isIn(BiomeTags.IS_RIVER) || biomeEntry.isIn(BiomeTags.IS_DEEP_OCEAN)) {
-                priorityCache.put(biome, WATER_PRIORITY);
-            } else if (biomeEntry.isIn(BiomeTags.IS_BEACH)) {
+            if (biomeEntry.isIn(BiomeTags.IS_BEACH)) {
                 priorityCache.put(biome, BEACH_PRIORITY);
             } else if (biomeEntry.isIn(BiomeTags.IS_NETHER)) {
                 priorityCache.put(biome, 2);
@@ -127,6 +127,8 @@ public class SurveyorChunkUtil {
                 possibleTiles[elevationSize][biomeCount + CUSTOM_TILES.indexOf(TileTypes.TILE_RAVINE)] += RAVINE_PRIORITY;
             } else if (summary.waterDepths()[i] > 0) {
                 possibleTiles[elevationSize][biomeCount + CUSTOM_TILES.indexOf(isSwamp(biomeRegistry, biome) ? TileTypes.SWAMP_WATER : TileTypes.RIVER)] += WATER_PRIORITY;
+            } else if (block == Blocks.ICE) {
+                possibleTiles[elevationSize][biomeCount + CUSTOM_TILES.indexOf(TileTypes.FROZEN_RIVER)] += ICE_PRIORITY;
             } else if (block == Blocks.LAVA) {
                 possibleTiles[elevationSize][biomeCount + CUSTOM_TILES.indexOf(TileTypes.TILE_LAVA)] += LAVA_PRIORITY;
             }

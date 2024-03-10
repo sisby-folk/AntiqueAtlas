@@ -15,6 +15,7 @@ public class TileTypes {
         THE_VOID = new TileType(BiomeKeys.THE_VOID.getValue()),
         END_VOID = new TileType(AntiqueAtlas.id("feature/end_void")),
         RIVER = new TileType(BiomeKeys.RIVER.getValue()),
+        FROZEN_RIVER = new TileType(BiomeKeys.FROZEN_RIVER.getValue()),
         TILE_RAVINE = new TileType(AntiqueAtlas.id("feature/ravine")),
         SWAMP_WATER = new TileType(AntiqueAtlas.id("feature/swamp_water")),
         SWAMP_HUT = new TileType(AntiqueAtlas.id("structure/swamp_hut")),
