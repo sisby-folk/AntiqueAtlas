@@ -68,8 +68,8 @@ public class MarkerModalComponent extends Component {
         super.init();
 
         addDrawableChild(btnDone = ButtonWidget.builder(Text.translatable("gui.done"), (button) -> {
-            AntiqueAtlas.getAtlasScreen().getworldAtlasData().addMarker(MinecraftClient.getInstance().player, world, new Marker(SimplePointLandmark.TYPE, MarkerTypes.getInstance().getId(selectedType), Text.literal(textField.getText()), new BlockPos(markerX, 0, markerZ), true, Uuids.getUuidFromProfile(MinecraftClient.getInstance().getSession().getProfile())));
-            AntiqueAtlas.getAtlasScreen().updateBookmarkerList();
+            ((AtlasScreen) MinecraftClient.getInstance().currentScreen).getworldAtlasData().addMarker(MinecraftClient.getInstance().player, world, new Marker(SimplePointLandmark.TYPE, MarkerTypes.getInstance().getId(selectedType), Text.literal(textField.getText()), new BlockPos(markerX, 0, markerZ), true, Uuids.getUuidFromProfile(MinecraftClient.getInstance().getSession().getProfile())));
+            ((AtlasScreen) MinecraftClient.getInstance().currentScreen).updateBookmarkerList();
             AntiqueAtlas.LOGGER.info("Put marker \"{}\" at ({}, {})", textField.getText(), markerX, markerZ);
 
             ClientPlayerEntity player = MinecraftClient.getInstance().player;

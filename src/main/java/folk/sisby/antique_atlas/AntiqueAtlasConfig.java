@@ -17,7 +17,8 @@ public class AntiqueAtlasConfig extends WrappedConfig {
     public final PerformanceSection performance = new PerformanceSection();
 
     public static final class UISection implements Section {
-        public final Boolean doScaleMarkers = false;
+        @Comment("Whether to make markers smaller when zoomed out")
+        public final Boolean doScaleMarkers = true;
 
         @Comment("Default zoom level")
         @Comment("The number corresponds to the size of a block on the map relative to the size of a GUI pixel")
@@ -44,6 +45,10 @@ public class AntiqueAtlasConfig extends WrappedConfig {
 
         @Comment("How to depict player death locations.")
         public final GraveStyle graveStyle = GraveStyle.EUPHEMISMS;
+
+        @Comment("Whether to display the map in full-screen")
+        @Comment("Full screen mode uses a simplistic background texture, and is more performance intensive")
+        public final Boolean doFullScreen = false;
     }
 
     public static final class PerformanceSection implements Section {

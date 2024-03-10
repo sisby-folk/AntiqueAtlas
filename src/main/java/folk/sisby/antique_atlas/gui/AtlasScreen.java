@@ -4,10 +4,10 @@ import com.mojang.blaze3d.systems.RenderSystem;
 import folk.sisby.antique_atlas.AntiqueAtlas;
 import folk.sisby.antique_atlas.AntiqueAtlasTextures;
 import folk.sisby.antique_atlas.AntiqueAtlasWorld;
+import folk.sisby.antique_atlas.Marker;
 import folk.sisby.antique_atlas.MarkerType;
+import folk.sisby.antique_atlas.TileTexture;
 import folk.sisby.antique_atlas.WorldAtlasData;
-import folk.sisby.antique_atlas.reloader.BiomeTextures;
-import folk.sisby.antique_atlas.reloader.MarkerTypes;
 import folk.sisby.antique_atlas.gui.core.ButtonComponent;
 import folk.sisby.antique_atlas.gui.core.Component;
 import folk.sisby.antique_atlas.gui.core.CursorComponent;
@@ -19,8 +19,8 @@ import folk.sisby.antique_atlas.gui.core.ScrollBoxComponent;
 import folk.sisby.antique_atlas.gui.tiles.SubTile;
 import folk.sisby.antique_atlas.gui.tiles.SubTileQuartet;
 import folk.sisby.antique_atlas.gui.tiles.TileRenderIterator;
-import folk.sisby.antique_atlas.TileTexture;
-import folk.sisby.antique_atlas.Marker;
+import folk.sisby.antique_atlas.reloader.BiomeTextures;
+import folk.sisby.antique_atlas.reloader.MarkerTypes;
 import folk.sisby.antique_atlas.util.MathUtil;
 import folk.sisby.antique_atlas.util.Rect;
 import net.minecraft.client.MinecraftClient;
@@ -44,13 +44,13 @@ import java.util.Arrays;
 import java.util.Collections;
 
 public class AtlasScreen extends Component {
-    public static final int WIDTH = 310;
-    public static final int HEIGHT = 218;
+    public final int WIDTH;
+    public final int HEIGHT;
 
     private static final int MAP_BORDER_WIDTH = 17;
     private static final int MAP_BORDER_HEIGHT = 11;
-    private static final int MAP_WIDTH = WIDTH - MAP_BORDER_WIDTH * 2;
-    private static final int MAP_HEIGHT = 194;
+    private final int MAP_WIDTH;
+    private final int MAP_HEIGHT;
 
     private static final float PLAYER_ROTATION_STEPS = 16;
     private static final int PLAYER_ICON_WIDTH = 7;
@@ -245,13 +245,25 @@ public class AtlasScreen extends Component {
 
     @SuppressWarnings("rawtypes")
     public AtlasScreen() {
-        setSize(WIDTH, HEIGHT);
+        if (AntiqueAtlas.CONFIG.ui.doFullScreen) {
+            WIDTH = MinecraftClient.getInstance().getWindow().getScaledWidth() - 40;
+            HEIGHT = MinecraftClient.getInstance().getWindow().getScaledHeight() - 40;
+            setSize(WIDTH, HEIGHT);
+            MAP_WIDTH = WIDTH - MAP_BORDER_WIDTH * 2;
+            MAP_HEIGHT = HEIGHT - MAP_BORDER_HEIGHT * 2;
+        } else {
+            WIDTH = 310;
+            HEIGHT = 218;
+            setSize(WIDTH, HEIGHT);
+            MAP_WIDTH = WIDTH - MAP_BORDER_WIDTH * 2;
+            MAP_HEIGHT = HEIGHT - MAP_BORDER_HEIGHT * 2;
+        }
         setMapScale(0.5);
         followPlayer = true;
 
         btnPosition = new FollowButtonComponent();
         btnPosition.setEnabled(!followPlayer);
-        addChild(btnPosition).offsetGuiCoords(283, 194);
+        addChild(btnPosition).offsetGuiCoords(MAP_BORDER_WIDTH + MAP_WIDTH - 10, MAP_BORDER_HEIGHT + MAP_HEIGHT - 15);
         IButtonListener positionListener = button -> {
             selectedButton = button;
             if (button.equals(btnPosition)) {
@@ -264,7 +276,7 @@ public class AtlasScreen extends Component {
         btnPosition.addListener(positionListener);
 
         btnMarker = new BookmarkComponent(0, AntiqueAtlasTextures.ICON_ADD_MARKER, Text.translatable("gui.antique_atlas.addMarker"));
-        addChild(btnMarker).offsetGuiCoords(300, 14);
+        addChild(btnMarker).offsetGuiCoords(WIDTH - 10, 14);
         btnMarker.addListener(button -> {
             if (state.is(PLACING_MARKER)) {
                 selectedButton = null;
@@ -294,7 +306,7 @@ public class AtlasScreen extends Component {
             }
         });
         btnDelMarker = new BookmarkComponent(2, AntiqueAtlasTextures.ICON_DELETE_MARKER, Text.translatable("gui.antique_atlas.delMarker"));
-        addChild(btnDelMarker).offsetGuiCoords(300, 33);
+        addChild(btnDelMarker).offsetGuiCoords(WIDTH - 10, 33);
         btnDelMarker.addListener(button -> {
             if (state.is(DELETING_MARKER)) {
                 selectedButton = null;
@@ -305,7 +317,7 @@ public class AtlasScreen extends Component {
             }
         });
         btnShowMarkers = new BookmarkComponent(3, AntiqueAtlasTextures.ICON_HIDE_MARKERS, Text.translatable("gui.antique_atlas.hideMarkers"));
-        addChild(btnShowMarkers).offsetGuiCoords(300, 52);
+        addChild(btnShowMarkers).offsetGuiCoords(WIDTH - 10, 52);
         btnShowMarkers.addListener(button -> {
             selectedButton = null;
             if (state.is(HIDING_MARKERS)) {
@@ -316,7 +328,7 @@ public class AtlasScreen extends Component {
             }
         });
 
-        addChild(scaleBar).offsetGuiCoords(20, 198);
+        addChild(scaleBar).offsetGuiCoords(20, MAP_HEIGHT);
         scaleBar.setMapScale(1);
 
         addChild(markers).setRelativeCoords(-10, 14);
@@ -674,7 +686,13 @@ public class AtlasScreen extends Component {
         super.renderBackground(context);
 
         RenderSystem.setShaderColor(1, 1, 1, 1);
-        AntiqueAtlasTextures.BOOK.draw(context, getGuiX(), getGuiY());
+        if (AntiqueAtlas.CONFIG.ui.doFullScreen) {
+            context.fill(getGuiX(), getGuiY(), getGuiX() + WIDTH, getGuiY() + HEIGHT, 0xFFEAD2A5);
+            context.drawBorder(getGuiX(), getGuiY(), WIDTH, HEIGHT, 0xFF4C1A0B);
+            context.drawBorder(getGuiX() + MAP_BORDER_WIDTH, getGuiY() + MAP_BORDER_HEIGHT, MAP_WIDTH, MAP_HEIGHT, 0xFF4C1A0B);
+        } else {
+            AntiqueAtlasTextures.BOOK.draw(context, getGuiX(), getGuiY());
+        }
 
         if (worldAtlasData == null) return;
 
@@ -717,7 +735,9 @@ public class AtlasScreen extends Component {
 
         // Overlay the frame so that edges of the map are smooth:
         RenderSystem.setShaderColor(1, 1, 1, 1);
-        AntiqueAtlasTextures.BOOK_FRAME.draw(context, getGuiX(), getGuiY());
+        if (!AntiqueAtlas.CONFIG.ui.doFullScreen) {
+            AntiqueAtlasTextures.BOOK_FRAME.draw(context, getGuiX(), getGuiY());
+        }
 
         double iconScale = getIconScale();
 
@@ -728,7 +748,9 @@ public class AtlasScreen extends Component {
 
         RenderSystem.disableScissor();
 
-        AntiqueAtlasTextures.BOOK_FRAME_NARROW.draw(context, getGuiX(), getGuiY());
+        if (!AntiqueAtlas.CONFIG.ui.doFullScreen) {
+            AntiqueAtlasTextures.BOOK_FRAME_NARROW.draw(context, getGuiX(), getGuiY());
+        }
 
         renderScaleOverlay(context, deltaMillis);
 

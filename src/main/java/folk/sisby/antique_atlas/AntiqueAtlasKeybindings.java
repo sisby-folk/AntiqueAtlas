@@ -23,7 +23,13 @@ public class AntiqueAtlasKeybindings {
             if (currentScreen instanceof AtlasScreen) {
                 currentScreen.close();
             } else {
-                AntiqueAtlas.openAtlasScreen();
+                if (client.currentScreen == null) {
+                    AtlasScreen screen = new AtlasScreen();
+                    screen.setMapScale(AntiqueAtlas.CONFIG.ui.defaultScale);
+                    screen.prepareToOpen();
+                    screen.updateL18n();
+                    client.setScreen(screen);
+                }
             }
         }
     }

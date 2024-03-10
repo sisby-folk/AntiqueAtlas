@@ -2,9 +2,8 @@ package folk.sisby.antique_atlas;
 
 import folk.sisby.antique_atlas.reloader.BiomeTextures;
 import folk.sisby.antique_atlas.reloader.MarkerTypes;
-import folk.sisby.antique_atlas.reloader.TextureSets;
-import folk.sisby.antique_atlas.gui.AtlasScreen;
 import folk.sisby.antique_atlas.reloader.StructureTiles;
+import folk.sisby.antique_atlas.reloader.TextureSets;
 import folk.sisby.antique_atlas.structure.BuiltinStructures;
 import folk.sisby.surveyor.SurveyorEvents;
 import net.fabricmc.api.ClientModInitializer;
@@ -31,31 +30,8 @@ public class AntiqueAtlas implements ClientModInitializer {
 
     public static final AntiqueAtlasConfig CONFIG = AntiqueAtlasConfig.createToml(FabricLoader.getInstance().getConfigDir(), "", "antique-atlas", AntiqueAtlasConfig.class);
 
-    private static AtlasScreen atlasScreen;
-
     public static Identifier id(String path) {
         return path.contains(":") ? new Identifier(path) : new Identifier(ID, path);
-    }
-
-
-    public static AtlasScreen getAtlasScreen() {
-        if (atlasScreen == null) {
-            atlasScreen = new AtlasScreen();
-            atlasScreen.setMapScale(CONFIG.ui.defaultScale);
-        }
-        return atlasScreen;
-    }
-
-    public static void openAtlasScreen() {
-        openAtlasScreen(getAtlasScreen().prepareToOpen());
-    }
-
-    private static void openAtlasScreen(AtlasScreen screen) {
-        MinecraftClient mc = MinecraftClient.getInstance();
-        if (mc.currentScreen == null) { // In-game screen
-            atlasScreen.updateL18n();
-            mc.setScreen(screen);
-        }
     }
 
     /**
@@ -70,7 +46,6 @@ public class AntiqueAtlas implements ClientModInitializer {
             }
         }
     }
-
 
     @Override
     public void onInitializeClient() {
