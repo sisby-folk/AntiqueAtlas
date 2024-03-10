@@ -1,0 +1,9 @@
+{
+  "version": 1,
+  "data": {
+    "textures": {
+      "antique_atlas:biome/woodland/forest/birch/old_growth/birch_tall_hills_low": 1,
+      "antique_atlas:biome/woodland/forest/birch/old_growth/grass_birch_tall_hills_low": 1
+    }
+  }
+}

@@ -1,0 +1,10 @@
+{
+  "version": 1,
+  "data": {
+    "textures": {
+      "antique_atlas:biome/arid/savanna/grass_acacia_1": 1,
+      "antique_atlas:biome/arid/savanna/grass_acacia_2": 1,
+      "antique_atlas:biome/arid/savanna/grass_acacia_3": 1
+    }
+  }
+}

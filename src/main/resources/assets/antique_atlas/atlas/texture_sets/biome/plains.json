@@ -1,0 +1,18 @@
+{
+  "version": 1,
+  "data": {
+    "textures": {
+      "antique_atlas:biome/flatland/plains/grass_sparse": 1,
+      "antique_atlas:biome/flatland/plains/grass_1": 1,
+      "antique_atlas:biome/flatland/plains/grass_2": 1,
+      "antique_atlas:biome/flatland/plains/grass_3": 1,
+      "antique_atlas:biome/flatland/plains/grass_oak_sparse": 1,
+      "antique_atlas:biome/flatland/plains/grass_oak_fancy_tall_sparse": 1,
+      "antique_atlas:biome/flatland/plains/grass_oak_fancy_sparse": 1
+    },
+    "stitch": {
+      "antique_atlas:biome/sunflower_plains": "both",
+      "antique_atlas:structure/outpost/watchtower": "both"
+    }
+  }
+}

@@ -1,5 +1,5 @@
 {
   "version": 1,
-  "tile": "antique_atlas:pillager_outpost",
+  "tile": "antique_atlas:structure/outpost/watchtower",
   "priority": 100
 }

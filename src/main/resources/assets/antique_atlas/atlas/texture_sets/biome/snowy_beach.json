@@ -1,0 +1,19 @@
+{
+  "version": 1,
+  "data": {
+    "shore": {
+      "water": "antique_atlas:feature/water"
+    },
+    "textures": {
+      "antique_atlas:biome/wetland/beach/snowy/snow_shore_water_1": 1,
+      "antique_atlas:biome/wetland/beach/snowy/snow_shore_water_2": 1,
+      "antique_atlas:biome/wetland/beach/snowy/snow_shore_water_3": 1
+    },
+    "stitch": {
+      "antique_atlas:feature/ice": "both",
+      "antique_atlas:structure/shipwreck_beached": "both",
+      "antique_atlas:biome/beach": "both",
+      "antique_atlas:biome/frozen_ocean": "both"
+    }
+  }
+}

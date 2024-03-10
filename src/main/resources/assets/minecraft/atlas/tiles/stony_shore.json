@@ -1,6 +1,6 @@
 {
   "version": 2,
   "texture_sets": {
-    "default": "antique_atlas:rock_shore"
+    "default": "antique_atlas:biome/stony_shore"
   }
 }

@@ -1,0 +1,36 @@
+{
+  "version": 1,
+  "data": {
+    "textures": {
+      "antique_atlas:feature/ice/ice": 1
+    },
+    "stitch": {
+      "antique_atlas:structure/village/desert/small_house": "both",
+      "antique_atlas:structure/village/desert/weaponsmith": "both",
+      "antique_atlas:structure/village/plains/animal_pen": "both",
+      "antique_atlas:structure/village/plains/butcher_shop": "both",
+      "antique_atlas:structure/village/plains/lamp": "both",
+      "antique_atlas:structure/village/plains/large_farm": "both",
+      "antique_atlas:structure/village/plains/medium_house": "both",
+      "antique_atlas:structure/village/plains/medium_house_t": "both",
+      "antique_atlas:structure/village/plains/meeting_point": "both",
+      "antique_atlas:structure/village/plains/small_farm": "both",
+      "antique_atlas:structure/village/plains/small_house": "both",
+      "antique_atlas:structure/village/savanna/small_house": "both",
+      "antique_atlas:structure/village/path_horizontal": "both",
+      "antique_atlas:structure/village/path_vertical": "both",
+      "antique_atlas:structure/outpost/watchtower": "both",
+      "antique_atlas:structure/outpost/tent": "both",
+      "antique_atlas:structure/outpost/cage": "both",
+      "antique_atlas:structure/ruined_portal": "both",
+      "antique_atlas:biome/beach": "both",
+      "antique_atlas:biome/snowy_beach": "both",
+      "antique_atlas:structure/igloo": "both",
+      "antique_atlas:biome/snowy_plains": "both",
+      "antique_atlas:biome/snowy_taiga": "both",
+      "antique_atlas:biome/ice_spikes": "both",
+      "antique_atlas:biome/grove": "both",
+      "antique_atlas:biome/frozen_ocean": "both"
+    }
+  }
+}

@@ -1,6 +1,6 @@
 {
   "version": 2,
   "texture_sets": {
-    "default": "antique_atlas:soul_sand_valley"
+    "default": "antique_atlas:biome/soul_sand_valley"
   }
 }

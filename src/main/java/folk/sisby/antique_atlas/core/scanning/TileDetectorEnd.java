@@ -3,6 +3,7 @@ package folk.sisby.antique_atlas.core.scanning;
 import com.google.common.collect.HashMultiset;
 import com.google.common.collect.Multiset;
 import com.google.common.collect.Ordering;
+import folk.sisby.antique_atlas.tile.TileTypes;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
 import net.minecraft.util.Identifier;
@@ -45,7 +46,7 @@ public class TileDetectorEnd extends TileDetectorBase implements BiomeScanner {
                         // we want to see "coast lines", so we give the islands a slightly higher weight
                         updateOccurrencesMap(biomeOccurrences, getBiomeIdentifier(world, biome), 3);
                     } else if (topBlock.isAir()) {
-                        updateOccurrencesMap(biomeOccurrences, BiomeKeys.THE_VOID.getValue(), 1);
+                        updateOccurrencesMap(biomeOccurrences, TileTypes.END_VOID.getId(), 1);
                     }
                 }
             }

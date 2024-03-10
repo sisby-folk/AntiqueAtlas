@@ -1,0 +1,9 @@
+{
+  "version": 1,
+  "data": {
+    "textures": {
+      "antique_atlas:feature/ravine/stone_ravine": 1,
+      "antique_atlas:feature/ravine/andesite_ravine": 1
+    }
+  }
+}

@@ -1,0 +1,12 @@
+{
+  "version": 1,
+  "data": {
+    "textures": {
+      "antique_atlas:structure/fortress/nether/nether_fortress_corridor_exit": 1
+    },
+    "stitch": {
+      "antique_atlas:structure/fortress/nether/nether_fortress_corridor": "both",
+      "antique_atlas:structure/fortress/nether/nether_fortress_corridor_nether_warts_room": "both"
+    }
+  }
+}

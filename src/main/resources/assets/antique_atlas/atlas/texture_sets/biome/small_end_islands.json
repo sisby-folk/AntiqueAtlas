@@ -1,0 +1,15 @@
+{
+  "version": 1,
+  "data": {
+    "textures": {
+      "antique_atlas:biome/end/islands/end_island_1": 1,
+      "antique_atlas:biome/end/islands/end_island_2": 1
+    },
+    "stitch": {
+      "antique_atlas:biome/end_highlands": "both",
+      "antique_atlas:biome/end_midlands": "both",
+      "antique_atlas:biome/end_barrens": "both",
+      "antique_atlas:biome/small_end_islands": "both"
+    }
+  }
+}

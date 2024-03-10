@@ -1,7 +1,7 @@
 {
   "version": 2,
   "texture_sets": {
-    "default": "antique_atlas:savanna_cliffs",
-    "peak": "antique_atlas:savanna_cliffs_clouds"
+    "default": "antique_atlas:biome/windswept_savanna",
+    "peak": "antique_atlas:biome/windswept_savanna_peak"
   }
 }

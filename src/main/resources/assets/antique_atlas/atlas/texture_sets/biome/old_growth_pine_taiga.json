@@ -1,0 +1,9 @@
+{
+  "version": 1,
+  "data": {
+    "textures": {
+      "antique_atlas:biome/woodland/taiga/old_growth_pine/podzol_mega_pine_mega_spruce": 2,
+      "antique_atlas:biome/woodland/taiga/old_growth_pine/podzol_pine_mega_pine": 1
+    }
+  }
+}

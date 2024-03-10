@@ -1,0 +1,9 @@
+{
+  "version": 1,
+  "data": {
+    "textures": {
+      "antique_atlas:biome/nonland/mushroom/mycelium_mushrooms_huge_mixed": 1,
+      "antique_atlas:biome/nonland/mushroom/mycelium_mushrooms_huge_red_sparse": 1
+    }
+  }
+}

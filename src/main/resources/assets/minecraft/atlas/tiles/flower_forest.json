@@ -1,6 +1,6 @@
 {
   "version": 2,
   "texture_sets": {
-    "default": "antique_atlas:forest_flowers"
+    "default": "antique_atlas:biome/flower_forest"
   }
 }

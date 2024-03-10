@@ -1,7 +1,7 @@
 {
   "version": 2,
   "texture_sets": {
-    "default": "antique_atlas:savanna",
-    "peak": "antique_atlas:savanna_cliffs"
+    "default": "antique_atlas:biome/savanna",
+    "peak": "antique_atlas:biome/savanna_peak"
   }
 }

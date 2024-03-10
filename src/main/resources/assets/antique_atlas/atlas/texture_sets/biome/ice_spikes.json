@@ -1,0 +1,24 @@
+{
+  "version": 1,
+  "data": {
+    "textures": {
+      "antique_atlas:biome/flatland/ice_spikes/snow_ice_spikes": 1,
+      "antique_atlas:biome/flatland/ice_spikes/snow_ice_spikes_sparse": 1
+    },
+    "stitch": {
+      "antique_atlas:biome/beach": "both",
+      "antique_atlas:biome/snowy_beach": "both",
+      "antique_atlas:biome/snowy_taiga": "both",
+      "antique_atlas:biome/snowy_plains_high": "both",
+      "antique_atlas:biome/snowy_plains_peak": "both",
+      "antique_atlas:biome/snowy_taiga_high": "both",
+      "antique_atlas:feature/ravine": "both",
+      "antique_atlas:feature/lava": "both",
+      "antique_atlas:feature/water": "both",
+      "antique_atlas:biome/frozen_ocean": "both",
+      "antique_atlas:biome/deep_frozen_ocean": "both",
+      "antique_atlas:structure/igloo": "both",
+      "antique_atlas:structure/outpost/watchtower": "both"
+    }
+  }
+}

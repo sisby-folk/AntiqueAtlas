@@ -1,6 +1,6 @@
 {
   "version": 2,
   "texture_sets": {
-    "default": "antique_atlas:mountains_snow_caps"
+    "default": "antique_atlas:biome/snowy_slopes"
   }
 }

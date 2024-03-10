@@ -1,8 +1,8 @@
 {
   "version": 2,
   "texture_sets": {
-    "default": "antique_atlas:forest",
-    "high": "antique_atlas:forest_hills",
-    "peak": "antique_atlas:forest_hills"
+    "default": "antique_atlas:biome/dark_forest",
+    "high": "antique_atlas:biome/dark_forest_high",
+    "peak": "antique_atlas:biome/dark_forest_high"
   }
 }
