@@ -11,8 +11,8 @@ import org.lwjgl.opengl.GL11;
 import java.util.Collections;
 
 public class FollowButtonComponent extends ButtonComponent {
-    private static final int WIDTH = 11;
-    private static final int HEIGHT = 11;
+    public static final int WIDTH = 11;
+    public static final int HEIGHT = 11;
 
     public FollowButtonComponent() {
         setSize(WIDTH, HEIGHT);

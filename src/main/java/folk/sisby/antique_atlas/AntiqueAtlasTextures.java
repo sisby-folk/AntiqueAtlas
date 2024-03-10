@@ -14,7 +14,7 @@ public class AntiqueAtlasTextures {
         BOOK = gui("book.png", 310, 218),
         BOOK_FRAME = gui("book_frame.png", 310, 218),
         BOOK_FRAME_NARROW = gui("book_frame_narrow.png", 310, 218),
-        BTN_POSITION = gui("position.png", 24, 24),
+        BTN_POSITION = gui("position.png", 11, 11),
         BOOKMARKS = gui("bookmarks.png", 84, 36),
         BOOKMARKS_LEFT = gui("bookmarks_l.png", 84, 36),
         PLAYER = gui("player.png", 7, 8),

@@ -17,8 +17,8 @@ import java.util.Map;
  * Atlas style it is rendered at half-scale.
  */
 public class BarScaleComponent extends Component {
-    private static final int WIDTH = 20;
-    private static final int HEIGHT = 8;
+    public static final int WIDTH = 20;
+    public static final int HEIGHT = 8;
 
     private static final Map<Double, Drawable> textureMap;
 

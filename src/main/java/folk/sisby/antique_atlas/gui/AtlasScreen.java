@@ -263,7 +263,7 @@ public class AtlasScreen extends Component {
 
         btnPosition = new FollowButtonComponent();
         btnPosition.setEnabled(!followPlayer);
-        addChild(btnPosition).offsetGuiCoords(MAP_BORDER_WIDTH + MAP_WIDTH - 10, MAP_BORDER_HEIGHT + MAP_HEIGHT - 15);
+        addChild(btnPosition).offsetGuiCoords(WIDTH - MAP_BORDER_WIDTH - FollowButtonComponent.WIDTH + (AntiqueAtlas.CONFIG.ui.doFullScreen ? 0 : 1), HEIGHT - MAP_BORDER_HEIGHT - FollowButtonComponent.HEIGHT + (AntiqueAtlas.CONFIG.ui.doFullScreen ? 0 : -2));
         IButtonListener positionListener = button -> {
             selectedButton = button;
             if (button.equals(btnPosition)) {
@@ -328,7 +328,7 @@ public class AtlasScreen extends Component {
             }
         });
 
-        addChild(scaleBar).offsetGuiCoords(20, MAP_HEIGHT);
+        addChild(scaleBar).offsetGuiCoords(MAP_BORDER_WIDTH - 1 + (AntiqueAtlas.CONFIG.ui.doFullScreen ? 0 : 4), HEIGHT - MAP_BORDER_HEIGHT - BarScaleComponent.HEIGHT + 1 + (AntiqueAtlas.CONFIG.ui.doFullScreen ? 0 : -2));
         scaleBar.setMapScale(1);
 
         addChild(markers).setRelativeCoords(-10, 14);
@@ -689,7 +689,7 @@ public class AtlasScreen extends Component {
         if (AntiqueAtlas.CONFIG.ui.doFullScreen) {
             context.fill(getGuiX(), getGuiY(), getGuiX() + WIDTH, getGuiY() + HEIGHT, 0xFFEAD2A5);
             context.drawBorder(getGuiX(), getGuiY(), WIDTH, HEIGHT, 0xFF4C1A0B);
-            context.drawBorder(getGuiX() + MAP_BORDER_WIDTH, getGuiY() + MAP_BORDER_HEIGHT, MAP_WIDTH, MAP_HEIGHT, 0xFF4C1A0B);
+            context.drawBorder(getGuiX() + MAP_BORDER_WIDTH - 1, getGuiY() + MAP_BORDER_HEIGHT - 1, MAP_WIDTH + 2, MAP_HEIGHT + 2, 0xFF4C1A0B);
         } else {
             AntiqueAtlasTextures.BOOK.draw(context, getGuiX(), getGuiY());
         }
