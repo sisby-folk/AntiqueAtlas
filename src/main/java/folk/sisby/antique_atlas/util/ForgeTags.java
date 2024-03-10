@@ -1,8 +1,9 @@
 package folk.sisby.antique_atlas.util;
 
-import net.minecraft.registry.RegistryKeys;
-import net.minecraft.registry.tag.TagKey;
+import net.minecraft.tag.TagKey;
 import net.minecraft.util.Identifier;
+import net.minecraft.util.registry.BuiltinRegistries;
+import net.minecraft.util.registry.Registry;
 import net.minecraft.world.biome.Biome;
 
 public class ForgeTags {
@@ -62,7 +63,7 @@ public class ForgeTags {
         public static final TagKey<Biome> IS_MOUNTAIN = tag("is_mountain");
 
         private static TagKey<Biome> tag(String name) {
-            return TagKey.of(RegistryKeys.BIOME, new Identifier("forge", name));
+            return TagKey.of(Registry.BIOME_KEY, new Identifier("forge", name));
         }
     }
 }
