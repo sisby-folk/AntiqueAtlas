@@ -2,7 +2,7 @@
   "version": 2,
   "texture_sets": {
     "default": "antique_atlas:biome/bamboo_jungle",
-    "high": "antique_atlas:biome/bamboo_jungle_high",
-    "peak": "antique_atlas:biome/bamboo_jungle_high"
+    "high": "antique_atlas:biome/bamboo_jungle_peak",
+    "peak": "antique_atlas:biome/bamboo_jungle_peak"
   }
 }

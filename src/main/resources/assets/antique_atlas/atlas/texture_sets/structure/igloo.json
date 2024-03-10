@@ -4,11 +4,5 @@
     "textures": {
       "antique_atlas:structure/igloo/igloo": 1
     }
-  },
-  "stitch": {
-    "antique_atlas:biome/snow": "both",
-    "antique_atlas:biome/frozen_ocean": "both",
-    "antique_atlas:biome/frozen_river": "both",
-    "antique_atlas:biome/snowy_taiga": "both"
   }
 }

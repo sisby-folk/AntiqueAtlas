@@ -9,7 +9,9 @@
     "stitch": {
       "antique_atlas:biome/snowy_plains": "both",
       "antique_atlas:biome/snowy_plains_high": "both",
+      "antique_atlas:biome/snowy_plains_peak": "both",
       "antique_atlas:biome/ice_spikes": "both",
+      "antique_atlas:biome/grove": "both",
       "antique_atlas:biome/snowy_taiga_high": "both"
     }
   }

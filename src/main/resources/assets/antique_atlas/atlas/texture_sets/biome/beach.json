@@ -10,6 +10,7 @@
       "antique_atlas:biome/wetland/beach/sand_shore_water_3": 1
     },
     "stitch": {
+      "antique_atlas:structure/shipwreck_beached": "both",
       "antique_atlas:biome/snowy_beach": "both"
     }
   }

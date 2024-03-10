@@ -2,7 +2,9 @@
   "version": 1,
   "data": {
     "textures": {
-      "antique_atlas:biome/wetland/swamp/mangrove/mangrove": 3
+      "antique_atlas:biome/wetland/swamp/mangrove/swamp_water_mangrove": 1
+    },
+    "stitch": {
     }
   }
 }

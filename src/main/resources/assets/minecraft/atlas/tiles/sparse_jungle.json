@@ -2,7 +2,6 @@
   "version": 2,
   "texture_sets": {
     "default": "antique_atlas:biome/sparse_jungle",
-    "high": "antique_atlas:biome/sparse_jungle_high",
-    "peak": "antique_atlas:biome/sparse_jungle_high"
+    "peak": "antique_atlas:biome/sparse_jungle_peak"
   }
 }
