@@ -20,7 +20,7 @@ public class BuiltinStructures {
     public static void init () {
         // Overworld
         StructureTiles.getInstance().registerTile(StructurePieceType.RUINED_PORTAL, 10, TileTypes.RUINED_PORTAL.id(), BuiltinStructures::aboveGround);
-        StructureTiles.getInstance().registerMarker(StructureTags.VILLAGE, AntiqueAtlas.id("village"), Text.translatable("gui.antique_atlas.marker.village"));
+        if (AntiqueAtlas.CONFIG.markVillages) StructureTiles.getInstance().registerMarker(StructureTags.VILLAGE, AntiqueAtlas.id("village"), Text.translatable("gui.antique_atlas.marker.village"));
         StructureTiles.getInstance().registerTile(StructurePieceType.SWAMP_HUT, 10, TileTypes.SWAMP_HUT.id(), BuiltinStructures::aboveGround);
         StructureTiles.getInstance().registerTile(StructurePieceType.IGLOO, 10, TileTypes.IGLOO.id(), BuiltinStructures::topAboveGround);
         StructureTiles.getInstance().registerTile(StructurePieceType.DESERT_TEMPLE, 10, TileTypes.DESERT_PYRAMID.id(), BuiltinStructures::aboveGround);

@@ -40,7 +40,6 @@ import net.minecraft.util.math.MathHelper;
 import org.lwjgl.glfw.GLFW;
 import org.lwjgl.opengl.GL11;
 
-import java.util.Arrays;
 import java.util.Collections;
 
 public class AtlasScreen extends Component {
@@ -671,18 +670,6 @@ public class AtlasScreen extends Component {
         long deltaMillis = currentMillis - lastUpdateMillis;
         lastUpdateMillis = currentMillis;
 
-        if (AntiqueAtlas.CONFIG.debug.debugRender) {
-            renderTimes[renderTimesIndex++] = System.currentTimeMillis();
-            if (renderTimesIndex == renderTimes.length) {
-                renderTimesIndex = 0;
-                double elapsed = 0;
-                for (int i = 0; i < renderTimes.length - 1; i++) {
-                    elapsed += renderTimes[i + 1] - renderTimes[i];
-                }
-                System.out.printf("GuiAtlas avg. render time: %.3f\n", elapsed / renderTimes.length);
-            }
-        }
-
         super.renderBackground(context);
 
         RenderSystem.setShaderColor(1, 1, 1, 1);
@@ -778,23 +765,13 @@ public class AtlasScreen extends Component {
         if (AntiqueAtlas.CONFIG.debug.debugRender && !isDragging && isMouseOver) {
             int x = screenXToWorldX((int) getMouseX());
             int z = screenYToWorldZ((int) getMouseY());
-
-            String coords = String.format("Coords: %d / %d", x, z);
-
             ChunkPos pos = new ChunkPos(new BlockPos(x, 0, z));
-            String chunks = String.format("Chunks: %d / %d", pos.x, pos.z);
             Identifier tile = worldAtlasData.getTile(pos.x, pos.z);
-
-            if (tile == null) {
-                drawTooltip(Arrays.asList(Text.literal(coords), Text.literal(chunks)), textRenderer);
-            } else {
+            if (tile != null) {
                 String textureSet = BiomeTextures.getInstance().getTextureSet(tile).id.toString();
-                drawTooltip(Arrays.asList(
-                        Text.literal(coords),
-                        Text.literal(chunks),
-                        Text.literal("Tile: " + tile),
-                        Text.literal("TSet: " + textureSet)),
-                    textRenderer);
+                context.drawText(textRenderer, Text.literal("%d,%d (%d,%d)".formatted(pos.x, pos.z, x, z)), getGuiX(), getGuiY() - 12, 0xFFFFFFFF, true);
+                context.drawText(textRenderer, Text.literal(tile.toString()), getGuiX(), getGuiY() + HEIGHT, 0xFFFFFFFF, true);
+                context.drawText(textRenderer, Text.literal(textureSet), getGuiX() + WIDTH - textRenderer.getWidth(Text.literal(textureSet)), getGuiY() + HEIGHT, 0xFFFFFFFF, true);
             }
         }
     }

@@ -12,6 +12,11 @@ public class AntiqueAtlasConfig extends WrappedConfig {
         DIED,
         EUPHEMISMS
     }
+
+    @Comment("Whether to show villages as markers on the map")
+    public final Boolean markVillages = false;
+
+
     public final UISection ui = new UISection();
     public final DebugSection debug = new DebugSection();
     public final PerformanceSection performance = new PerformanceSection();
