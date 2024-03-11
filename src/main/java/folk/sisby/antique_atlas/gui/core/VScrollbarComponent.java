@@ -11,13 +11,13 @@ public class VScrollbarComponent extends AbstractScrollbarComponent {
     @Override
     protected void drawAnchor(DrawContext context) {
         // Draw top cap:
-        context.drawTexture(texture, getGuiX(), getGuiY() + anchorPos, textureWidth, capLength, 0, 0, textureWidth, capLength);
+        context.drawTexture(texture, getGuiX(), getGuiY() + anchorPos, textureWidth, capLength, 0, 0, textureWidth, capLength, textureWidth, textureHeight);
 
         // Draw body:
-        context.drawTexture(texture, getGuiX(), getGuiY() + anchorPos + capLength, textureWidth, anchorSize, 0, capLength, textureWidth, textureBodyLength);
+        context.drawTexture(texture, getGuiX(), getGuiY() + anchorPos + capLength, textureWidth, anchorSize, 0, capLength, textureWidth, textureBodyLength, textureWidth, textureHeight);
 
         // Draw bottom cap:
-        context.drawTexture(texture, getGuiX(), getGuiY() + anchorPos + capLength + anchorSize, 0, textureHeight - capLength, textureWidth, capLength);
+        context.drawTexture(texture, getGuiX(), getGuiY() + anchorPos + capLength + anchorSize, 0, textureHeight - capLength, textureWidth, capLength, textureWidth, textureHeight);
     }
 
     @Override
