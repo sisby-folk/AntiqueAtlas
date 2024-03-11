@@ -1,8 +1,11 @@
 package folk.sisby.antique_atlas.gui.core;
 
-import folk.sisby.antique_atlas.AntiqueAtlasTextures;
+import folk.sisby.antique_atlas.AntiqueAtlas;
+import net.minecraft.util.Identifier;
 
 public class ScrollBoxComponent extends Component {
+    public static final Identifier SCROLLBAR_HOR = AntiqueAtlas.id("textures/gui/scrollbar_hor.png");
+    public static final Identifier SCROLLBAR_VER = AntiqueAtlas.id("textures/gui/scrollbar_ver.png");
     private final ViewportComponent viewport;
     private final HScrollbarComponent scrollbarHor;
     private final VScrollbarComponent scrollbarVer;
@@ -10,9 +13,9 @@ public class ScrollBoxComponent extends Component {
     public ScrollBoxComponent() {
         viewport = new ViewportComponent();
         scrollbarHor = new HScrollbarComponent(viewport);
-        scrollbarHor.setTexture(AntiqueAtlasTextures.SCROLLBAR_HOR, 8, 7, 2);
+        scrollbarHor.setTexture(SCROLLBAR_HOR, 8, 7, 2);
         scrollbarVer = new VScrollbarComponent(viewport);
-        scrollbarVer.setTexture(AntiqueAtlasTextures.SCROLLBAR_VER, 7, 8, 2);
+        scrollbarVer.setTexture(SCROLLBAR_VER, 7, 8, 2);
         setWheelScrollsVertically();
         this.addChild(viewport);
         this.addChild(scrollbarHor);

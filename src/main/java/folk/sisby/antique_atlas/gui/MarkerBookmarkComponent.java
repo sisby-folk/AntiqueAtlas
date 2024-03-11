@@ -1,7 +1,7 @@
 package folk.sisby.antique_atlas.gui;
 
 import com.mojang.blaze3d.systems.RenderSystem;
-import folk.sisby.antique_atlas.AntiqueAtlasTextures;
+import folk.sisby.antique_atlas.AntiqueAtlas;
 import folk.sisby.antique_atlas.gui.core.ButtonComponent;
 import folk.sisby.antique_atlas.reloader.MarkerTypes;
 import folk.sisby.antique_atlas.Marker;
@@ -9,6 +9,7 @@ import folk.sisby.antique_atlas.MarkerType;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.DrawContext;
 import net.minecraft.text.Text;
+import net.minecraft.util.Identifier;
 
 import java.util.Collections;
 
@@ -18,11 +19,12 @@ import java.util.Collections;
  * bulge on mouseover.
  */
 public class MarkerBookmarkComponent extends ButtonComponent {
+    public static final Identifier BOOKMARKS_LEFT = AntiqueAtlas.id("textures/gui/bookmarks_l.png");
     private static final int WIDTH = 21;
     private static final int HEIGHT = 18;
 
     private final int colorIndex;
-    private Drawable iconTexture;
+    private Identifier iconTexture;
     private final Marker marker;
 
     MarkerBookmarkComponent(Marker marker) {
@@ -35,7 +37,7 @@ public class MarkerBookmarkComponent extends ButtonComponent {
         setSize(WIDTH, HEIGHT);
     }
 
-    void setIconTexture(Drawable iconTexture) {
+    void setIconTexture(Identifier iconTexture) {
         this.iconTexture = iconTexture;
     }
 
@@ -51,10 +53,10 @@ public class MarkerBookmarkComponent extends ButtonComponent {
         // Render background:
         int u = colorIndex * WIDTH;
         int v = isMouseOver ? 0 : HEIGHT;
-        AntiqueAtlasTextures.BOOKMARKS_LEFT.draw(context, getGuiX(), getGuiY(), u, v, WIDTH, HEIGHT);
+        context.drawTexture(BOOKMARKS_LEFT, getGuiX(), getGuiY(), u, v, WIDTH, HEIGHT, 84, 36);
 
         // Render the icon:
-        iconTexture.draw(context, getGuiX() - (isMouseOver ? 3 : 2), getGuiY() - 3, 24, 24);
+        context.drawTexture(iconTexture, getGuiX() - (isMouseOver ? 3 : 2), getGuiY() - 3, 0, 0, 24, 24, 24, 24);
 
         if (isMouseOver && !getTitle().getString().isEmpty()) {
             drawTooltip(Collections.singletonList(getTitle()), MinecraftClient.getInstance().textRenderer);

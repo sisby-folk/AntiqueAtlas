@@ -1,11 +1,12 @@
 package folk.sisby.antique_atlas.gui;
 
 import com.mojang.blaze3d.systems.RenderSystem;
-import folk.sisby.antique_atlas.AntiqueAtlasTextures;
+import folk.sisby.antique_atlas.AntiqueAtlas;
 import folk.sisby.antique_atlas.gui.core.ToggleButtonComponent;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.DrawContext;
 import net.minecraft.text.Text;
+import net.minecraft.util.Identifier;
 
 import java.util.Collections;
 
@@ -15,11 +16,12 @@ import java.util.Collections;
  * bulge on mouseover.
  */
 public class BookmarkComponent extends ToggleButtonComponent {
+    public static final Identifier BOOKMARKS = AntiqueAtlas.id("textures/gui/bookmarks.png");
     private static final int WIDTH = 21;
     private static final int HEIGHT = 18;
 
     private final int colorIndex;
-    private Drawable iconTexture;
+    private Identifier iconTexture;
     private Text title;
 
     /**
@@ -27,14 +29,14 @@ public class BookmarkComponent extends ToggleButtonComponent {
      * @param iconTexture the path to the 16x16 texture to be drawn on top of the bookmark.
      * @param title       hovering text.
      */
-    BookmarkComponent(int colorIndex, Drawable iconTexture, Text title) {
+    BookmarkComponent(int colorIndex, Identifier iconTexture, Text title) {
         this.colorIndex = colorIndex;
         setIconTexture(iconTexture);
         setTitle(title);
         setSize(WIDTH, HEIGHT);
     }
 
-    void setIconTexture(Drawable iconTexture) {
+    void setIconTexture(Identifier iconTexture) {
         this.iconTexture = iconTexture;
     }
 
@@ -53,10 +55,10 @@ public class BookmarkComponent extends ToggleButtonComponent {
         // Render background:
         int u = colorIndex * WIDTH;
         int v = isMouseOver || isSelected() ? 0 : HEIGHT;
-        AntiqueAtlasTextures.BOOKMARKS.draw(context, getGuiX(), getGuiY(), u, v, WIDTH, HEIGHT);
+        context.drawTexture(BOOKMARKS, getGuiX(), getGuiY(), u, v, WIDTH, HEIGHT, 84, 36);
 
         // Render the icon:
-        iconTexture.draw(context, getGuiX() + (isMouseOver || isSelected() ? 3 : 2), getGuiY() + 1);
+        context.drawTexture(iconTexture, getGuiX() + (isMouseOver || isSelected() ? 3 : 2), getGuiY() + 1, 0, 0, 16, 16, 16, 16);
 
         if (isMouseOver) {
             drawTooltip(Collections.singletonList(title), MinecraftClient.getInstance().textRenderer);

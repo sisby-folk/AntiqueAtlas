@@ -2,13 +2,14 @@ package folk.sisby.antique_atlas.gui;
 
 
 import folk.sisby.antique_atlas.MarkerType;
+import net.minecraft.util.Identifier;
 
 public class MarkerRenderInfo {
-    public final Drawable tex;
+    public final Identifier tex;
     public int x, y;
     public int width, height;
 
-    public MarkerRenderInfo(Drawable tex, int x, int y, int width, int height) {
+    public MarkerRenderInfo(Identifier tex, int x, int y, int width, int height) {
         this.tex = tex;
         this.x = x;
         this.y = y;

@@ -17,7 +17,7 @@ public class TextureSet implements Comparable<TextureSet> {
     /**
      * The actual textures in this set.
      */
-    public final TileTexture[] textures;
+    public final Identifier[] textures;
 
     /**
      * Texture sets that a tile rendered with this set can be stitched to,
@@ -36,7 +36,7 @@ public class TextureSet implements Comparable<TextureSet> {
     public TextureSet(Identifier id, Identifier... textures) {
         this.id = id;
         this.texturePaths = textures;
-        this.textures = new TileTexture[textures.length];
+        this.textures = new Identifier[textures.length];
     }
 
     /**
@@ -95,7 +95,7 @@ public class TextureSet implements Comparable<TextureSet> {
         return id.toString().compareTo(textureSet.id.toString());
     }
 
-    public TileTexture getTexture(int variationNumber) {
+    public Identifier getTexture(int variationNumber) {
         return textures[variationNumber % textures.length];
     }
 
@@ -103,7 +103,7 @@ public class TextureSet implements Comparable<TextureSet> {
         return texturePaths;
     }
 
-    public void loadTextures(Map<Identifier, TileTexture> tileTextures) {
+    public void loadTextures(Map<Identifier, Identifier> tileTextures) {
         for (int i = 0; i < texturePaths.length; i++) {
             if (!tileTextures.containsKey(texturePaths[i])) {
                 throw new RuntimeException("Couldn't find the specified texture: " + texturePaths[i].toString());

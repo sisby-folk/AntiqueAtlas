@@ -11,13 +11,13 @@ public class HScrollbarComponent extends AbstractScrollbarComponent {
     @Override
     protected void drawAnchor(DrawContext context) {
         // Draw left cap:
-        texture.draw(context, getGuiX() + anchorPos, getGuiY(), capLength, textureHeight, 0, 0, capLength, textureHeight);
+        context.drawTexture(texture, getGuiX() + anchorPos, getGuiY(), 0, 0, capLength, textureHeight, capLength, textureHeight);
 
         // Draw body:
-        texture.draw(context, getGuiX() + anchorPos + capLength, getGuiY(), anchorSize, textureHeight, capLength, 0, textureBodyLength, textureHeight);
+        context.drawTexture(texture, getGuiX() + anchorPos + capLength, getGuiY(), capLength, 0, anchorSize, textureHeight, textureBodyLength, textureHeight);
 
         // Draw right cap:
-        texture.draw(context, getGuiX() + anchorPos + capLength + anchorSize, getGuiY(), textureWidth - capLength, 0, capLength, textureHeight);
+        context.drawTexture(texture, getGuiX() + anchorPos + capLength + anchorSize, getGuiY(), textureWidth - capLength, 0, capLength, textureHeight, capLength, textureHeight);
     }
 
     @Override

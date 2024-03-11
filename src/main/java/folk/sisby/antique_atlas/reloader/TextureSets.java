@@ -5,7 +5,6 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import folk.sisby.antique_atlas.AntiqueAtlas;
 import folk.sisby.antique_atlas.TextureSet;
-import folk.sisby.antique_atlas.TileTexture;
 import net.fabricmc.fabric.api.resource.IdentifiableResourceReloadListener;
 import net.minecraft.resource.JsonDataLoader;
 import net.minecraft.resource.ResourceManager;
@@ -60,10 +59,10 @@ public class TextureSets extends JsonDataLoader implements IdentifiableResourceR
     protected void apply(Map<Identifier, JsonElement> prepared, ResourceManager manager, Profiler profiler) {
         Map<Identifier, TextureSet> outMap = new HashMap<>();
 
-        Map<Identifier, TileTexture> tileTextures = new HashMap<>();
+        Map<Identifier, Identifier> tileTextures = new HashMap<>();
         manager.findResources("textures/gui/tiles", id -> id.getPath().endsWith(".png")).keySet().forEach(fileId -> {
             Identifier id = new Identifier(fileId.getNamespace(), fileId.getPath().substring("textures/gui/tiles/".length(), fileId.getPath().length() - ".png".length()));
-            tileTextures.put(id, new TileTexture(fileId));
+            tileTextures.put(id, fileId);
         });
 
         for (Map.Entry<Identifier, JsonElement> fileEntry : prepared.entrySet()) {

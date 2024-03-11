@@ -5,7 +5,6 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import folk.sisby.antique_atlas.AntiqueAtlas;
 import folk.sisby.antique_atlas.TextureSet;
-import folk.sisby.antique_atlas.TileTexture;
 import folk.sisby.antique_atlas.gui.tiles.SubTile;
 import folk.sisby.antique_atlas.tile.TileElevation;
 import folk.sisby.antique_atlas.util.ForgeTags;
@@ -61,7 +60,7 @@ public class BiomeTextures extends JsonDataLoader implements IdentifiableResourc
         return tile == null ? TextureSets.getInstance().getDefault() : map.getOrDefault(tile, TextureSets.getInstance().getDefault());
     }
 
-    public TileTexture getTexture(SubTile subTile) {
+    public Identifier getTexture(SubTile subTile) {
         return getTextureSet(subTile.tile).getTexture(subTile.variationNumber);
     }
 

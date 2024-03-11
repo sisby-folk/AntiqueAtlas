@@ -1,16 +1,18 @@
 package folk.sisby.antique_atlas.gui;
 
 import com.mojang.blaze3d.systems.RenderSystem;
-import folk.sisby.antique_atlas.AntiqueAtlasTextures;
+import folk.sisby.antique_atlas.AntiqueAtlas;
 import folk.sisby.antique_atlas.gui.core.ButtonComponent;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.DrawContext;
 import net.minecraft.text.Text;
+import net.minecraft.util.Identifier;
 import org.lwjgl.opengl.GL11;
 
 import java.util.Collections;
 
 public class FollowButtonComponent extends ButtonComponent {
+    public static final Identifier BTN_POSITION = AntiqueAtlas.id("textures/gui/position.png");
     public static final int WIDTH = 11;
     public static final int HEIGHT = 11;
 
@@ -31,7 +33,7 @@ public class FollowButtonComponent extends ButtonComponent {
                 RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 0.5F);
             }
 
-            AntiqueAtlasTextures.BTN_POSITION.draw(context, x, y, WIDTH, HEIGHT);
+            context.drawTexture(BTN_POSITION, x, y, 0, 0, WIDTH, HEIGHT, WIDTH, HEIGHT);
 
             RenderSystem.disableBlend();
 

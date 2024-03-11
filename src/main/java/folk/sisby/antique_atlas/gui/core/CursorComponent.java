@@ -1,7 +1,7 @@
 package folk.sisby.antique_atlas.gui.core;
 
-import folk.sisby.antique_atlas.gui.Drawable;
 import net.minecraft.client.gui.DrawContext;
+import net.minecraft.util.Identifier;
 
 
 /**
@@ -11,7 +11,7 @@ import net.minecraft.client.gui.DrawContext;
  */
 public class CursorComponent extends Component {
 
-    private Drawable texture;
+    private Identifier texture;
     private int textureWidth, textureHeight;
     /**
      * Coordinates of the cursor point on the texture.
@@ -25,7 +25,7 @@ public class CursorComponent extends Component {
      * @param pointX  X of the cursor point on the image
      * @param pointY  Y of the cursor point on the image
      */
-    public void setTexture(Drawable texture, int width, int height, int pointX, int pointY) {
+    public void setTexture(Identifier texture, int width, int height, int pointX, int pointY) {
         this.texture = texture;
         this.textureWidth = width;
         this.textureHeight = height;
@@ -45,6 +45,6 @@ public class CursorComponent extends Component {
 
     @Override
     public void render(DrawContext context, int mouseX, int mouseY, float partialTick) {
-        texture.draw(context, mouseX - pointX, mouseY - pointY, textureWidth, textureHeight);
+        context.drawTexture(texture, mouseX - pointX, mouseY - pointY, 0, 0, textureWidth, textureHeight, textureWidth, textureHeight);
     }
 }

@@ -3,8 +3,6 @@ package folk.sisby.antique_atlas;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import folk.sisby.antique_atlas.reloader.MarkerTypes;
-import folk.sisby.antique_atlas.gui.Drawable;
-import folk.sisby.antique_atlas.gui.Texture;
 import folk.sisby.antique_atlas.util.BitMatrix;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.texture.NativeImage;
@@ -110,9 +108,9 @@ public class MarkerType {
         return icons.length == 0 || iconIndex < 0 ? TextureManager.MISSING_IDENTIFIER : icons[iconIndex];
     }
 
-    public Drawable getTexture() {
+    public Identifier getTexture() {
         if (icons.length == 0 || iconIndex < 0) return null;
-        return new Texture(getIcon(), iconSizes[iconIndex], iconSizes[iconIndex]);
+        return getIcon();
     }
 
     private int iconIndex = 0;

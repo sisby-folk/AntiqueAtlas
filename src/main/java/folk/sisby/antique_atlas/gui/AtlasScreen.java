@@ -2,11 +2,9 @@ package folk.sisby.antique_atlas.gui;
 
 import com.mojang.blaze3d.systems.RenderSystem;
 import folk.sisby.antique_atlas.AntiqueAtlas;
-import folk.sisby.antique_atlas.AntiqueAtlasTextures;
 import folk.sisby.antique_atlas.AntiqueAtlasWorld;
 import folk.sisby.antique_atlas.Marker;
 import folk.sisby.antique_atlas.MarkerType;
-import folk.sisby.antique_atlas.TileTexture;
 import folk.sisby.antique_atlas.WorldAtlasData;
 import folk.sisby.antique_atlas.gui.core.ButtonComponent;
 import folk.sisby.antique_atlas.gui.core.Component;
@@ -21,6 +19,7 @@ import folk.sisby.antique_atlas.gui.tiles.SubTileQuartet;
 import folk.sisby.antique_atlas.gui.tiles.TileRenderIterator;
 import folk.sisby.antique_atlas.reloader.BiomeTextures;
 import folk.sisby.antique_atlas.reloader.MarkerTypes;
+import folk.sisby.antique_atlas.util.DrawUtil;
 import folk.sisby.antique_atlas.util.MathUtil;
 import folk.sisby.antique_atlas.util.Rect;
 import net.minecraft.client.MinecraftClient;
@@ -43,6 +42,16 @@ import org.lwjgl.opengl.GL11;
 import java.util.Collections;
 
 public class AtlasScreen extends Component {
+    public static final Identifier BOOK = AntiqueAtlas.id("textures/gui/book.png");
+    public static final Identifier BOOK_FRAME = AntiqueAtlas.id("textures/gui/book_frame.png");
+    public static final Identifier BOOK_FRAME_NARROW = AntiqueAtlas.id("textures/gui/book_frame_narrow.png");
+    public static final Identifier PLAYER = AntiqueAtlas.id("textures/gui/player.png");
+    public static final Identifier ERASER = AntiqueAtlas.id("textures/gui/eraser.png");
+    public static final Identifier ICON_ADD_MARKER = AntiqueAtlas.id("textures/gui/icons/add_marker.png");
+    public static final Identifier ICON_DELETE_MARKER = AntiqueAtlas.id("textures/gui/icons/del_marker.png");
+    public static final Identifier ICON_SHOW_MARKERS = AntiqueAtlas.id("textures/gui/icons/show_markers.png");
+    public static final Identifier ICON_HIDE_MARKERS = AntiqueAtlas.id("textures/gui/icons/hide_markers.png");
+
     public final int WIDTH;
     public final int HEIGHT;
 
@@ -63,10 +72,6 @@ public class AtlasScreen extends Component {
      */
     private static final double MIN_SCALE_THRESHOLD = 0.5;
 
-    private final long[] renderTimes = new long[30];
-
-    private int renderTimesIndex = 0;
-
     // States ==================================================================
 
     private final ScreenState state = new ScreenState();
@@ -85,14 +90,14 @@ public class AtlasScreen extends Component {
             // Set the button as not selected so that it can be clicked again:
             btnShowMarkers.setSelected(false);
             btnShowMarkers.setTitle(Text.translatable("gui.antique_atlas.showMarkers"));
-            btnShowMarkers.setIconTexture(AntiqueAtlasTextures.ICON_SHOW_MARKERS);
+            btnShowMarkers.setIconTexture(ICON_SHOW_MARKERS);
         }
 
         @Override
         public void onExitState() {
             btnShowMarkers.setSelected(false);
             btnShowMarkers.setTitle(Text.translatable("gui.antique_atlas.hideMarkers"));
-            btnShowMarkers.setIconTexture(AntiqueAtlasTextures.ICON_HIDE_MARKERS);
+            btnShowMarkers.setIconTexture(ICON_HIDE_MARKERS);
         }
     };
 
@@ -274,7 +279,7 @@ public class AtlasScreen extends Component {
         };
         btnPosition.addListener(positionListener);
 
-        btnMarker = new BookmarkComponent(0, AntiqueAtlasTextures.ICON_ADD_MARKER, Text.translatable("gui.antique_atlas.addMarker"));
+        btnMarker = new BookmarkComponent(0, ICON_ADD_MARKER, Text.translatable("gui.antique_atlas.addMarker"));
         addChild(btnMarker).offsetGuiCoords(WIDTH - 10, 14);
         btnMarker.addListener(button -> {
             if (state.is(PLACING_MARKER)) {
@@ -304,7 +309,7 @@ public class AtlasScreen extends Component {
                 }
             }
         });
-        btnDelMarker = new BookmarkComponent(2, AntiqueAtlasTextures.ICON_DELETE_MARKER, Text.translatable("gui.antique_atlas.delMarker"));
+        btnDelMarker = new BookmarkComponent(2, ICON_DELETE_MARKER, Text.translatable("gui.antique_atlas.delMarker"));
         addChild(btnDelMarker).offsetGuiCoords(WIDTH - 10, 33);
         btnDelMarker.addListener(button -> {
             if (state.is(DELETING_MARKER)) {
@@ -315,7 +320,7 @@ public class AtlasScreen extends Component {
                 state.switchTo(DELETING_MARKER);
             }
         });
-        btnShowMarkers = new BookmarkComponent(3, AntiqueAtlasTextures.ICON_HIDE_MARKERS, Text.translatable("gui.antique_atlas.hideMarkers"));
+        btnShowMarkers = new BookmarkComponent(3, ICON_HIDE_MARKERS, Text.translatable("gui.antique_atlas.hideMarkers"));
         addChild(btnShowMarkers).offsetGuiCoords(WIDTH - 10, 52);
         btnShowMarkers.addListener(button -> {
             selectedButton = null;
@@ -336,7 +341,7 @@ public class AtlasScreen extends Component {
 
         markerFinalizer.addMarkerListener(blinkingIcon);
 
-        eraser.setTexture(AntiqueAtlasTextures.ERASER, 12, 14, 2, 11);
+        eraser.setTexture(ERASER, 12, 14, 2, 11);
 
         state.switchTo(NORMAL);
     }
@@ -678,7 +683,7 @@ public class AtlasScreen extends Component {
             context.drawBorder(getGuiX(), getGuiY(), WIDTH, HEIGHT, 0xFF4C1A0B);
             context.drawBorder(getGuiX() + MAP_BORDER_WIDTH - 1, getGuiY() + MAP_BORDER_HEIGHT - 1, MAP_WIDTH + 2, MAP_HEIGHT + 2, 0xFF4C1A0B);
         } else {
-            AntiqueAtlasTextures.BOOK.draw(context, getGuiX(), getGuiY());
+            context.drawTexture(BOOK, getGuiX(), getGuiY(), 0, 0, 310, 218, 310, 218);
         }
 
         if (worldAtlasData == null) return;
@@ -713,8 +718,8 @@ public class AtlasScreen extends Component {
         for (SubTileQuartet subtiles : tiles) {
             for (SubTile subtile : subtiles) {
                 if (subtile == null || subtile.tile == null) continue;
-                TileTexture texture = BiomeTextures.getInstance().getTexture(subtile);
-                texture.drawSubTile(context, subtile, tileHalfSize);
+                Identifier texture = BiomeTextures.getInstance().getTexture(subtile);
+                context.drawTexture(texture, subtile.x * tileHalfSize, subtile.y * tileHalfSize, tileHalfSize, tileHalfSize, subtile.getTextureU() * 8, subtile.getTextureV() * 8, 8, 8, 32, 48);
             }
         }
 
@@ -723,10 +728,10 @@ public class AtlasScreen extends Component {
         // Overlay the frame so that edges of the map are smooth:
         RenderSystem.setShaderColor(1, 1, 1, 1);
         if (!AntiqueAtlas.CONFIG.ui.doFullScreen) {
-            AntiqueAtlasTextures.BOOK_FRAME.draw(context, getGuiX(), getGuiY());
+            context.drawTexture(BOOK_FRAME, getGuiX(), getGuiY(), 0, 0, 310, 218, 310, 218);
         }
 
-        double iconScale = getIconScale();
+        float iconScale = getIconScale();
 
         // Draw global markers:
         for (Marker marker : worldAtlasData.getAllMarkers()) {
@@ -736,7 +741,7 @@ public class AtlasScreen extends Component {
         RenderSystem.disableScissor();
 
         if (!AntiqueAtlas.CONFIG.ui.doFullScreen) {
-            AntiqueAtlasTextures.BOOK_FRAME_NARROW.draw(context, getGuiX(), getGuiY());
+            context.drawTexture(BOOK_FRAME_NARROW, getGuiX(), getGuiY(), 0, 0, 310, 218, 310, 218);
         }
 
         renderScaleOverlay(context, deltaMillis);
@@ -757,7 +762,7 @@ public class AtlasScreen extends Component {
             markerFinalizer.selectedType.calculateMip(iconScale, mapScale);
             MarkerRenderInfo renderInfo = MarkerRenderInfo.ofType(markerFinalizer.selectedType, iconScale, mapScale);
             markerFinalizer.selectedType.resetMip();
-            renderInfo.tex.draw(context, mouseX + renderInfo.x, mouseY + renderInfo.y);
+            context.drawTexture(renderInfo.tex, mouseX + renderInfo.x, mouseY + renderInfo.y, 0, 0, renderInfo.width, renderInfo.height, renderInfo.width, renderInfo.height);
             RenderSystem.setShaderColor(1, 1, 1, 1);
         }
         RenderSystem.disableBlend();
@@ -776,7 +781,7 @@ public class AtlasScreen extends Component {
         }
     }
 
-    private void renderPlayer(DrawContext context, double iconScale) {
+    private void renderPlayer(DrawContext context, float iconScale) {
         int playerOffsetX = worldXToScreenX(player.getBlockX());
         int playerOffsetY = worldZToScreenY(player.getBlockZ());
 
@@ -787,7 +792,7 @@ public class AtlasScreen extends Component {
         RenderSystem.setShaderColor(1, 1, 1, state.is(PLACING_MARKER) ? 0.5f : 1);
         float playerRotation = (float) Math.round(player.getYaw() / 360f * PLAYER_ROTATION_STEPS) / PLAYER_ROTATION_STEPS * 360f;
 
-        AntiqueAtlasTextures.PLAYER.drawCenteredWithRotation(context, playerOffsetX, playerOffsetY, (int) Math.round(PLAYER_ICON_WIDTH * iconScale), (int) Math.round(PLAYER_ICON_HEIGHT * iconScale), playerRotation);
+        DrawUtil.drawCenteredWithRotation(context, PLAYER, playerOffsetX, playerOffsetY, iconScale, PLAYER_ICON_WIDTH, PLAYER_ICON_HEIGHT, playerRotation);
 
         RenderSystem.setShaderColor(1, 1, 1, 1);
     }
@@ -855,7 +860,7 @@ public class AtlasScreen extends Component {
         type.calculateMip(scale, mapScale);
         MarkerRenderInfo info = MarkerRenderInfo.ofType(type, scale, mapScale);
 
-        boolean mouseIsOverMarker = type.shouldHover((getMouseX() - (markerX + info.x)) / info.tex.width(), (getMouseY() - (markerY + info.y)) / info.tex.height());
+        boolean mouseIsOverMarker = type.shouldHover((getMouseX() - (markerX + info.x)) / info.width, (getMouseY() - (markerY + info.y)) / info.height);
         type.resetMip();
 
         if (mouseIsOverMarker) {
@@ -891,7 +896,7 @@ public class AtlasScreen extends Component {
             markerY = MathHelper.clamp(markerY, getGuiY() + MAP_BORDER_HEIGHT, getGuiY() + MAP_HEIGHT + MAP_BORDER_HEIGHT);
         }
 
-        info.tex.draw(context, markerX + info.x, markerY + info.y, info.width, info.height);
+        context.drawTexture(info.tex, markerX + info.x, markerY + info.y, 0, 0, info.width, info.height, info.width, info.height);
 
         RenderSystem.setShaderColor(1, 1, 1, 1);
 
@@ -951,9 +956,9 @@ public class AtlasScreen extends Component {
     /**
      * Returns the scale of markers and player icon at given mapScale.
      */
-    private double getIconScale() {
+    private float getIconScale() {
         if (AntiqueAtlas.CONFIG.ui.doScaleMarkers) {
-            if (mapScale < 0.5) return 0.5;
+            if (mapScale < 0.5) return 0.5f;
             if (mapScale > 1) return 2;
         }
         return 1;
