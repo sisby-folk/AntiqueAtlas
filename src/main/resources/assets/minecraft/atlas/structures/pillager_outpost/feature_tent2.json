@@ -1,5 +1,4 @@
 {
   "version": 1,
-  "tile": "antique_atlas:structure/outpost/tent",
-  "priority": 120
+  "tile": "antique_atlas:structure/outpost/tent"
 }

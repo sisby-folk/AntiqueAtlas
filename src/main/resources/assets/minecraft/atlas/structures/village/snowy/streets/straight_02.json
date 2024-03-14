@@ -1,6 +1,5 @@
 {
   "version": 2,
   "tile_x": "antique_atlas:structure/village/path_horizontal",
-  "tile_z": "antique_atlas:structure/village/path_vertical",
-  "priority": 110
+  "tile_z": "antique_atlas:structure/village/path_vertical"
 }
