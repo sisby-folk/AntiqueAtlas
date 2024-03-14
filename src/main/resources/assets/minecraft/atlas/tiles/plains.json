@@ -1,8 +1,20 @@
 {
-  "version": 2,
-  "texture_sets": {
-    "default": "antique_atlas:biome/plains",
-    "high": "antique_atlas:biome/plains_high",
-    "peak": "antique_atlas:biome/plains_peak"
+  "textures": {
+    "valley": {
+      "antique_atlas:biome/flatland/plains/grass_sparse": 1,
+      "antique_atlas:biome/flatland/plains/grass_1": 1,
+      "antique_atlas:biome/flatland/plains/grass_2": 1,
+      "antique_atlas:biome/flatland/plains/grass_3": 1,
+      "antique_atlas:biome/flatland/plains/grass_oak_sparse": 1,
+      "antique_atlas:biome/flatland/plains/grass_oak_fancy_tall_sparse": 1,
+      "antique_atlas:biome/flatland/plains/grass_oak_fancy_sparse": 1
+    },
+    "high": {
+      "antique_atlas:biome/flatland/plains/grass_hills_low": 4,
+      "antique_atlas:biome/flatland/plains/grass_oak_sparse_hills_low": 1,
+      "antique_atlas:biome/flatland/plains/grass_oak_fancy_tall_sparse_hills_low": 1,
+      "antique_atlas:biome/flatland/plains/grass_oak_fancy_sparse_hills_low": 1
+    },
+    "peak": "antique_atlas:biome/flatland/plains/grass_hills"
   }
 }

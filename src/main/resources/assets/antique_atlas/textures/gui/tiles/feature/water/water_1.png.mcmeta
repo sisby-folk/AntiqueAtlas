@@ -1,0 +1,11 @@
+{
+  "antique_atlas:tiling": {
+    "tags": [
+      "antique_atlas:water"
+    ],
+    "tilesTo": [
+      "#antique_atlas:water",
+      "#antique_atlas:ice"
+    ]
+  }
+}

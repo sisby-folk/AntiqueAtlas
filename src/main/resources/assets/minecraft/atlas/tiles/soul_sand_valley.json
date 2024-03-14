@@ -1,6 +1,7 @@
 {
-  "version": 2,
-  "texture_sets": {
-    "default": "antique_atlas:biome/soul_sand_valley"
+  "textures": {
+    "antique_atlas:biome/arid/desert/sand_1": 1,
+    "antique_atlas:biome/arid/desert/sand_2": 1,
+    "antique_atlas:biome/arid/desert/sand_shrubs": 1
   }
 }

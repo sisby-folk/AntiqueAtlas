@@ -1,8 +1,17 @@
 {
-  "version": 2,
-  "texture_sets": {
-    "default": "antique_atlas:biome/jungle",
-    "high": "antique_atlas:biome/jungle_high",
-    "peak": "antique_atlas:biome/jungle_peak"
+  "textures": {
+    "valley": {
+      "antique_atlas:biome/woodland/jungle/jungle_mega": 1,
+      "antique_atlas:biome/woodland/jungle/jungle_mega_palm": 1
+    },
+    "high": {
+      "antique_atlas:biome/woodland/jungle/jungle_mega_hills_low": 1,
+      "antique_atlas:biome/woodland/jungle/jungle_mega_palm_hills_low": 1
+    },
+    "peak": {
+      "antique_atlas:biome/woodland/jungle/bushes_oak_swamp_cliffs": 1,
+      "antique_atlas:biome/woodland/jungle/bushes_jungle_mega_cliffs": 1,
+      "antique_atlas:biome/woodland/jungle/bushes_cliffs": 1
+    }
   }
 }

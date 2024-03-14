@@ -1,6 +1,6 @@
 {
-  "version": 2,
-  "texture_sets": {
-    "default": "antique_atlas:biome/windswept_gravelly_hills"
+  "textures": {
+    "antique_atlas:biome/highland/windswept/hills/gravelly/hills": 1,
+    "antique_atlas:biome/highland/windswept/hills/gravelly/gravel_hills": 2
   }
 }

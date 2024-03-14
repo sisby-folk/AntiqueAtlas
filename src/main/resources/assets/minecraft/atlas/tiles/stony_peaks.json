@@ -1,6 +1,3 @@
 {
-  "version": 2,
-  "texture_sets": {
-    "default": "antique_atlas:biome/stony_peaks"
-  }
+  "textures": "antique_atlas:biome/highland/peaks/stony/smooth_mountains"
 }

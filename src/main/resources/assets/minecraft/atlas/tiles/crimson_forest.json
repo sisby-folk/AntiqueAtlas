@@ -1,6 +1,7 @@
 {
-  "version": 2,
-  "texture_sets": {
-    "default": "antique_atlas:biome/crimson_forest"
+  "textures": {
+    "antique_atlas:biome/woodland/forest/oak_fancy_mixed": 1,
+    "antique_atlas:biome/woodland/forest/oak_mixed": 1,
+    "antique_atlas:biome/woodland/forest/grass_oak_mixed": 1
   }
 }

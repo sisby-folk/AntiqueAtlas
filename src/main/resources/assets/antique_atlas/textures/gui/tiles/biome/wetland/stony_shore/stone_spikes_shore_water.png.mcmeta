@@ -1,0 +1,9 @@
+{
+  "borderType": "inner",
+  "tags": [
+    "antique_atlas:water"
+  ],
+  "tilesTo": [
+    "#antique_atlas:water"
+  ]
+}

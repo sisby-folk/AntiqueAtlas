@@ -1,8 +1,13 @@
 {
-  "version": 2,
-  "texture_sets": {
-    "default": "antique_atlas:biome/bamboo_jungle",
-    "high": "antique_atlas:biome/bamboo_jungle_peak",
-    "peak": "antique_atlas:biome/bamboo_jungle_peak"
+  "textures": {
+    "valley": {
+      "antique_atlas:biome/woodland/jungle/bamboo/grass_bamboo": 1
+    },
+    "high": {
+      "antique_atlas:biome/woodland/jungle/bamboo/grass_bamboo_hills_low": 1
+    },
+    "peak": {
+      "antique_atlas:biome/woodland/jungle/bamboo/grass_bamboo_hills": 1
+    }
   }
 }

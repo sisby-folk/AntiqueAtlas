@@ -1,6 +1,6 @@
 {
-  "version": 2,
-  "texture_sets": {
-    "default": "antique_atlas:feature/ravine"
-  }
+  "textures": [
+    "antique_atlas:feature/ravine/stone_ravine",
+    "antique_atlas:feature/ravine/andesite_ravine"
+  ]
 }

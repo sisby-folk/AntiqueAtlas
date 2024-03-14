@@ -1,8 +1,14 @@
 {
-  "version": 2,
-  "texture_sets": {
-    "default": "antique_atlas:biome/forest",
-    "high": "antique_atlas:biome/forest_high",
-    "peak": "antique_atlas:biome/forest_high"
+  "textures": {
+    "valley": {
+      "antique_atlas:biome/woodland/forest/oak_fancy_mixed": 1,
+      "antique_atlas:biome/woodland/forest/oak_mixed": 1,
+      "antique_atlas:biome/woodland/forest/grass_oak_mixed": 1
+    },
+    "high": {
+      "antique_atlas:biome/woodland/forest/oak_fancy_mixed_hills_low": 1,
+      "antique_atlas:biome/woodland/forest/oak_mixed_hills_low": 1,
+      "antique_atlas:biome/woodland/forest/grass_oak_mixed_hills_low": 1
+    }
   }
 }

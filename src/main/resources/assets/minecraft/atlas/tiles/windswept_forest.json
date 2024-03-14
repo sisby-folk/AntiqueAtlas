@@ -1,6 +1,3 @@
 {
-  "version": 2,
-  "texture_sets": {
-    "default": "antique_atlas:biome/windswept_forest"
-  }
+  "textures": "antique_atlas:biome/highland/windswept/forest/rough_oak_mountains"
 }

@@ -1,6 +1,3 @@
 {
-  "version": 2,
-  "texture_sets": {
-    "default": "antique_atlas:biome/frozen_peaks"
-  }
+  "textures": "antique_atlas:biome/highland/peaks/frozen/rough_mountains"
 }

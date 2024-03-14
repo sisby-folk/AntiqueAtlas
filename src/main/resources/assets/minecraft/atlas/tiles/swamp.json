@@ -1,8 +1,18 @@
 {
-  "version": 2,
-  "texture_sets": {
-    "default": "antique_atlas:biome/swamp",
-    "high": "antique_atlas:biome/swamp_high",
-    "peak": "antique_atlas:biome/swamp_high"
+  "textures": {
+    "valley": {
+      "antique_atlas:biome/wetland/swamp/swamp_water_oak_swamp_1": 1,
+      "antique_atlas:biome/wetland/swamp/swamp_water_oak_swamp_2": 1,
+      "antique_atlas:biome/wetland/swamp/swamp_water_oak_swamp_3": 1,
+      "antique_atlas:biome/wetland/swamp/swamp_water_oak_swamp_sparse_1": 1,
+      "antique_atlas:biome/wetland/swamp/swamp_water_oak_swamp_sparse_2": 1
+    },
+    "high": {
+      "antique_atlas:biome/wetland/swamp/swamp_water_grass_hills": 1,
+      "antique_atlas:biome/wetland/swamp/swamp_water_grass_oak_swamp_hills_1": 1,
+      "antique_atlas:biome/wetland/swamp/swamp_water_grass_oak_swamp_hills_2": 1,
+      "antique_atlas:biome/wetland/swamp/swamp_water_grass_oak_swamp_hills_3": 1,
+      "antique_atlas:biome/wetland/swamp/swamp_water_grass_oak_swamp_hills_4": 1
+    }
   }
 }

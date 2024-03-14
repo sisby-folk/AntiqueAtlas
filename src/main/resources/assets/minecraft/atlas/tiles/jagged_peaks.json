@@ -1,6 +1,3 @@
 {
-  "version": 2,
-  "texture_sets": {
-    "default": "antique_atlas:biome/jagged_peaks"
-  }
+  "textures": "antique_atlas:biome/highland/peaks/jagged/sharp_snow_mountains"
 }

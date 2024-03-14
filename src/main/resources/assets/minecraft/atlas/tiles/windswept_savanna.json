@@ -1,7 +1,15 @@
 {
-  "version": 2,
-  "texture_sets": {
-    "default": "antique_atlas:biome/windswept_savanna",
-    "peak": "antique_atlas:biome/windswept_savanna_peak"
+  "textures": {
+    "valley": {
+      "antique_atlas:biome/arid/savanna/windswept/acacia_cliffs_1": 1,
+      "antique_atlas:biome/arid/savanna/windswept/acacia_cliffs_2": 1,
+      "antique_atlas:biome/arid/savanna/windswept/acacia_cliffs_3": 1
+    },
+    "peak": {
+      "antique_atlas:biome/arid/savanna/windswept/cliffs_clouds": 1,
+      "antique_atlas:biome/arid/savanna/windswept/acacia_cliffs_clouds_1": 1,
+      "antique_atlas:biome/arid/savanna/windswept/acacia_cliffs_clouds_2": 1,
+      "antique_atlas:biome/arid/savanna/windswept/acacia_cliffs_clouds_3": 1
+    }
   }
 }

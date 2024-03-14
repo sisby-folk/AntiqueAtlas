@@ -1,8 +1,10 @@
 {
-  "version": 2,
-  "texture_sets": {
-    "default": "antique_atlas:biome/dark_forest",
-    "high": "antique_atlas:biome/dark_forest_high",
-    "peak": "antique_atlas:biome/dark_forest_high"
+  "textures": {
+    "valley": {
+      "antique_atlas:biome/woodland/forest/dark/dark_oak_1": 1
+    },
+    "high": {
+      "antique_atlas:biome/woodland/forest/dark/dark_oak_hills_1": 1
+    }
   }
 }

@@ -1,6 +1,3 @@
 {
-  "version": 2,
-  "texture_sets": {
-    "default": "antique_atlas:biome/nether_wastes"
-  }
+  "textures": "antique_atlas:biome/nether/wastes/plateau_square"
 }

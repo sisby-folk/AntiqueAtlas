@@ -1,6 +1,3 @@
 {
-  "version": 2,
-  "texture_sets": {
-    "default": "antique_atlas:biome/mangrove_swamp"
-  }
+  "textures": "antique_atlas:biome/wetland/swamp/mangrove/swamp_water_mangrove"
 }

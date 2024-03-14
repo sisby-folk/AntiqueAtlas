@@ -1,6 +1,3 @@
 {
-  "version": 2,
-  "texture_sets": {
-    "default": "antique_atlas:feature/swamp_water"
-  }
+  "textures": "antique_atlas:feature/swamp_water"
 }

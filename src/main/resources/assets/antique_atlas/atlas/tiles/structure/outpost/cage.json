@@ -1,6 +1,3 @@
 {
-  "version": 2,
-  "texture_sets": {
-    "default": "antique_atlas:structure/outpost/cage"
-  }
+  "textures": "antique_atlas:structure/outpost/cage"
 }

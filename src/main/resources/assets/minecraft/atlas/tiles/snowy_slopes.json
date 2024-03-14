@@ -1,6 +1,3 @@
 {
-  "version": 2,
-  "texture_sets": {
-    "default": "antique_atlas:biome/snowy_slopes"
-  }
+  "textures": "antique_atlas:biome/highland/slopes/snowy/snow_cliffs"
 }

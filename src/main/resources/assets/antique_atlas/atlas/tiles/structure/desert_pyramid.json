@@ -1,6 +1,3 @@
 {
-  "version": 2,
-  "texture_sets": {
-    "default": "antique_atlas:structure/desert_pyramid"
-  }
+  "textures": "antique_atlas:structure/desert_pyramid"
 }

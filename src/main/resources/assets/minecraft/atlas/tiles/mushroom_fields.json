@@ -1,6 +1,6 @@
 {
-  "version": 2,
-  "texture_sets": {
-    "default": "antique_atlas:biome/mushroom_fields"
+  "textures": {
+    "antique_atlas:biome/nonland/mushroom/mycelium_mushrooms_huge_mixed": 1,
+    "antique_atlas:biome/nonland/mushroom/mycelium_mushrooms_huge_red_sparse": 1
   }
 }

@@ -1,6 +1,8 @@
 {
-  "version": 2,
-  "texture_sets": {
-    "default": "antique_atlas:biome/basalt_deltas"
+  "textures": {
+    "antique_atlas:biome/nether/basalt/basalt_columns_1": 1,
+    "antique_atlas:biome/nether/basalt/basalt_columns_3": 1,
+    "antique_atlas:biome/nether/basalt/basalt_columns_2": 1,
+    "antique_atlas:biome/nether/basalt/basalt_lava_columns": 1
   }
 }

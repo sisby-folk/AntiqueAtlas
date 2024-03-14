@@ -1,6 +1,9 @@
 {
-  "version": 2,
-  "texture_sets": {
-    "default": "antique_atlas:biome/meadow"
+  "textures": {
+    "antique_atlas:biome/arid/savanna/plateau/grass_plateau_1": 1,
+    "antique_atlas:biome/arid/savanna/plateau/grass_plateau_2": 1,
+    "antique_atlas:biome/arid/savanna/plateau/grass_plateau_3": 1,
+    "antique_atlas:biome/highland/meadow/grass_dandelions_plateau": 1,
+    "antique_atlas:biome/highland/meadow/grass_daisies_plateau": 1
   }
 }

@@ -1,6 +1,3 @@
 {
-  "version": 2,
-  "texture_sets": {
-    "default": "antique_atlas:biome/the_void"
-  }
+  "textures": "antique_atlas:biome/void/the_void/empty"
 }

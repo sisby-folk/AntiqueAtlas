@@ -1,6 +1,3 @@
 {
-  "version": 2,
-  "texture_sets": {
-    "default": "antique_atlas:structure/fortress/nether/nether_fortress_bridge_horizontal"
-  }
+  "textures": "antique_atlas:structure/fortress/nether/nether_fortress_bridge_horizontal"
 }

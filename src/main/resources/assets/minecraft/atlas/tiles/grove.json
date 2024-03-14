@@ -1,6 +1,6 @@
 {
-  "version": 2,
-  "texture_sets": {
-    "default": "antique_atlas:biome/grove"
+  "textures": {
+    "antique_atlas:biome/highland/grove/smooth_spruce_mountains": 2,
+    "antique_atlas:biome/highland/peaks/stony/smooth_mountains": 1
   }
 }

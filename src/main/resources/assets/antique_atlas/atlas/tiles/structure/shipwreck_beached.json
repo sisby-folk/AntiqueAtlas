@@ -1,6 +1,3 @@
 {
-  "version": 2,
-  "texture_sets": {
-    "default": "antique_atlas:structure/shipwreck_beached"
-  }
+  "textures": "antique_atlas:structure/shipwreck_beached"
 }

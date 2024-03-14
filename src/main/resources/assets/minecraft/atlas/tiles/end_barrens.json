@@ -1,6 +1,6 @@
 {
-  "version": 2,
-  "texture_sets": {
-    "default": "antique_atlas:biome/end_barrens"
+  "textures": {
+    "antique_atlas:biome/end/islands/end_island_1": 1,
+    "antique_atlas:biome/end/islands/end_island_2": 1
   }
 }

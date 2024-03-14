@@ -1,6 +1,5 @@
 {
-  "version": 2,
-  "texture_sets": {
-    "default": "antique_atlas:biome/windswept_hills"
+  "textures": {
+    "antique_atlas:biome/highland/windswept/hills/cliffs": 1
   }
 }

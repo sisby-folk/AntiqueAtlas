@@ -1,6 +1,3 @@
 {
-  "version": 2,
-  "texture_sets": {
-    "default": "antique_atlas:structure/fortress/nether/nether_fortress_corridor_nether_warts_room"
-  }
+  "textures": "antique_atlas:structure/fortress/nether/nether_fortress_corridor_nether_warts_room"
 }
