@@ -71,6 +71,9 @@ public class BiomeTextures extends JsonDataLoader implements IdentifiableResourc
             Identifier fallbackBiome = getFallbackBiome(biomeRegistry.getEntry(biome));
             if (fallbackBiome != null && map.containsKey(fallbackBiome)) {
                 biomeFallbacks.put(biomeId, fallbackBiome);
+                for (TileElevation layer : TileElevation.values()) {
+                    biomeFallbacks.put(Identifier.tryParse(biomeId + "_" + layer.getName()), Identifier.tryParse(fallbackBiome + "_" + layer.getName()));
+                }
                 AntiqueAtlas.LOGGER.warn("[Antique Atlas] Set fallback biome for {} to {}. You can set a more fitting texture using a resource pack!", biomeId, fallbackBiome);
             } else if (fallbackBiome != null) {
                 AntiqueAtlas.LOGGER.error("[Antique Atlas] Fallback biome for {} is {}, which has no defined tile provider.", biomeId, fallbackBiome);
