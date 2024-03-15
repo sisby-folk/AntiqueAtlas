@@ -11,13 +11,12 @@ import folk.sisby.antique_atlas.tile.TileElevation;
 import folk.sisby.antique_atlas.util.ForgeTags;
 import net.fabricmc.fabric.api.resource.IdentifiableResourceReloadListener;
 import net.fabricmc.fabric.api.tag.convention.v1.ConventionalBiomeTags;
-import net.minecraft.registry.Registry;
-import net.minecraft.client.MinecraftClient;
 import net.minecraft.resource.JsonDataLoader;
 import net.minecraft.resource.ResourceManager;
 import net.minecraft.tag.BiomeTags;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.profiler.Profiler;
+import net.minecraft.util.registry.Registry;
 import net.minecraft.util.registry.RegistryEntry;
 import net.minecraft.world.biome.Biome;
 import net.minecraft.world.biome.BiomeKeys;
@@ -69,7 +68,7 @@ public class BiomeTextures extends JsonDataLoader implements IdentifiableResourc
         for (Biome biome : biomeRegistry) {
             Identifier biomeId = biomeRegistry.getId(biome);
             if (map.containsKey(biomeId)) continue;
-            Identifier fallbackBiome = getFallbackBiome(biomeRegistry.getEntry(biome));
+            Identifier fallbackBiome = getFallbackBiome(biomeRegistry.getEntry(biomeRegistry.getKey(biome).orElseThrow()).orElseThrow());
             if (fallbackBiome != null && map.containsKey(fallbackBiome)) {
                 biomeFallbacks.put(biomeId, fallbackBiome);
                 AntiqueAtlas.LOGGER.warn("[Antique Atlas] Set fallback biome for {} to {}. You can set a more fitting texture using a resource pack!", biomeId, fallbackBiome);
