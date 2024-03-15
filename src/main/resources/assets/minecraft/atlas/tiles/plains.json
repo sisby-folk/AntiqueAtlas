@@ -4,8 +4,8 @@
       "antique_atlas:base/grass",
       "antique_atlas:biome/flatland/plains/grass_3",
       "antique_atlas:biome/flatland/plains/grass_oak_sparse",
-      "antique_atlas:biome/flatland/plains/grass_oak_sparse",
-      "antique_atlas:biome/flatland/plains/grass_oak_fancy_tall_sparse"
+      "antique_atlas:biome/flatland/plains/grass_oak_fancy_tall_sparse",
+      "antique_atlas:biome/flatland/plains/grass_oak_fancy_sparse"
     ],
     "high": {
       "antique_atlas:biome/flatland/plains/grass_hills_low": 4,
