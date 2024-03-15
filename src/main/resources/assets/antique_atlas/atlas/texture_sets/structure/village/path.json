@@ -1,0 +1,11 @@
+{
+  "version": 1,
+  "data": {
+    "textures": {
+      "antique_atlas:structure/village/path": 1
+    },
+    "stitch": {
+      "antique_atlas:structure/village/path": "both"
+    }
+  }
+}
