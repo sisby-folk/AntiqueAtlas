@@ -56,7 +56,7 @@ public class AtlasData extends PersistentState {
     public void updateFromNbt(NbtCompound compound) {
         int version = compound.getInt(TAG_VERSION);
         if (version < VERSION) {
-            AntiqueAtlas.LOG.warn("Outdated atlas data format! Was {} but current is {}.", version, VERSION);
+            AntiqueAtlas.LOGGER.warn("Outdated atlas data format! Was {} but current is {}.", version, VERSION);
             return;
         }
 
@@ -139,7 +139,7 @@ public class AtlasData extends PersistentState {
             worldMap.get(world).syncToPlayer(atlasID, player);
         }
 
-        AntiqueAtlas.LOG.info("Sent Atlas #{} data to player {}", atlasID, player.getCommandSource().getName());
+        AntiqueAtlas.LOGGER.info("Sent Atlas #{} data to player {}", atlasID, player.getCommandSource().getName());
         playersSentTo.add(player);
     }
 

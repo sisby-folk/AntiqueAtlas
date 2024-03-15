@@ -150,7 +150,7 @@ public class MarkerType {
         for (int i = 0; i < icons.length; i++) {
             iconSizes[i] = -1;
             if (icons[i] == null) {
-                AntiqueAtlas.LOG.warn("Marker {} -- Texture location is null at index {}!", MarkerTypes.getInstance().getId(this).toString(), i);
+                AntiqueAtlas.LOGGER.warn("Marker {} -- Texture location is null at index {}!", MarkerTypes.getInstance().getId(this).toString(), i);
             }
 
             NativeImage bufferedimage = null;
@@ -187,7 +187,7 @@ public class MarkerType {
 
                 iconPixels[i] = matrix;
             } catch (IOException e) {
-                AntiqueAtlas.LOG.warn("Marker {} -- Error getting texture size data for index {} - {}",
+                AntiqueAtlas.LOGGER.warn("Marker {} -- Error getting texture size data for index {} - {}",
                     MarkerTypes.getInstance().getId(this).toString(), i, icons[i].toString(), e);
             } finally {
                 if (bufferedimage != null) {
@@ -242,7 +242,7 @@ public class MarkerType {
                         if (elem.isJsonPrimitive()) {
                             list.add(AntiqueAtlas.id(elem.getAsString()));
                         } else {
-                            AntiqueAtlas.LOG.warn("Loading marker {} from JSON: Texture item {} isn't a primitive", typeName, i);
+                            AntiqueAtlas.LOGGER.warn("Loading marker {} from JSON: Texture item {} isn't a primitive", typeName, i);
                         }
                         i++;
                     }
@@ -298,9 +298,9 @@ public class MarkerType {
                     workingOn = NONE;
                 }
             } catch (ClassCastException e) {
-                AntiqueAtlas.LOG.warn("Loading marker {} from JSON: Parsing element {}: element was wrong type!", typeName, workingOn, e);
+                AntiqueAtlas.LOGGER.warn("Loading marker {} from JSON: Parsing element {}: element was wrong type!", typeName, workingOn, e);
             } catch (NumberFormatException e) {
-                AntiqueAtlas.LOG.warn("Loading marker {} from JSON: Parsing element {}: element was an invalid number!", typeName, workingOn, e);
+                AntiqueAtlas.LOGGER.warn("Loading marker {} from JSON: Parsing element {}: element was an invalid number!", typeName, workingOn, e);
             }
 
             if (icons != null)

@@ -40,7 +40,7 @@ public class TileDataStorage extends PersistentState {
         int version = compound.getInt(TAG_VERSION);
 
         if (version < VERSION) {
-            AntiqueAtlas.LOG.warn("Outdated atlas data format! Was {} but current is {}", version, VERSION);
+            AntiqueAtlas.LOGGER.warn("Outdated atlas data format! Was {} but current is {}", version, VERSION);
             return data;
         }
 
@@ -102,6 +102,6 @@ public class TileDataStorage extends PersistentState {
         Streams.chunked(tiles.entrySet().stream(), CHUNK_SIZE)
             .forEach(chunk -> new PutGlobalTileS2CPacket(world, chunk.stream().map(e -> new Pair<>(e.getKey(), e.getValue())).toList()).send(player));
 
-        AntiqueAtlas.LOG.info("Sent custom biome data to player {}", player.getCommandSource().getName());
+        AntiqueAtlas.LOGGER.info("Sent custom biome data to player {}", player.getCommandSource().getName());
     }
 }

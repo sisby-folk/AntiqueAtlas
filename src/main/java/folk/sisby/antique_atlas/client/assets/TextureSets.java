@@ -122,7 +122,7 @@ public class TextureSets extends JsonDataLoader implements IdentifiableResourceR
                 }
                 outMap.put(fileId, set);
             } catch (Exception e) {
-                AntiqueAtlas.LOG.warn("Error reading texture set " + fileId + "!", e);
+                AntiqueAtlas.LOGGER.warn("Error reading texture set " + fileId + "!", e);
             }
         }
 
@@ -131,10 +131,10 @@ public class TextureSets extends JsonDataLoader implements IdentifiableResourceR
                 set.loadTextures(tileTextures);
                 register(set);
                 if (AntiqueAtlas.CONFIG.Performance.resourcePackLogging) {
-                    AntiqueAtlas.LOG.info("Loaded texture set {} with {} custom texture(s)", id, set.getTexturePaths().length);
+                    AntiqueAtlas.LOGGER.info("Loaded texture set {} with {} custom texture(s)", id, set.getTexturePaths().length);
                 }
             } catch (Throwable e) {
-                AntiqueAtlas.LOG.error("Failed to load the texture set `{}`:", id, e);
+                AntiqueAtlas.LOGGER.error("Failed to load the texture set `{}`:", id, e);
             }
         });
 
@@ -143,7 +143,7 @@ public class TextureSets extends JsonDataLoader implements IdentifiableResourceR
             if (set instanceof TextureSet.TextureSetShore texture) {
                 texture.loadWater();
                 if (AntiqueAtlas.CONFIG.Performance.resourcePackLogging) {
-                    AntiqueAtlas.LOG.info("Loaded water texture `{}` for shore texture `{}` texture", texture.waterName, texture.id);
+                    AntiqueAtlas.LOGGER.info("Loaded water texture `{}` for shore texture `{}` texture", texture.waterName, texture.id);
                 }
             }
         });

@@ -91,7 +91,7 @@ public class TileGroup implements TileStorage {
             int ry = y - scope.minY;
             tiles[rx][ry] = tile;
         } else {
-            AntiqueAtlas.LOG.warn("TileGroup tried to set tile out of bounds:" +
+            AntiqueAtlas.LOGGER.warn("TileGroup tried to set tile out of bounds:" +
                 "\n\tbounds:" + scope +
                 "\n\ttarget: x:" + x + ", y:" + y);
         }

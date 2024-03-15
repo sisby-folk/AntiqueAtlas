@@ -119,11 +119,11 @@ public class TextureSet implements Comparable<TextureSet> {
      */
     public void checkStitching() {
         stitchTo.stream().filter(identifier -> !TextureSets.getInstance().contains(identifier)).forEach(identifier ->
-            AntiqueAtlas.LOG.error("The texture set {} tries to stitch to {}, which does not exist.", id, identifier));
+            AntiqueAtlas.LOGGER.error("The texture set {} tries to stitch to {}, which does not exist.", id, identifier));
         stitchToVertical.stream().filter(identifier -> !TextureSets.getInstance().contains(identifier)).forEach(identifier ->
-            AntiqueAtlas.LOG.error("The texture set {} tries to stitch vertically to {}, which does not exist.", id, identifier));
+            AntiqueAtlas.LOGGER.error("The texture set {} tries to stitch vertically to {}, which does not exist.", id, identifier));
         stitchToHorizontal.stream().filter(identifier -> !TextureSets.getInstance().contains(identifier)).forEach(identifier ->
-            AntiqueAtlas.LOG.error("The texture set {} tries to stitch horizontally to {}, which does not exist.", id, identifier));
+            AntiqueAtlas.LOGGER.error("The texture set {} tries to stitch horizontally to {}, which does not exist.", id, identifier));
     }
 
     /**

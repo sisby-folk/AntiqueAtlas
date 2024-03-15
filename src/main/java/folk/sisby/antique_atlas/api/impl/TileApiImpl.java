@@ -20,7 +20,7 @@ public class TileApiImpl implements TileAPI {
 
     public void putTile(World world, int atlasID, Identifier tile, int chunkX, int chunkZ) {
         if (tile == null) {
-            AntiqueAtlas.LOG.error("Attempted to put custom tile with null name");
+            AntiqueAtlas.LOGGER.error("Attempted to put custom tile with null name");
             return;
         }
 
@@ -42,12 +42,12 @@ public class TileApiImpl implements TileAPI {
     @Override
     public void putGlobalTile(World world, Identifier tileId, int chunkX, int chunkZ) {
         if (tileId == null) {
-            AntiqueAtlas.LOG.error("Attempted to put global tile with null name");
+            AntiqueAtlas.LOGGER.error("Attempted to put global tile with null name");
             return;
         }
 
         if (world.isClient) {
-            AntiqueAtlas.LOG.warn("Client attempted to put global tile");
+            AntiqueAtlas.LOGGER.warn("Client attempted to put global tile");
             return;
         }
 

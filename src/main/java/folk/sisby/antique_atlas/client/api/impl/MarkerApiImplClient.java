@@ -23,7 +23,7 @@ public class MarkerApiImplClient implements MarkerAPI {
     @Nullable
     @Override
     public Marker putGlobalMarker(@NotNull World world, boolean visibleAhead, Identifier marker, Text label, int x, int z) {
-        AntiqueAtlas.LOG.warn("Client tried to add a global marker");
+        AntiqueAtlas.LOGGER.warn("Client tried to add a global marker");
 
         return null;
     }
@@ -35,6 +35,6 @@ public class MarkerApiImplClient implements MarkerAPI {
 
     @Override
     public void deleteGlobalMarker(@NotNull World world, int markerID) {
-        AntiqueAtlas.LOG.warn("Client tried to delete a global marker");
+        AntiqueAtlas.LOGGER.warn("Client tried to delete a global marker");
     }
 }
