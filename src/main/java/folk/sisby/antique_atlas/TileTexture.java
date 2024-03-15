@@ -12,7 +12,7 @@ public final class TileTexture {
         return new TileTexture(new Identifier(id.getNamespace(), "textures/gui/tiles/%s.png".formatted(id.getPath())), innerBorder, new ReferenceOpenHashSet<>(), new ReferenceOpenHashSet<>(), new ReferenceOpenHashSet<>());
     }
 
-    public static final TileTexture DEFAULT = empty(new Identifier(AntiqueAtlas.ID, "textures/gui/tiles/%s.png".formatted("test")), false);
+    public static final TileTexture DEFAULT = empty(AntiqueAtlas.id("test"), false);
     private final Identifier id;
     private final boolean innerBorder;
     private final Set<TileTexture> tilesTo;
@@ -27,20 +27,21 @@ public final class TileTexture {
         this.tilesToVertical = tilesToVertical;
     }
 
-    public Identifier displayId() {
-        return new Identifier(id.getNamespace(), id.getPath().substring("textures/gui/tiles/".length(), id.getPath().length() - 4));
+    public String displayId() {
+        String trimmedPath = id.getPath().substring("textures/gui/tiles/".length(), id.getPath().length() - 4);
+        return id.getNamespace().equals(AntiqueAtlas.ID) ? trimmedPath : new Identifier(id.getNamespace(), trimmedPath).toString();
     }
 
     public boolean tiles(TileTexture other) {
-        return innerBorder ^ (this == other || tilesTo.contains(other) || tilesToHorizontal.contains(other) || tilesToVertical.contains(other));
+        return this == other || (innerBorder ^ (tilesTo.contains(other) || tilesToHorizontal.contains(other) || tilesToVertical.contains(other)));
     }
 
     public boolean tilesHorizontally(TileTexture other) {
-        return innerBorder ^ (this == other || tilesTo.contains(other) || tilesToHorizontal.contains(other));
+        return this == other || (innerBorder ^ (tilesTo.contains(other) || tilesToHorizontal.contains(other)));
     }
 
     public boolean tilesVertically(TileTexture other) {
-        return innerBorder ^ (this == other || tilesTo.contains(other) || tilesToVertical.contains(other));
+        return this == other || (innerBorder ^ (tilesTo.contains(other) || tilesToVertical.contains(other)));
     }
 
     public Identifier id() {

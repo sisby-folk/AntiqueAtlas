@@ -7,6 +7,7 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import folk.sisby.antique_atlas.AntiqueAtlas;
 import folk.sisby.antique_atlas.Marker;
+import folk.sisby.antique_atlas.TileProvider;
 import folk.sisby.antique_atlas.TileTexture;
 import folk.sisby.antique_atlas.structure.StructurePieceTile;
 import folk.sisby.surveyor.landmark.SimplePointLandmark;
@@ -107,15 +108,21 @@ public class StructureTiles extends JsonDataLoader implements IdentifiableResour
         structureTagMarkers.put(structureTag, Pair.of(markerType, name));
     }
 
-    public Map<ChunkPos, TileTexture> resolve(Map<ChunkPos, TileTexture> tiles, StructurePieceSummary piece, World world) {
+    public Map<ChunkPos, TileTexture> resolve(Map<ChunkPos, TileTexture> tiles, Map<ChunkPos, TileProvider> structureProviders, StructurePieceSummary piece, World world) {
         if (piece instanceof JigsawPieceSummary jigsawPiece) {
             for (StructurePieceTile pieceTile : jigsawTiles.get(jigsawPiece.getId())) {
                 chunkPosIfX(jigsawPiece).ifPresent(pos -> {
-                    TileTexture newTile = BiomeTileProviders.getInstance().getTileProvider(pieceTile.tileX()).getTexture(new ChunkPos(pos.x, pos.z), null);
+                    TileProvider provider = BiomeTileProviders.getInstance().getTileProvider(pieceTile.tileX());
+                    if (provider == TileProvider.DEFAULT) AntiqueAtlas.LOGGER.warn("[Antique Atlas] failed to find tile {} for structure {}", pieceTile.tileX(), jigsawPiece.getId());
+                    TileTexture newTile = provider.getTexture(new ChunkPos(pos.x, pos.z), null);
+                    structureProviders.put(pos, provider);
                     tiles.put(new ChunkPos(pos.x, pos.z), newTile);
                 });
                 chunkPosIfZ(jigsawPiece).ifPresent(pos -> {
-                    TileTexture newTile = BiomeTileProviders.getInstance().getTileProvider(pieceTile.tileX()).getTexture(new ChunkPos(pos.x, pos.z), null);
+                    TileProvider provider = BiomeTileProviders.getInstance().getTileProvider(pieceTile.tileZ());
+                    if (provider == TileProvider.DEFAULT) AntiqueAtlas.LOGGER.warn("[Antique Atlas] failed to find tile {} for structure {}", pieceTile.tileX(), jigsawPiece.getId());
+                    TileTexture newTile = provider.getTexture(new ChunkPos(pos.x, pos.z), null);
+                    structureProviders.put(pos, provider);
                     tiles.put(new ChunkPos(pos.x, pos.z), newTile);
                 });
             }
@@ -126,14 +133,17 @@ public class StructureTiles extends JsonDataLoader implements IdentifiableResour
         if (structurePieceTiles.containsKey(structurePieceId)) {
             for (Pair<Identifier, PieceMatcher> entry : structurePieceTiles.get(structurePieceId)) {
                 for (ChunkPos pos : entry.getRight().matches(world, piece.getBoundingBox())) {
-                    tiles.put(pos, BiomeTileProviders.getInstance().getTileProvider(entry.getLeft()).getTexture(new ChunkPos(pos.x, pos.z), null));
+                    TileProvider provider = BiomeTileProviders.getInstance().getTileProvider(entry.getLeft());
+                    if (provider == TileProvider.DEFAULT) AntiqueAtlas.LOGGER.warn("[Antique Atlas] failed to find tile {} for structure {}", entry.getLeft(), structurePieceId);
+                    structureProviders.put(pos, provider);
+                    tiles.put(pos, provider.getTexture(new ChunkPos(pos.x, pos.z), null));
                 }
             }
         }
         return tiles;
     }
 
-    public void resolve(Map<ChunkPos, TileTexture> outTiles, Map<RegistryKey<Structure>, Map<ChunkPos, Marker>> outMarkers, World world, RegistryKey<Structure> key, ChunkPos pos, StructureSummary summary, RegistryKey<StructureType<?>> type, Collection<TagKey<Structure>> tags) {
+    public void resolve(Map<ChunkPos, TileTexture> outTiles, Map<ChunkPos, TileProvider> structureProviders, Map<RegistryKey<Structure>, Map<ChunkPos, Marker>> outMarkers, World world, RegistryKey<Structure> key, ChunkPos pos, StructureSummary summary, RegistryKey<StructureType<?>> type, Collection<TagKey<Structure>> tags) {
         Pair<Identifier, Text> foundMarker = structureMarkers.get(key.getValue());
         if (foundMarker == null) {
             foundMarker = structureTagMarkers.entrySet().stream().filter(entry -> tags.contains(entry.getKey())).findFirst().map(Map.Entry::getValue).orElse(null);
@@ -142,7 +152,7 @@ public class StructureTiles extends JsonDataLoader implements IdentifiableResour
             outMarkers.computeIfAbsent(key, k -> new HashMap<>()).put(pos, new Marker(SimplePointLandmark.TYPE, foundMarker.getLeft(), foundMarker.getRight(), pos.getCenterAtY(0), false, null));
         }
 
-        summary.getChildren().forEach(p -> resolve(outTiles, p, world));
+        summary.getChildren().forEach(p -> resolve(outTiles, structureProviders, p, world));
     }
 
     @Override

@@ -1,12 +1,13 @@
 package folk.sisby.antique_atlas.terrain;
 
 import folk.sisby.antique_atlas.TileElevation;
-import folk.sisby.antique_atlas.TileTexture;
+import folk.sisby.antique_atlas.TileProvider;
 import folk.sisby.antique_atlas.TileTypes;
 import folk.sisby.antique_atlas.reloader.BiomeTileProviders;
 import folk.sisby.surveyor.SurveyorWorld;
 import folk.sisby.surveyor.terrain.ChunkSummary;
 import folk.sisby.surveyor.terrain.LayerSummary;
+import it.unimi.dsi.fastutil.Pair;
 import it.unimi.dsi.fastutil.objects.Reference2BooleanArrayMap;
 import it.unimi.dsi.fastutil.objects.Reference2IntArrayMap;
 import net.fabricmc.fabric.api.tag.convention.v1.ConventionalBiomeTags;
@@ -75,7 +76,7 @@ public class SurveyorChunkUtil {
         return swampCache.get(biome);
     }
 
-    protected static TileTexture frequencyToTexture(ChunkPos pos, int[][] possibleTiles, Registry<Biome> biomeRegistry, IndexedIterable<Biome> biomePalette) {
+    protected static Pair<TileProvider, TileElevation> frequencyToTexture(ChunkPos pos, int[][] possibleTiles, Registry<Biome> biomeRegistry, IndexedIterable<Biome> biomePalette) {
         int elevationOrdinal = -1;
         int biomeIndex = -1;
         int bestFrequency = 0;
@@ -91,10 +92,10 @@ public class SurveyorChunkUtil {
         if (bestFrequency == 0) return null;
         int customTileIndex = biomeIndex - possibleTiles[0].length + CUSTOM_TILES.size();
         Identifier providerId = customTileIndex >= 0 ? CUSTOM_TILES.get(customTileIndex) : biomeRegistry.getId(biomePalette.get(biomeIndex));
-        return BiomeTileProviders.getInstance().getTileProvider(providerId).getTexture(pos, elevationOrdinal == TileElevation.values().length ? null : TileElevation.values()[elevationOrdinal]);
+        return Pair.of(BiomeTileProviders.getInstance().getTileProvider(providerId), elevationOrdinal == TileElevation.values().length ? null : TileElevation.values()[elevationOrdinal]);
     }
 
-    public static TileTexture terrainToTile(World world, ChunkPos pos) {
+    public static Pair<TileProvider, TileElevation> terrainToTile(World world, ChunkPos pos) {
         Registry<Biome> biomeRegistry = world.getRegistryManager().get(RegistryKeys.BIOME);
         int defaultTile = CUSTOM_TILES.indexOf(world.getDimension().hasCeiling() ? TileTypes.NETHER_WASTES : (world.getRegistryKey() == World.END ? TileTypes.END_VOID : TileTypes.THE_VOID));
         boolean checkRavines = world.getDimension().hasSkyLight();
@@ -104,7 +105,7 @@ public class SurveyorChunkUtil {
         @Nullable LayerSummary.Raw summary = chunk.toSingleLayer(null, null, world.getTopY());
         IndexedIterable<Biome> biomePalette = ((SurveyorWorld) world).surveyor$getWorldSummary().terrain().getBiomePalette(pos);
         IndexedIterable<Block> blockPalette = ((SurveyorWorld) world).surveyor$getWorldSummary().terrain().getBlockPalette(pos);
-        if (summary == null) return BiomeTileProviders.getInstance().getTileProvider(CUSTOM_TILES.get(defaultTile)).getTexture(pos, null);
+        if (summary == null) return Pair.of(BiomeTileProviders.getInstance().getTileProvider(CUSTOM_TILES.get(defaultTile)), null);
 
         int elevationSize = TileElevation.values().length;
         int elevationCount = elevationSize + 1;
@@ -136,7 +137,7 @@ public class SurveyorChunkUtil {
         return frequencyToTexture(pos, possibleTiles, biomeRegistry, biomePalette);
     }
 
-    public static TileTexture terrainToTileNether(World world, ChunkPos pos) {
+    public static Pair<TileProvider, TileElevation> terrainToTileNether(World world, ChunkPos pos) {
         Registry<Biome> biomeRegistry = world.getRegistryManager().get(RegistryKeys.BIOME);
         int defaultTile = CUSTOM_TILES.indexOf(world.getDimension().hasCeiling() ? TileTypes.NETHER_WASTES : (world.getRegistryKey() == World.END ? TileTypes.END_VOID : TileTypes.THE_VOID));
 
@@ -153,7 +154,7 @@ public class SurveyorChunkUtil {
         int[][] possibleTiles = new int[elevationCount][baseTileCount];
 
         if (fullSummary == null) {
-            return BiomeTileProviders.getInstance().getTileProvider(CUSTOM_TILES.get(defaultTile)).getTexture(pos, null);
+            return Pair.of(BiomeTileProviders.getInstance().getTileProvider(CUSTOM_TILES.get(defaultTile)), null);
         }
 
         if (lowSummary == null) {

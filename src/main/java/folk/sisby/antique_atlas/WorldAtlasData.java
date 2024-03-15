@@ -14,6 +14,7 @@ import folk.sisby.surveyor.landmark.WorldLandmarks;
 import folk.sisby.surveyor.structure.WorldStructureSummary;
 import folk.sisby.surveyor.terrain.WorldTerrainSummary;
 import folk.sisby.surveyor.util.MapUtil;
+import it.unimi.dsi.fastutil.Pair;
 import net.minecraft.client.world.ClientWorld;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.registry.RegistryKey;
@@ -47,6 +48,11 @@ public class WorldAtlasData {
     private final Map<RegistryKey<Structure>, Map<ChunkPos, Marker>> structureMarkers = new ConcurrentHashMap<>();
     boolean isFinished = false;
 
+    // Debug
+    private final Map<ChunkPos, TileElevation> elevations = new HashMap<>();
+    private final Map<ChunkPos, TileProvider> biomeProviders = new HashMap<>();
+    private final Map<ChunkPos, TileProvider> structureProviders = new HashMap<>();
+
     public WorldAtlasData(World world) {
         ((SurveyorWorld) world).surveyor$getWorldSummary().terrain().keySet().forEach(terrainDeque::addLast);
         ((SurveyorWorld) world).surveyor$getWorldSummary().structures().asMap().forEach((key, map) -> onStructuresAdded(world, ((SurveyorWorld) world).surveyor$getWorldSummary().structures(), MapUtil.hashMultiMapOf(Map.of(key, map.keySet()))));
@@ -61,17 +67,19 @@ public class WorldAtlasData {
     }
 
     public void onStructuresAdded(World world, WorldStructureSummary ws, Multimap<RegistryKey<Structure>, ChunkPos> summaries) {
-        summaries.forEach((key, pos) -> StructureTiles.getInstance().resolve(structureTiles, structureMarkers, world, key, pos, ws.get(key, pos), ws.getType(key), ws.getTags(key)));
+        summaries.forEach((key, pos) -> StructureTiles.getInstance().resolve(structureTiles, structureProviders, structureMarkers, world, key, pos, ws.get(key, pos), ws.getType(key), ws.getTags(key)));
     }
 
     public void tick(World world) {
         for (int i = 0; i < CHUNK_TICK_LIMIT; i++) {
             ChunkPos pos = terrainDeque.pollFirst();
             if (pos == null) break;
-            TileTexture tile = world.getRegistryKey() == World.NETHER ? SurveyorChunkUtil.terrainToTileNether(world, pos) : SurveyorChunkUtil.terrainToTile(world, pos);
+            Pair<TileProvider, TileElevation> tile = world.getRegistryKey() == World.NETHER ? SurveyorChunkUtil.terrainToTileNether(world, pos) : SurveyorChunkUtil.terrainToTile(world, pos);
             if (tile != null) {
                 tileScope.extendTo(pos.x, pos.z);
-                biomeTiles.put(pos, tile);
+                biomeTiles.put(pos, tile.left().getTexture(pos, tile.right()));
+                biomeProviders.put(pos, tile.left());
+                elevations.put(pos, tile.right());
             }
         }
         if (!isFinished && terrainDeque.isEmpty()) {
@@ -90,6 +98,22 @@ public class WorldAtlasData {
 
     public TileTexture getTile(ChunkPos pos) {
         return structureTiles.containsKey(pos) ? structureTiles.get(pos) : biomeTiles.getOrDefault(pos, null);
+    }
+
+    public TileProvider getProvider(ChunkPos pos) {
+        if (structureTiles.containsKey(pos)) {
+            return structureProviders.get(pos);
+        } else {
+            return biomeProviders.get(pos);
+        }
+    }
+
+    public TileElevation getElevation(ChunkPos pos) {
+        if (structureTiles.containsKey(pos)) {
+            return null;
+        } else {
+            return elevations.get(pos);
+        }
     }
 
     public void refreshLandmarkMarkers(World world) {

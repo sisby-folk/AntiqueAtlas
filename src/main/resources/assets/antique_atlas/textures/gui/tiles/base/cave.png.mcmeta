@@ -4,7 +4,7 @@
       "antique_atlas:caves"
     ],
     "tilesTo": [
-      "antique_atlas:caves"
+      "#antique_atlas:caves"
     ]
   }
 }

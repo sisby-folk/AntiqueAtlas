@@ -1,10 +1,5 @@
 {
   "antique_atlas:tiling": {
-    "tags": [
-      "antique_atlas:swamp_water"
-    ],
-    "tilesTo": [
-      "antique_atlas:swamp_water"
-    ]
+    "parent": "antique_atlas:biome/wetland/swamp/swamp_water"
   }
 }

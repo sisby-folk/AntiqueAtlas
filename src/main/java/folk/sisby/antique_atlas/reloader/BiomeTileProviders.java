@@ -180,6 +180,9 @@ public class BiomeTileProviders extends JsonDataLoader implements IdentifiableRe
             }
         }
 
+        // Validate IDs
+        textureMeta.forEach((id, meta) -> meta.warnMissing(id, textureMeta.keySet()));
+
         // Validate Parents
         Map<Identifier, Identifier> invalidParents = new HashMap<>();
         textureMeta.forEach((id, meta) -> {
@@ -265,7 +268,7 @@ public class BiomeTileProviders extends JsonDataLoader implements IdentifiableRe
                 List<TileTexture> defaultTextures = resolveTextureJson(textures, textureJson);
                 if (defaultTextures != null) {
                     defaultTextures.forEach(unusedTextures::remove);
-                    tileProviders.put(fileId, new TileProvider(defaultTextures));
+                    tileProviders.put(fileId, new TileProvider(fileId, defaultTextures));
                 } else {
                     JsonObject textureObject = textureJson.getAsJsonObject();
                     Map<TileElevation, List<TileTexture>> textureElevations = new HashMap<>();
@@ -291,7 +294,7 @@ public class BiomeTileProviders extends JsonDataLoader implements IdentifiableRe
                     for (TileElevation elevation : skippedElevations) {
                         textureElevations.put(elevation, elevationTextures);
                     }
-                    tileProviders.put(fileId, new TileProvider(textureElevations));
+                    tileProviders.put(fileId, new TileProvider(fileId, textureElevations));
                 }
             } catch (Exception e) {
                 AntiqueAtlas.LOGGER.warn("[Antique Atlas] Error reading biome tile provider " + fileId + "!", e);
@@ -306,7 +309,7 @@ public class BiomeTileProviders extends JsonDataLoader implements IdentifiableRe
         });
 
         for (TileTexture texture : unusedTextures) {
-            if (texture.displayId().getPath().startsWith("test") || texture.displayId().getPath().startsWith("base")) continue;
+            if (texture.displayId().startsWith("test") || texture.displayId().startsWith("base")) continue;
             AntiqueAtlas.LOGGER.warn("[Antique Atlas] Tile texture {} isn't referenced by any tile provider!", texture.displayId());
         }
     }
@@ -316,17 +319,7 @@ public class BiomeTileProviders extends JsonDataLoader implements IdentifiableRe
         return ID;
     }
 
-    public record TileTextureMeta(
-        Optional<Identifier> parent,
-        Optional<BorderType> borderType,
-        Set<Identifier> tags,
-        Set<Codecs.TagEntryId> tilesTo,
-        Set<Codecs.TagEntryId> tilesToHorizontal,
-        Set<Codecs.TagEntryId> tilesToVertical,
-        Set<Codecs.TagEntryId> tilesToThis,
-        Set<Codecs.TagEntryId> tilesToThisHorizontal,
-        Set<Codecs.TagEntryId> tilesToThisVertical
-    ) {
+    public static final class TileTextureMeta {
         public static final TileTextureMeta DEFAULT = new TileTextureMeta(Optional.empty(), Optional.empty(), Set.of(), Set.of(), Set.of(), Set.of(), Set.of(), Set.of(), Set.of());
 
         public static final Codec<TileTextureMeta> CODEC = RecordCodecBuilder.create(instance -> instance.group(
@@ -341,14 +334,45 @@ public class BiomeTileProviders extends JsonDataLoader implements IdentifiableRe
             CodecUtil.set(Codecs.TAG_ENTRY_ID).fieldOf("tilesToThisVertical").orElseGet(HashSet::new).forGetter(TileTextureMeta::tilesToThisVertical)
         ).apply(instance, TileTextureMeta::new));
 
-        enum BorderType {
-            outer,
-            inner
+        public enum BorderType {
+            OUTER, INNER
         }
 
         public static final ResourceMetadataReader<TileTextureMeta> METADATA = new CodecUtil.CodecResourceMetadataSerializer<>(CODEC, AntiqueAtlas.id("tiling"));
+        private final Optional<Identifier> parent;
+        private Optional<BorderType> borderType;
+        private final Set<Identifier> tags;
+        private final Set<Codecs.TagEntryId> tilesTo;
+        private final Set<Codecs.TagEntryId> tilesToHorizontal;
+        private final Set<Codecs.TagEntryId> tilesToVertical;
+        private final Set<Codecs.TagEntryId> tilesToThis;
+        private final Set<Codecs.TagEntryId> tilesToThisHorizontal;
+        private final Set<Codecs.TagEntryId> tilesToThisVertical;
+
+        public TileTextureMeta(Optional<Identifier> parent, Optional<BorderType> borderType, Set<Identifier> tags, Set<Codecs.TagEntryId> tilesTo, Set<Codecs.TagEntryId> tilesToHorizontal, Set<Codecs.TagEntryId> tilesToVertical, Set<Codecs.TagEntryId> tilesToThis, Set<Codecs.TagEntryId> tilesToThisHorizontal, Set<Codecs.TagEntryId> tilesToThisVertical) {
+            this.parent = parent;
+            this.borderType = borderType;
+            this.tags = tags;
+            this.tilesTo = tilesTo;
+            this.tilesToHorizontal = tilesToHorizontal;
+            this.tilesToVertical = tilesToVertical;
+            this.tilesToThis = tilesToThis;
+            this.tilesToThisHorizontal = tilesToThisHorizontal;
+            this.tilesToThisVertical = tilesToThisVertical;
+        }
+
+        public void warnMissing(Identifier thisId, Set<Identifier> identifiers) {
+            for (Set<Codecs.TagEntryId> entrySet : List.of(tilesTo, tilesToHorizontal, tilesToVertical, tilesToThis, tilesToThisHorizontal, tilesToThisVertical)) {
+                for (Codecs.TagEntryId entry : entrySet) {
+                    if (!entry.tag() && !identifiers.contains(entry.id())) {
+                        AntiqueAtlas.LOGGER.warn("[Antique Atlas] Tile texture {} references texture {}, which is missing!", thisId, entry.id());
+                    }
+                }
+            }
+        }
 
         void inheritFromAncestor(TileTextureMeta other) {
+            if (other.borderType.isPresent()) borderType = other.borderType;
             tags.addAll(other.tags);
             tilesTo.addAll(other.tilesTo);
             tilesToHorizontal.addAll(other.tilesToHorizontal);
@@ -406,13 +430,43 @@ public class BiomeTileProviders extends JsonDataLoader implements IdentifiableRe
         }
 
         public TileTexture.Builder toBuilder(Identifier thisId) {
-            return new TileTexture.Builder(
-                thisId,
-                borderType.orElse(BorderType.outer) == BorderType.inner,
-                tilesTo.stream().map(Codecs.TagEntryId::id).collect(Collectors.toSet()),
-                tilesToHorizontal.stream().map(Codecs.TagEntryId::id).collect(Collectors.toSet()),
-                tilesToVertical.stream().map(Codecs.TagEntryId::id).collect(Collectors.toSet())
-            );
+            return new TileTexture.Builder(thisId, borderType.orElse(BorderType.OUTER) == BorderType.INNER, tilesTo.stream().map(Codecs.TagEntryId::id).collect(Collectors.toSet()), tilesToHorizontal.stream().map(Codecs.TagEntryId::id).collect(Collectors.toSet()), tilesToVertical.stream().map(Codecs.TagEntryId::id).collect(Collectors.toSet()));
+        }
+
+        public Optional<Identifier> parent() {
+            return parent;
+        }
+
+        public Optional<BorderType> borderType() {
+            return borderType;
+        }
+
+        public Set<Identifier> tags() {
+            return tags;
+        }
+
+        public Set<Codecs.TagEntryId> tilesTo() {
+            return tilesTo;
+        }
+
+        public Set<Codecs.TagEntryId> tilesToHorizontal() {
+            return tilesToHorizontal;
+        }
+
+        public Set<Codecs.TagEntryId> tilesToVertical() {
+            return tilesToVertical;
+        }
+
+        public Set<Codecs.TagEntryId> tilesToThis() {
+            return tilesToThis;
+        }
+
+        public Set<Codecs.TagEntryId> tilesToThisHorizontal() {
+            return tilesToThisHorizontal;
+        }
+
+        public Set<Codecs.TagEntryId> tilesToThisVertical() {
+            return tilesToThisVertical;
         }
     }
 }
