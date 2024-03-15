@@ -5,7 +5,8 @@
       "antique_atlas:village_path"
     ],
     "tilesTo": [
-      "#antique_atlas:village_path"
+      "#antique_atlas:village_path",
+      "#antique_atlas:village_path_accessible"
     ]
   }
 }
