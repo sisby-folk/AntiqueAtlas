@@ -8,9 +8,11 @@ import folk.sisby.surveyor.SurveyorEvents;
 import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayConnectionEvents;
+import net.fabricmc.fabric.api.event.lifecycle.v1.CommonLifecycleEvents;
 import net.fabricmc.fabric.api.resource.ResourceManagerHelper;
 import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.client.MinecraftClient;
+import net.minecraft.registry.RegistryKeys;
 import net.minecraft.resource.ResourceType;
 import net.minecraft.util.Identifier;
 import org.apache.logging.log4j.LogManager;
@@ -50,6 +52,7 @@ public class AntiqueAtlas implements ClientModInitializer {
             if (MinecraftClient.getInstance().world != null) ((AntiqueAtlasWorld) MinecraftClient.getInstance().world).antiqueAtlas$getData().onLandmarksRemoved(MinecraftClient.getInstance().world, worldLandmarks, landmarks);
         });
         ClientTickEvents.END_WORLD_TICK.register((world -> ((AntiqueAtlasWorld) world).antiqueAtlas$getData().tick(world)));
+        CommonLifecycleEvents.TAGS_LOADED.register(((manager, client) -> BiomeTileProviders.getInstance().registerFallbacks(manager.get(RegistryKeys.BIOME))));
         ClientPlayConnectionEvents.DISCONNECT.register(((handler, client) -> BiomeTileProviders.getInstance().clearFallbacks()));
     }
 }
