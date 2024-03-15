@@ -1,5 +1,4 @@
 {
-  "version": 2,
-  "tile_x": "antique_atlas:structure/village/path_horizontal",
-  "tile_z": "antique_atlas:structure/village/path_vertical"
+  "version": 1,
+  "tile": "antique_atlas:structure/village/path"
 }
