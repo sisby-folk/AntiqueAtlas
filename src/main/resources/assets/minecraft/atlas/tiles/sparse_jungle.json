@@ -1,12 +1,12 @@
 {
   "textures": {
-    "valley": {
-      "antique_atlas:biome/woodland/jungle/sparse/grass_palm": 1,
-      "antique_atlas:biome/woodland/jungle/sparse/grass_oak_swamp_1": 1,
-      "antique_atlas:biome/woodland/jungle/sparse/grass_oak_swamp_2": 1,
-      "antique_atlas:base/grass": 1,
-      "antique_atlas:biome/flatland/plains/grass_3": 1
-    },
+    "valley": [
+      "antique_atlas:biome/woodland/jungle/sparse/grass_palm",
+      "antique_atlas:biome/woodland/jungle/sparse/grass_oak_swamp_1",
+      "antique_atlas:biome/woodland/jungle/sparse/grass_oak_swamp_2",
+      "antique_atlas:biome/woodland/jungle/sparse/grass_oak_swamp_2",
+      "antique_atlas:base/grass"
+    ],
     "peak": {
       "antique_atlas:biome/woodland/jungle/sparse/grass_palm_hills": 1,
       "antique_atlas:biome/woodland/jungle/sparse/grass_oak_swamp_hills_1": 1,

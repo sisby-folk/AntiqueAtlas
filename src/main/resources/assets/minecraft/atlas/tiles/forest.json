@@ -1,14 +1,14 @@
 {
   "textures": {
-    "valley": {
-      "antique_atlas:biome/woodland/forest/oak_fancy_mixed": 1,
-      "antique_atlas:biome/woodland/forest/oak_mixed": 1,
-      "antique_atlas:biome/woodland/forest/grass_oak_mixed": 1
-    },
-    "high": {
-      "antique_atlas:biome/woodland/forest/oak_fancy_mixed_hills_low": 1,
-      "antique_atlas:biome/woodland/forest/oak_mixed_hills_low": 1,
-      "antique_atlas:biome/woodland/forest/grass_oak_mixed_hills_low": 1
-    }
+    "valley": [
+      "antique_atlas:biome/woodland/forest/oak_fancy_mixed",
+      "antique_atlas:biome/woodland/forest/oak_mixed",
+      "antique_atlas:biome/woodland/forest/grass_oak_mixed"
+    ],
+    "high": [
+      "antique_atlas:biome/woodland/forest/oak_fancy_mixed_hills_low",
+      "antique_atlas:biome/woodland/forest/oak_mixed_hills_low",
+      "antique_atlas:biome/woodland/forest/grass_oak_mixed_hills_low"
+    ]
   }
 }

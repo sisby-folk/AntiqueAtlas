@@ -1,10 +1,10 @@
 {
   "textures": {
-    "valley": {
-      "antique_atlas:biome/arid/savanna/grass_acacia_1": 1,
-      "antique_atlas:biome/arid/savanna/grass_acacia_2": 1,
-      "antique_atlas:biome/arid/savanna/grass_acacia_3": 1
-    },
+    "valley": [
+      "antique_atlas:biome/arid/savanna/grass_acacia_1",
+      "antique_atlas:biome/arid/savanna/grass_acacia_2",
+      "antique_atlas:biome/arid/savanna/grass_acacia_3"
+    ],
     "peak": {
       "antique_atlas:biome/arid/savanna/plateau/grass_plateau_1": 2,
       "antique_atlas:biome/arid/savanna/plateau/grass_plateau_2": 2,

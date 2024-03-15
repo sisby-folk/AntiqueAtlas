@@ -1,19 +1,19 @@
 {
   "textures": {
-    "valley": {
-      "antique_atlas:biome/arid/desert/sand_1": 1,
-      "antique_atlas:biome/arid/desert/sand_cacti_sparse": 1,
-      "antique_atlas:biome/arid/desert/sand_shrubs": 1
-    },
+    "valley": [
+      "antique_atlas:biome/arid/desert/sand_1",
+      "antique_atlas:biome/arid/desert/sand_cacti_sparse",
+      "antique_atlas:biome/arid/desert/sand_shrubs"
+    ],
     "low": {
       "antique_atlas:biome/arid/badlands/terracotta_shrubs_tiered": 4,
       "antique_atlas:biome/arid/badlands/terracotta_tiered": 2,
       "antique_atlas:biome/arid/badlands/terracotta_tiered_rough": 2,
       "antique_atlas:biome/arid/badlands/terracotta_tiered_separate": 1
     },
-    "peak": {
-      "antique_atlas:biome/arid/badlands/shrubs_plateau_low": 1,
-      "antique_atlas:biome/arid/badlands/terracotta_plateau_low": 1
-    }
+    "peak": [
+      "antique_atlas:biome/arid/badlands/shrubs_plateau_low",
+      "antique_atlas:biome/arid/badlands/terracotta_plateau_low"
+    ]
   }
 }

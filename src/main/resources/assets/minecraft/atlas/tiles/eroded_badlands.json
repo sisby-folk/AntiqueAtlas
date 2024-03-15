@@ -7,9 +7,9 @@
       "antique_atlas:biome/arid/badlands/eroded/terracotta_fingers": 1,
       "antique_atlas:biome/arid/badlands/eroded/terracotta_fingers_shrubs": 1
     },
-    "peak": {
-      "antique_atlas:biome/arid/badlands/shrubs_plateau": 1,
-      "antique_atlas:biome/arid/badlands/terracotta_plateau": 1
-    }
+    "peak": [
+      "antique_atlas:biome/arid/badlands/shrubs_plateau",
+      "antique_atlas:biome/arid/badlands/terracotta_plateau"
+    ]
   }
 }

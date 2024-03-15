@@ -332,15 +332,14 @@ public class BiomeTileProviders extends JsonDataLoader implements IdentifiableRe
         public static final Codec<TileTextureMeta> CODEC = RecordCodecBuilder.create(instance -> instance.group(
             Identifier.CODEC.optionalFieldOf("parent").forGetter(TileTextureMeta::parent),
             CodecUtil.ofEnum(BorderType.class).optionalFieldOf("borderType").forGetter(TileTextureMeta::borderType),
-            CodecUtil.set(Identifier.CODEC).fieldOf("tags").orElse(new HashSet<>()).forGetter(TileTextureMeta::tags),
-            CodecUtil.set(Codecs.TAG_ENTRY_ID).fieldOf("tilesTo").orElse(new HashSet<>()).forGetter(TileTextureMeta::tilesTo),
-            CodecUtil.set(Codecs.TAG_ENTRY_ID).fieldOf("tilesToHorizontal").orElse(new HashSet<>()).forGetter(TileTextureMeta::tilesToHorizontal),
-            CodecUtil.set(Codecs.TAG_ENTRY_ID).fieldOf("tilesToVertical").orElse(new HashSet<>()).forGetter(TileTextureMeta::tilesToVertical),
-            CodecUtil.set(Codecs.TAG_ENTRY_ID).fieldOf("tilesToThis").orElse(new HashSet<>()).forGetter(TileTextureMeta::tilesToThis),
-            CodecUtil.set(Codecs.TAG_ENTRY_ID).fieldOf("tilesToThisHorizontal").orElse(new HashSet<>()).forGetter(TileTextureMeta::tilesToThisHorizontal),
-            CodecUtil.set(Codecs.TAG_ENTRY_ID).fieldOf("tilesToThisVertical").orElse(new HashSet<>()).forGetter(TileTextureMeta::tilesToThisVertical)
+            CodecUtil.set(Identifier.CODEC).fieldOf("tags").orElseGet(HashSet::new).forGetter(TileTextureMeta::tags),
+            CodecUtil.set(Codecs.TAG_ENTRY_ID).fieldOf("tilesTo").orElseGet(HashSet::new).forGetter(TileTextureMeta::tilesTo),
+            CodecUtil.set(Codecs.TAG_ENTRY_ID).fieldOf("tilesToHorizontal").orElseGet(HashSet::new).forGetter(TileTextureMeta::tilesToHorizontal),
+            CodecUtil.set(Codecs.TAG_ENTRY_ID).fieldOf("tilesToVertical").orElseGet(HashSet::new).forGetter(TileTextureMeta::tilesToVertical),
+            CodecUtil.set(Codecs.TAG_ENTRY_ID).fieldOf("tilesToThis").orElseGet(HashSet::new).forGetter(TileTextureMeta::tilesToThis),
+            CodecUtil.set(Codecs.TAG_ENTRY_ID).fieldOf("tilesToThisHorizontal").orElseGet(HashSet::new).forGetter(TileTextureMeta::tilesToThisHorizontal),
+            CodecUtil.set(Codecs.TAG_ENTRY_ID).fieldOf("tilesToThisVertical").orElseGet(HashSet::new).forGetter(TileTextureMeta::tilesToThisVertical)
         ).apply(instance, TileTextureMeta::new));
-
 
         enum BorderType {
             outer,
