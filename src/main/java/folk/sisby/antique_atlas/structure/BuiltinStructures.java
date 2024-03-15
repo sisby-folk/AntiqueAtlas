@@ -1,8 +1,8 @@
 package folk.sisby.antique_atlas.structure;
 
 import folk.sisby.antique_atlas.AntiqueAtlas;
+import folk.sisby.antique_atlas.TileTypes;
 import folk.sisby.antique_atlas.reloader.StructureTiles;
-import folk.sisby.antique_atlas.tile.TileTypes;
 import net.minecraft.registry.tag.StructureTags;
 import net.minecraft.structure.StructurePieceType;
 import net.minecraft.text.Text;
@@ -19,36 +19,36 @@ import java.util.HashSet;
 public class BuiltinStructures {
     public static void init () {
         // Overworld
-        StructureTiles.getInstance().registerTile(StructurePieceType.RUINED_PORTAL, 10, TileTypes.RUINED_PORTAL.id(), BuiltinStructures::aboveGround);
+        StructureTiles.getInstance().registerTile(StructurePieceType.RUINED_PORTAL, TileTypes.RUINED_PORTAL, BuiltinStructures::aboveGround);
         if (AntiqueAtlas.CONFIG.markVillages) StructureTiles.getInstance().registerMarker(StructureTags.VILLAGE, AntiqueAtlas.id("village"), Text.translatable("gui.antique_atlas.marker.village"));
-        StructureTiles.getInstance().registerTile(StructurePieceType.SWAMP_HUT, 10, TileTypes.SWAMP_HUT.id(), BuiltinStructures::aboveGround);
-        StructureTiles.getInstance().registerTile(StructurePieceType.IGLOO, 10, TileTypes.IGLOO.id(), BuiltinStructures::topAboveGround);
-        StructureTiles.getInstance().registerTile(StructurePieceType.DESERT_TEMPLE, 10, TileTypes.DESERT_PYRAMID.id(), BuiltinStructures::aboveGround);
-        StructureTiles.getInstance().registerTile(StructurePieceType.JUNGLE_TEMPLE, 10, TileTypes.JUNGLE_TEMPLE.id(), BuiltinStructures::aboveGround);
-        StructureTiles.getInstance().registerTile(StructurePieceType.SHIPWRECK, 10, TileTypes.SHIPWRECK_BEACHED.id(), BuiltinStructures::aboveGround);
+        StructureTiles.getInstance().registerTile(StructurePieceType.SWAMP_HUT, TileTypes.SWAMP_HUT, BuiltinStructures::aboveGround);
+        StructureTiles.getInstance().registerTile(StructurePieceType.IGLOO, TileTypes.IGLOO, BuiltinStructures::topAboveGround);
+        StructureTiles.getInstance().registerTile(StructurePieceType.DESERT_TEMPLE, TileTypes.DESERT_PYRAMID, BuiltinStructures::aboveGround);
+        StructureTiles.getInstance().registerTile(StructurePieceType.JUNGLE_TEMPLE, TileTypes.JUNGLE_TEMPLE, BuiltinStructures::aboveGround);
+        StructureTiles.getInstance().registerTile(StructurePieceType.SHIPWRECK, TileTypes.SHIPWRECK_BEACHED, BuiltinStructures::aboveGround);
 
         // Nether
-        StructureTiles.getInstance().registerTile(StructurePieceType.NETHER_FORTRESS_BRIDGE_PLATFORM, 40, TileTypes.NETHER_FORTRESS_BRIDGE_PLATFORM.id(), StructureTiles::ALWAYS);
+        StructureTiles.getInstance().registerTile(StructurePieceType.NETHER_FORTRESS_BRIDGE_PLATFORM, TileTypes.NETHER_FORTRESS_BRIDGE_PLATFORM, StructureTiles::ALWAYS);
 
-        StructureTiles.getInstance().registerTile(StructurePieceType.NETHER_FORTRESS_BRIDGE_STAIRS, 50, TileTypes.NETHER_FORTRESS_BRIDGE_STAIRS.id(), StructureTiles::ALWAYS);
-        StructureTiles.getInstance().registerTile(StructurePieceType.NETHER_FORTRESS_CORRIDOR_NETHER_WARTS_ROOM, 50, TileTypes.NETHER_FORTRESS_CORRIDOR_NETHER_WARTS_ROOM.id(), StructureTiles::ALWAYS);
+        StructureTiles.getInstance().registerTile(StructurePieceType.NETHER_FORTRESS_BRIDGE_STAIRS, TileTypes.NETHER_FORTRESS_BRIDGE_STAIRS, StructureTiles::ALWAYS);
+        StructureTiles.getInstance().registerTile(StructurePieceType.NETHER_FORTRESS_CORRIDOR_NETHER_WARTS_ROOM, TileTypes.NETHER_FORTRESS_CORRIDOR_NETHER_WARTS_ROOM, StructureTiles::ALWAYS);
 
-        StructureTiles.getInstance().registerTile(StructurePieceType.NETHER_FORTRESS_BRIDGE_SMALL_CROSSING, 60, TileTypes.NETHER_FORTRESS_BRIDGE_SMALL_CROSSING.id(), StructureTiles::ALWAYS);
+        StructureTiles.getInstance().registerTile(StructurePieceType.NETHER_FORTRESS_BRIDGE_SMALL_CROSSING, TileTypes.NETHER_FORTRESS_BRIDGE_SMALL_CROSSING, StructureTiles::ALWAYS);
 
-        StructureTiles.getInstance().registerTile(StructurePieceType.NETHER_FORTRESS_CORRIDOR_BALCONY, 70, TileTypes.NETHER_FORTRESS_CORRIDOR.id(), StructureTiles::ALWAYS);
-        StructureTiles.getInstance().registerTile(StructurePieceType.NETHER_FORTRESS_CORRIDOR_LEFT_TURN, 70, TileTypes.NETHER_FORTRESS_CORRIDOR.id(), StructureTiles::ALWAYS);
-        StructureTiles.getInstance().registerTile(StructurePieceType.NETHER_FORTRESS_SMALL_CORRIDOR, 70, TileTypes.NETHER_FORTRESS_CORRIDOR.id(), StructureTiles::ALWAYS);
-        StructureTiles.getInstance().registerTile(StructurePieceType.NETHER_FORTRESS_CORRIDOR_RIGHT_TURN, 70, TileTypes.NETHER_FORTRESS_CORRIDOR.id(), StructureTiles::ALWAYS);
-        StructureTiles.getInstance().registerTile(StructurePieceType.NETHER_FORTRESS_START, 70, TileTypes.NETHER_FORTRESS_CORRIDOR.id(), StructureTiles::ALWAYS);
-        StructureTiles.getInstance().registerTile(StructurePieceType.NETHER_FORTRESS_CORRIDOR_EXIT, 70, TileTypes.NETHER_FORTRESS_CORRIDOR_EXIT.id(), StructureTiles::ALWAYS);
+        StructureTiles.getInstance().registerTile(StructurePieceType.NETHER_FORTRESS_CORRIDOR_BALCONY, TileTypes.NETHER_FORTRESS_CORRIDOR, StructureTiles::ALWAYS);
+        StructureTiles.getInstance().registerTile(StructurePieceType.NETHER_FORTRESS_CORRIDOR_LEFT_TURN, TileTypes.NETHER_FORTRESS_CORRIDOR, StructureTiles::ALWAYS);
+        StructureTiles.getInstance().registerTile(StructurePieceType.NETHER_FORTRESS_SMALL_CORRIDOR, TileTypes.NETHER_FORTRESS_CORRIDOR, StructureTiles::ALWAYS);
+        StructureTiles.getInstance().registerTile(StructurePieceType.NETHER_FORTRESS_CORRIDOR_RIGHT_TURN, TileTypes.NETHER_FORTRESS_CORRIDOR, StructureTiles::ALWAYS);
+        StructureTiles.getInstance().registerTile(StructurePieceType.NETHER_FORTRESS_START, TileTypes.NETHER_FORTRESS_CORRIDOR, StructureTiles::ALWAYS);
+        StructureTiles.getInstance().registerTile(StructurePieceType.NETHER_FORTRESS_CORRIDOR_EXIT, TileTypes.NETHER_FORTRESS_CORRIDOR_EXIT, StructureTiles::ALWAYS);
 
-        StructureTiles.getInstance().registerTile(StructurePieceType.NETHER_FORTRESS_BRIDGE_CROSSING, 80, TileTypes.NETHER_FORTRESS_BRIDGE_CROSSING.id(), StructureTiles::ALWAYS);
+        StructureTiles.getInstance().registerTile(StructurePieceType.NETHER_FORTRESS_BRIDGE_CROSSING, TileTypes.NETHER_FORTRESS_BRIDGE_CROSSING, StructureTiles::ALWAYS);
 
-        StructureTiles.getInstance().registerTile(StructurePieceType.NETHER_FORTRESS_BRIDGE_END, 90, TileTypes.NETHER_FORTRESS_BRIDGE_END_HORIZONTAL.id(), BuiltinStructures::bridgeEndX);
-        StructureTiles.getInstance().registerTile(StructurePieceType.NETHER_FORTRESS_BRIDGE_END, 90, TileTypes.NETHER_FORTRESS_BRIDGE_END_VERTICAL.id(), BuiltinStructures::bridgeEndZ);
+        StructureTiles.getInstance().registerTile(StructurePieceType.NETHER_FORTRESS_BRIDGE_END, TileTypes.NETHER_FORTRESS_BRIDGE_END_HORIZONTAL, BuiltinStructures::bridgeEndX);
+        StructureTiles.getInstance().registerTile(StructurePieceType.NETHER_FORTRESS_BRIDGE_END, TileTypes.NETHER_FORTRESS_BRIDGE_END_VERTICAL, BuiltinStructures::bridgeEndZ);
 
-        StructureTiles.getInstance().registerTile(StructurePieceType.NETHER_FORTRESS_BRIDGE, 100, TileTypes.NETHER_FORTRESS_BRIDGE_HORIZONTAL.id(), BuiltinStructures::bridgeX);
-        StructureTiles.getInstance().registerTile(StructurePieceType.NETHER_FORTRESS_BRIDGE, 100, TileTypes.NETHER_FORTRESS_BRIDGE_VERTICAL.id(), BuiltinStructures::bridgeZ);
+        StructureTiles.getInstance().registerTile(StructurePieceType.NETHER_FORTRESS_BRIDGE, TileTypes.NETHER_FORTRESS_BRIDGE_HORIZONTAL, BuiltinStructures::bridgeX);
+        StructureTiles.getInstance().registerTile(StructurePieceType.NETHER_FORTRESS_BRIDGE, TileTypes.NETHER_FORTRESS_BRIDGE_VERTICAL, BuiltinStructures::bridgeZ);
 
         // End
         StructureTiles.getInstance().registerMarker(StructureType.END_CITY, AntiqueAtlas.id("end_city"), Text.literal(""));

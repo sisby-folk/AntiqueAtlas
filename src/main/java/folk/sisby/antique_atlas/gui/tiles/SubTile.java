@@ -1,7 +1,6 @@
 package folk.sisby.antique_atlas.gui.tiles;
 
-import net.minecraft.util.Identifier;
-import net.minecraft.util.math.MathHelper;
+import folk.sisby.antique_atlas.TileTexture;
 
 /**
  * A quarter of a tile, containing the following information:
@@ -18,26 +17,17 @@ import net.minecraft.util.math.MathHelper;
  * @author Hunternif
  */
 public class SubTile {
-    public Identifier tile;
+    public TileTexture texture;
     /**
      * coordinates of the subtile on the grid, measured in subtiles,
      * starting from (0,0) in the top left corner.
      */
     public int x, y;
-
-    /**
-     * The variationnumber of that tile, which is set in the TileRenderIterator
-     */
-    public int variationNumber;
     public Shape shape;
     public final Part part;
 
     public SubTile(Part part) {
         this.part = part;
-    }
-
-    public static int generateVariationNumber(int chunkX, int chunkY, int step) {
-        return (int) (MathHelper.hashCode(chunkX, chunkY, chunkX * chunkY) & 0x7FFFFFFF);
     }
 
     /**
@@ -61,10 +51,6 @@ public class SubTile {
             case CONVEX, HORIZONTAL -> 2 + part.v * 3;
             case FULL, VERTICAL -> 4 - part.v;
         };
-    }
-
-    public void setChunkCoords(int chunkX, int chunkY, int step) {
-        variationNumber = generateVariationNumber(chunkX, chunkY, step);
     }
 
     public enum Shape {

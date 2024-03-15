@@ -1,12 +1,10 @@
 package folk.sisby.antique_atlas.gui.tiles;
 
-import folk.sisby.antique_atlas.TextureSet;
+import folk.sisby.antique_atlas.TileTexture;
 import folk.sisby.antique_atlas.WorldAtlasData;
-import folk.sisby.antique_atlas.reloader.BiomeTextures;
 import folk.sisby.antique_atlas.gui.tiles.SubTile.Part;
 import folk.sisby.antique_atlas.gui.tiles.SubTile.Shape;
 import folk.sisby.antique_atlas.util.Rect;
-import net.minecraft.util.Identifier;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Iterator;
@@ -59,7 +57,7 @@ public class TileRenderIterator implements Iterator<SubTileQuartet>, Iterable<Su
      * 'i' is at (x, y).
      * The returned array of subtiles represents the corner 'd-e-h-i'
      */
-    private Identifier a, b, c, d, e, f, g, h, i, j, k, l;
+    private TileTexture a, b, c, d, e, f, g, h, i, j, k, l;
 
     /**
      * Shortcuts for the quartet.
@@ -110,12 +108,11 @@ public class TileRenderIterator implements Iterator<SubTileQuartet>, Iterable<Su
         k = l;
         l = tiles.getTile(chunkX, chunkY + step);
 
-        quartet.setChunkCoords(chunkX, chunkY, step);
         quartet.setCoords(subtileX, subtileY);
-        _d.tile = d;
-        _e.tile = e;
-        _h.tile = h;
-        _i.tile = i;
+        _d.texture = d;
+        _e.texture = e;
+        _h.texture = h;
+        _i.texture = i;
 
         // At first assume all convex:
         for (SubTile subtile : quartet) {
@@ -123,56 +120,56 @@ public class TileRenderIterator implements Iterator<SubTileQuartet>, Iterable<Su
         }
 
         // Connect horizontally:
-        if (shouldStitchToHorizontally(d, e)) {
-            stitchHorizontally(_d);
+        if (tilesToHorizontal(d, e)) {
+            applyTilingHorizontally(_d);
         }
-        if (shouldStitchToHorizontally(e, d)) {
-            stitchHorizontally(_e);
+        if (tilesToHorizontal(e, d)) {
+            applyTilingHorizontally(_e);
         }
-        if (shouldStitchToHorizontally(h, i)) {
-            stitchHorizontally(_h);
+        if (tilesToHorizontal(h, i)) {
+            applyTilingHorizontally(_h);
         }
-        if (shouldStitchToHorizontally(i, h)) {
-            stitchHorizontally(_i);
+        if (tilesToHorizontal(i, h)) {
+            applyTilingHorizontally(_i);
         }
 
         // Connect vertically:
-        if (shouldStitchToVertically(d, h)) {
-            stitchVertically(_d);
-            if (_d.shape == Shape.CONCAVE && shouldStitchTo(d, i)) {
+        if (tilesToVertical(d, h)) {
+            applyTilingVertically(_d);
+            if (_d.shape == Shape.CONCAVE && tilesTo(d, i)) {
                 _d.shape = Shape.FULL;
             }
         }
-        if (shouldStitchToVertically(h, d)) {
-            stitchVertically(_h);
-            if (_h.shape == Shape.CONCAVE && shouldStitchTo(h, e)) {
+        if (tilesToVertical(h, d)) {
+            applyTilingVertically(_h);
+            if (_h.shape == Shape.CONCAVE && tilesTo(h, e)) {
                 _h.shape = Shape.FULL;
             }
         }
-        if (shouldStitchToVertically(e, i)) {
-            stitchVertically(_e);
-            if (_e.shape == Shape.CONCAVE && shouldStitchTo(e, h)) {
+        if (tilesToVertical(e, i)) {
+            applyTilingVertically(_e);
+            if (_e.shape == Shape.CONCAVE && tilesTo(e, h)) {
                 _e.shape = Shape.FULL;
             }
         }
-        if (shouldStitchToVertically(i, e)) {
-            stitchVertically(_i);
-            if (_i.shape == Shape.CONCAVE && shouldStitchTo(i, d)) {
+        if (tilesToVertical(i, e)) {
+            applyTilingVertically(_i);
+            if (_i.shape == Shape.CONCAVE && tilesTo(i, d)) {
                 _i.shape = Shape.FULL;
             }
         }
 
         // For any convex subtile check for single-object:
-        if (_d.shape == Shape.CONVEX && !shouldStitchToVertically(d, a) && !shouldStitchToHorizontally(d, c)) {
+        if (_d.shape == Shape.CONVEX && !tilesToVertical(d, a) && !tilesToHorizontal(d, c)) {
             _d.shape = Shape.SINGLE_OBJECT;
         }
-        if (_e.shape == Shape.CONVEX && !shouldStitchToVertically(e, b) && !shouldStitchToHorizontally(e, f)) {
+        if (_e.shape == Shape.CONVEX && !tilesToVertical(e, b) && !tilesToHorizontal(e, f)) {
             _e.shape = Shape.SINGLE_OBJECT;
         }
-        if (_h.shape == Shape.CONVEX && !shouldStitchToHorizontally(h, g) && !shouldStitchToVertically(h, k)) {
+        if (_h.shape == Shape.CONVEX && !tilesToHorizontal(h, g) && !tilesToVertical(h, k)) {
             _h.shape = Shape.SINGLE_OBJECT;
         }
-        if (_i.shape == Shape.CONVEX && !shouldStitchToHorizontally(i, j) && !shouldStitchToVertically(i, l)) {
+        if (_i.shape == Shape.CONVEX && !tilesToHorizontal(i, j) && !tilesToVertical(i, l)) {
             _i.shape = Shape.SINGLE_OBJECT;
         }
 
@@ -199,55 +196,26 @@ public class TileRenderIterator implements Iterator<SubTileQuartet>, Iterable<Su
         return quartet;
     }
 
-    /**
-     * Whether the first tile should be stitched to the 2nd (in any direction)
-     * (but the opposite is not always true!)
-     */
-    private static boolean shouldStitchTo(Identifier tile, Identifier to) {
-        if (tile == null) return false;
-        TextureSet set = BiomeTextures.getInstance().getTextureSet(tile);
-        TextureSet toSet = BiomeTextures.getInstance().getTextureSet(to);
-        return set != null && set.shouldStitchTo(toSet);
+    private static boolean tilesTo(TileTexture tile, TileTexture to) {
+        return tile != null && to != null && tile.tiles(to);
     }
 
-    /**
-     * Whether the first tile should be stitched to the 2nd along the X axis
-     * (but the opposite is not always true!)
-     */
-    private static boolean shouldStitchToHorizontally(Identifier tile, Identifier to) {
-        if (tile == null) return false;
-        TextureSet set = BiomeTextures.getInstance().getTextureSet(tile);
-        TextureSet toSet = BiomeTextures.getInstance().getTextureSet(to);
-        return set != null && set.shouldStitchToHorizontally(toSet);
+    private static boolean tilesToHorizontal(TileTexture tile, TileTexture to) {
+        return tile != null && to != null && tile.tilesHorizontally(to);
     }
 
-    /**
-     * Whether the first tile should be stitched to the 2nd along the Z axis
-     * (but the opposite is not always true!)
-     */
-    private static boolean shouldStitchToVertically(Identifier tile, Identifier to) {
-        if (tile == null) return false;
-        TextureSet set = BiomeTextures.getInstance().getTextureSet(tile);
-        TextureSet toSet = BiomeTextures.getInstance().getTextureSet(to);
-        return set != null && set.shouldStitchToVertically(toSet);
+    private static boolean tilesToVertical(TileTexture tile, TileTexture to) {
+        return tile != null && to != null && tile.tilesVertically(to);
     }
 
-    /**
-     * Change the shape of the subtile in order to stitch it vertically
-     * to another subtile. It doesn't matter if it's top or bottom.
-     */
-    private static void stitchVertically(SubTile subtile) {
-        if (subtile.shape == Shape.HORIZONTAL) subtile.shape = Shape.CONCAVE;
-        else if (subtile.shape == Shape.CONVEX) subtile.shape = Shape.VERTICAL;
-    }
-
-    /**
-     * Change the shape of the subtile in order to stitch it horizontally
-     * to another subtile. It doesn't matter if it's left or right.
-     */
-    private static void stitchHorizontally(SubTile subtile) {
+    private static void applyTilingHorizontally(SubTile subtile) {
         if (subtile.shape == Shape.VERTICAL) subtile.shape = Shape.CONCAVE;
         else if (subtile.shape == Shape.CONVEX) subtile.shape = Shape.HORIZONTAL;
+    }
+
+    private static void applyTilingVertically(SubTile subtile) {
+        if (subtile.shape == Shape.HORIZONTAL) subtile.shape = Shape.CONCAVE;
+        else if (subtile.shape == Shape.CONVEX) subtile.shape = Shape.VERTICAL;
     }
 
     @Override

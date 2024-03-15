@@ -1,6 +1,8 @@
 {
-  "parent": "antique_atlas:biome/woodland/jungle/bamboo/grass_bamboo",
-  "tags": [
-    "antique_atlas:hills_low"
-  ]
+  "antique_atlas:tiling": {
+    "parent": "antique_atlas:biome/woodland/jungle/bamboo/grass_bamboo",
+    "tags": [
+      "antique_atlas:hills_low"
+    ]
+  }
 }

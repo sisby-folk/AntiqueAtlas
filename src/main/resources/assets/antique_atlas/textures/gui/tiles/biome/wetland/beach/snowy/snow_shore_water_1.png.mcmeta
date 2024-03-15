@@ -1,9 +1,11 @@
 {
-  "borderType": "inner",
-  "tags": [
-    "antique_atlas:water"
-  ],
-  "tilesTo": [
-    "#antique_atlas:water"
-  ]
+  "antique_atlas:tiling": {
+    "borderType": "inner",
+    "tags": [
+      "antique_atlas:water"
+    ],
+    "tilesTo": [
+      "#antique_atlas:water"
+    ]
+  }
 }

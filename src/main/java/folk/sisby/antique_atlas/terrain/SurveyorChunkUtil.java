@@ -1,8 +1,9 @@
 package folk.sisby.antique_atlas.terrain;
 
-import folk.sisby.antique_atlas.tile.TileElevation;
-import folk.sisby.antique_atlas.tile.TileType;
-import folk.sisby.antique_atlas.tile.TileTypes;
+import folk.sisby.antique_atlas.TileElevation;
+import folk.sisby.antique_atlas.TileTexture;
+import folk.sisby.antique_atlas.TileTypes;
+import folk.sisby.antique_atlas.reloader.BiomeTileProviders;
 import folk.sisby.surveyor.SurveyorWorld;
 import folk.sisby.surveyor.terrain.ChunkSummary;
 import folk.sisby.surveyor.terrain.LayerSummary;
@@ -15,6 +16,7 @@ import net.minecraft.registry.Registry;
 import net.minecraft.registry.RegistryKeys;
 import net.minecraft.registry.entry.RegistryEntry;
 import net.minecraft.registry.tag.BiomeTags;
+import net.minecraft.util.Identifier;
 import net.minecraft.util.collection.IndexedIterable;
 import net.minecraft.util.math.ChunkPos;
 import net.minecraft.world.World;
@@ -35,7 +37,7 @@ public class SurveyorChunkUtil {
     public static final int ICE_PRIORITY = 3;
     public static final int BEACH_PRIORITY = 3;
 
-    public static final List<TileType> CUSTOM_TILES = List.of(
+    public static final List<Identifier> CUSTOM_TILES = List.of(
         TileTypes.NETHER_WASTES,
         TileTypes.THE_VOID,
         TileTypes.END_VOID,
@@ -73,7 +75,7 @@ public class SurveyorChunkUtil {
         return swampCache.get(biome);
     }
 
-    protected static TileType frequencyToTile(int[][] possibleTiles, Registry<Biome> biomeRegistry, IndexedIterable<Biome> biomePalette) {
+    protected static TileTexture frequencyToTexture(ChunkPos pos, int[][] possibleTiles, Registry<Biome> biomeRegistry, IndexedIterable<Biome> biomePalette) {
         int elevationOrdinal = -1;
         int biomeIndex = -1;
         int bestFrequency = 0;
@@ -88,15 +90,11 @@ public class SurveyorChunkUtil {
         }
         if (bestFrequency == 0) return null;
         int customTileIndex = biomeIndex - possibleTiles[0].length + CUSTOM_TILES.size();
-        if (customTileIndex >= 0) return CUSTOM_TILES.get(customTileIndex);
-        if (elevationOrdinal == TileElevation.values().length) {
-            return new TileType(biomeRegistry, biomePalette.get(biomeIndex));
-        } else {
-            return new TileType(biomeRegistry, biomePalette.get(biomeIndex), TileElevation.values()[elevationOrdinal]);
-        }
+        Identifier providerId = customTileIndex >= 0 ? CUSTOM_TILES.get(customTileIndex) : biomeRegistry.getId(biomePalette.get(biomeIndex));
+        return BiomeTileProviders.getInstance().getTileProvider(providerId).getTexture(pos, elevationOrdinal == TileElevation.values().length ? null : TileElevation.values()[elevationOrdinal]);
     }
 
-    public static TileType terrainToTile(World world, ChunkPos pos) {
+    public static TileTexture terrainToTile(World world, ChunkPos pos) {
         Registry<Biome> biomeRegistry = world.getRegistryManager().get(RegistryKeys.BIOME);
         int defaultTile = CUSTOM_TILES.indexOf(world.getDimension().hasCeiling() ? TileTypes.NETHER_WASTES : (world.getRegistryKey() == World.END ? TileTypes.END_VOID : TileTypes.THE_VOID));
         boolean checkRavines = world.getDimension().hasSkyLight();
@@ -106,7 +104,7 @@ public class SurveyorChunkUtil {
         @Nullable LayerSummary.Raw summary = chunk.toSingleLayer(null, null, world.getTopY());
         IndexedIterable<Biome> biomePalette = ((SurveyorWorld) world).surveyor$getWorldSummary().terrain().getBiomePalette(pos);
         IndexedIterable<Block> blockPalette = ((SurveyorWorld) world).surveyor$getWorldSummary().terrain().getBlockPalette(pos);
-        if (summary == null) return CUSTOM_TILES.get(defaultTile);
+        if (summary == null) return BiomeTileProviders.getInstance().getTileProvider(CUSTOM_TILES.get(defaultTile)).getTexture(pos, null);
 
         int elevationSize = TileElevation.values().length;
         int elevationCount = elevationSize + 1;
@@ -135,10 +133,10 @@ public class SurveyorChunkUtil {
             possibleTiles[TileElevation.fromBlocksAboveSea(height - world.getSeaLevel()).ordinal()][summary.biomes()[i]] += priorityForBiome(biomeRegistry, biome);
         }
 
-        return frequencyToTile(possibleTiles, biomeRegistry, biomePalette);
+        return frequencyToTexture(pos, possibleTiles, biomeRegistry, biomePalette);
     }
 
-    public static TileType terrainToTileNether(World world, ChunkPos pos) {
+    public static TileTexture terrainToTileNether(World world, ChunkPos pos) {
         Registry<Biome> biomeRegistry = world.getRegistryManager().get(RegistryKeys.BIOME);
         int defaultTile = CUSTOM_TILES.indexOf(world.getDimension().hasCeiling() ? TileTypes.NETHER_WASTES : (world.getRegistryKey() == World.END ? TileTypes.END_VOID : TileTypes.THE_VOID));
 
@@ -155,7 +153,7 @@ public class SurveyorChunkUtil {
         int[][] possibleTiles = new int[elevationCount][baseTileCount];
 
         if (fullSummary == null) {
-            return CUSTOM_TILES.get(defaultTile);
+            return BiomeTileProviders.getInstance().getTileProvider(CUSTOM_TILES.get(defaultTile)).getTexture(pos, null);
         }
 
         if (lowSummary == null) {
@@ -183,6 +181,6 @@ public class SurveyorChunkUtil {
             }
         }
 
-        return frequencyToTile(possibleTiles, biomeRegistry, biomePalette);
+        return frequencyToTexture(pos, possibleTiles, biomeRegistry, biomePalette);
     }
 }

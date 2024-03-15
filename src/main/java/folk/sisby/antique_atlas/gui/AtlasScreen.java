@@ -5,6 +5,7 @@ import folk.sisby.antique_atlas.AntiqueAtlas;
 import folk.sisby.antique_atlas.AntiqueAtlasWorld;
 import folk.sisby.antique_atlas.Marker;
 import folk.sisby.antique_atlas.MarkerType;
+import folk.sisby.antique_atlas.TileTexture;
 import folk.sisby.antique_atlas.WorldAtlasData;
 import folk.sisby.antique_atlas.gui.core.ButtonComponent;
 import folk.sisby.antique_atlas.gui.core.Component;
@@ -17,7 +18,6 @@ import folk.sisby.antique_atlas.gui.core.ScrollBoxComponent;
 import folk.sisby.antique_atlas.gui.tiles.SubTile;
 import folk.sisby.antique_atlas.gui.tiles.SubTileQuartet;
 import folk.sisby.antique_atlas.gui.tiles.TileRenderIterator;
-import folk.sisby.antique_atlas.reloader.BiomeTextures;
 import folk.sisby.antique_atlas.reloader.MarkerTypes;
 import folk.sisby.antique_atlas.util.DrawUtil;
 import folk.sisby.antique_atlas.util.MathUtil;
@@ -715,11 +715,10 @@ public class AtlasScreen extends Component {
         context.getMatrices().push();
         context.getMatrices().translate(mapStartScreenX, mapStartScreenY, 0);
 
-        for (SubTileQuartet subtiles : tiles) {
-            for (SubTile subtile : subtiles) {
-                if (subtile == null || subtile.tile == null) continue;
-                Identifier texture = BiomeTextures.getInstance().getTexture(subtile);
-                context.drawTexture(texture, subtile.x * tileHalfSize, subtile.y * tileHalfSize, tileHalfSize, tileHalfSize, subtile.getTextureU() * 8, subtile.getTextureV() * 8, 8, 8, 32, 48);
+        for (SubTileQuartet subTiles : tiles) {
+            for (SubTile subtile : subTiles) {
+                if (subtile == null || subtile.texture == null) continue;
+                context.drawTexture(subtile.texture.id(), subtile.x * tileHalfSize, subtile.y * tileHalfSize, tileHalfSize, tileHalfSize, subtile.getTextureU() * 8, subtile.getTextureV() * 8, 8, 8, 32, 48);
             }
         }
 
@@ -771,12 +770,10 @@ public class AtlasScreen extends Component {
             int x = screenXToWorldX((int) getMouseX());
             int z = screenYToWorldZ((int) getMouseY());
             ChunkPos pos = new ChunkPos(new BlockPos(x, 0, z));
-            Identifier tile = worldAtlasData.getTile(pos.x, pos.z);
+            TileTexture tile = worldAtlasData.getTile(pos.x, pos.z);
             if (tile != null) {
-                String textureSet = BiomeTextures.getInstance().getTextureSet(tile).id.toString();
                 context.drawText(textRenderer, Text.literal("%d,%d (%d,%d)".formatted(pos.x, pos.z, x, z)), getGuiX(), getGuiY() - 12, 0xFFFFFFFF, true);
-                context.drawText(textRenderer, Text.literal(tile.toString()), getGuiX(), getGuiY() + HEIGHT, 0xFFFFFFFF, true);
-                context.drawText(textRenderer, Text.literal(textureSet), getGuiX() + WIDTH - textRenderer.getWidth(Text.literal(textureSet)), getGuiY() + HEIGHT, 0xFFFFFFFF, true);
+                context.drawText(textRenderer, Text.literal(tile.displayId().toString()), getGuiX(), getGuiY() + HEIGHT, 0xFFFFFFFF, true);
             }
         }
     }

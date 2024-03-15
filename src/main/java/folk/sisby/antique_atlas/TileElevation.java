@@ -1,4 +1,4 @@
-package folk.sisby.antique_atlas.tile;
+package folk.sisby.antique_atlas;
 
 /**
  * The enum represents the different height levels in biomes.

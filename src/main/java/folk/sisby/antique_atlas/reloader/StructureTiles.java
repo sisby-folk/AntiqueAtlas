@@ -7,8 +7,8 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import folk.sisby.antique_atlas.AntiqueAtlas;
 import folk.sisby.antique_atlas.Marker;
+import folk.sisby.antique_atlas.TileTexture;
 import folk.sisby.antique_atlas.structure.StructurePieceTile;
-import folk.sisby.antique_atlas.tile.TileType;
 import folk.sisby.surveyor.landmark.SimplePointLandmark;
 import folk.sisby.surveyor.structure.JigsawPieceSummary;
 import folk.sisby.surveyor.structure.StructurePieceSummary;
@@ -86,30 +86,17 @@ public class StructureTiles extends JsonDataLoader implements IdentifiableResour
     private final Multimap<Identifier, Pair<Identifier, PieceMatcher>> structurePieceTiles = HashMultimap.create();
     private final Multimap<Identifier, StructurePieceTile> jigsawTiles = HashMultimap.create();
 
-    private final Map<Identifier, Integer> structurePiecePriority = new HashMap<>();
-
     public StructureTiles() {
         super(new Gson(), "atlas/structures");
     }
 
-    public void putIfPriority(Map<ChunkPos, TileType> tiles, ChunkPos pos, TileType newTile) {
-        if (!tiles.containsKey(pos)) {
-            tiles.put(pos, newTile);
-        } else if (structurePiecePriority.getOrDefault(newTile.id(), Integer.MAX_VALUE) < structurePiecePriority.getOrDefault(tiles.get(pos).id(), Integer.MAX_VALUE)) {
-            tiles.put(pos, newTile);
-        }
-    }
-
-    public void registerTile(StructurePieceType structurePieceType, int priority, Identifier textureId, PieceMatcher pieceMatcher) {
+    public void registerTile(StructurePieceType structurePieceType, Identifier textureId, PieceMatcher pieceMatcher) {
         Identifier id = Registries.STRUCTURE_PIECE.getId(structurePieceType);
         structurePieceTiles.put(id, Pair.of(textureId, pieceMatcher));
-        structurePiecePriority.put(textureId, priority);
     }
 
     public void registerJigsawTile(Identifier id, StructurePieceTile tile) {
         jigsawTiles.put(id, tile);
-        structurePiecePriority.put(tile.tileX(), tile.priority());
-        structurePiecePriority.put(tile.tileZ(), tile.priority());
     }
 
     public void registerMarker(StructureType<?> structureFeature, Identifier markerType, Text name) {
@@ -120,11 +107,17 @@ public class StructureTiles extends JsonDataLoader implements IdentifiableResour
         structureTagMarkers.put(structureTag, Pair.of(markerType, name));
     }
 
-    public Map<ChunkPos, TileType> resolve(Map<ChunkPos, TileType> tiles, StructurePieceSummary piece, World world) {
+    public Map<ChunkPos, TileTexture> resolve(Map<ChunkPos, TileTexture> tiles, StructurePieceSummary piece, World world) {
         if (piece instanceof JigsawPieceSummary jigsawPiece) {
             for (StructurePieceTile pieceTile : jigsawTiles.get(jigsawPiece.getId())) {
-                chunkPosIfX(jigsawPiece).ifPresent(pos -> putIfPriority(tiles, new ChunkPos(pos.x, pos.z), new TileType(pieceTile.tileX())));
-                chunkPosIfZ(jigsawPiece).ifPresent(pos -> putIfPriority(tiles, new ChunkPos(pos.x, pos.z), new TileType(pieceTile.tileZ())));
+                chunkPosIfX(jigsawPiece).ifPresent(pos -> {
+                    TileTexture newTile = BiomeTileProviders.getInstance().getTileProvider(pieceTile.tileX()).getTexture(new ChunkPos(pos.x, pos.z), null);
+                    tiles.put(new ChunkPos(pos.x, pos.z), newTile);
+                });
+                chunkPosIfZ(jigsawPiece).ifPresent(pos -> {
+                    TileTexture newTile = BiomeTileProviders.getInstance().getTileProvider(pieceTile.tileX()).getTexture(new ChunkPos(pos.x, pos.z), null);
+                    tiles.put(new ChunkPos(pos.x, pos.z), newTile);
+                });
             }
             return tiles;
         }
@@ -133,14 +126,14 @@ public class StructureTiles extends JsonDataLoader implements IdentifiableResour
         if (structurePieceTiles.containsKey(structurePieceId)) {
             for (Pair<Identifier, PieceMatcher> entry : structurePieceTiles.get(structurePieceId)) {
                 for (ChunkPos pos : entry.getRight().matches(world, piece.getBoundingBox())) {
-                    putIfPriority(tiles, pos, new TileType(entry.getLeft()));
+                    tiles.put(pos, BiomeTileProviders.getInstance().getTileProvider(entry.getLeft()).getTexture(new ChunkPos(pos.x, pos.z), null));
                 }
             }
         }
         return tiles;
     }
 
-    public void resolve(Map<ChunkPos, TileType> outTiles, Map<RegistryKey<Structure>, Map<ChunkPos, Marker>> outMarkers, World world, RegistryKey<Structure> key, ChunkPos pos, StructureSummary summary, RegistryKey<StructureType<?>> type, Collection<TagKey<Structure>> tags) {
+    public void resolve(Map<ChunkPos, TileTexture> outTiles, Map<RegistryKey<Structure>, Map<ChunkPos, Marker>> outMarkers, World world, RegistryKey<Structure> key, ChunkPos pos, StructureSummary summary, RegistryKey<StructureType<?>> type, Collection<TagKey<Structure>> tags) {
         Pair<Identifier, Text> foundMarker = structureMarkers.get(key.getValue());
         if (foundMarker == null) {
             foundMarker = structureTagMarkers.entrySet().stream().filter(entry -> tags.contains(entry.getKey())).findFirst().map(Map.Entry::getValue).orElse(null);
@@ -165,14 +158,12 @@ public class StructureTiles extends JsonDataLoader implements IdentifiableResour
                 if (version == 1) {
                     structurePieceTile = new StructurePieceTile(
                         Identifier.tryParse(fileJson.get("tile").getAsString()),
-                        Identifier.tryParse(fileJson.get("tile").getAsString()),
-                        fileJson.get("priority").getAsInt()
+                        Identifier.tryParse(fileJson.get("tile").getAsString())
                     );
                 } else if (version == VERSION) {
                     structurePieceTile = new StructurePieceTile(
                         Identifier.tryParse(fileJson.get("tile_x").getAsString()),
-                        Identifier.tryParse(fileJson.get("tile_z").getAsString()),
-                        fileJson.get("priority").getAsInt()
+                        Identifier.tryParse(fileJson.get("tile_z").getAsString())
                     );
                 } else {
                     throw new RuntimeException("Incompatible version (" + VERSION + " != " + version + ")");

@@ -1,7 +1,7 @@
 {
   "textures": {
+    "antique_atlas:base/sand": 1,
     "antique_atlas:biome/arid/desert/sand_1": 1,
-    "antique_atlas:biome/arid/desert/sand_2": 1,
     "antique_atlas:biome/arid/desert/sand_shrubs": 1
   }
 }

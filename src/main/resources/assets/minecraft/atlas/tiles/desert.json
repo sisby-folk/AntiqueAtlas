@@ -1,8 +1,8 @@
 {
   "textures": {
     "valley": {
+      "antique_atlas:base/sand": 2,
       "antique_atlas:biome/arid/desert/sand_1": 2,
-      "antique_atlas:biome/arid/desert/sand_2": 2,
       "antique_atlas:biome/arid/desert/sand_shrubs": 2,
       "antique_atlas:biome/arid/desert/sand_cacti_sparse": 2,
       "antique_atlas:biome/arid/desert/sand_cacti": 1

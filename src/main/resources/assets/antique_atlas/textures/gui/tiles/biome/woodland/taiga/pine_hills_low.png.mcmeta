@@ -1,6 +1,8 @@
 {
-  "parent": "antique_atlas:biome/woodland/forest/taiga/pine",
-  "tags": [
-    "antique_atlas:hills_low"
-  ]
+  "antique_atlas:tiling": {
+    "parent": "antique_atlas:biome/woodland/taiga/pine",
+    "tags": [
+      "antique_atlas:hills_low"
+    ]
+  }
 }

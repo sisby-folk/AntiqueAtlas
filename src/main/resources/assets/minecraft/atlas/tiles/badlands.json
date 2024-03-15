@@ -8,6 +8,7 @@
     "low": {
       "antique_atlas:biome/arid/badlands/terracotta_shrubs_tiered": 4,
       "antique_atlas:biome/arid/badlands/terracotta_tiered": 2,
+      "antique_atlas:biome/arid/badlands/terracotta_tiered_rough": 2,
       "antique_atlas:biome/arid/badlands/terracotta_tiered_separate": 1
     },
     "peak": {

@@ -1,6 +1,8 @@
 {
-  "parent": "antique_atlas:base/cliffs",
-  "tags": [
-    "antique_atlas:grass_cliffs"
-  ]
+  "antique_atlas:tiling": {
+    "parent": "antique_atlas:base/cliffs",
+    "tags": [
+      "antique_atlas:grass_cliffs"
+    ]
+  }
 }

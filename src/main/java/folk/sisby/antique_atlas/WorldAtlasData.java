@@ -3,7 +3,6 @@ package folk.sisby.antique_atlas;
 import com.google.common.collect.Multimap;
 import folk.sisby.antique_atlas.reloader.StructureTiles;
 import folk.sisby.antique_atlas.terrain.SurveyorChunkUtil;
-import folk.sisby.antique_atlas.tile.TileType;
 import folk.sisby.antique_atlas.util.Rect;
 import folk.sisby.surveyor.SurveyorWorld;
 import folk.sisby.surveyor.landmark.Landmark;
@@ -40,8 +39,8 @@ import java.util.concurrent.ConcurrentLinkedDeque;
 
 public class WorldAtlasData {
     private static final int CHUNK_TICK_LIMIT = AntiqueAtlas.CONFIG.performance.chunkTickLimit;
-    private final Map<ChunkPos, TileType> biomeTiles = new HashMap<>();
-    private final Map<ChunkPos, TileType> structureTiles = new HashMap<>();
+    private final Map<ChunkPos, TileTexture> biomeTiles = new HashMap<>();
+    private final Map<ChunkPos, TileTexture> structureTiles = new HashMap<>();
     private final Rect tileScope = new Rect(0, 0, 0, 0);
     private final Deque<ChunkPos> terrainDeque = new ConcurrentLinkedDeque<>();
     private final Map<LandmarkType<?>, Map<BlockPos, Marker>> landmarkMarkers = new ConcurrentHashMap<>();
@@ -69,7 +68,7 @@ public class WorldAtlasData {
         for (int i = 0; i < CHUNK_TICK_LIMIT; i++) {
             ChunkPos pos = terrainDeque.pollFirst();
             if (pos == null) break;
-            TileType tile = world.getRegistryKey() == World.NETHER ? SurveyorChunkUtil.terrainToTileNether(world, pos) : SurveyorChunkUtil.terrainToTile(world, pos);
+            TileTexture tile = world.getRegistryKey() == World.NETHER ? SurveyorChunkUtil.terrainToTileNether(world, pos) : SurveyorChunkUtil.terrainToTile(world, pos);
             if (tile != null) {
                 tileScope.extendTo(pos.x, pos.z);
                 biomeTiles.put(pos, tile);
@@ -85,12 +84,12 @@ public class WorldAtlasData {
         return tileScope;
     }
 
-    public Identifier getTile(int x, int z) {
+    public TileTexture getTile(int x, int z) {
         return getTile(new ChunkPos(x, z));
     }
 
-    public Identifier getTile(ChunkPos pos) {
-        return structureTiles.containsKey(pos) ? structureTiles.get(pos).id() : biomeTiles.containsKey(pos) ? biomeTiles.get(pos).id() : null;
+    public TileTexture getTile(ChunkPos pos) {
+        return structureTiles.containsKey(pos) ? structureTiles.get(pos) : biomeTiles.getOrDefault(pos, null);
     }
 
     public void refreshLandmarkMarkers(World world) {

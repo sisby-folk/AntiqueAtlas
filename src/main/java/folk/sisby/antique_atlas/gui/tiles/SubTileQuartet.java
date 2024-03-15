@@ -17,10 +17,6 @@ import java.util.Iterator;
  * @author Hunternif
  */
 public class SubTileQuartet implements Iterable<SubTile> {
-    /*
-     * 0 1
-     * 2 3
-     */
     private final SubTile[] array;
 
     public SubTileQuartet(SubTile a, SubTile b, SubTile c, SubTile d) {
@@ -46,16 +42,5 @@ public class SubTileQuartet implements Iterable<SubTile> {
     @Override
     public @NotNull Iterator<SubTile> iterator() {
         return new ArrayIterator<>(array);
-    }
-
-    /**
-     * As SubTileQuartets aren't aligned with chunk boundaries, we'll just
-     * delegating the coords down to the four SubTiles in this quartet
-     */
-    public void setChunkCoords(int chunkX, int chunkY, int step) {
-        array[0].setChunkCoords(chunkX, chunkY, step);
-        array[1].setChunkCoords(chunkX + step, chunkY, step);
-        array[2].setChunkCoords(chunkX, chunkY + step, step);
-        array[3].setChunkCoords(chunkX + step, chunkY + step, step);
     }
 }

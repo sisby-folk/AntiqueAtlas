@@ -1,4 +1,5 @@
 {
   "antique_atlas:tiling": {
-    "parent":
+    "parent": "antique_atlas:biome/woodland/jungle/jungle_mega"
+  }
 }

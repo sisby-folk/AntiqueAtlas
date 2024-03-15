@@ -1,9 +1,11 @@
 {
-  "borderType": "inner",
-  "tags": [
-    "antique_atlas:lava"
-  ],
-  "tilesTo": [
-    "#antique_atlas:lava"
-  ]
+  "antique_atlas:tiling": {
+    "borderType": "inner",
+    "tags": [
+      "antique_atlas:lava"
+    ],
+    "tilesTo": [
+      "#antique_atlas:lava"
+    ]
+  }
 }
