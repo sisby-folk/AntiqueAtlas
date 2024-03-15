@@ -243,7 +243,7 @@ public class StructureTiles extends JsonDataLoader implements IdentifiableResour
 
                 outMap.put(fileId, structurePieceTile);
             } catch (Exception e) {
-                AntiqueAtlas.LOG.warn("Error reading structure piece config from " + fileId + "!", e);
+                AntiqueAtlas.LOGGER.warn("Error reading structure piece config from " + fileId + "!", e);
             }
         }
 

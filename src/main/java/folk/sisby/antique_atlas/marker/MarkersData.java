@@ -81,7 +81,7 @@ public class MarkersData extends PersistentState {
 
         int version = compound.getInt(TAG_VERSION);
         if (version < VERSION) {
-            AntiqueAtlas.LOG.warn("Outdated atlas data format! Was {} but current is {}", version, VERSION);
+            AntiqueAtlas.LOGGER.warn("Outdated atlas data format! Was {} but current is {}", version, VERSION);
             return;
         }
 
@@ -97,7 +97,7 @@ public class MarkersData extends PersistentState {
 
                 int id = markerTag.getInt(TAG_MARKER_ID);
                 if (data.getMarkerByID(id) != null) {
-                    AntiqueAtlas.LOG.warn("Loading marker with duplicate id {}. Getting new id", id);
+                    AntiqueAtlas.LOGGER.warn("Loading marker with duplicate id {}. Getting new id", id);
                     id = data.getNewID();
                 }
                 data.markDirty();
@@ -120,7 +120,7 @@ public class MarkersData extends PersistentState {
 
     @Override
     public NbtCompound writeNbt(NbtCompound compound) {
-        AntiqueAtlas.LOG.info("Saving local markers data to NBT");
+        AntiqueAtlas.LOGGER.info("Saving local markers data to NBT");
         compound.putInt(TAG_VERSION, VERSION);
         NbtList dimensionMapList = new NbtList();
         for (RegistryKey<World> world : worldMap.keySet()) {
@@ -174,7 +174,7 @@ public class MarkersData extends PersistentState {
      */
     public Marker createAndSaveMarker(Identifier type, RegistryKey<World> world, int x, int z, boolean visibleAhead, Text label) {
         Marker marker = new Marker(getNewID(), type, label, world, x, z, visibleAhead);
-        AntiqueAtlas.LOG.info("Created new marker {}", marker.toString());
+        AntiqueAtlas.LOGGER.info("Created new marker {}", marker.toString());
         idMap.put(marker.getId(), marker);
         getMarkersDataInWorld(world).insertMarker(marker);
         markDirty();
@@ -197,7 +197,7 @@ public class MarkersData extends PersistentState {
             if (totalMarkers < AntiqueAtlas.CONFIG.Performance.markerLimit) {
                 getMarkersDataInWorld(marker.getWorld()).insertMarker(marker);
             } else {
-                AntiqueAtlas.LOG.warn("Could not add new marker. Atlas is at it's limit of {} markers", AntiqueAtlas.CONFIG.Performance.markerLimit);
+                AntiqueAtlas.LOGGER.warn("Could not add new marker. Atlas is at it's limit of {} markers", AntiqueAtlas.CONFIG.Performance.markerLimit);
             }
         }
         return marker;
@@ -212,7 +212,7 @@ public class MarkersData extends PersistentState {
 
             new PutMarkersS2CPacket(atlasID, world, data.getAllMarkers()).send(player);
         }
-        AntiqueAtlas.LOG.info("Sent markers data #{} to player {}", atlasID, player.getCommandSource().getName());
+        AntiqueAtlas.LOGGER.info("Sent markers data #{} to player {}", atlasID, player.getCommandSource().getName());
     }
 
     public boolean isEmpty() {

@@ -125,13 +125,13 @@ public class WorldData implements TileStorage {
     }
 
     public void syncToPlayer(int atlasID, ServerPlayerEntity player) {
-        AntiqueAtlas.LOG.info("Sending dimension #{}", this.world.toString());
+        AntiqueAtlas.LOGGER.info("Sending dimension #{}", this.world.toString());
 
         Streams.chunked(this.tileGroups.values().stream(), TileGroupsS2CPacket.TILE_GROUPS_PER_PACKET).forEach(
             chunk -> new TileGroupsS2CPacket(atlasID, this.world, chunk).send(player)
         );
 
-        AntiqueAtlas.LOG.info("Sent dimension #{} ({} groups)", this.world.toString(), this.tileGroups.size());
+        AntiqueAtlas.LOGGER.info("Sent dimension #{} ({} groups)", this.world.toString(), this.tileGroups.size());
     }
 
     @Override

@@ -11,6 +11,7 @@ import folk.sisby.antique_atlas.tile.TileElevation;
 import folk.sisby.antique_atlas.util.ForgeTags;
 import net.fabricmc.fabric.api.resource.IdentifiableResourceReloadListener;
 import net.fabricmc.fabric.api.tag.convention.v1.ConventionalBiomeTags;
+import net.minecraft.registry.Registry;
 import net.minecraft.registry.entry.RegistryEntry;
 import net.minecraft.registry.tag.BiomeTags;
 import net.minecraft.resource.JsonDataLoader;
@@ -44,21 +45,15 @@ public class BiomeTextures extends JsonDataLoader implements IdentifiableResourc
         return INSTANCE;
     }
 
-    /**
-     * This map stores the pseudo biome texture mappings, any biome with ID <0 is assumed to be a pseudo biome
-     */
     private final Map<Identifier, TextureSet> map = new HashMap<>();
+    private final Map<Identifier, Identifier> biomeFallbacks = new HashMap<>();
 
     public BiomeTextures() {
         super(new Gson(), "atlas/tiles");
     }
 
-    public boolean contains(Identifier id) {
-        return map.containsKey(id);
-    }
-
     public TextureSet getTextureSet(Identifier tile) {
-        return tile == null ? TextureSets.getInstance().getDefault() : map.getOrDefault(tile, TextureSets.getInstance().getDefault());
+        return tile == null ? TextureSets.getInstance().getDefault() : map.getOrDefault(tile, map.getOrDefault(biomeFallbacks.get(tile), TextureSets.getInstance().getDefault()));
     }
 
     public TileTexture getTexture(SubTile subTile) {
@@ -66,26 +61,27 @@ public class BiomeTextures extends JsonDataLoader implements IdentifiableResourc
     }
 
     /**
-     * Set a standard texture for the biome based on tags.
+     * Register fallbacks for any biomes present in the client world that don't have explicit sets.
+     * Doing this on world join catches data-biomes that might not be registered in other worlds.
      */
-    public void registerFallback(Identifier id, RegistryEntry<Biome> biome) {
-        if (biome == null || id == null) {
-            AntiqueAtlas.LOG.error("Given biome is null. Cannot autodetect a suitable texture set for that.");
-            return;
-        }
-
-        Identifier fallbackBiome = getFallbackBiome(biome);
-
-        if (fallbackBiome != null && contains(fallbackBiome)) {
-            map.put(id, map.get(fallbackBiome));
-            for (TileElevation layer : TileElevation.values()) {
-                map.put(Identifier.tryParse(id + "_" + layer.getName()), map.get(Identifier.tryParse(fallbackBiome + "_" + layer.getName())));
+    public void registerFallbacks(Registry<Biome> biomeRegistry) {
+        for (Biome biome : biomeRegistry) {
+            Identifier biomeId = biomeRegistry.getId(biome);
+            if (map.containsKey(biomeId)) continue;
+            Identifier fallbackBiome = getFallbackBiome(biomeRegistry.getEntry(biome));
+            if (fallbackBiome != null && map.containsKey(fallbackBiome)) {
+                biomeFallbacks.put(biomeId, fallbackBiome);
+                AntiqueAtlas.LOGGER.warn("[Antique Atlas] Set fallback biome for {} to {}. You can set a more fitting texture using a resource pack!", biomeId, fallbackBiome);
+            } else if (fallbackBiome != null) {
+                AntiqueAtlas.LOGGER.error("[Antique Atlas] Fallback biome for {} is {}, which has no defined tile provider.", biomeId, fallbackBiome);
+            } else {
+                AntiqueAtlas.LOGGER.error("[Antique Atlas] No fallback could be found for {}. This shouldn't happen! This means the biome is not in ANY conventional or vanilla tag on the client!", biomeId);
             }
-            AntiqueAtlas.LOG.warn("[Antique Atlas] Set fallback biome for {} to {}. You can set a more fitting texture using a resource pack!", id, fallbackBiome);
-        } else {
-            AntiqueAtlas.LOG.error("[Antique Atlas] No fallback could be found for {}. This shouldn't happen! This means the biome is not in ANY conventional or vanilla tag on the client!", id.toString());
-            setAllTextures(id, TextureSets.getInstance().getDefault());
         }
+    }
+
+    public void clearFallbacks() {
+        biomeFallbacks.clear();
     }
 
     /**
@@ -96,23 +92,12 @@ public class BiomeTextures extends JsonDataLoader implements IdentifiableResourc
 
         if (textureSet == null) {
             if (map.remove(tileId) != null) {
-                AntiqueAtlas.LOG.warn("Removing old texture for {}", tileId);
+                AntiqueAtlas.LOGGER.warn("Removing old texture for {}", tileId);
             }
             return;
         }
 
         map.put(tileId, textureSet);
-    }
-
-    /**
-     * Assign the same texture set to all height variations of the tileId
-     */
-    private void setAllTextures(Identifier tileId, TextureSet textureSet) {
-        setTexture(tileId, textureSet);
-
-        for (TileElevation layer : TileElevation.values()) {
-            setTexture(Identifier.tryParse(tileId + "_" + layer), textureSet);
-        }
     }
 
     private static Identifier getFallbackBiome(RegistryEntry<Biome> biome) {
@@ -234,7 +219,7 @@ public class BiomeTextures extends JsonDataLoader implements IdentifiableResourc
                     throw new RuntimeException("Incompatible version (" + VERSION + " != " + version + ")");
                 }
             } catch (Exception e) {
-                AntiqueAtlas.LOG.warn("Error reading biome tile " + fileId + "!", e);
+                AntiqueAtlas.LOGGER.warn("Error reading biome tile " + fileId + "!", e);
             }
         }
 
@@ -242,13 +227,13 @@ public class BiomeTextures extends JsonDataLoader implements IdentifiableResourc
             TextureSet set = TextureSets.getInstance().get(setName);
 
             if (set == null) {
-                AntiqueAtlas.LOG.error("Missing texture set `{}` for tile `{}`. Using default.", setName, id);
+                AntiqueAtlas.LOGGER.error("Missing texture set `{}` for tile `{}`. Using default.", setName, id);
                 set = TextureSets.getInstance().getDefault();
             }
 
             setTexture(id, set);
             if (AntiqueAtlas.CONFIG.Performance.resourcePackLogging) {
-                AntiqueAtlas.LOG.info("Loaded tile {} with texture set {}", id, set.id);
+                AntiqueAtlas.LOGGER.info("Loaded tile {} with texture set {}", id, set.id);
             }
         });
     }

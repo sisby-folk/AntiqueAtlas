@@ -24,7 +24,7 @@ public class AntiqueAtlas implements ModInitializer {
     public static final String ID = "antique_atlas";
     public static final String NAME = "Antique Atlas";
 
-    public static final Logger LOG = LogManager.getLogger(NAME);
+    public static final Logger LOGGER = LogManager.getLogger(NAME);
 
     public static final WorldScanner worldScanner = new WorldScanner();
     public static final TileDataHandler tileData = new TileDataHandler();

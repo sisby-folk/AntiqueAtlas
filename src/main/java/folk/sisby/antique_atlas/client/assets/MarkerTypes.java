@@ -77,7 +77,7 @@ public class MarkerTypes extends JsonDataLoader implements IdentifiableResourceR
                 markerType.getJSONData().readFrom(fileJson);
                 outMap.put(fileId, markerType);
             } catch (Exception e) {
-                AntiqueAtlas.LOG.warn("Error reading marker " + fileId + "!", e);
+                AntiqueAtlas.LOGGER.warn("Error reading marker " + fileId + "!", e);
             }
         }
 

@@ -68,7 +68,7 @@ public class MarkerModalComponent extends Component {
 
         addDrawableChild(btnDone = ButtonWidget.builder(Text.translatable("gui.done"), (button) -> {
             AtlasClientAPI.getMarkerAPI().putMarker(world, true, atlasID, MarkerTypes.getInstance().getId(selectedType), Text.literal(textField.getText()), markerX, markerZ);
-            AntiqueAtlas.LOG.info("Put marker in Atlas #{} \"{}\" at ({}, {})", atlasID, textField.getText(), markerX, markerZ);
+            AntiqueAtlas.LOGGER.info("Put marker in Atlas #{} \"{}\" at ({}, {})", atlasID, textField.getText(), markerX, markerZ);
 
             ClientPlayerEntity player = MinecraftClient.getInstance().player;
             world.playSound(player, player.getBlockPos(),

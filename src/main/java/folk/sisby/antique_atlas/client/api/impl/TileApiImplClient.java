@@ -25,7 +25,7 @@ public class TileApiImplClient implements ClientTileAPI {
 
     @Override
     public void putGlobalTile(World world, Identifier tile, int chunkX, int chunkZ) {
-        AntiqueAtlas.LOG.warn("Client attempted to put global tile");
+        AntiqueAtlas.LOGGER.warn("Client attempted to put global tile");
     }
 
     @Override
@@ -36,7 +36,7 @@ public class TileApiImplClient implements ClientTileAPI {
 
     @Override
     public void deleteGlobalTile(World world, int chunkX, int chunkZ) {
-        AntiqueAtlas.LOG.warn("Client attempted to delete global tile");
+        AntiqueAtlas.LOGGER.warn("Client attempted to delete global tile");
     }
 
     @Override

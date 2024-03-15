@@ -52,7 +52,7 @@ public class AntiqueAtlasNetworking {
     private static <T extends C2SPacket> void handleServer(ServerPlayerEntity player, PacketByteBuf buf, Function<PacketByteBuf, T> reader, ServerPacketHandler<T> handler) {
         T packet = reader.apply(buf);
         if (AtlasAPI.getPlayerAtlasId(player) != packet.atlasID()) {
-            AntiqueAtlas.LOG.warn("Player {} attempted to modify someone else's Atlas #{}", player.getName(), packet.atlasID());
+            AntiqueAtlas.LOGGER.warn("Player {} attempted to modify someone else's Atlas #{}", player.getName(), packet.atlasID());
             return;
         }
         handler.handle(player.getServerWorld(), packet);
