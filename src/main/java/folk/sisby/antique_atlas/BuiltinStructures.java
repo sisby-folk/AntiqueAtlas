@@ -37,12 +37,12 @@ public class BuiltinStructures {
         map.put(StructurePieceType.NETHER_FORTRESS_CORRIDOR_EXIT, new StructureTileProvider(AntiqueAtlas.id("piece/nether_fortress_corridor_exit"), StructureTileProvider.ChunkMatcher::center, List.of(textures.get(AntiqueAtlas.id("structure/fortress/nether/nether_fortress_corridor_exit")))));
         map.put(StructurePieceType.NETHER_FORTRESS_BRIDGE_CROSSING, new StructureTileProvider(AntiqueAtlas.id("piece/nether_fortress_bridge_crossing"), StructureTileProvider.ChunkMatcher::center, List.of(textures.get(AntiqueAtlas.id("structure/fortress/nether/nether_fortress_bridge_crossing")))));
         map.put(StructurePieceType.NETHER_FORTRESS_BRIDGE_END, new StructureTileProvider(AntiqueAtlas.id("piece/nether_fortress_bridge_end_horizontal"), Map.of(
-            StructureTileProvider.ChunkMatcher::bridgeEndX, List.of(textures.get(AntiqueAtlas.id("structure/fortress/nether/nether_fortress_bridge_end_horizontal"))),
-            StructureTileProvider.ChunkMatcher::bridgeEndZ, List.of(textures.get(AntiqueAtlas.id("structure/fortress/nether/nether_fortress_bridge_end_vertical")))
+            StructureTileProvider.ChunkMatcher::centerIfHorizontal, List.of(textures.get(AntiqueAtlas.id("structure/fortress/nether/nether_fortress_bridge_end_horizontal"))),
+            StructureTileProvider.ChunkMatcher::centerIfVertical, List.of(textures.get(AntiqueAtlas.id("structure/fortress/nether/nether_fortress_bridge_end_vertical")))
         )));
         map.put(StructurePieceType.NETHER_FORTRESS_BRIDGE, new StructureTileProvider(AntiqueAtlas.id("piece/nether_fortress_bridge_horizontal"), Map.of(
-            StructureTileProvider.ChunkMatcher::bridgeX, List.of(textures.get(AntiqueAtlas.id("structure/fortress/nether/nether_fortress_bridge_horizontal"))),
-            StructureTileProvider.ChunkMatcher::bridgeZ, List.of(textures.get(AntiqueAtlas.id("structure/fortress/nether/nether_fortress_bridge_vertical")))
+            StructureTileProvider.ChunkMatcher::bridgeHorizontal, List.of(textures.get(AntiqueAtlas.id("structure/fortress/nether/nether_fortress_bridge_horizontal"))),
+            StructureTileProvider.ChunkMatcher::bridgeVertical, List.of(textures.get(AntiqueAtlas.id("structure/fortress/nether/nether_fortress_bridge_vertical")))
         )));
         return map;
     }

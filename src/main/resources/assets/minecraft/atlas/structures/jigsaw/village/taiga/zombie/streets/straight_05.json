@@ -1,3 +1,6 @@
 {
-  "textures": "antique_atlas:structure/village/path_crossroad"
+  "textures": {
+    "path_straight_horizontal": "antique_atlas:structure/village/path_horizontal",
+    "path_straight_vertical": "antique_atlas:structure/village/path_vertical"
+  }
 }

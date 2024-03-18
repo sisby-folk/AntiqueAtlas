@@ -25,7 +25,6 @@ import net.minecraft.world.biome.Biome;
 import net.minecraft.world.biome.BiomeKeys;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -166,12 +165,10 @@ public class BiomeTileProviders extends JsonDataLoader implements IdentifiableRe
             return List.of(getTexture(textures, new Identifier(texturePrimitive.getAsString())));
         } else if (textureJson instanceof JsonArray textureArray) {
             return textureArray.asList().stream().map(je -> getTexture(textures, new Identifier(je.getAsString()))).toList();
-        } else if (textureJson instanceof JsonObject textureObject) {
-            if (Arrays.stream(TileElevation.values()).map(TileElevation::getName).noneMatch(textureObject::has)) {
-                Multiset<TileTexture> outList = HashMultiset.create();
-                textureObject.entrySet().forEach(e -> outList.add(getTexture(textures, new Identifier(e.getKey())), e.getValue().getAsInt()));
-                return outList.stream().toList();
-            }
+        } else if (textureJson instanceof JsonObject textureObject && textureObject.keySet().stream().allMatch(k -> textureObject.get(k) instanceof JsonPrimitive jp && jp.isNumber())) {
+            Multiset<TileTexture> outList = HashMultiset.create();
+            textureObject.entrySet().forEach(e -> outList.add(getTexture(textures, new Identifier(e.getKey())), e.getValue().getAsInt()));
+            return outList.stream().toList();
         }
         return null;
     }
@@ -203,7 +200,7 @@ public class BiomeTileProviders extends JsonDataLoader implements IdentifiableRe
                     for (TileElevation elevation : TileElevation.values()) {
                         if (textureObject.has(elevation.getName())) {
                             elevationTextures = resolveTextureJson(textures, textureObject.get(elevation.getName()));
-                            if (elevationTextures == null) throw new IllegalStateException("Malformed elevation %s in textures object!".formatted(elevation.getName()));
+                            if (elevationTextures == null) throw new IllegalStateException("Malformed object %s in textures object!".formatted(elevation.getName()));
                             elevationTextures.forEach(unusedTextures::remove);
                             textureElevations.put(elevation, elevationTextures);
                             for (TileElevation skipped : skippedElevations) {

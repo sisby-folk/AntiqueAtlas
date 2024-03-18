@@ -5,7 +5,6 @@ import folk.sisby.antique_atlas.AntiqueAtlas;
 import folk.sisby.antique_atlas.AntiqueAtlasWorld;
 import folk.sisby.antique_atlas.Marker;
 import folk.sisby.antique_atlas.MarkerType;
-import folk.sisby.antique_atlas.TileElevation;
 import folk.sisby.antique_atlas.TileTexture;
 import folk.sisby.antique_atlas.WorldAtlasData;
 import folk.sisby.antique_atlas.gui.core.ButtonComponent;
@@ -773,10 +772,10 @@ public class AtlasScreen extends Component {
             ChunkPos pos = new ChunkPos(new BlockPos(x, 0, z));
             TileTexture texture = worldAtlasData.getTile(pos);
             Identifier providerId = worldAtlasData.getProvider(pos);
-            TileElevation elevation = worldAtlasData.getElevation(pos);
+            String predicate = worldAtlasData.getTilePredicate(pos);
             if (texture != null) {
                 context.drawText(textRenderer, Text.literal("%d,%d (%d,%d)".formatted(pos.x, pos.z, x, z)), getGuiX(), getGuiY() - 12, 0xFFFFFFFF, true);
-                if (elevation != null) context.drawText(textRenderer, Text.literal(elevation.getName()), getGuiX() + WIDTH - textRenderer.getWidth(Text.literal(elevation.getName())), getGuiY() - 12, 0xFFFFFFFF, true);
+                if (predicate != null) context.drawText(textRenderer, Text.literal(predicate), getGuiX() + WIDTH - textRenderer.getWidth(Text.literal(predicate)), getGuiY() - 12, 0xFFFFFFFF, true);
                 context.drawText(textRenderer, Text.literal(providerId.toString()), getGuiX(), getGuiY() + HEIGHT, 0xFFFFFFFF, true);
                 context.drawText(textRenderer, Text.literal(texture.displayId()), getGuiX() + WIDTH - textRenderer.getWidth(Text.literal(texture.displayId())), getGuiY() + HEIGHT, 0xFFFFFFFF, true);
             }

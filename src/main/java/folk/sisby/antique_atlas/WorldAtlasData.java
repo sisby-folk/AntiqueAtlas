@@ -49,9 +49,9 @@ public class WorldAtlasData {
     boolean isFinished = false;
 
     // Debug
-    private final Map<ChunkPos, TileElevation> elevations = new HashMap<>();
-    private final Map<ChunkPos, TerrainTileProvider> biomeProviders = new HashMap<>();
-    private final Map<ChunkPos, StructureTileProvider> structureProviders = new HashMap<>();
+    private final Map<ChunkPos, String> debugPredicates = new HashMap<>();
+    private final Map<ChunkPos, TerrainTileProvider> debugBiomes = new HashMap<>();
+    private final Map<ChunkPos, StructureTileProvider> debugStructures = new HashMap<>();
 
     public WorldAtlasData(World world) {
         ((SurveyorWorld) world).surveyor$getWorldSummary().terrain().keySet().forEach(terrainDeque::addLast);
@@ -67,7 +67,7 @@ public class WorldAtlasData {
     }
 
     public void onStructuresAdded(World world, WorldStructureSummary ws, Multimap<RegistryKey<Structure>, ChunkPos> summaries) {
-        summaries.forEach((key, pos) -> StructureTileProviders.getInstance().resolve(structureTiles, structureProviders, structureMarkers, world, key, pos, ws.get(key, pos), ws.getType(key), ws.getTags(key)));
+        summaries.forEach((key, pos) -> StructureTileProviders.getInstance().resolve(structureTiles, debugStructures, debugPredicates, structureMarkers, world, key, pos, ws.get(key, pos), ws.getType(key), ws.getTags(key)));
     }
 
     public void tick(World world) {
@@ -78,8 +78,8 @@ public class WorldAtlasData {
             if (tile != null) {
                 tileScope.extendTo(pos.x, pos.z);
                 biomeTiles.put(pos, tile.left().getTexture(pos, tile.right()));
-                biomeProviders.put(pos, tile.left());
-                elevations.put(pos, tile.right());
+                debugBiomes.put(pos, tile.left());
+                debugPredicates.put(pos, tile.right() == null ? null : tile.right().getName());
             }
         }
         if (!isFinished && terrainDeque.isEmpty()) {
@@ -102,18 +102,14 @@ public class WorldAtlasData {
 
     public Identifier getProvider(ChunkPos pos) {
         if (structureTiles.containsKey(pos)) {
-            return structureProviders.get(pos).id();
+            return debugStructures.get(pos).id();
         } else {
-            return biomeProviders.containsKey(pos) ? biomeProviders.get(pos).id() : null;
+            return debugBiomes.containsKey(pos) ? debugBiomes.get(pos).id() : null;
         }
     }
 
-    public TileElevation getElevation(ChunkPos pos) {
-        if (structureTiles.containsKey(pos)) {
-            return null;
-        } else {
-            return elevations.get(pos);
-        }
+    public String getTilePredicate(ChunkPos pos) {
+        return debugPredicates.get(pos);
     }
 
     public void refreshLandmarkMarkers(World world) {

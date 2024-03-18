@@ -34,6 +34,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import static folk.sisby.antique_atlas.reloader.BiomeTileProviders.resolveTextureJson;
+
 public class StructureTileProviders extends JsonDataLoader implements IdentifiableResourceReloadListener {
     private static final StructureTileProviders INSTANCE = new StructureTileProviders();
 
@@ -61,11 +63,11 @@ public class StructureTileProviders extends JsonDataLoader implements Identifiab
         structureTagMarkers.put(structureTag, Pair.of(markerType, name));
     }
 
-    public Map<ChunkPos, TileTexture> resolve(Map<ChunkPos, TileTexture> tiles, Map<ChunkPos, StructureTileProvider> structureProviders, StructurePieceSummary piece, World world) {
+    public Map<ChunkPos, TileTexture> resolve(Map<ChunkPos, TileTexture> tiles, Map<ChunkPos, StructureTileProvider> structureProviders, Map<ChunkPos, String> tilePredicates, StructurePieceSummary piece, World world) {
         if (piece instanceof JigsawPieceSummary jigsawPiece) {
             if (singleJigsawProviders.containsKey(jigsawPiece.getId())) {
                 StructureTileProvider provider = singleJigsawProviders.get(jigsawPiece.getId());
-                provider.getTextures(world, jigsawPiece.getBoundingBox(), jigsawPiece.getJunctions()).forEach((pos, texture) -> {
+                provider.getTextures(world, jigsawPiece.getBoundingBox(), jigsawPiece.getJunctions(), tilePredicates).forEach((pos, texture) -> {
                     tiles.put(pos, texture);
                     structureProviders.put(pos, provider);
                 });
@@ -76,7 +78,7 @@ public class StructureTileProviders extends JsonDataLoader implements Identifiab
         Identifier structurePieceId = Registries.STRUCTURE_PIECE.getId(piece.getType());
         if (pieceTypeProviders.containsKey(structurePieceId)) {
             StructureTileProvider provider = pieceTypeProviders.get(structurePieceId);
-            provider.getTextures(world, piece.getBoundingBox()).forEach((pos, texture) -> {
+            provider.getTextures(world, piece.getBoundingBox(), tilePredicates).forEach((pos, texture) -> {
                 tiles.put(pos, texture);
                 structureProviders.put(pos, provider);
             });
@@ -84,7 +86,7 @@ public class StructureTileProviders extends JsonDataLoader implements Identifiab
         return tiles;
     }
 
-    public void resolve(Map<ChunkPos, TileTexture> outTiles, Map<ChunkPos, StructureTileProvider> structureProviders, Map<RegistryKey<Structure>, Map<ChunkPos, Marker>> outMarkers, World world, RegistryKey<Structure> key, ChunkPos pos, StructureSummary summary, RegistryKey<StructureType<?>> type, Collection<TagKey<Structure>> tags) {
+    public void resolve(Map<ChunkPos, TileTexture> outTiles, Map<ChunkPos, StructureTileProvider> structureProviders, Map<ChunkPos, String> tilePredicates, Map<RegistryKey<Structure>, Map<ChunkPos, Marker>> outMarkers, World world, RegistryKey<Structure> key, ChunkPos pos, StructureSummary summary, RegistryKey<StructureType<?>> type, Collection<TagKey<Structure>> tags) {
         Pair<Identifier, Text> foundMarker = structureMarkers.get(key.getValue());
         if (foundMarker == null) {
             foundMarker = structureTagMarkers.entrySet().stream().filter(entry -> tags.contains(entry.getKey())).findFirst().map(Map.Entry::getValue).orElse(null);
@@ -93,7 +95,7 @@ public class StructureTileProviders extends JsonDataLoader implements Identifiab
             outMarkers.computeIfAbsent(key, k -> new HashMap<>()).put(pos, new Marker(SimplePointLandmark.TYPE, foundMarker.getLeft(), foundMarker.getRight(), pos.getCenterAtY(0), false, null));
         }
 
-        summary.getChildren().forEach(p -> resolve(outTiles, structureProviders, p, world));
+        summary.getChildren().forEach(p -> resolve(outTiles, structureProviders, tilePredicates, p, world));
     }
 
     @Override
@@ -111,17 +113,38 @@ public class StructureTileProviders extends JsonDataLoader implements Identifiab
         singleJigsawProviders.clear();
         for (Map.Entry<Identifier, JsonElement> fileEntry : prepared.entrySet()) {
             Identifier fileId = fileEntry.getKey();
-            Identifier id = new Identifier(fileId.getNamespace(), fileId.getPath().substring("jigsaw/".length()));
-            try {
-                JsonObject fileJson = fileEntry.getValue().getAsJsonObject();
-                StructureTileProvider provider = new StructureTileProvider(
-                    id,
-                    BiomeTileProviders.resolveTextureJson(textures, fileJson.get("textures"))
-                );
-                singleJigsawProviders.put(provider.id(), provider);
-                unusedTextures.removeAll(provider.allTextures());
-            } catch (Exception e) {
-                AntiqueAtlas.LOGGER.warn("[Antique Atlas] Error reading jigsaw tile provider from " + fileId + "!", e);
+            if (fileId.getPath().startsWith("jigsaw/")) {
+                Identifier id = new Identifier(fileId.getNamespace(), fileId.getPath().substring("jigsaw/".length()));
+                try {
+                    JsonObject fileJson = fileEntry.getValue().getAsJsonObject();
+                    JsonElement textureJson = fileJson.get("textures");
+                    List<TileTexture> defaultTextures = resolveTextureJson(textures, textureJson);
+                    if (defaultTextures != null) {
+                        StructureTileProvider provider = new StructureTileProvider(id, defaultTextures);
+                        singleJigsawProviders.put(provider.id(), provider);
+                        unusedTextures.removeAll(provider.allTextures());
+                    } else {
+                        JsonObject textureObject = textureJson.getAsJsonObject();
+                        Map<StructureTileProvider.ChunkMatcher, List<TileTexture>> matchers = new HashMap<>();
+                        for (String matcherKey : textureObject.keySet()) {
+                            Identifier matcherId = matcherKey.contains(":") ? new Identifier(matcherKey) : AntiqueAtlas.id(matcherKey);
+                            StructureTileProvider.ChunkMatcher matcher = StructureTileProvider.getChunkMatcher(matcherId);
+                            if (matcher == null) throw new IllegalStateException("Matcher %s does not exist!".formatted(matcherId.toString()));
+                            List<TileTexture> matcherTextures = resolveTextureJson(textures, textureObject.get(matcherKey));
+                            if (matcherTextures == null) throw new IllegalStateException("Malformed object %s in textures object!".formatted(matcherId.toString()));
+                            matcherTextures.forEach(unusedTextures::remove);
+                            matchers.put(matcher, matcherTextures);
+                        }
+                        if (matchers.isEmpty()) {
+                            throw new IllegalStateException("No matcher keys were found in the textures object!");
+                        }
+                        StructureTileProvider provider = new StructureTileProvider(id, matchers);
+                        singleJigsawProviders.put(provider.id(), provider);
+                        unusedTextures.removeAll(provider.allTextures());
+                    }
+                } catch (Exception e) {
+                    AntiqueAtlas.LOGGER.warn("[Antique Atlas] Error reading jigsaw tile provider " + fileId + "!", e);
+                }
             }
         }
 
