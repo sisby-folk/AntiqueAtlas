@@ -1,7 +1,7 @@
 package folk.sisby.antique_atlas;
 
 import com.google.common.collect.Multimap;
-import folk.sisby.antique_atlas.reloader.StructureTiles;
+import folk.sisby.antique_atlas.reloader.StructureTileProviders;
 import folk.sisby.antique_atlas.terrain.SurveyorChunkUtil;
 import folk.sisby.antique_atlas.util.Rect;
 import folk.sisby.surveyor.SurveyorWorld;
@@ -50,8 +50,8 @@ public class WorldAtlasData {
 
     // Debug
     private final Map<ChunkPos, TileElevation> elevations = new HashMap<>();
-    private final Map<ChunkPos, TileProvider> biomeProviders = new HashMap<>();
-    private final Map<ChunkPos, TileProvider> structureProviders = new HashMap<>();
+    private final Map<ChunkPos, TerrainTileProvider> biomeProviders = new HashMap<>();
+    private final Map<ChunkPos, StructureTileProvider> structureProviders = new HashMap<>();
 
     public WorldAtlasData(World world) {
         ((SurveyorWorld) world).surveyor$getWorldSummary().terrain().keySet().forEach(terrainDeque::addLast);
@@ -67,14 +67,14 @@ public class WorldAtlasData {
     }
 
     public void onStructuresAdded(World world, WorldStructureSummary ws, Multimap<RegistryKey<Structure>, ChunkPos> summaries) {
-        summaries.forEach((key, pos) -> StructureTiles.getInstance().resolve(structureTiles, structureProviders, structureMarkers, world, key, pos, ws.get(key, pos), ws.getType(key), ws.getTags(key)));
+        summaries.forEach((key, pos) -> StructureTileProviders.getInstance().resolve(structureTiles, structureProviders, structureMarkers, world, key, pos, ws.get(key, pos), ws.getType(key), ws.getTags(key)));
     }
 
     public void tick(World world) {
         for (int i = 0; i < CHUNK_TICK_LIMIT; i++) {
             ChunkPos pos = terrainDeque.pollFirst();
             if (pos == null) break;
-            Pair<TileProvider, TileElevation> tile = world.getRegistryKey() == World.NETHER ? SurveyorChunkUtil.terrainToTileNether(world, pos) : SurveyorChunkUtil.terrainToTile(world, pos);
+            Pair<TerrainTileProvider, TileElevation> tile = world.getRegistryKey() == World.NETHER ? SurveyorChunkUtil.terrainToTileNether(world, pos) : SurveyorChunkUtil.terrainToTile(world, pos);
             if (tile != null) {
                 tileScope.extendTo(pos.x, pos.z);
                 biomeTiles.put(pos, tile.left().getTexture(pos, tile.right()));
@@ -100,11 +100,11 @@ public class WorldAtlasData {
         return structureTiles.containsKey(pos) ? structureTiles.get(pos) : biomeTiles.getOrDefault(pos, null);
     }
 
-    public TileProvider getProvider(ChunkPos pos) {
+    public Identifier getProvider(ChunkPos pos) {
         if (structureTiles.containsKey(pos)) {
-            return structureProviders.get(pos);
+            return structureProviders.get(pos).id();
         } else {
-            return biomeProviders.get(pos);
+            return biomeProviders.containsKey(pos) ? biomeProviders.get(pos).id() : null;
         }
     }
 

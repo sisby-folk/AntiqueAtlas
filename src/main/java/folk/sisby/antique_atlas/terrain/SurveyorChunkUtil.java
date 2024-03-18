@@ -1,8 +1,8 @@
 package folk.sisby.antique_atlas.terrain;
 
+import folk.sisby.antique_atlas.TerrainTileProvider;
 import folk.sisby.antique_atlas.TileElevation;
-import folk.sisby.antique_atlas.TileProvider;
-import folk.sisby.antique_atlas.TileTypes;
+import folk.sisby.antique_atlas.FeatureTiles;
 import folk.sisby.antique_atlas.reloader.BiomeTileProviders;
 import folk.sisby.surveyor.SurveyorWorld;
 import folk.sisby.surveyor.terrain.ChunkSummary;
@@ -39,15 +39,15 @@ public class SurveyorChunkUtil {
     public static final int BEACH_PRIORITY = 3;
 
     public static final List<Identifier> CUSTOM_TILES = List.of(
-        TileTypes.NETHER_WASTES,
-        TileTypes.THE_VOID,
-        TileTypes.END_VOID,
-        TileTypes.RIVER,
-        TileTypes.FROZEN_RIVER,
-        TileTypes.TILE_RAVINE,
-        TileTypes.SWAMP_WATER,
-        TileTypes.TILE_LAVA,
-        TileTypes.TILE_LAVA_SHORE
+        FeatureTiles.BEDROCK_ROOF,
+        FeatureTiles.EMPTY,
+        FeatureTiles.END_VOID,
+        FeatureTiles.WATER,
+        FeatureTiles.ICE,
+        FeatureTiles.TILE_RAVINE,
+        FeatureTiles.SWAMP_WATER,
+        FeatureTiles.TILE_LAVA,
+        FeatureTiles.TILE_LAVA_SHORE
     );
 
     public static final int NETHER_SCAN_HEIGHT = 50;
@@ -76,7 +76,7 @@ public class SurveyorChunkUtil {
         return swampCache.get(biome);
     }
 
-    protected static Pair<TileProvider, TileElevation> frequencyToTexture(ChunkPos pos, int[][] possibleTiles, Registry<Biome> biomeRegistry, IndexedIterable<Biome> biomePalette) {
+    protected static Pair<TerrainTileProvider, TileElevation> frequencyToTexture(ChunkPos pos, int[][] possibleTiles, Registry<Biome> biomeRegistry, IndexedIterable<Biome> biomePalette) {
         int elevationOrdinal = -1;
         int biomeIndex = -1;
         int bestFrequency = 0;
@@ -95,9 +95,9 @@ public class SurveyorChunkUtil {
         return Pair.of(BiomeTileProviders.getInstance().getTileProvider(providerId), elevationOrdinal == TileElevation.values().length ? null : TileElevation.values()[elevationOrdinal]);
     }
 
-    public static Pair<TileProvider, TileElevation> terrainToTile(World world, ChunkPos pos) {
+    public static Pair<TerrainTileProvider, TileElevation> terrainToTile(World world, ChunkPos pos) {
         Registry<Biome> biomeRegistry = world.getRegistryManager().get(RegistryKeys.BIOME);
-        int defaultTile = CUSTOM_TILES.indexOf(world.getDimension().hasCeiling() ? TileTypes.NETHER_WASTES : (world.getRegistryKey() == World.END ? TileTypes.END_VOID : TileTypes.THE_VOID));
+        int defaultTile = CUSTOM_TILES.indexOf(world.getDimension().hasCeiling() ? FeatureTiles.BEDROCK_ROOF : (world.getRegistryKey() == World.END ? FeatureTiles.END_VOID : FeatureTiles.EMPTY));
         boolean checkRavines = world.getDimension().hasSkyLight();
 
         int worldHeight = world.getTopY();
@@ -123,13 +123,13 @@ public class SurveyorChunkUtil {
             Biome biome = biomePalette.get(summary.biomes()[i]);
 
             if (checkRavines && height - world.getSeaLevel() < -7) {
-                possibleTiles[elevationSize][biomeCount + CUSTOM_TILES.indexOf(TileTypes.TILE_RAVINE)] += RAVINE_PRIORITY;
+                possibleTiles[elevationSize][biomeCount + CUSTOM_TILES.indexOf(FeatureTiles.TILE_RAVINE)] += RAVINE_PRIORITY;
             } else if (summary.waterDepths()[i] > 0) {
-                possibleTiles[elevationSize][biomeCount + CUSTOM_TILES.indexOf(isSwamp(biomeRegistry, biome) ? TileTypes.SWAMP_WATER : TileTypes.RIVER)] += WATER_PRIORITY;
+                possibleTiles[elevationSize][biomeCount + CUSTOM_TILES.indexOf(isSwamp(biomeRegistry, biome) ? FeatureTiles.SWAMP_WATER : FeatureTiles.WATER)] += WATER_PRIORITY;
             } else if (block == Blocks.ICE) {
-                possibleTiles[elevationSize][biomeCount + CUSTOM_TILES.indexOf(TileTypes.FROZEN_RIVER)] += ICE_PRIORITY;
+                possibleTiles[elevationSize][biomeCount + CUSTOM_TILES.indexOf(FeatureTiles.ICE)] += ICE_PRIORITY;
             } else if (block == Blocks.LAVA) {
-                possibleTiles[elevationSize][biomeCount + CUSTOM_TILES.indexOf(TileTypes.TILE_LAVA)] += LAVA_PRIORITY;
+                possibleTiles[elevationSize][biomeCount + CUSTOM_TILES.indexOf(FeatureTiles.TILE_LAVA)] += LAVA_PRIORITY;
             }
             possibleTiles[TileElevation.fromBlocksAboveSea(height - world.getSeaLevel()).ordinal()][summary.biomes()[i]] += priorityForBiome(biomeRegistry, biome);
         }
@@ -137,9 +137,9 @@ public class SurveyorChunkUtil {
         return frequencyToTexture(pos, possibleTiles, biomeRegistry, biomePalette);
     }
 
-    public static Pair<TileProvider, TileElevation> terrainToTileNether(World world, ChunkPos pos) {
+    public static Pair<TerrainTileProvider, TileElevation> terrainToTileNether(World world, ChunkPos pos) {
         Registry<Biome> biomeRegistry = world.getRegistryManager().get(RegistryKeys.BIOME);
-        int defaultTile = CUSTOM_TILES.indexOf(world.getDimension().hasCeiling() ? TileTypes.NETHER_WASTES : (world.getRegistryKey() == World.END ? TileTypes.END_VOID : TileTypes.THE_VOID));
+        int defaultTile = CUSTOM_TILES.indexOf(world.getDimension().hasCeiling() ? FeatureTiles.BEDROCK_ROOF : (world.getRegistryKey() == World.END ? FeatureTiles.END_VOID : FeatureTiles.EMPTY));
 
         ChunkSummary chunk = ((SurveyorWorld) world).surveyor$getWorldSummary().terrain().get(pos);
         @Nullable LayerSummary.Raw lowSummary = chunk.toSingleLayer(null, NETHER_SCAN_HEIGHT, world.getTopY());
@@ -174,9 +174,9 @@ public class SurveyorChunkUtil {
                 } else {
                     Block block = blockPalette.get(lowSummary.blocks()[i]);
                     if (block == Blocks.LAVA) { // Lava Sea
-                        possibleTiles[elevationSize][biomeCount + CUSTOM_TILES.indexOf(TileTypes.TILE_LAVA)] += LAVA_PRIORITY;
+                        possibleTiles[elevationSize][biomeCount + CUSTOM_TILES.indexOf(FeatureTiles.TILE_LAVA)] += LAVA_PRIORITY;
                     } else { // Low Floor
-                        possibleTiles[elevationSize][biomeCount + CUSTOM_TILES.indexOf(TileTypes.TILE_LAVA_SHORE)] += BEACH_PRIORITY;
+                        possibleTiles[elevationSize][biomeCount + CUSTOM_TILES.indexOf(FeatureTiles.TILE_LAVA_SHORE)] += BEACH_PRIORITY;
                     }
                 }
             }

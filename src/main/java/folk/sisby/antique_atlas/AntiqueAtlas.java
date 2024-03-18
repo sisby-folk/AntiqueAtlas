@@ -2,8 +2,8 @@ package folk.sisby.antique_atlas;
 
 import folk.sisby.antique_atlas.reloader.BiomeTileProviders;
 import folk.sisby.antique_atlas.reloader.MarkerTypes;
-import folk.sisby.antique_atlas.reloader.StructureTiles;
-import folk.sisby.antique_atlas.structure.BuiltinStructures;
+import folk.sisby.antique_atlas.reloader.StructureTileProviders;
+import folk.sisby.antique_atlas.reloader.TileTextures;
 import folk.sisby.surveyor.SurveyorEvents;
 import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
@@ -34,9 +34,10 @@ public class AntiqueAtlas implements ClientModInitializer {
     public void onInitializeClient() {
         AntiqueAtlasKeybindings.init();
         BuiltinStructures.init();
-        ResourceManagerHelper.get(ResourceType.CLIENT_RESOURCES).registerReloadListener(MarkerTypes.getInstance());
-        ResourceManagerHelper.get(ResourceType.CLIENT_RESOURCES).registerReloadListener(StructureTiles.getInstance());
+        ResourceManagerHelper.get(ResourceType.CLIENT_RESOURCES).registerReloadListener(TileTextures.getInstance());
+        ResourceManagerHelper.get(ResourceType.CLIENT_RESOURCES).registerReloadListener(StructureTileProviders.getInstance());
         ResourceManagerHelper.get(ResourceType.CLIENT_RESOURCES).registerReloadListener(BiomeTileProviders.getInstance());
+        ResourceManagerHelper.get(ResourceType.CLIENT_RESOURCES).registerReloadListener(MarkerTypes.getInstance());
 
         SurveyorEvents.Register.clientWorldLoad(id("world_data"), (world, ws) -> ((AntiqueAtlasWorld) world).antiqueAtlas$getData());
         SurveyorEvents.Register.terrainUpdated(id("world_data"), (world, terrain, chunks) -> {
