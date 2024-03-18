@@ -401,7 +401,7 @@ public class Component extends Screen {
     public void init() {
         super.init();
         for (Component child : children) {
-            child.init(client, width, height);
+            child.init(MinecraftClient.getInstance(), width, height);
         }
     }
 

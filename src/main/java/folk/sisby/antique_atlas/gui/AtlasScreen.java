@@ -252,16 +252,13 @@ public class AtlasScreen extends Component {
         if (AntiqueAtlas.CONFIG.ui.doFullScreen) {
             WIDTH = MinecraftClient.getInstance().getWindow().getScaledWidth() - 40;
             HEIGHT = MinecraftClient.getInstance().getWindow().getScaledHeight() - 40;
-            setSize(WIDTH, HEIGHT);
-            MAP_WIDTH = WIDTH - MAP_BORDER_WIDTH * 2;
-            MAP_HEIGHT = HEIGHT - MAP_BORDER_HEIGHT * 2;
         } else {
             WIDTH = 310;
             HEIGHT = 218;
-            setSize(WIDTH, HEIGHT);
-            MAP_WIDTH = WIDTH - MAP_BORDER_WIDTH * 2;
-            MAP_HEIGHT = HEIGHT - MAP_BORDER_HEIGHT * 2;
         }
+        setSize(WIDTH, HEIGHT);
+        MAP_WIDTH = WIDTH - MAP_BORDER_WIDTH * 2;
+        MAP_HEIGHT = HEIGHT - MAP_BORDER_HEIGHT * 2;
         setMapScale(0.5);
         followPlayer = true;
 
