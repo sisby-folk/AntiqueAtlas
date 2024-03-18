@@ -4,10 +4,9 @@ import com.google.gson.Gson;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import folk.sisby.antique_atlas.AntiqueAtlas;
-import folk.sisby.antique_atlas.BuiltinStructures;
 import folk.sisby.antique_atlas.Marker;
-import folk.sisby.antique_atlas.TileTexture;
 import folk.sisby.antique_atlas.StructureTileProvider;
+import folk.sisby.antique_atlas.TileTexture;
 import folk.sisby.surveyor.landmark.SimplePointLandmark;
 import folk.sisby.surveyor.structure.JigsawPieceSummary;
 import folk.sisby.surveyor.structure.StructurePieceSummary;
@@ -98,54 +97,54 @@ public class StructureTileProviders extends JsonDataLoader implements Identifiab
         summary.getChildren().forEach(p -> resolve(outTiles, structureProviders, tilePredicates, p, world));
     }
 
+    private final Map<String, Map<Identifier, StructureTileProvider>> PROVIDER_MAPS = Map.of(
+        "jigsaw/", singleJigsawProviders,
+        "piece/", pieceTypeProviders
+    );
+
     @Override
     protected void apply(Map<Identifier, JsonElement> prepared, ResourceManager manager, Profiler profiler) {
         Map<Identifier, TileTexture> textures = TileTextures.getInstance().getTextures();
         Set<TileTexture> unusedTextures = new HashSet<>(textures.values().stream().filter(t -> t.id().getPath().startsWith("structure")).toList());
 
-        pieceTypeProviders.clear();
-        BuiltinStructures.reload(textures).forEach((type, provider) -> {
-            Identifier id = Registries.STRUCTURE_PIECE.getId(type);
-            pieceTypeProviders.put(id, provider);
-            unusedTextures.removeAll(provider.allTextures());
-        });
-
-        singleJigsawProviders.clear();
+        PROVIDER_MAPS.values().forEach(Map::clear);
         for (Map.Entry<Identifier, JsonElement> fileEntry : prepared.entrySet()) {
             Identifier fileId = fileEntry.getKey();
-            if (fileId.getPath().startsWith("jigsaw/")) {
-                Identifier id = new Identifier(fileId.getNamespace(), fileId.getPath().substring("jigsaw/".length()));
-                try {
-                    JsonObject fileJson = fileEntry.getValue().getAsJsonObject();
-                    JsonElement textureJson = fileJson.get("textures");
-                    List<TileTexture> defaultTextures = resolveTextureJson(textures, textureJson);
-                    if (defaultTextures != null) {
-                        StructureTileProvider provider = new StructureTileProvider(id, defaultTextures);
-                        singleJigsawProviders.put(provider.id(), provider);
-                        unusedTextures.removeAll(provider.allTextures());
-                    } else {
-                        JsonObject textureObject = textureJson.getAsJsonObject();
-                        Map<StructureTileProvider.ChunkMatcher, List<TileTexture>> matchers = new HashMap<>();
-                        for (String matcherKey : textureObject.keySet()) {
-                            Identifier matcherId = matcherKey.contains(":") ? new Identifier(matcherKey) : AntiqueAtlas.id(matcherKey);
-                            StructureTileProvider.ChunkMatcher matcher = StructureTileProvider.getChunkMatcher(matcherId);
-                            if (matcher == null) throw new IllegalStateException("Matcher %s does not exist!".formatted(matcherId.toString()));
-                            List<TileTexture> matcherTextures = resolveTextureJson(textures, textureObject.get(matcherKey));
-                            if (matcherTextures == null) throw new IllegalStateException("Malformed object %s in textures object!".formatted(matcherId.toString()));
-                            matcherTextures.forEach(unusedTextures::remove);
-                            matchers.put(matcher, matcherTextures);
+            PROVIDER_MAPS.forEach((prefix, providerMap) -> {
+                if (fileId.getPath().startsWith(prefix)) {
+                    Identifier id = new Identifier(fileId.getNamespace(), fileId.getPath().substring(prefix.length()));
+                    try {
+                        JsonObject fileJson = fileEntry.getValue().getAsJsonObject();
+                        JsonElement textureJson = fileJson.get("textures");
+                        List<TileTexture> defaultTextures = resolveTextureJson(textures, textureJson);
+                        if (defaultTextures != null) {
+                            StructureTileProvider provider = new StructureTileProvider(id, defaultTextures);
+                            providerMap.put(provider.id(), provider);
+                            unusedTextures.removeAll(provider.allTextures());
+                        } else {
+                            JsonObject textureObject = textureJson.getAsJsonObject();
+                            Map<StructureTileProvider.ChunkMatcher, List<TileTexture>> matchers = new HashMap<>();
+                            for (String matcherKey : textureObject.keySet()) {
+                                Identifier matcherId = matcherKey.contains(":") ? new Identifier(matcherKey) : AntiqueAtlas.id(matcherKey);
+                                StructureTileProvider.ChunkMatcher matcher = StructureTileProvider.getChunkMatcher(matcherId);
+                                if (matcher == null) throw new IllegalStateException("Matcher %s does not exist!".formatted(matcherId.toString()));
+                                List<TileTexture> matcherTextures = resolveTextureJson(textures, textureObject.get(matcherKey));
+                                if (matcherTextures == null) throw new IllegalStateException("Malformed object %s in textures object!".formatted(matcherId.toString()));
+                                matcherTextures.forEach(unusedTextures::remove);
+                                matchers.put(matcher, matcherTextures);
+                            }
+                            if (matchers.isEmpty()) {
+                                throw new IllegalStateException("No matcher keys were found in the textures object!");
+                            }
+                            StructureTileProvider provider = new StructureTileProvider(id, matchers);
+                            providerMap.put(provider.id(), provider);
+                            unusedTextures.removeAll(provider.allTextures());
                         }
-                        if (matchers.isEmpty()) {
-                            throw new IllegalStateException("No matcher keys were found in the textures object!");
-                        }
-                        StructureTileProvider provider = new StructureTileProvider(id, matchers);
-                        singleJigsawProviders.put(provider.id(), provider);
-                        unusedTextures.removeAll(provider.allTextures());
+                    } catch (Exception e) {
+                        AntiqueAtlas.LOGGER.warn("[Antique Atlas] Error reading structure tile provider " + fileId + "!", e);
                     }
-                } catch (Exception e) {
-                    AntiqueAtlas.LOGGER.warn("[Antique Atlas] Error reading jigsaw tile provider " + fileId + "!", e);
                 }
-            }
+            });
         }
 
         for (TileTexture texture : unusedTextures) {

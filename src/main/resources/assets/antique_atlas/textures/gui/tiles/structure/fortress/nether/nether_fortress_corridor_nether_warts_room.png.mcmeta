@@ -1,21 +1,8 @@
 {
   "antique_atlas:tiling": {
+    "parent": "antique_atlas:structure/fortress/nether/nether_fortress_corridor",
     "tags": [
-      "antique_atlas:lava",
-      "antique_atlas:large_structures",
-      "antique_atlas:nether_fortress",
       "antique_atlas:nether_fortress_bridge_accessible"
-    ],
-    "tilesTo": [
-      "#antique_atlas:nether_fortress_corridor",
-      "#antique_atlas:nether_fortress_bridge_crossings",
-      "#antique_atlas:nether_fortress_bridge_accessible"
-    ],
-    "tilesToVertical": [
-      "#antique_atlas:nether_fortress_bridge_vertical"
-    ],
-    "tilesToHorizontal": [
-      "#antique_atlas:nether_fortress_bridge_horizontal"
     ]
   }
 }

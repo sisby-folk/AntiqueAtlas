@@ -2,7 +2,6 @@ package folk.sisby.antique_atlas;
 
 import com.google.common.collect.Multimap;
 import folk.sisby.antique_atlas.reloader.StructureTileProviders;
-import folk.sisby.antique_atlas.terrain.SurveyorChunkUtil;
 import folk.sisby.antique_atlas.util.Rect;
 import folk.sisby.surveyor.SurveyorWorld;
 import folk.sisby.surveyor.landmark.Landmark;
@@ -49,7 +48,8 @@ public class WorldAtlasData {
     boolean isFinished = false;
 
     // Debug
-    private final Map<ChunkPos, String> debugPredicates = new HashMap<>();
+    private final Map<ChunkPos, String> debugBiomePredicates = new HashMap<>();
+    private final Map<ChunkPos, String> debugStructurePredicates = new HashMap<>();
     private final Map<ChunkPos, TerrainTileProvider> debugBiomes = new HashMap<>();
     private final Map<ChunkPos, StructureTileProvider> debugStructures = new HashMap<>();
 
@@ -67,19 +67,19 @@ public class WorldAtlasData {
     }
 
     public void onStructuresAdded(World world, WorldStructureSummary ws, Multimap<RegistryKey<Structure>, ChunkPos> summaries) {
-        summaries.forEach((key, pos) -> StructureTileProviders.getInstance().resolve(structureTiles, debugStructures, debugPredicates, structureMarkers, world, key, pos, ws.get(key, pos), ws.getType(key), ws.getTags(key)));
+        summaries.forEach((key, pos) -> StructureTileProviders.getInstance().resolve(structureTiles, debugStructures, debugStructurePredicates, structureMarkers, world, key, pos, ws.get(key, pos), ws.getType(key), ws.getTags(key)));
     }
 
     public void tick(World world) {
         for (int i = 0; i < CHUNK_TICK_LIMIT; i++) {
             ChunkPos pos = terrainDeque.pollFirst();
             if (pos == null) break;
-            Pair<TerrainTileProvider, TileElevation> tile = world.getRegistryKey() == World.NETHER ? SurveyorChunkUtil.terrainToTileNether(world, pos) : SurveyorChunkUtil.terrainToTile(world, pos);
+            Pair<TerrainTileProvider, TileElevation> tile = world.getRegistryKey() == World.NETHER ? TerrainTiling.terrainToTileNether(world, pos) : TerrainTiling.terrainToTile(world, pos);
             if (tile != null) {
                 tileScope.extendTo(pos.x, pos.z);
                 biomeTiles.put(pos, tile.left().getTexture(pos, tile.right()));
                 debugBiomes.put(pos, tile.left());
-                debugPredicates.put(pos, tile.right() == null ? null : tile.right().getName());
+                debugBiomePredicates.put(pos, tile.right() == null ? null : tile.right().getName());
             }
         }
         if (!isFinished && terrainDeque.isEmpty()) {
@@ -109,7 +109,11 @@ public class WorldAtlasData {
     }
 
     public String getTilePredicate(ChunkPos pos) {
-        return debugPredicates.get(pos);
+        if (structureTiles.containsKey(pos)) {
+            return debugStructurePredicates.get(pos);
+        } else {
+            return debugBiomePredicates.get(pos);
+        }
     }
 
     public void refreshLandmarkMarkers(World world) {

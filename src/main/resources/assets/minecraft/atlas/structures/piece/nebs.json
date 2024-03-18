@@ -1,0 +1,7 @@
+{
+  "displayId": "minecraft:nether_fortress_bridge",
+  "textures": {
+    "bridge_horizontal": "antique_atlas:structure/fortress/nether/nether_fortress_bridge_horizontal",
+    "bridge_vertical": "antique_atlas:structure/fortress/nether/nether_fortress_bridge_vertical"
+  }
+}

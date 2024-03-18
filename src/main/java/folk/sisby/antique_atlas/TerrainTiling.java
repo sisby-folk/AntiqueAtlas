@@ -1,8 +1,5 @@
-package folk.sisby.antique_atlas.terrain;
+package folk.sisby.antique_atlas;
 
-import folk.sisby.antique_atlas.TerrainTileProvider;
-import folk.sisby.antique_atlas.TileElevation;
-import folk.sisby.antique_atlas.FeatureTiles;
 import folk.sisby.antique_atlas.reloader.BiomeTileProviders;
 import folk.sisby.surveyor.SurveyorWorld;
 import folk.sisby.surveyor.terrain.ChunkSummary;
@@ -30,7 +27,7 @@ import java.util.Map;
 /**
  * Hottest class in the mod. Might get ugly.
  */
-public class SurveyorChunkUtil {
+public class TerrainTiling {
     public static final int EMPTY_PRIORITY = 16;
     public static final int RAVINE_PRIORITY = 12;
     public static final int LAVA_PRIORITY = 6;
