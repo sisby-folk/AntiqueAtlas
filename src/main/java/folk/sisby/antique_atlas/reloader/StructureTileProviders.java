@@ -130,9 +130,9 @@ public class StructureTileProviders extends JsonDataLoader implements Identifiab
         "start/", startProviders,
         "tag/", startTagProviders,
         "type/", startTypeProviders,
-        "piece/", pieceTypeProviders,
-        "jigsaw/", singleJigsawProviders,
-        "feature/", featureJigsawProviders
+        "piece/type/", pieceTypeProviders,
+        "piece/jigsaw/single/", singleJigsawProviders,
+        "piece/jigsaw/feature/", featureJigsawProviders
     );
 
     @Override
