@@ -50,6 +50,7 @@ public class StructureTileProviders extends JsonDataLoader implements Identifiab
 
     private final Map<Identifier, StructureTileProvider> startProviders = new HashMap<>();
     private final Map<Identifier, StructureTileProvider> startTagProviders = new HashMap<>();
+    private final Map<Identifier, StructureTileProvider> startTypeProviders = new HashMap<>();
     private final Map<Identifier, StructureTileProvider> pieceTypeProviders = new HashMap<>();
     private final Map<Identifier, StructureTileProvider> singleJigsawProviders = new HashMap<>();
     private final Map<Identifier, StructureTileProvider> featureJigsawProviders = new HashMap<>();
@@ -106,6 +107,14 @@ public class StructureTileProviders extends JsonDataLoader implements Identifiab
             });
         }
 
+        if (startTypeProviders.containsKey(type.getValue())) {
+            StructureTileProvider provider = startTypeProviders.get(key.getValue());
+            provider.getTextures(world, summary.getBoundingBox(), debugPredicates).forEach((pos2, texture) -> {
+                outTiles.put(pos2, texture);
+                debugStructures.put(pos2, provider);
+            });
+        }
+
         tags.stream().filter(t -> startTagProviders.containsKey(t.id())).findFirst().ifPresent(tag -> {
             StructureTileProvider provider = startTagProviders.get(tag.id());
             provider.getTextures(world, summary.getBoundingBox(), debugPredicates).forEach((pos2, texture) -> {
@@ -120,6 +129,7 @@ public class StructureTileProviders extends JsonDataLoader implements Identifiab
     private final Map<String, Map<Identifier, StructureTileProvider>> PROVIDER_MAPS = Map.of(
         "start/", startProviders,
         "tag/", startTagProviders,
+        "type/", startTypeProviders,
         "piece/", pieceTypeProviders,
         "jigsaw/", singleJigsawProviders,
         "feature/", featureJigsawProviders
