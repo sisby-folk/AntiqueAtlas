@@ -51,7 +51,7 @@ public class StructureTileProviders extends JsonDataLoader implements Identifiab
     private final Map<Identifier, StructureTileProvider> singleJigsawProviders = new HashMap<>();
 
     public StructureTileProviders() {
-        super(new Gson(), "atlas/structures");
+        super(new Gson(), "atlas/structure");
     }
 
     public void registerMarker(StructureType<?> structureFeature, Identifier markerType, Text name) {

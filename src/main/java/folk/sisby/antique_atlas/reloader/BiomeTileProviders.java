@@ -44,7 +44,7 @@ public class BiomeTileProviders extends JsonDataLoader implements IdentifiableRe
     private final Map<Identifier, Identifier> biomeFallbacks = new HashMap<>();
 
     public BiomeTileProviders() {
-        super(new Gson(), "atlas/tiles");
+        super(new Gson(), "atlas/biome");
     }
 
     public TerrainTileProvider getTileProvider(Identifier providerId) {
