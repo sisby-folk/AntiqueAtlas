@@ -33,10 +33,6 @@ Attributed to Hunternif:
     hide_markers.png
     show_markers.png
     end_city.png
-    end_city_far.png
-    end_city_mipped_16.png
-    end_city_mipped_32.png
-    google_marker.png
     nether_portal.png
     ocean_monument.png
     red_x_large.png
@@ -45,8 +41,8 @@ Attributed to Hunternif:
     skull.png
     tomb.png
     tower.png
-    unknown_marker.png
-    village.png
+    unknown.png
+    house.png
     woodland_mansion.png
     scalebar_4.png
     scalebar_8.png

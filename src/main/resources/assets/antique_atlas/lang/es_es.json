@@ -1,6 +1,4 @@
 {
-  "item.antique_atlas.antique_atlas": "Atlas antiguo #%d",
-  "item.antique_atlas.empty_antique_atlas": "Atlas antiguo vacío",
   "gui.antique_atlas.scalebar": "Escala en bloques",
   "gui.antique_atlas.addMarker": "Agregar marcador",
   "gui.antique_atlas.delMarker": "Quitar marcador",
@@ -9,12 +7,9 @@
   "gui.antique_atlas.showMarkers": "Mostrar marcadores",
   "gui.antique_atlas.marker.label": "Etiqueta:",
   "gui.antique_atlas.marker.type": "Tipo:",
-  "gui.antique_atlas.marker.village": "Aldea",
-  "gui.antique_atlas.marker.netherPortal": "Portal del Nether",
-  "gui.antique_atlas.marker.tomb": "Aqui yace %s",
-  "gui.antique_atlas.marker.treasure": "Tesoro enterrado",
-  "gui.antique_atlas.marker.monument": "Monumento oceánico",
-  "gui.antique_atlas.marker.mansion": "Mansión del bosque",
+  "gui.antique_atlas.marker.structure.tag.village": "Aldea",
+  "gui.antique_atlas.marker.structure.type.ocean_monument": "Monumento oceánico",
+  "gui.antique_atlas.marker.structure.type.woodland_mansion": "Mansión del bosque",
   "key.antique_atlas.open": "Abrir atlas",
   "key.antique_atlas.category": "Atlas Antiguo"
 }

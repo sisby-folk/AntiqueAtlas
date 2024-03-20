@@ -1,6 +1,4 @@
 {
-  "item.antique_atlas.antique_atlas": "Antikt Atlas #%d",
-  "item.antique_atlas.empty_antique_atlas": "Tomt Antikt Atlas",
   "gui.antique_atlas.scalebar": "Målestok i blokke",
   "gui.antique_atlas.addMarker": "Tilføj markør",
   "gui.antique_atlas.delMarker": "Fjern markør",
@@ -9,9 +7,7 @@
   "gui.antique_atlas.showMarkers": "Vis markører",
   "gui.antique_atlas.marker.label": "Mærkat:",
   "gui.antique_atlas.marker.type": "Type:",
-  "gui.antique_atlas.marker.village": "Landsby",
-  "gui.antique_atlas.marker.netherPortal": "Nether Portal",
-  "gui.antique_atlas.marker.tomb": "Her ligger %s",
+  "gui.antique_atlas.marker.structure.tag.village": "Landsby",
   "key.antique_atlas.open": "Åben Atlas",
   "key.antique_atlas.category": "Antique Atlas"
 }

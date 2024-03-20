@@ -2,7 +2,7 @@ package folk.sisby.antique_atlas.gui;
 
 import folk.sisby.antique_atlas.AntiqueAtlas;
 import folk.sisby.antique_atlas.gui.core.ToggleButtonComponent;
-import folk.sisby.antique_atlas.MarkerType;
+import folk.sisby.antique_atlas.MarkerTexture;
 import net.minecraft.client.gui.DrawContext;
 import net.minecraft.util.Identifier;
 
@@ -12,15 +12,15 @@ public class MarkerTypeSelectorComponent extends ToggleButtonComponent {
     public static final Identifier MARKER_FRAME_OFF = AntiqueAtlas.id("textures/gui/marker_frame_off.png");
     public static final int FRAME_SIZE = 34;
 
-    private final MarkerType markerType;
+    private final MarkerTexture markerTexture;
 
-    public MarkerTypeSelectorComponent(MarkerType markerType) {
-        this.markerType = markerType;
+    public MarkerTypeSelectorComponent(MarkerTexture markerTexture) {
+        this.markerTexture = markerTexture;
         setSize(FRAME_SIZE, FRAME_SIZE);
     }
 
-    public MarkerType getMarkerType() {
-        return markerType;
+    public MarkerTexture getMarkerType() {
+        return markerTexture;
     }
 
     @Override
@@ -28,7 +28,7 @@ public class MarkerTypeSelectorComponent extends ToggleButtonComponent {
         Identifier frameTexture = isSelected() ? MARKER_FRAME_ON : MARKER_FRAME_OFF;
         context.drawTexture(frameTexture, getGuiX() + 1, getGuiY() + 1, 0, 0, FRAME_SIZE, FRAME_SIZE, FRAME_SIZE, FRAME_SIZE);
 
-        Identifier texture = markerType.getTexture();
+        Identifier texture = markerTexture.id();
         if (texture != null) {
             context.drawTexture(texture, getGuiX() + 1, getGuiY() + 1, 0, 0, 32, 32, 32, 32);
         }

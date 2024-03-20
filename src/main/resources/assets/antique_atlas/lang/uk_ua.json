@@ -1,6 +1,4 @@
 {
-  "item.antique_atlas.antique_atlas": "Антикварний атлас #%d",
-  "item.antique_atlas.empty_antique_atlas": "Порожній антикварний атлас",
   "gui.antique_atlas.scalebar": "Масштаб у блоках",
   "gui.antique_atlas.addMarker": "Додати мітку",
   "gui.antique_atlas.delMarker": "Видалити мітку",
@@ -9,12 +7,9 @@
   "gui.antique_atlas.showMarkers": "Показати мітки",
   "gui.antique_atlas.marker.label": "Ярлик:",
   "gui.antique_atlas.marker.type": "Тип:",
-  "gui.antique_atlas.marker.village": "Село",
-  "gui.antique_atlas.marker.netherPortal": "Портал у Незер",
-  "gui.antique_atlas.marker.tomb": "Here lies %s",
-  "gui.antique_atlas.marker.treasure": "Скарб",
-  "gui.antique_atlas.marker.monument": "Океанічний монумент",
-  "gui.antique_atlas.marker.mansion": "Лісовий маєток",
+  "gui.antique_atlas.marker.structure.tag.village": "Село",
+  "gui.antique_atlas.marker.structure.type.ocean_monument": "Океанічний монумент",
+  "gui.antique_atlas.marker.structure.type.woodland_mansion": "Лісовий маєток",
   "key.antique_atlas.open": "Відкрити атлас",
   "key.antique_atlas.category": "Антикварний атлас"
 }

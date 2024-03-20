@@ -1,6 +1,4 @@
 {
-  "item.antique_atlas.antique_atlas": "古式地图 #%d",
-  "item.antique_atlas.empty_antique_atlas": "空白古式地图",
   "gui.antique_atlas.scalebar": "以方块缩放",
   "gui.antique_atlas.addMarker": "添加标记",
   "gui.antique_atlas.delMarker": "删除标记",
@@ -9,9 +7,7 @@
   "gui.antique_atlas.showMarkers": "显示标记",
   "gui.antique_atlas.marker.label": "标签：",
   "gui.antique_atlas.marker.type": "类型：",
-  "gui.antique_atlas.marker.village": "村庄",
-  "gui.antique_atlas.marker.netherPortal": "下界传送门",
-  "gui.antique_atlas.marker.tomb": "%s 在此长眠",
+  "gui.antique_atlas.marker.structure.tag.village": "村庄",
   "key.antique_atlas.open": "打开古式地图",
   "key.antique_atlas.category": "古式地图"
 }

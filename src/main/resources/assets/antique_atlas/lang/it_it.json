@@ -1,6 +1,4 @@
 {
-  "item.antique_atlas.antique_atlas": "Antico atlante #%d",
-  "item.antique_atlas.empty_antique_atlas": "Antico atlante vuoto",
   "gui.antique_atlas.scalebar": "Scala in blocchi",
   "gui.antique_atlas.addMarker": "Aggiungi marcatore",
   "gui.antique_atlas.delMarker": "Elimina marcatore",
@@ -9,6 +7,5 @@
   "gui.antique_atlas.showMarkers": "Mostra marcatori",
   "gui.antique_atlas.marker.label": "Etichetta:",
   "gui.antique_atlas.marker.type": "Tipo:",
-  "gui.antique_atlas.marker.village": "Villaggio",
-  "gui.antique_atlas.marker.netherPortal": "Portale degli Inferi"
+  "gui.antique_atlas.marker.structure.tag.village": "Villaggio"
 }

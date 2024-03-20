@@ -1,6 +1,4 @@
 {
-  "item.antique_atlas.antique_atlas": "Antique Atlas #%d",
-  "item.antique_atlas.empty_antique_atlas": "Antique Atlas vacío",
   "gui.antique_atlas.scalebar": "Escala en bloques",
   "gui.antique_atlas.addMarker": "Añadir marcador",
   "gui.antique_atlas.delMarker": "Borrar marcador",
@@ -9,9 +7,7 @@
   "gui.antique_atlas.showMarkers": "Mostrar marcadores",
   "gui.antique_atlas.marker.label": "Etiqueta:",
   "gui.antique_atlas.marker.type": "Tipo:",
-  "gui.antique_atlas.marker.village": "Aldea",
-  "gui.antique_atlas.marker.netherPortal": "Portal del Nether",
-  "gui.antique_atlas.marker.tomb": "Aquí yace %s",
+  "gui.antique_atlas.marker.structure.tag.village": "Aldea",
   "key.antique_atlas.open": "Abrir Atlas",
   "key.antique_atlas.category": "Antique Atlas"
 }

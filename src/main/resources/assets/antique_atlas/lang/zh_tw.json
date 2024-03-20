@@ -1,6 +1,4 @@
 {
-  "item.antique_atlas.antique_atlas": "復刻版地圖 #%d",
-  "item.antique_atlas.empty_antique_atlas": "空白復刻版地圖",
   "gui.antique_atlas.scalebar": "比例尺",
   "gui.antique_atlas.addMarker": "增加標記",
   "gui.antique_atlas.delMarker": "移除標記",
@@ -9,7 +7,5 @@
   "gui.antique_atlas.showMarkers": "顯示標記",
   "gui.antique_atlas.marker.label": "標籤:",
   "gui.antique_atlas.marker.type": "類型:",
-  "gui.antique_atlas.marker.village": "村莊",
-  "gui.antique_atlas.marker.netherPortal": "虛空之門",
-  "gui.antique_atlas.marker.tomb": "%s在此長眠"
+  "gui.antique_atlas.marker.structure.tag.village": "村莊"
 }

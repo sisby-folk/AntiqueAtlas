@@ -1,13 +1,11 @@
 package folk.sisby.antique_atlas.gui;
 
 import folk.sisby.antique_atlas.AntiqueAtlas;
-import folk.sisby.antique_atlas.Marker;
-import folk.sisby.antique_atlas.MarkerType;
+import folk.sisby.antique_atlas.MarkerTexture;
 import folk.sisby.antique_atlas.gui.core.Component;
 import folk.sisby.antique_atlas.gui.core.ScrollBoxComponent;
 import folk.sisby.antique_atlas.gui.core.ToggleButtonRadioGroup;
-import folk.sisby.antique_atlas.reloader.MarkerTypes;
-import folk.sisby.surveyor.landmark.SimplePointLandmark;
+import folk.sisby.antique_atlas.reloader.MarkerTextures;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.gui.widget.ButtonWidget;
@@ -16,7 +14,6 @@ import net.minecraft.client.network.ClientPlayerEntity;
 import net.minecraft.sound.SoundCategory;
 import net.minecraft.sound.SoundEvents;
 import net.minecraft.text.Text;
-import net.minecraft.util.Uuids;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
@@ -34,7 +31,7 @@ public class MarkerModalComponent extends Component {
     private int markerX;
     private int markerZ;
 
-    MarkerType selectedType = MarkerTypes.getInstance().getDefault();
+    MarkerTexture selectedTexture = MarkerTexture.DEFAULT;
 
     private static final int BUTTON_WIDTH = 100;
     private static final int BUTTON_SPACING = 4;
@@ -68,7 +65,7 @@ public class MarkerModalComponent extends Component {
         super.init();
 
         addDrawableChild(btnDone = ButtonWidget.builder(Text.translatable("gui.done"), (button) -> {
-            ((AtlasScreen) MinecraftClient.getInstance().currentScreen).getworldAtlasData().addMarker(MinecraftClient.getInstance().player, world, new Marker(SimplePointLandmark.TYPE, MarkerTypes.getInstance().getId(selectedType), Text.literal(textField.getText()), new BlockPos(markerX, 0, markerZ), true, Uuids.getUuidFromProfile(MinecraftClient.getInstance().getSession().getProfile())));
+            ((AtlasScreen) MinecraftClient.getInstance().currentScreen).getworldAtlasData().placeCustomMarker(world, selectedTexture, Text.literal(textField.getText()), new BlockPos(markerX, 0, markerZ));
             ((AtlasScreen) MinecraftClient.getInstance().currentScreen).updateBookmarkerList();
             AntiqueAtlas.LOGGER.info("Put marker \"{}\" at ({}, {})", textField.getText(), markerX, markerZ);
 
@@ -90,9 +87,8 @@ public class MarkerModalComponent extends Component {
         this.addChild(scroller);
 
         int typeCount = 0;
-        for (MarkerType type : MarkerTypes.getInstance().iterator()) {
-            if (!type.isTechnical())
-                typeCount++;
+        for (MarkerTexture texture : MarkerTextures.getInstance().getTextures().values()) {
+            if (texture.keyId().getPath().startsWith("custom/")) typeCount++;
         }
         int allTypesWidth = typeCount *
             (MarkerTypeSelectorComponent.FRAME_SIZE + TYPE_SPACING) - TYPE_SPACING;
@@ -102,18 +98,17 @@ public class MarkerModalComponent extends Component {
 
         typeRadioGroup = new ToggleButtonRadioGroup<>();
         typeRadioGroup.addListener(button -> {
-            selectedType = button.getMarkerType();
+            selectedTexture = button.getMarkerType();
             for (IMarkerTypeSelectListener listener : markerListeners) {
                 listener.onSelectMarkerType(button.getMarkerType());
             }
         });
         int contentX = 0;
-        for (MarkerType markerType : MarkerTypes.getInstance().iterator()) {
-            if (markerType.isTechnical())
-                continue;
-            MarkerTypeSelectorComponent markerGui = new MarkerTypeSelectorComponent(markerType);
+        for (MarkerTexture texture : MarkerTextures.getInstance().getTextures().values()) {
+            if (!texture.keyId().getPath().startsWith("custom/")) continue;
+            MarkerTypeSelectorComponent markerGui = new MarkerTypeSelectorComponent(texture);
             typeRadioGroup.addButton(markerGui);
-            if (selectedType.equals(markerType)) {
+            if (selectedTexture.equals(texture)) {
                 typeRadioGroup.setSelectedButton(markerGui);
             }
             scroller.addContent(markerGui).setRelativeX(contentX);
@@ -160,6 +155,6 @@ public class MarkerModalComponent extends Component {
     }
 
     interface IMarkerTypeSelectListener {
-        void onSelectMarkerType(MarkerType markerType);
+        void onSelectMarkerType(MarkerTexture markerTexture);
     }
 }

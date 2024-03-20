@@ -3,8 +3,7 @@ package folk.sisby.antique_atlas.gui;
 import com.mojang.blaze3d.systems.RenderSystem;
 import folk.sisby.antique_atlas.AntiqueAtlas;
 import folk.sisby.antique_atlas.AntiqueAtlasWorld;
-import folk.sisby.antique_atlas.Marker;
-import folk.sisby.antique_atlas.MarkerType;
+import folk.sisby.antique_atlas.MarkerTexture;
 import folk.sisby.antique_atlas.TileTexture;
 import folk.sisby.antique_atlas.WorldAtlasData;
 import folk.sisby.antique_atlas.gui.core.ButtonComponent;
@@ -18,10 +17,10 @@ import folk.sisby.antique_atlas.gui.core.ScrollBoxComponent;
 import folk.sisby.antique_atlas.gui.tiles.SubTile;
 import folk.sisby.antique_atlas.gui.tiles.SubTileQuartet;
 import folk.sisby.antique_atlas.gui.tiles.TileRenderIterator;
-import folk.sisby.antique_atlas.reloader.MarkerTypes;
 import folk.sisby.antique_atlas.util.DrawUtil;
 import folk.sisby.antique_atlas.util.MathUtil;
 import folk.sisby.antique_atlas.util.Rect;
+import folk.sisby.surveyor.landmark.Landmark;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.option.KeyBinding;
@@ -40,6 +39,7 @@ import org.lwjgl.glfw.GLFW;
 import org.lwjgl.opengl.GL11;
 
 import java.util.Collections;
+import java.util.Map;
 
 public class AtlasScreen extends Component {
     public static final Identifier BOOK = AntiqueAtlas.id("textures/gui/book.png");
@@ -218,12 +218,6 @@ public class AtlasScreen extends Component {
 
     // Markers =================================================================
 
-    /**
-     * The marker highlighted by the eraser. Even though multiple markers may
-     * be highlighted at the same time, only one of them will be deleted.
-     */
-    private Marker hoveredMarker;
-
     private final MarkerModalComponent markerFinalizer = new MarkerModalComponent();
     /**
      * Displayed where the marker is about to be placed when the Finalizer GUI is on.
@@ -249,7 +243,7 @@ public class AtlasScreen extends Component {
 
     @SuppressWarnings("rawtypes")
     public AtlasScreen() {
-        if (AntiqueAtlas.CONFIG.ui.doFullScreen) {
+        if (AntiqueAtlas.CONFIG.ui.fullscreen) {
             WIDTH = MinecraftClient.getInstance().getWindow().getScaledWidth() - 40;
             HEIGHT = MinecraftClient.getInstance().getWindow().getScaledHeight() - 40;
         } else {
@@ -264,7 +258,7 @@ public class AtlasScreen extends Component {
 
         btnPosition = new FollowButtonComponent();
         btnPosition.setEnabled(!followPlayer);
-        addChild(btnPosition).offsetGuiCoords(WIDTH - MAP_BORDER_WIDTH - FollowButtonComponent.WIDTH + (AntiqueAtlas.CONFIG.ui.doFullScreen ? 0 : 1), HEIGHT - MAP_BORDER_HEIGHT - FollowButtonComponent.HEIGHT + (AntiqueAtlas.CONFIG.ui.doFullScreen ? 0 : -2));
+        addChild(btnPosition).offsetGuiCoords(WIDTH - MAP_BORDER_WIDTH - FollowButtonComponent.WIDTH + (AntiqueAtlas.CONFIG.ui.fullscreen ? 0 : 1), HEIGHT - MAP_BORDER_HEIGHT - FollowButtonComponent.HEIGHT + (AntiqueAtlas.CONFIG.ui.fullscreen ? 0 : -2));
         IButtonListener positionListener = button -> {
             selectedButton = button;
             if (button.equals(btnPosition)) {
@@ -288,15 +282,11 @@ public class AtlasScreen extends Component {
 
                 // While holding shift, we create a marker on the player's position
                 if (hasShiftDown()) {
-                    markerFinalizer.setMarkerData(player.getEntityWorld(),
-                        player.getBlockX(), player.getBlockZ());
+                    markerFinalizer.setMarkerData(player.getEntityWorld(), player.getBlockX(), player.getBlockZ());
                     addChild(markerFinalizer);
 
-                    blinkingIcon.setTexture(markerFinalizer.selectedType.getTexture(),
-                        MARKER_SIZE, MARKER_SIZE);
-                    addChildBehind(markerFinalizer, blinkingIcon)
-                        .setRelativeCoords(worldXToScreenX((int) player.getX()) - getGuiX() - MARKER_SIZE / 2,
-                            worldZToScreenY((int) player.getZ()) - getGuiY() - MARKER_SIZE / 2);
+                    blinkingIcon.setTexture(markerFinalizer.selectedTexture.id(), markerFinalizer.selectedTexture.textureWidth(), markerFinalizer.selectedTexture.textureHeight());
+                    addChildBehind(markerFinalizer, blinkingIcon).setRelativeCoords(worldXToScreenX((int) player.getX()) - getGuiX() - MARKER_SIZE / 2, worldZToScreenY((int) player.getZ()) - getGuiY() - MARKER_SIZE / 2);
 
                     // Un-press all keys to prevent player from walking infinitely:
                     KeyBinding.unpressAll();
@@ -329,7 +319,7 @@ public class AtlasScreen extends Component {
             }
         });
 
-        addChild(scaleBar).offsetGuiCoords(MAP_BORDER_WIDTH - 1 + (AntiqueAtlas.CONFIG.ui.doFullScreen ? 0 : 4), HEIGHT - MAP_BORDER_HEIGHT - BarScaleComponent.HEIGHT + 1 + (AntiqueAtlas.CONFIG.ui.doFullScreen ? 0 : -2));
+        addChild(scaleBar).offsetGuiCoords(MAP_BORDER_WIDTH - 1 + (AntiqueAtlas.CONFIG.ui.fullscreen ? 0 : 4), HEIGHT - MAP_BORDER_HEIGHT - BarScaleComponent.HEIGHT + 1 + (AntiqueAtlas.CONFIG.ui.fullscreen ? 0 : -2));
         scaleBar.setMapScale(1);
 
         addChild(markers).setRelativeCoords(-10, 14);
@@ -368,31 +358,26 @@ public class AtlasScreen extends Component {
 
         if (worldAtlasData == null) return;
 
-        int contentY = 0;
-        for (Marker marker : worldAtlasData.getAllMarkers()) {
-            if (!marker.visibleAhead() || marker.isGlobal()) {
-                continue;
-            }
-            MarkerBookmarkComponent bookmark = new MarkerBookmarkComponent(marker);
+        final int[] contentY = {0};
+        worldAtlasData.getEditableLandmarks().forEach((landmark, texture) -> {
+            MarkerBookmarkComponent bookmark = new MarkerBookmarkComponent(landmark, texture);
 
             bookmark.addListener(button -> {
                 if (state.is(NORMAL)) {
-                    setTargetPosition(marker.pos());
+                    setTargetPosition(new ColumnPos(landmark.pos().getX(), landmark.pos().getZ()));
                     followPlayer = false;
                     btnPosition.setEnabled(true);
                 } else if (state.is(DELETING_MARKER)) {
-                    if (!worldAtlasData.deleteMarker(player.getEntityWorld(), marker)) return;
+                    if (!worldAtlasData.deleteLandmark(player.getEntityWorld(), landmark)) return;
                     updateBookmarkerList();
-                    player.getEntityWorld().playSound(player, player.getBlockPos(),
-                        SoundEvents.UI_CARTOGRAPHY_TABLE_TAKE_RESULT, SoundCategory.AMBIENT,
-                        1F, 0.5F);
+                    player.getEntityWorld().playSound(player, player.getBlockPos(), SoundEvents.UI_CARTOGRAPHY_TABLE_TAKE_RESULT, SoundCategory.AMBIENT, 1F, 0.5F);
                     state.switchTo(NORMAL);
                 }
             });
 
-            markers.addContent(bookmark).setRelativeY(contentY);
-            contentY += 18 + 2;
-        }
+            markers.addContent(bookmark).setRelativeY(contentY[0]);
+            contentY[0] += 18 + 2;
+        });
     }
 
     @Override
@@ -412,40 +397,38 @@ public class AtlasScreen extends Component {
         // If clicked on the map, start dragging
         int mapX = (width - MAP_WIDTH) / 2;
         int mapY = (height - MAP_HEIGHT) / 2;
-        boolean isMouseOverMap = mouseX >= mapX && mouseX <= mapX + MAP_WIDTH &&
-            mouseY >= mapY && mouseY <= mapY + MAP_HEIGHT;
+        boolean isMouseOverMap = mouseX >= mapX && mouseX <= mapX + MAP_WIDTH && mouseY >= mapY && mouseY <= mapY + MAP_HEIGHT;
+        Landmark<?> hoveredLandmark = null;
+        for (Map.Entry<Landmark<?>, MarkerTexture> entry : worldAtlasData.getEditableLandmarks().entrySet()) {
+            int markerX = worldXToScreenX(entry.getKey().pos().getX());
+            int markerY = worldZToScreenY(entry.getKey().pos().getZ());
+            if (entry.getValue().withinTexture((int) getMouseX(), (int) getMouseY(), markerX, markerY)) {
+                hoveredLandmark = entry.getKey();
+            }
+        }
         if (!state.is(NORMAL) && !state.is(HIDING_MARKERS)) {
             if (state.is(PLACING_MARKER) && isMouseOverMap && mouseState == 0 /* left click */) {
-                markerFinalizer.setMarkerData(player.getEntityWorld(),
-                    screenXToWorldX((int) mouseX), screenYToWorldZ((int) mouseY));
+                markerFinalizer.setMarkerData(player.getEntityWorld(), screenXToWorldX((int) mouseX), screenYToWorldZ((int) mouseY));
                 addChild(markerFinalizer);
 
-                blinkingIcon.setTexture(markerFinalizer.selectedType.getTexture(),
-                    MARKER_SIZE, MARKER_SIZE);
-                addChildBehind(markerFinalizer, blinkingIcon)
-                    .setRelativeCoords((int) mouseX - getGuiX() - MARKER_SIZE / 2,
-                        (int) mouseY - getGuiY() - MARKER_SIZE / 2);
+                blinkingIcon.setTexture(markerFinalizer.selectedTexture.id(), MARKER_SIZE, MARKER_SIZE);
+                addChildBehind(markerFinalizer, blinkingIcon).setRelativeCoords((int) mouseX - getGuiX() - MARKER_SIZE / 2, (int) mouseY - getGuiY() - MARKER_SIZE / 2);
 
                 // Un-press all keys to prevent player from walking infinitely:
                 KeyBinding.unpressAll();
 
                 state.switchTo(NORMAL);
                 return true;
-            } else if (state.is(DELETING_MARKER) && hoveredMarker != null && isMouseOverMap && mouseState == 0) {
-                if (worldAtlasData.deleteMarker(player.getEntityWorld(), hoveredMarker)) {
+            } else if (state.is(DELETING_MARKER) && hoveredLandmark != null && isMouseOverMap && mouseState == 0) {
+                if (worldAtlasData.deleteLandmark(player.getEntityWorld(), hoveredLandmark)) {
                     updateBookmarkerList();
-                    hoveredMarker = null;
-                    player.getEntityWorld().playSound(player, player.getBlockPos(),
-                        SoundEvents.UI_CARTOGRAPHY_TABLE_TAKE_RESULT, SoundCategory.AMBIENT,
-                        1F, 0.5F);
+                    player.getEntityWorld().playSound(player, player.getBlockPos(), SoundEvents.UI_CARTOGRAPHY_TABLE_TAKE_RESULT, SoundCategory.AMBIENT, 1F, 0.5F);
                 }
             }
             state.switchTo(NORMAL);
         } else if (isMouseOverMap && selectedButton == null) {
-            if (hoveredMarker == null /* API: Marker Clicked Event */) {
-                isDragging = true;
-                return true;
-            }
+            isDragging = true;
+            return true;
         }
 
         return false;
@@ -470,10 +453,8 @@ public class AtlasScreen extends Component {
         } else {
             KeyBinding[] hotbarKeys = MinecraftClient.getInstance().options.hotbarKeys;
             for (KeyBinding bind : hotbarKeys) {
-                // only handle hotbarkeys when marker gui isn't shown1
                 if (bind.matchesKey(keyCode, scanCode) && this.markerFinalizer.getParent() == null) {
                     close();
-                    // if we close the gui, then don't handle the event
                     return false;
                 }
             }
@@ -492,7 +473,7 @@ public class AtlasScreen extends Component {
 
         if (!handled && wheelMove != 0) {
             wheelMove = wheelMove > 0 ? 1 : -1;
-            if (AntiqueAtlas.CONFIG.ui.doReverseWheelZoom) {
+            if (AntiqueAtlas.CONFIG.ui.reverseZoom) {
                 wheelMove *= -1;
             }
 
@@ -675,7 +656,7 @@ public class AtlasScreen extends Component {
         super.renderBackground(context);
 
         RenderSystem.setShaderColor(1, 1, 1, 1);
-        if (AntiqueAtlas.CONFIG.ui.doFullScreen) {
+        if (AntiqueAtlas.CONFIG.ui.fullscreen) {
             context.fill(getGuiX(), getGuiY(), getGuiX() + WIDTH, getGuiY() + HEIGHT, 0xFFEAD2A5);
             context.drawBorder(getGuiX(), getGuiY(), WIDTH, HEIGHT, 0xFF4C1A0B);
             context.drawBorder(getGuiX() + MAP_BORDER_WIDTH - 1, getGuiY() + MAP_BORDER_HEIGHT - 1, MAP_WIDTH + 2, MAP_HEIGHT + 2, 0xFF4C1A0B);
@@ -688,10 +669,7 @@ public class AtlasScreen extends Component {
         if (state.is(DELETING_MARKER)) {
             RenderSystem.setShaderColor(1, 1, 1, 0.5f);
         }
-        RenderSystem.enableScissor(
-            (int) ((getGuiX() + MAP_BORDER_WIDTH) * screenScale),
-            (int) ((MinecraftClient.getInstance().getWindow().getFramebufferHeight() - (getGuiY() + MAP_BORDER_HEIGHT + MAP_HEIGHT) * screenScale)),
-            (int) (MAP_WIDTH * screenScale), (int) (MAP_HEIGHT * screenScale));
+        RenderSystem.enableScissor((int) ((getGuiX() + MAP_BORDER_WIDTH) * screenScale), (int) ((MinecraftClient.getInstance().getWindow().getFramebufferHeight() - (getGuiY() + MAP_BORDER_HEIGHT + MAP_HEIGHT) * screenScale)), (int) (MAP_WIDTH * screenScale), (int) (MAP_HEIGHT * screenScale));
         RenderSystem.enableBlend();
         RenderSystem.blendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
         // Find chunk coordinates of the top left corner of the map.
@@ -723,42 +701,33 @@ public class AtlasScreen extends Component {
 
         // Overlay the frame so that edges of the map are smooth:
         RenderSystem.setShaderColor(1, 1, 1, 1);
-        if (!AntiqueAtlas.CONFIG.ui.doFullScreen) {
+        if (!AntiqueAtlas.CONFIG.ui.fullscreen) {
             context.drawTexture(BOOK_FRAME, getGuiX(), getGuiY(), 0, 0, 310, 218, 310, 218);
         }
 
-        float iconScale = getIconScale();
-
-        // Draw global markers:
-        for (Marker marker : worldAtlasData.getAllMarkers()) {
-            renderMarker(context, marker, getIconScale());
-        }
+        worldAtlasData.getAllMarkers().forEach((landmark, texture) -> {
+            renderMarker(context, landmark.pos(), landmark.name(), texture, WorldAtlasData.landmarkIsEditable(landmark));
+        });
 
         RenderSystem.disableScissor();
 
-        if (!AntiqueAtlas.CONFIG.ui.doFullScreen) {
+        if (!AntiqueAtlas.CONFIG.ui.fullscreen) {
             context.drawTexture(BOOK_FRAME_NARROW, getGuiX(), getGuiY(), 0, 0, 310, 218, 310, 218);
         }
 
         renderScaleOverlay(context, deltaMillis);
 
-        // Draw player icon:
         if (!state.is(HIDING_MARKERS)) {
-            renderPlayer(context, iconScale);
+            renderPlayer(context, 1);
         }
 
-        // Draw buttons:
         super.render(context, mouseX, mouseY, par3);
 
-        // Draw the semi-transparent marker attached to the cursor when placing a new marker:
         RenderSystem.enableBlend();
         RenderSystem.blendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
         if (state.is(PLACING_MARKER)) {
             RenderSystem.setShaderColor(1, 1, 1, 0.5f);
-            markerFinalizer.selectedType.calculateMip(iconScale, mapScale);
-            MarkerRenderInfo renderInfo = MarkerRenderInfo.ofType(markerFinalizer.selectedType, iconScale, mapScale);
-            markerFinalizer.selectedType.resetMip();
-            context.drawTexture(renderInfo.tex, mouseX + renderInfo.x, mouseY + renderInfo.y, 0, 0, renderInfo.width, renderInfo.height, renderInfo.width, renderInfo.height);
+            context.drawTexture(markerFinalizer.selectedTexture.id(), mouseX + markerFinalizer.selectedTexture.offsetX(), mouseY + markerFinalizer.selectedTexture.offsetY(), 0, 0, markerFinalizer.selectedTexture.textureWidth(), markerFinalizer.selectedTexture.textureHeight(), markerFinalizer.selectedTexture.textureWidth(), markerFinalizer.selectedTexture.textureHeight());
             RenderSystem.setShaderColor(1, 1, 1, 1);
         }
         RenderSystem.disableBlend();
@@ -840,66 +809,34 @@ public class AtlasScreen extends Component {
 
             scaleAlpha -= deltaScaleAlpha;
 
-            if (scaleAlpha < 0)
-                scaleAlpha = 0;
+            if (scaleAlpha < 0) scaleAlpha = 0;
 
         }
     }
 
-    private void renderMarker(DrawContext context, Marker marker, double scale) {
-        MarkerType type = MarkerTypes.getInstance().get(marker.type());
-        if (type.shouldHide(state.is(HIDING_MARKERS), scaleClipIndex)) {
-            return;
-        }
+    private void renderMarker(DrawContext context, BlockPos pos, Text text, MarkerTexture texture, boolean editable) {
+        int markerX = worldXToScreenX(pos.getX());
+        int markerY = worldZToScreenY(pos.getZ());
+        boolean hovering = texture.withinTexture((int) getMouseX(), (int) getMouseY(), markerX, markerY);
 
-        int markerX = worldXToScreenX(marker.pos().x());
-        int markerY = worldZToScreenY(marker.pos().z());
-        if (!marker.visibleAhead() && worldAtlasData.getTile(marker.pos().toChunkPos()) == null) return;
-        type.calculateMip(scale, mapScale);
-        MarkerRenderInfo info = MarkerRenderInfo.ofType(type, scale, mapScale);
+        float tint = hovering ? 0.8f : 1.0f;
+        float alpha = state.is(PLACING_MARKER) || (state.is(DELETING_MARKER) && !editable) ? 0.5f : 1.0f;
+        RenderSystem.setShaderColor(tint, tint, tint, alpha);
 
-        boolean mouseIsOverMarker = type.shouldHover((getMouseX() - (markerX + info.x)) / info.width, (getMouseY() - (markerY + info.y)) / info.height);
-        type.resetMip();
-
-        if (mouseIsOverMarker) {
-            RenderSystem.setShaderColor(0.5f, 0.5f, 0.5f, 1);
-            hoveredMarker = marker;
-            // API: Marker Hovered Callback?
-        } else {
-            RenderSystem.setShaderColor(1, 1, 1, 1);
-            if (hoveredMarker == marker) {
-                hoveredMarker = null;
-            }
-        }
-
-        if (state.is(PLACING_MARKER)) {
-            RenderSystem.setShaderColor(1, 1, 1, 0.5f);
-        } else if (state.is(DELETING_MARKER) && marker.isGlobal()) {
-            RenderSystem.setShaderColor(1, 1, 1, 0.5f);
-        } else {
-            RenderSystem.setShaderColor(1, 1, 1, 1);
-        }
-
-        if (markerX <= getGuiX() + MAP_BORDER_WIDTH || markerX >= getGuiX() + MAP_WIDTH + MAP_BORDER_WIDTH
-            || markerY <= getGuiY() + MAP_BORDER_HEIGHT || markerY >= getGuiY() + MAP_HEIGHT + MAP_BORDER_HEIGHT
-        ) {
-            if (!type.isTechnical()) {
+        if (editable) {
+            if (markerX <= getGuiX() + MAP_BORDER_WIDTH || markerX >= getGuiX() + MAP_WIDTH + MAP_BORDER_WIDTH || markerY <= getGuiY() + MAP_BORDER_HEIGHT || markerY >= getGuiY() + MAP_HEIGHT + MAP_BORDER_HEIGHT) {
                 RenderSystem.setShaderColor(1, 1, 1, 0.5f);
-                info.scale(0.8);
             }
-        }
-
-        if (!type.isTechnical()) {
             markerX = MathHelper.clamp(markerX, getGuiX() + MAP_BORDER_WIDTH, getGuiX() + MAP_WIDTH + MAP_BORDER_WIDTH);
             markerY = MathHelper.clamp(markerY, getGuiY() + MAP_BORDER_HEIGHT, getGuiY() + MAP_HEIGHT + MAP_BORDER_HEIGHT);
         }
 
-        context.drawTexture(info.tex, markerX + info.x, markerY + info.y, 0, 0, info.width, info.height, info.width, info.height);
+        context.drawTexture(texture.id(), markerX + texture.offsetX(), markerY + texture.offsetY(), 0, 0, texture.textureWidth(), texture.textureHeight(), texture.textureWidth(), texture.textureHeight());
 
         RenderSystem.setShaderColor(1, 1, 1, 1);
 
-        if (isMouseOver && mouseIsOverMarker && !marker.label().getString().isEmpty()) {
-            drawTooltip(Collections.singletonList(marker.label()), textRenderer);
+        if (isMouseOver && hovering && !text.getString().isEmpty()) {
+            drawTooltip(Collections.singletonList(text), textRenderer);
         }
     }
 
@@ -942,24 +879,6 @@ public class AtlasScreen extends Component {
         if (child.equals(markerFinalizer)) {
             removeChild(blinkingIcon);
         }
-    }
-
-    /**
-     * Update all text labels to current localization.
-     */
-    public void updateL18n() {
-        btnMarker.setTitle(Text.translatable("gui.antique_atlas.addMarker"));
-    }
-
-    /**
-     * Returns the scale of markers and player icon at given mapScale.
-     */
-    private float getIconScale() {
-        if (AntiqueAtlas.CONFIG.ui.doScaleMarkers) {
-            if (mapScale < 0.5) return 0.5f;
-            if (mapScale > 1) return 2;
-        }
-        return 1;
     }
 
     public WorldAtlasData getworldAtlasData() {

@@ -13,18 +13,11 @@ public class AntiqueAtlasConfig extends WrappedConfig {
         EUPHEMISMS
     }
 
-    @Comment("Whether to show villages as markers on the map")
-    public final Boolean markVillages = false;
-
-
     public final UISection ui = new UISection();
     public final DebugSection debug = new DebugSection();
     public final PerformanceSection performance = new PerformanceSection();
 
     public static final class UISection implements Section {
-        @Comment("Whether to make markers smaller when zoomed out")
-        public final Boolean doScaleMarkers = true;
-
         @Comment("Default zoom level")
         @Comment("The number corresponds to the size of a block on the map relative to the size of a GUI pixel")
         @Comment("Preferably a power of 2.")
@@ -46,14 +39,14 @@ public class AntiqueAtlasConfig extends WrappedConfig {
 
         @Comment("If false (by default), then mousewheel up is zoom in, mousewheel down is zoom out.")
         @Comment("If true, then the direction is reversed.")
-        public final Boolean doReverseWheelZoom = false;
+        public final Boolean reverseZoom = false;
 
         @Comment("How to depict player death locations.")
         public final GraveStyle graveStyle = GraveStyle.EUPHEMISMS;
 
         @Comment("Whether to display the map in full-screen")
         @Comment("Full screen mode uses a simplistic background texture, and is more performance intensive")
-        public final Boolean doFullScreen = false;
+        public final Boolean fullscreen = false;
     }
 
     public static final class PerformanceSection implements Section {
@@ -64,8 +57,5 @@ public class AntiqueAtlasConfig extends WrappedConfig {
     public static final class DebugSection implements Section {
         @Comment("If true, map render time will be output.")
         public final Boolean debugRender = false;
-
-        @Comment("If true, all resource pack loading information will be logged during start and reload.")
-        public final Boolean debugRespack = false;
     }
 }

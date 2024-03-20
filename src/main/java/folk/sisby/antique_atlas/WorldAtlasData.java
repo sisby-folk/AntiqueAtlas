@@ -1,6 +1,7 @@
 package folk.sisby.antique_atlas;
 
 import com.google.common.collect.Multimap;
+import folk.sisby.antique_atlas.reloader.MarkerTextures;
 import folk.sisby.antique_atlas.reloader.StructureTileProviders;
 import folk.sisby.antique_atlas.util.Rect;
 import folk.sisby.surveyor.SurveyorWorld;
@@ -14,24 +15,23 @@ import folk.sisby.surveyor.structure.WorldStructureSummary;
 import folk.sisby.surveyor.terrain.WorldTerrainSummary;
 import folk.sisby.surveyor.util.MapUtil;
 import it.unimi.dsi.fastutil.Pair;
+import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.world.ClientWorld;
-import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.registry.RegistryKey;
 import net.minecraft.text.MutableText;
 import net.minecraft.text.Text;
 import net.minecraft.util.DyeColor;
 import net.minecraft.util.Formatting;
 import net.minecraft.util.Identifier;
+import net.minecraft.util.Uuids;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.ChunkPos;
 import net.minecraft.world.World;
 import net.minecraft.world.gen.structure.Structure;
 
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Deque;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.Random;
 import java.util.concurrent.ConcurrentHashMap;
@@ -39,15 +39,17 @@ import java.util.concurrent.ConcurrentLinkedDeque;
 
 public class WorldAtlasData {
     private static final int CHUNK_TICK_LIMIT = AntiqueAtlas.CONFIG.performance.chunkTickLimit;
+
     private final Map<ChunkPos, TileTexture> biomeTiles = new HashMap<>();
     private final Map<ChunkPos, TileTexture> structureTiles = new HashMap<>();
+    private final Map<Landmark<?>, MarkerTexture> landmarkMarkers = new ConcurrentHashMap<>();
+    private final Map<Landmark<?>, MarkerTexture> structureMarkers = new ConcurrentHashMap<>();
+
     private final Rect tileScope = new Rect(0, 0, 0, 0);
     private final Deque<ChunkPos> terrainDeque = new ConcurrentLinkedDeque<>();
-    private final Map<LandmarkType<?>, Map<BlockPos, Marker>> landmarkMarkers = new ConcurrentHashMap<>();
-    private final Map<RegistryKey<Structure>, Map<ChunkPos, Marker>> structureMarkers = new ConcurrentHashMap<>();
     boolean isFinished = false;
 
-    // Debug
+    // Debug Display Info
     private final Map<ChunkPos, String> debugBiomePredicates = new HashMap<>();
     private final Map<ChunkPos, String> debugStructurePredicates = new HashMap<>();
     private final Map<ChunkPos, TerrainTileProvider> debugBiomes = new HashMap<>();
@@ -121,9 +123,7 @@ public class WorldAtlasData {
         ((SurveyorWorld) world).surveyor$getWorldSummary().landmarks().keySet().forEach(((landmarkType, pos) -> {
             if (landmarkType == NetherPortalLandmark.TYPE) {
                 NetherPortalLandmark landmark = (NetherPortalLandmark) ((SurveyorWorld) world).surveyor$getWorldSummary().landmarks().get(landmarkType, pos);
-                landmarkMarkers.computeIfAbsent(landmarkType, t -> new HashMap<>()).put(landmark.pos(), new Marker(
-                    landmarkType, AntiqueAtlas.id("nether_portal"), landmark.name(), landmark.pos(), true, landmark.owner()
-                ));
+                landmarkMarkers.put(landmark, MarkerTextures.getInstance().get(AntiqueAtlas.id("custom/nether_portal")));
             }
             if (landmarkType == PlayerDeathLandmark.TYPE) {
                 PlayerDeathLandmark landmark = (PlayerDeathLandmark) ((SurveyorWorld) world).surveyor$getWorldSummary().landmarks().get(landmarkType, pos);
@@ -131,25 +131,22 @@ public class WorldAtlasData {
                 AntiqueAtlasConfig.GraveStyle style = AntiqueAtlas.CONFIG.ui.graveStyle;
                 if (landmark.name() == null && style == AntiqueAtlasConfig.GraveStyle.CAUSE) style = AntiqueAtlasConfig.GraveStyle.DIED;
                 MutableText timeText = Text.literal(String.valueOf(1 + (landmark.created() / 24000))).formatted(Formatting.WHITE);
+                String key = "gui.antique_atlas.marker.death.%s".formatted(style.toString().toLowerCase());
                 MutableText text = switch (style) {
-                    case CAUSE -> Text.translatable("gui.antique_atlas.marker.death.%s".formatted(style.toString().toLowerCase()), landmark.name().copy().formatted(Formatting.GRAY).formatted(Formatting.RED), timeText).formatted(Formatting.GRAY);
-                    case GRAVE, ITEMS, DIED -> Text.translatable("gui.antique_atlas.marker.death.%s".formatted(style.toString().toLowerCase()), Text.translatable("gui.antique_atlas.marker.death.%s.verb".formatted(style.toString().toLowerCase())).formatted(Formatting.RED), timeText).formatted(Formatting.GRAY);
-                    case EUPHEMISMS -> Text.translatable("gui.antique_atlas.marker.death.%s".formatted(style.toString().toLowerCase()), Text.translatable("gui.antique_atlas.marker.death.%s.verb.%s".formatted(style.toString().toLowerCase(), new Random(landmark.seed()).nextInt(11))).formatted(Formatting.RED), timeText).formatted(Formatting.GRAY);
+                    case CAUSE -> Text.translatable(key, landmark.name().copy().formatted(Formatting.GRAY).formatted(Formatting.RED), timeText).formatted(Formatting.GRAY);
+                    case GRAVE, ITEMS, DIED -> Text.translatable(key, Text.translatable("gui.antique_atlas.marker.death.%s.verb".formatted(style.toString().toLowerCase())).formatted(Formatting.RED), timeText).formatted(Formatting.GRAY);
+                    case EUPHEMISMS -> Text.translatable(key, Text.translatable("gui.antique_atlas.marker.death.%s.verb.%s".formatted(style.toString().toLowerCase(), new Random(landmark.seed()).nextInt(11))).formatted(Formatting.RED), timeText).formatted(Formatting.GRAY);
                 };
                 Identifier icon = switch (style) {
-                    case CAUSE, GRAVE, DIED, EUPHEMISMS -> AntiqueAtlas.id("tomb");
-                    case ITEMS -> AntiqueAtlas.id("bundle");
+                    case CAUSE, GRAVE, DIED, EUPHEMISMS -> AntiqueAtlas.id("landmark/tomb");
+                    case ITEMS -> AntiqueAtlas.id("landmark/bundle");
                 };
 
-                landmarkMarkers.computeIfAbsent(landmarkType, t -> new HashMap<>()).put(landmark.pos(), new Marker(
-                    landmarkType, icon, text, landmark.pos(), true, landmark.owner()
-                ));
+                landmarkMarkers.put(new PlayerDeathLandmark(landmark.pos(), landmark.owner(), text, landmark.created(), landmark.seed()), MarkerTextures.getInstance().get(icon));
             }
             if (landmarkType == SimplePointLandmark.TYPE) {
                 SimplePointLandmark landmark = (SimplePointLandmark) ((SurveyorWorld) world).surveyor$getWorldSummary().landmarks().get(landmarkType, pos);
-                landmarkMarkers.computeIfAbsent(landmarkType, t -> new HashMap<>()).put(landmark.pos(), new Marker(
-                    landmarkType, landmark.texture(), landmark.name(), landmark.pos(), true, landmark.owner()
-                ));
+                landmarkMarkers.put(landmark, MarkerTextures.getInstance().getTextures().getOrDefault(landmark.texture(), MarkerTexture.DEFAULT));
             }
         }));
     }
@@ -162,26 +159,35 @@ public class WorldAtlasData {
         refreshLandmarkMarkers(world);
     }
 
-    public void addMarker(PlayerEntity player, World world, Marker marker) {
-        ((SurveyorWorld) world).surveyor$getWorldSummary().landmarks().put(world, new SimplePointLandmark(
-            new BlockPos(marker.pos().x(), 0, marker.pos().z()),
-            player.getUuid(),
-            DyeColor.BLUE,
-            marker.label(),
-            marker.type()
-        ));
+    public static boolean landmarkIsEditable(Landmark<?> landmark) {
+        return !(MinecraftClient.getInstance().isIntegratedServerRunning() ? landmark.owner() == null : !Uuids.getUuidFromProfile(MinecraftClient.getInstance().getSession().getProfile()).equals(landmark.owner()));
     }
 
-    public boolean deleteMarker(World world, Marker marker) {
-        if (marker.isGlobal()) return false;
-        ((SurveyorWorld) world).surveyor$getWorldSummary().landmarks().remove(world, marker.landmarkType(), marker.blockPos());
+    public boolean deleteLandmark(World world, Landmark<?> landmark) {
+        ((SurveyorWorld) world).surveyor$getWorldSummary().landmarks().remove(world, landmark.type(), landmark.pos());
         return true;
     }
 
-    public Collection<Marker> getAllMarkers() {
-        List<Marker> outList = new ArrayList<>();
-        landmarkMarkers.values().forEach(m -> outList.addAll(m.values()));
-        structureMarkers.values().forEach(m -> outList.addAll(m.values()));
-        return outList;
+    public Map<Landmark<?>, MarkerTexture> getEditableLandmarks() {
+        Map<Landmark<?>, MarkerTexture> map = new HashMap<>();
+        landmarkMarkers.forEach((landmark, texture) -> { if (landmarkIsEditable(landmark)) map.put(landmark, texture); });
+        return map;
+    }
+
+    public Map<Landmark<?>, MarkerTexture> getAllMarkers() {
+        Map<Landmark<?>, MarkerTexture> map = new HashMap<>();
+        map.putAll(landmarkMarkers);
+        map.putAll(structureMarkers);
+        return map;
+    }
+
+    public void placeCustomMarker(World world, MarkerTexture selectedTexture, MutableText label, BlockPos blockPos) {
+        ((SurveyorWorld) world).surveyor$getWorldSummary().landmarks().put(world, new SimplePointLandmark(
+            blockPos,
+            Uuids.getUuidFromProfile(MinecraftClient.getInstance().getSession().getProfile()),
+            DyeColor.BLUE,
+            label,
+            selectedTexture.keyId()
+        ));
     }
 }

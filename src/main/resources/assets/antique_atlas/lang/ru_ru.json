@@ -1,6 +1,4 @@
 {
-  "item.antique_atlas.antique_atlas": "Старинный атлас #%d",
-  "item.antique_atlas.empty_antique_atlas": "Пустой старинный атлас",
   "gui.antique_atlas.scalebar": "Масштаб в блоках",
   "gui.antique_atlas.addMarker": "Добавить метку",
   "gui.antique_atlas.delMarker": "Удалить метку",
@@ -9,12 +7,9 @@
   "gui.antique_atlas.showMarkers": "Показать метки",
   "gui.antique_atlas.marker.label": "Метка:",
   "gui.antique_atlas.marker.type": "Тип:",
-  "gui.antique_atlas.marker.village": "Деревня",
-  "gui.antique_atlas.marker.netherPortal": "Портал в Нижний Мир",
-  "gui.antique_atlas.marker.tomb": "Здесь покоится %s",
-  "gui.antique_atlas.marker.treasure": "Зарытый клад",
-  "gui.antique_atlas.marker.monument": "Морской монумент",
-  "gui.antique_atlas.marker.mansion": "Лесной особняк",
+  "gui.antique_atlas.marker.structure.tag.village": "Деревня",
+  "gui.antique_atlas.marker.structure.type.ocean_monument": "Морской монумент",
+  "gui.antique_atlas.marker.structure.type.woodland_mansion": "Лесной особняк",
   "key.antique_atlas.open": "Открыть атлас",
   "key.antique_atlas.category": "Antique Atlas"
 }

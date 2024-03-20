@@ -28,7 +28,6 @@ public class AntiqueAtlasKeybindings {
                     screen.init();
                     screen.setMapScale(AntiqueAtlas.CONFIG.ui.defaultScale);
                     screen.prepareToOpen();
-                    screen.updateL18n();
                     client.setScreen(screen);
                 }
             }

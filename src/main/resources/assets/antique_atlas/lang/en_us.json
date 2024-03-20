@@ -1,6 +1,6 @@
 {
-  "item.antique_atlas.antique_atlas": "Antique Atlas #%d",
-  "item.antique_atlas.empty_antique_atlas": "Empty Antique Atlas",
+  "key.antique_atlas.category": "Antique Atlas",
+  "key.antique_atlas.open": "Open Atlas",
   "gui.antique_atlas.scalebar": "Scale in blocks",
   "gui.antique_atlas.addMarker": "Add marker",
   "gui.antique_atlas.delMarker": "Delete marker",
@@ -9,11 +9,10 @@
   "gui.antique_atlas.showMarkers": "Show markers",
   "gui.antique_atlas.marker.label": "Label:",
   "gui.antique_atlas.marker.type": "Type:",
-  "gui.antique_atlas.marker.village": "Village",
-  "gui.antique_atlas.marker.netherPortal": "Nether Portal",
-  "gui.antique_atlas.marker.treasure": "Buried treasure",
-  "gui.antique_atlas.marker.monument": "Ocean Monument",
-  "gui.antique_atlas.marker.mansion": "Woodland Mansion",
+  "gui.antique_atlas.marker.structure.tag.village": "Village",
+  "gui.antique_atlas.marker.structure.type.end_city": "",
+  "gui.antique_atlas.marker.structure.type.ocean_monument": "Ocean Monument",
+  "gui.antique_atlas.marker.structure.type.woodland_mansion": "Woodland Mansion",
   "gui.antique_atlas.marker.death.cause": "%s on Day %s",
   "gui.antique_atlas.marker.death.grave": "%s (Day %s)",
   "gui.antique_atlas.marker.death.grave.verb": "Grave",
@@ -34,7 +33,5 @@
   "gui.antique_atlas.marker.death.euphemisms.verb.7": "Flattened",
   "gui.antique_atlas.marker.death.euphemisms.verb.8": "Wrecked",
   "gui.antique_atlas.marker.death.euphemisms.verb.9": "Whipped",
-  "gui.antique_atlas.marker.death.euphemisms.verb.10": "Done In",
-  "key.antique_atlas.open": "Open Atlas",
-  "key.antique_atlas.category": "Antique Atlas"
+  "gui.antique_atlas.marker.death.euphemisms.verb.10": "Done In"
 }

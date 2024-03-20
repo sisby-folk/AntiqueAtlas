@@ -1,6 +1,4 @@
 {
-  "item.antique_atlas.antique_atlas": "Antiker Atlas #%d",
-  "item.antique_atlas.empty_antique_atlas": "Unbeschriebener Antiker Atlas",
   "gui.antique_atlas.scalebar": "Maßstab in Blöcken",
   "gui.antique_atlas.addMarker": "Markierung hinzufügen",
   "gui.antique_atlas.delMarker": "Markierung löschen",
@@ -9,9 +7,7 @@
   "gui.antique_atlas.showMarkers": "Markierungen zeigen",
   "gui.antique_atlas.marker.label": "Bezeichnung:",
   "gui.antique_atlas.marker.type": "Typ:",
-  "gui.antique_atlas.marker.village": "Dorf",
-  "gui.antique_atlas.marker.netherPortal": "Nether-Portal",
-  "gui.antique_atlas.marker.tomb": "Hier ruht %s",
+  "gui.antique_atlas.marker.structure.tag.village": "Dorf",
   "key.antique_atlas.open": "Atlas öffnen",
   "key.antique_atlas.category": "Antique Atlas"
 }

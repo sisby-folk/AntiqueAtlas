@@ -2,10 +2,9 @@ package folk.sisby.antique_atlas.gui;
 
 import com.mojang.blaze3d.systems.RenderSystem;
 import folk.sisby.antique_atlas.AntiqueAtlas;
+import folk.sisby.antique_atlas.MarkerTexture;
 import folk.sisby.antique_atlas.gui.core.ButtonComponent;
-import folk.sisby.antique_atlas.reloader.MarkerTypes;
-import folk.sisby.antique_atlas.Marker;
-import folk.sisby.antique_atlas.MarkerType;
+import folk.sisby.surveyor.landmark.Landmark;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.DrawContext;
 import net.minecraft.text.Text;
@@ -25,14 +24,13 @@ public class MarkerBookmarkComponent extends ButtonComponent {
 
     private final int colorIndex;
     private Identifier iconTexture;
-    private final Marker marker;
+    private final Text name;
 
-    MarkerBookmarkComponent(Marker marker) {
+    MarkerBookmarkComponent(Landmark<?> landmark, MarkerTexture texture) {
         this.colorIndex = 3;
-        this.marker = marker;
+        this.name = landmark.name();
 
-        MarkerType type = MarkerTypes.getInstance().get(marker.type());
-        setIconTexture(type.getTexture());
+        setIconTexture(texture.id());
 
         setSize(WIDTH, HEIGHT);
     }
@@ -42,7 +40,7 @@ public class MarkerBookmarkComponent extends ButtonComponent {
     }
 
     public Text getTitle() {
-        return marker.label();
+        return name;
     }
 
 
