@@ -836,7 +836,12 @@ public class AtlasScreen extends Component {
 
         float tint = hovering ? 0.8f : 1.0f;
         float alpha = state.is(PLACING_MARKER) || (state.is(DELETING_MARKER) && !editable) ? 0.5f : 1.0f;
-        RenderSystem.setShaderColor(tint, tint, tint, alpha);
+        if (texture == MarkerTexture.DEFAULT && landmark.color() != null) {
+            float[] rgb = landmark.color().getColorComponents();
+            RenderSystem.setShaderColor(tint * rgb[0], tint * rgb[1], tint * rgb[2], alpha);
+        } else {
+            RenderSystem.setShaderColor(tint, tint, tint, alpha);
+        }
 
         if (editable) {
             if (markerX <= getGuiX() + MAP_BORDER_WIDTH || markerX >= getGuiX() + MAP_WIDTH + MAP_BORDER_WIDTH || markerY <= getGuiY() + MAP_BORDER_HEIGHT || markerY >= getGuiY() + MAP_HEIGHT + MAP_BORDER_HEIGHT) {
