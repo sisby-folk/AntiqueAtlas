@@ -66,7 +66,7 @@ public class WorldAtlasData {
         AntiqueAtlas.LOGGER.info("[Antique Atlas] Beginning to load terrain for {} - {} chunks available.", world.getRegistryKey().getValue(), terrainDeque.size());
     }
 
-    public void onTerrainUpdated(World world, WorldTerrainSummary ws, Collection<ChunkPos> chunks) {
+    public void onTerrainUpdated(World ignored, WorldTerrainSummary ignored2, Collection<ChunkPos> chunks) {
         for (ChunkPos pos : chunks) {
             if (!terrainDeque.contains(pos)) terrainDeque.add(pos);
         }
@@ -153,11 +153,11 @@ public class WorldAtlasData {
         }));
     }
 
-    public void onLandmarksAdded(World world, WorldLandmarks ws, Map<LandmarkType<?>, Map<BlockPos, Landmark<?>>> landmark) {
+    public void onLandmarksAdded(World world, WorldLandmarks ignored, Map<LandmarkType<?>, Map<BlockPos, Landmark<?>>> ignored2) {
         refreshLandmarkMarkers(world);
     }
 
-    public void onLandmarksRemoved(ClientWorld world, WorldLandmarks landmarks, Multimap<LandmarkType<?>, BlockPos> landmark) {
+    public void onLandmarksRemoved(ClientWorld world, WorldLandmarks ignored, Multimap<LandmarkType<?>, BlockPos> ignored2) {
         refreshLandmarkMarkers(world);
     }
 
