@@ -56,10 +56,6 @@ java {
     withSourcesJar()
 }
 
-loom {
-    accessWidenerPath = file("src/main/resources/antique-atlas.accesswidener")
-}
-
 jar {
     from("LICENSE.txt") {
         rename { "${it}_${archivesBaseName}" }

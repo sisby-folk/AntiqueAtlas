@@ -36,9 +36,5 @@
     "fabricloader": ">=${fl}",
     "fabric-api": ">=${fapi}",
     "surveyor": ">=${surveyor}"
-  },
-  "mixins": [
-    "antique-atlas.mixins.json"
-  ],
-  "accessWidener": "antique-atlas.accesswidener"
+  }
 }

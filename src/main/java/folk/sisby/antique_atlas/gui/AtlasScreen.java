@@ -2,7 +2,6 @@ package folk.sisby.antique_atlas.gui;
 
 import com.mojang.blaze3d.systems.RenderSystem;
 import folk.sisby.antique_atlas.AntiqueAtlas;
-import folk.sisby.antique_atlas.AntiqueAtlasWorld;
 import folk.sisby.antique_atlas.AtlasStructureLandmark;
 import folk.sisby.antique_atlas.MarkerTexture;
 import folk.sisby.antique_atlas.TileTexture;
@@ -567,7 +566,7 @@ public class AtlasScreen extends Component {
 
     private void updateAtlasData() {
         if (MinecraftClient.getInstance().world != null) {
-            worldAtlasData = ((AntiqueAtlasWorld) MinecraftClient.getInstance().world).antiqueAtlas$getData();
+            worldAtlasData = WorldAtlasData.get(MinecraftClient.getInstance().world);
         }
     }
 

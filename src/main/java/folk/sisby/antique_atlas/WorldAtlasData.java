@@ -40,6 +40,10 @@ import java.util.concurrent.ConcurrentLinkedDeque;
 public class WorldAtlasData {
     public static final Map<RegistryKey<World>, WorldAtlasData> WORLDS = new HashMap<>();
 
+    public static WorldAtlasData get(World world) {
+        return WorldAtlasData.WORLDS.computeIfAbsent(world.getRegistryKey(), k -> new WorldAtlasData(world));
+    }
+
     private final Map<ChunkPos, TileTexture> biomeTiles = new HashMap<>();
     private final Map<ChunkPos, TileTexture> structureTiles = new HashMap<>();
     private final Map<Landmark<?>, MarkerTexture> landmarkMarkers = new ConcurrentHashMap<>();
