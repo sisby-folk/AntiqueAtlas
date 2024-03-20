@@ -16,6 +16,7 @@ import it.unimi.dsi.fastutil.Pair;
 import net.fabricmc.fabric.api.resource.IdentifiableResourceReloadListener;
 import net.minecraft.registry.Registries;
 import net.minecraft.registry.RegistryKey;
+import net.minecraft.registry.RegistryKeys;
 import net.minecraft.registry.tag.TagKey;
 import net.minecraft.resource.JsonDataLoader;
 import net.minecraft.resource.ResourceManager;
@@ -100,14 +101,17 @@ public class StructureTileProviders extends JsonDataLoader implements Identifiab
     public void resolve(Map<ChunkPos, TileTexture> outTiles, Map<ChunkPos, StructureTileProvider> debugStructures, Map<ChunkPos, String> debugPredicates, Map<Landmark<?>, MarkerTexture> outMarkers, World world, RegistryKey<Structure> key, ChunkPos pos, StructureSummary summary, RegistryKey<StructureType<?>> type, Collection<TagKey<Structure>> tags) {
         if (startMarkers.containsKey(key.getValue())) {
             MarkerTexture texture = startMarkers.get(key.getValue());
-            outMarkers.put(new SimplePointLandmark(pos.getCenterAtY(0), null, DyeColor.BLACK, Text.translatable("gui.antique_atlas.marker.structure.start.%s".formatted(key.getValue().toString().replace(":", "."))), texture.keyId()), texture);
+            outMarkers.put(new SimplePointLandmark(pos.getCenterAtY(0), null, DyeColor.BLACK, Text.translatable("structure.%s".formatted(key.getValue().toString().replace(":", "."))), texture.keyId()), texture);
+        } else if (typeMarkers.containsKey(type.getValue())) {
+            MarkerTexture texture = typeMarkers.get(type.getValue());
+            outMarkers.put(new SimplePointLandmark(pos.getCenterAtY(0), null, DyeColor.BLACK, Text.translatable("structure_type.%s".formatted(key.getValue().toString().replace(":", "."))), texture.keyId()), texture);
         } else {
-            tagMarkers.entrySet().stream().filter(entry -> tags.contains(entry.getKey())).findFirst().ifPresent(entry -> outMarkers.put(
+            tagMarkers.entrySet().stream().filter(entry -> tags.contains(TagKey.of(RegistryKeys.STRUCTURE, entry.getKey()))).findFirst().ifPresent(entry -> outMarkers.put(
                 new SimplePointLandmark(
                     pos.getCenterAtY(0),
                     null,
                     DyeColor.BLACK,
-                    Text.translatable("gui.antique_atlas.marker.structure.tag".formatted(entry.getKey().toString().replace(":", "."))),
+                    Text.translatable("tag.structure.%s".formatted(entry.getKey().toString().replace(":", "."))),
                     entry.getValue().keyId()
                 ), entry.getValue())
             );

@@ -35,6 +35,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.ChunkPos;
 import net.minecraft.util.math.ColumnPos;
 import net.minecraft.util.math.MathHelper;
+import org.joml.Vector2i;
 import org.lwjgl.glfw.GLFW;
 import org.lwjgl.opengl.GL11;
 
@@ -215,8 +216,9 @@ public class AtlasScreen extends Component {
      */
     private int tile2ChunkScale;
 
-
     // Markers =================================================================
+
+    private Landmark<?> hoveredLandmark = null;
 
     private final MarkerModalComponent markerFinalizer = new MarkerModalComponent();
     /**
@@ -236,7 +238,6 @@ public class AtlasScreen extends Component {
 
     private long lastUpdateMillis = System.currentTimeMillis();
     private int scaleAlpha = 255;
-    private int scaleClipIndex = 0;
     private final int zoomLevelOne = 8;
     private int zoomLevel = zoomLevelOne;
     private final String[] zoomNames = new String[]{"256", "128", "64", "32", "16", "8", "4", "2", "1", "1/2", "1/4", "1/8", "1/16", "1/32", "1/64", "1/128", "1/256"};
@@ -398,14 +399,6 @@ public class AtlasScreen extends Component {
         int mapX = (width - MAP_WIDTH) / 2;
         int mapY = (height - MAP_HEIGHT) / 2;
         boolean isMouseOverMap = mouseX >= mapX && mouseX <= mapX + MAP_WIDTH && mouseY >= mapY && mouseY <= mapY + MAP_HEIGHT;
-        Landmark<?> hoveredLandmark = null;
-        for (Map.Entry<Landmark<?>, MarkerTexture> entry : worldAtlasData.getEditableLandmarks().entrySet()) {
-            int markerX = worldXToScreenX(entry.getKey().pos().getX());
-            int markerY = worldZToScreenY(entry.getKey().pos().getZ());
-            if (entry.getValue().withinTexture((int) getMouseX(), (int) getMouseY(), markerX, markerY)) {
-                hoveredLandmark = entry.getKey();
-            }
-        }
         if (!state.is(NORMAL) && !state.is(HIDING_MARKERS)) {
             if (state.is(PLACING_MARKER) && isMouseOverMap && mouseState == 0 /* left click */) {
                 markerFinalizer.setMarkerData(player.getEntityWorld(), screenXToWorldX((int) mouseX), screenYToWorldZ((int) mouseY));
@@ -637,7 +630,7 @@ public class AtlasScreen extends Component {
         scaleBar.setMapScale(mapScale * 2);
         mapOffsetX = (int) ((mapOffsetX + addOffsetX) * (mapScale / oldScale));
         mapOffsetY = (int) ((mapOffsetY + addOffsetY) * (mapScale / oldScale));
-        scaleClipIndex = MathHelper.floorLog2((int) (mapScale * 8192)) + 1 - 13;
+        int scaleClipIndex = MathHelper.floorLog2((int) (mapScale * 8192)) + 1 - 13;
         zoomLevel = -scaleClipIndex + zoomLevelOne;
         scaleAlpha = 255;
 
@@ -705,9 +698,25 @@ public class AtlasScreen extends Component {
             context.drawTexture(BOOK_FRAME, getGuiX(), getGuiY(), 0, 0, 310, 218, 310, 218);
         }
 
-        worldAtlasData.getAllMarkers().forEach((landmark, texture) -> {
-            renderMarker(context, landmark.pos(), landmark.name(), texture, WorldAtlasData.landmarkIsEditable(landmark));
-        });
+        if (!state.is(HIDING_MARKERS)) {
+            double bestDistance = Double.MAX_VALUE;
+            hoveredLandmark = null;
+            for (Map.Entry<Landmark<?>, MarkerTexture> entry : worldAtlasData.getAllMarkers().entrySet()) {
+                Landmark<?> landmark = entry.getKey();
+                MarkerTexture texture = entry.getValue();
+                int markerX = worldXToScreenX(landmark.pos().getX());
+                int markerY = worldZToScreenY(landmark.pos().getZ());
+
+                double squaredDistance = Vector2i.distanceSquared(markerX - texture.offsetX() + texture.textureWidth() / 2, markerY - texture.offsetY() + texture.textureHeight() / 2, mouseX, mouseY);
+                if (squaredDistance < bestDistance && squaredDistance < texture.textureWidth() * texture.textureHeight()) {
+                    bestDistance = squaredDistance;
+                    hoveredLandmark = landmark;
+                }
+            }
+            worldAtlasData.getAllMarkers().forEach((landmark, texture) -> {
+                renderMarker(context, landmark, texture, WorldAtlasData.landmarkIsEditable(landmark), hoveredLandmark == landmark);
+            });
+        }
 
         RenderSystem.disableScissor();
 
@@ -814,10 +823,9 @@ public class AtlasScreen extends Component {
         }
     }
 
-    private void renderMarker(DrawContext context, BlockPos pos, Text text, MarkerTexture texture, boolean editable) {
-        int markerX = worldXToScreenX(pos.getX());
-        int markerY = worldZToScreenY(pos.getZ());
-        boolean hovering = texture.withinTexture((int) getMouseX(), (int) getMouseY(), markerX, markerY);
+    private void renderMarker(DrawContext context, Landmark<?> landmark, MarkerTexture texture, boolean editable, boolean hovering) {
+        int markerX = worldXToScreenX(landmark.pos().getX());
+        int markerY = worldZToScreenY(landmark.pos().getZ());
 
         float tint = hovering ? 0.8f : 1.0f;
         float alpha = state.is(PLACING_MARKER) || (state.is(DELETING_MARKER) && !editable) ? 0.5f : 1.0f;
@@ -835,8 +843,8 @@ public class AtlasScreen extends Component {
 
         RenderSystem.setShaderColor(1, 1, 1, 1);
 
-        if (isMouseOver && hovering && !text.getString().isEmpty()) {
-            drawTooltip(Collections.singletonList(text), textRenderer);
+        if (isMouseOver && hovering && landmark.name() != null && !landmark.name().getString().isEmpty()) {
+            drawTooltip(Collections.singletonList(landmark.name()), textRenderer);
         }
     }
 

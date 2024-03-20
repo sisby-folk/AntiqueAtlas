@@ -9,10 +9,12 @@
   "gui.antique_atlas.showMarkers": "Show markers",
   "gui.antique_atlas.marker.label": "Label:",
   "gui.antique_atlas.marker.type": "Type:",
-  "gui.antique_atlas.marker.structure.tag.village": "Village",
-  "gui.antique_atlas.marker.structure.type.end_city": "",
-  "gui.antique_atlas.marker.structure.type.ocean_monument": "Ocean Monument",
-  "gui.antique_atlas.marker.structure.type.woodland_mansion": "Woodland Mansion",
+
+  "tag.structure.minecraft.village": "Village",
+  "structure_type.minecraft.end_city": "End City",
+  "structure_type.minecraft.monument": "Ocean Monument",
+  "structure_type.minecraft.mansion": "Woodland Mansion",
+
   "gui.antique_atlas.marker.death.cause": "%s on Day %s",
   "gui.antique_atlas.marker.death.grave": "%s (Day %s)",
   "gui.antique_atlas.marker.death.grave.verb": "Grave",
