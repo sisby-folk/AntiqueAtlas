@@ -10,10 +10,11 @@
   "gui.antique_atlas.marker.label": "Label:",
   "gui.antique_atlas.marker.type": "Type:",
 
-  "tag.structure.minecraft.village": "Village",
-  "structure_type.minecraft.end_city": "End City",
-  "structure_type.minecraft.monument": "Ocean Monument",
-  "structure_type.minecraft.mansion": "Woodland Mansion",
+  "structure.start.minecraft.bastion_remnant": "Bastion Remnant",
+  "structure.tag.minecraft.village": "Village",
+  "structure.type.minecraft.end_city": "End City",
+  "structure.type.minecraft.ocean_monument": "Ocean Monument",
+  "structure.type.minecraft.woodland_mansion": "Woodland Mansion",
 
   "gui.antique_atlas.marker.death.cause": "%s on Day %s",
   "gui.antique_atlas.marker.death.grave": "%s (Day %s)",

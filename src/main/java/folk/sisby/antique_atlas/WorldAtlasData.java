@@ -124,8 +124,7 @@ public class WorldAtlasData {
             if (landmarkType == NetherPortalLandmark.TYPE) {
                 NetherPortalLandmark landmark = (NetherPortalLandmark) ((SurveyorWorld) world).surveyor$getWorldSummary().landmarks().get(landmarkType, pos);
                 landmarkMarkers.put(landmark, MarkerTextures.getInstance().get(AntiqueAtlas.id("custom/nether_portal")));
-            }
-            if (landmarkType == PlayerDeathLandmark.TYPE) {
+            } else if (landmarkType == PlayerDeathLandmark.TYPE) {
                 PlayerDeathLandmark landmark = (PlayerDeathLandmark) ((SurveyorWorld) world).surveyor$getWorldSummary().landmarks().get(landmarkType, pos);
 
                 AntiqueAtlasConfig.GraveStyle style = AntiqueAtlas.CONFIG.ui.graveStyle;
@@ -143,9 +142,8 @@ public class WorldAtlasData {
                 };
 
                 landmarkMarkers.put(new PlayerDeathLandmark(landmark.pos(), landmark.owner(), text, landmark.created(), landmark.seed()), MarkerTextures.getInstance().get(icon));
-            }
-            if (landmarkType == SimplePointLandmark.TYPE) {
-                SimplePointLandmark landmark = (SimplePointLandmark) ((SurveyorWorld) world).surveyor$getWorldSummary().landmarks().get(landmarkType, pos);
+            } else {
+                Landmark<?> landmark = ((SurveyorWorld) world).surveyor$getWorldSummary().landmarks().get(landmarkType, pos);
                 landmarkMarkers.put(landmark, MarkerTextures.getInstance().getTextures().getOrDefault(landmark.texture(), MarkerTexture.DEFAULT));
             }
         }));
@@ -179,6 +177,10 @@ public class WorldAtlasData {
         map.putAll(landmarkMarkers);
         map.putAll(structureMarkers);
         return map;
+    }
+
+    public MarkerTexture getMarkerTexture(Landmark<?> landmark) {
+        return landmarkMarkers.getOrDefault(landmark, structureMarkers.get(landmark));
     }
 
     public void placeCustomMarker(World world, MarkerTexture selectedTexture, MutableText label, BlockPos blockPos) {

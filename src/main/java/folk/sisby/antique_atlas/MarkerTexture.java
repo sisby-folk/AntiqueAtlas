@@ -1,5 +1,6 @@
 package folk.sisby.antique_atlas;
 
+import net.minecraft.client.gui.DrawContext;
 import net.minecraft.util.Identifier;
 
 public record MarkerTexture(Identifier id, int offsetX, int offsetY, int textureWidth, int textureHeight, int mipLevels) {
@@ -13,17 +14,23 @@ public record MarkerTexture(Identifier id, int offsetX, int offsetY, int texture
 
     public static final MarkerTexture DEFAULT = centered(AntiqueAtlas.id("unknown"), 32, 32, 0);
 
-    public boolean withinTexture(int mouseX, int mouseY, int markerX, int markerY) {
-        int x = mouseX - markerX;
-        int z = mouseY - markerY;
-        return x > 0 && x < textureWidth && z > 0 && z < textureHeight;
-    }
-
     public Identifier keyId() {
         return new Identifier(id.getNamespace(), id.getPath().substring("textures/gui/markers/".length(), id.getPath().length() - 4));
     }
 
     public String displayId() {
         return id.getNamespace().equals(AntiqueAtlas.ID) ? keyId().getPath() : keyId().toString();
+    }
+
+    public int fullTextureWidth() {
+        int width = textureWidth;
+        for (int i = 0; i < mipLevels; i++) {
+            width += textureWidth >> (i + 1);
+        }
+        return width;
+    }
+
+    public void draw(DrawContext context, int markerX, int markerY) {
+        context.drawTexture(id(), markerX + offsetX(), markerY + offsetY(), 0, 0, textureWidth(), textureHeight(), fullTextureWidth(), textureHeight());
     }
 }

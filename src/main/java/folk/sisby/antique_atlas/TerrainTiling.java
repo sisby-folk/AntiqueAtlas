@@ -95,7 +95,7 @@ public class TerrainTiling {
     public static Pair<TerrainTileProvider, TileElevation> terrainToTile(World world, ChunkPos pos) {
         Registry<Biome> biomeRegistry = world.getRegistryManager().get(RegistryKeys.BIOME);
         int defaultTile = CUSTOM_TILES.indexOf(world.getDimension().hasCeiling() ? FeatureTiles.BEDROCK_ROOF : (world.getRegistryKey() == World.END ? FeatureTiles.END_VOID : FeatureTiles.EMPTY));
-        boolean checkRavines = world.getDimension().hasSkyLight();
+        boolean checkRavines = world.getRegistryKey() == World.OVERWORLD;
 
         int worldHeight = world.getTopY();
         ChunkSummary chunk = ((SurveyorWorld) world).surveyor$getWorldSummary().terrain().get(pos);

@@ -3,6 +3,7 @@ package folk.sisby.antique_atlas.gui;
 import com.mojang.blaze3d.systems.RenderSystem;
 import folk.sisby.antique_atlas.AntiqueAtlas;
 import folk.sisby.antique_atlas.AntiqueAtlasWorld;
+import folk.sisby.antique_atlas.AtlasStructureLandmark;
 import folk.sisby.antique_atlas.MarkerTexture;
 import folk.sisby.antique_atlas.TileTexture;
 import folk.sisby.antique_atlas.WorldAtlasData;
@@ -698,9 +699,9 @@ public class AtlasScreen extends Component {
             context.drawTexture(BOOK_FRAME, getGuiX(), getGuiY(), 0, 0, 310, 218, 310, 218);
         }
 
+        hoveredLandmark = null;
         if (!state.is(HIDING_MARKERS)) {
             double bestDistance = Double.MAX_VALUE;
-            hoveredLandmark = null;
             for (Map.Entry<Landmark<?>, MarkerTexture> entry : worldAtlasData.getAllMarkers().entrySet()) {
                 Landmark<?> landmark = entry.getKey();
                 MarkerTexture texture = entry.getValue();
@@ -745,14 +746,21 @@ public class AtlasScreen extends Component {
             int x = screenXToWorldX((int) getMouseX());
             int z = screenYToWorldZ((int) getMouseY());
             ChunkPos pos = new ChunkPos(new BlockPos(x, 0, z));
-            TileTexture texture = worldAtlasData.getTile(pos);
-            Identifier providerId = worldAtlasData.getProvider(pos);
-            String predicate = worldAtlasData.getTilePredicate(pos);
-            if (texture != null) {
-                context.drawText(textRenderer, Text.literal("%d,%d (%d,%d)".formatted(pos.x, pos.z, x, z)), getGuiX(), getGuiY() - 12, 0xFFFFFFFF, true);
-                if (predicate != null) context.drawText(textRenderer, Text.literal(predicate), getGuiX() + WIDTH - textRenderer.getWidth(Text.literal(predicate)), getGuiY() - 12, 0xFFFFFFFF, true);
-                context.drawText(textRenderer, Text.literal(providerId.toString()), getGuiX(), getGuiY() + HEIGHT, 0xFFFFFFFF, true);
-                context.drawText(textRenderer, Text.literal(texture.displayId()), getGuiX() + WIDTH - textRenderer.getWidth(Text.literal(texture.displayId())), getGuiY() + HEIGHT, 0xFFFFFFFF, true);
+            context.drawText(textRenderer, Text.literal("%d,%d (%d,%d)".formatted(pos.x, pos.z, x, z)), getGuiX(), getGuiY() - 12, 0xFFFFFFFF, true);
+            if (hoveredLandmark != null) {
+                MarkerTexture texture = worldAtlasData.getMarkerTexture(hoveredLandmark);
+                context.drawText(textRenderer, Text.literal(hoveredLandmark.type().id().toString()), getGuiX() + WIDTH - textRenderer.getWidth(Text.literal(hoveredLandmark.type().id().toString())), getGuiY() - 12, 0xFFFFFFFF, true);
+                if (hoveredLandmark instanceof AtlasStructureLandmark sLandmark) context.drawText(textRenderer, Text.literal(sLandmark.displayId().toString()), getGuiX(), getGuiY() + HEIGHT, 0xFFFFFFFF, true);
+                if (texture != null) context.drawText(textRenderer, Text.literal(texture.displayId()), getGuiX() + WIDTH - textRenderer.getWidth(Text.literal(texture.displayId())), getGuiY() + HEIGHT, 0xFFFFFFFF, true);
+            } else {
+                TileTexture texture = worldAtlasData.getTile(pos);
+                Identifier providerId = worldAtlasData.getProvider(pos);
+                String predicate = worldAtlasData.getTilePredicate(pos);
+                if (texture != null) {
+                    if (predicate != null) context.drawText(textRenderer, Text.literal(predicate), getGuiX() + WIDTH - textRenderer.getWidth(Text.literal(predicate)), getGuiY() - 12, 0xFFFFFFFF, true);
+                    context.drawText(textRenderer, Text.literal(providerId.toString()), getGuiX(), getGuiY() + HEIGHT, 0xFFFFFFFF, true);
+                    context.drawText(textRenderer, Text.literal(texture.displayId()), getGuiX() + WIDTH - textRenderer.getWidth(Text.literal(texture.displayId())), getGuiY() + HEIGHT, 0xFFFFFFFF, true);
+                }
             }
         }
     }
@@ -839,7 +847,7 @@ public class AtlasScreen extends Component {
             markerY = MathHelper.clamp(markerY, getGuiY() + MAP_BORDER_HEIGHT, getGuiY() + MAP_HEIGHT + MAP_BORDER_HEIGHT);
         }
 
-        context.drawTexture(texture.id(), markerX + texture.offsetX(), markerY + texture.offsetY(), 0, 0, texture.textureWidth(), texture.textureHeight(), texture.textureWidth(), texture.textureHeight());
+        texture.draw(context, markerX, markerY);
 
         RenderSystem.setShaderColor(1, 1, 1, 1);
 

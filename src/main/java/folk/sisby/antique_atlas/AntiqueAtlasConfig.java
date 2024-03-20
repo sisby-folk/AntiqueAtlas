@@ -3,6 +3,9 @@ package folk.sisby.antique_atlas;
 import folk.sisby.kaleido.api.WrappedConfig;
 import folk.sisby.kaleido.lib.quiltconfig.api.annotations.Comment;
 import folk.sisby.kaleido.lib.quiltconfig.api.annotations.FloatRange;
+import folk.sisby.kaleido.lib.quiltconfig.api.values.ValueMap;
+
+import java.util.Map;
 
 public class AntiqueAtlasConfig extends WrappedConfig {
     public enum GraveStyle {
@@ -55,7 +58,11 @@ public class AntiqueAtlasConfig extends WrappedConfig {
     }
 
     public static final class DebugSection implements Section {
-        @Comment("If true, map render time will be output.")
+        @Comment("If true, debug information about hovered tiles and markers will be shown.")
         public final Boolean debugRender = false;
     }
+
+    public final Map<String, Boolean> structureMarkers = ValueMap.builder(true)
+        .put("minecraft:tag/village", false)
+        .build();
 }
