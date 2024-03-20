@@ -220,14 +220,14 @@ public class BiomeTileProviders extends JsonDataLoader implements IdentifiableRe
                     tileProviders.put(fileId, new TerrainTileProvider(fileId, textureElevations));
                 }
             } catch (Exception e) {
-                AntiqueAtlas.LOGGER.warn("[Antique Atlas] Error reading biome tile provider " + fileId + "!", e);
+                AntiqueAtlas.LOGGER.error("[Antique Atlas] Error reading biome tile provider " + fileId + "!", e);
             }
         }
         providerParents.forEach((id, parentId) -> {
             if (tileProviders.containsKey(parentId)) {
                 tileProviders.put(id, tileProviders.get(parentId));
             } else {
-                AntiqueAtlas.LOGGER.warn("[Antique Atlas] Error reading biome tile provider " + id + "!", new IllegalStateException("Parent id %s doesn't exist".formatted(parentId)));
+                AntiqueAtlas.LOGGER.error("[Antique Atlas] Error reading biome tile provider " + id + "!", new IllegalStateException("Parent id %s doesn't exist".formatted(parentId)));
             }
         });
 

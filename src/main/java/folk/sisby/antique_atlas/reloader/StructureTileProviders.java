@@ -210,7 +210,7 @@ public class StructureTileProviders extends JsonDataLoader implements Identifiab
                             }
                         }
                     } catch (Exception e) {
-                        AntiqueAtlas.LOGGER.warn("[Antique Atlas] Error reading structure tile provider " + fileId + "!", e);
+                        AntiqueAtlas.LOGGER.error("[Antique Atlas] Error reading structure tile provider " + fileId + "!", e);
                     }
                 }
             });

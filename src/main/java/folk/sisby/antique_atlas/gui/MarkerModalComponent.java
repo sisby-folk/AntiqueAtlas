@@ -1,6 +1,5 @@
 package folk.sisby.antique_atlas.gui;
 
-import folk.sisby.antique_atlas.AntiqueAtlas;
 import folk.sisby.antique_atlas.MarkerTexture;
 import folk.sisby.antique_atlas.gui.core.Component;
 import folk.sisby.antique_atlas.gui.core.ScrollBoxComponent;
@@ -67,8 +66,6 @@ public class MarkerModalComponent extends Component {
         addDrawableChild(btnDone = ButtonWidget.builder(Text.translatable("gui.done"), (button) -> {
             ((AtlasScreen) MinecraftClient.getInstance().currentScreen).getworldAtlasData().placeCustomMarker(world, selectedTexture, Text.literal(textField.getText()), new BlockPos(markerX, 0, markerZ));
             ((AtlasScreen) MinecraftClient.getInstance().currentScreen).updateBookmarkerList();
-            AntiqueAtlas.LOGGER.info("Put marker \"{}\" at ({}, {})", textField.getText(), markerX, markerZ);
-
             ClientPlayerEntity player = MinecraftClient.getInstance().player;
             world.playSound(player, player.getBlockPos(),
                 SoundEvents.ENTITY_VILLAGER_WORK_CARTOGRAPHER, SoundCategory.AMBIENT,
