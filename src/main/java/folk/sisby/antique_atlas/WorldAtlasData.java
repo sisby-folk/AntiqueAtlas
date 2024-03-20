@@ -38,7 +38,7 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentLinkedDeque;
 
 public class WorldAtlasData {
-    private static final int CHUNK_TICK_LIMIT = AntiqueAtlas.CONFIG.performance.chunkTickLimit;
+    public static final Map<RegistryKey<World>, WorldAtlasData> WORLDS = new HashMap<>();
 
     private final Map<ChunkPos, TileTexture> biomeTiles = new HashMap<>();
     private final Map<ChunkPos, TileTexture> structureTiles = new HashMap<>();
@@ -73,7 +73,7 @@ public class WorldAtlasData {
     }
 
     public void tick(World world) {
-        for (int i = 0; i < CHUNK_TICK_LIMIT; i++) {
+        for (int i = 0; i < AntiqueAtlas.CONFIG.performance.chunkTickLimit; i++) {
             ChunkPos pos = terrainDeque.pollFirst();
             if (pos == null) break;
             Pair<TerrainTileProvider, TileElevation> tile = world.getRegistryKey() == World.NETHER ? TerrainTiling.terrainToTileNether(world, pos) : TerrainTiling.terrainToTile(world, pos);
