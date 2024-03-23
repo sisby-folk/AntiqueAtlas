@@ -41,18 +41,20 @@ public class AntiqueAtlas implements ClientModInitializer {
 
         SurveyorClientEvents.Register.clientPlayerLoad(id("world_data"), (world, ws, player) -> WorldAtlasData.getOrCreate(world, player));
         SurveyorEvents.Register.terrainUpdated(id("world_data"), (world, terrain, chunks) -> {
-            if (MinecraftClient.getInstance().world != null) WorldAtlasData.get(MinecraftClient.getInstance().world).onTerrainUpdated(MinecraftClient.getInstance().world, terrain, chunks);
+            if (WorldAtlasData.exists(world)) WorldAtlasData.get(world).onTerrainUpdated(MinecraftClient.getInstance().world, terrain, chunks);
         });
         SurveyorEvents.Register.structuresAdded(id("world_data"), (world, structures, summaries) -> {
-            if (MinecraftClient.getInstance().world != null) WorldAtlasData.get(MinecraftClient.getInstance().world).onStructuresAdded(MinecraftClient.getInstance().world, structures, summaries);
+            if (WorldAtlasData.exists(world)) WorldAtlasData.get(world).onStructuresAdded(world, structures, summaries);
         });
         SurveyorEvents.Register.landmarksAdded(id("world_data"), (world, worldLandmarks, landmarks) -> {
-            if (MinecraftClient.getInstance().world != null) WorldAtlasData.get(MinecraftClient.getInstance().world).onLandmarksAdded(MinecraftClient.getInstance().world, worldLandmarks, landmarks);
+            if (WorldAtlasData.exists(world)) WorldAtlasData.get(world).onLandmarksAdded(world, worldLandmarks, landmarks);
         });
         SurveyorEvents.Register.landmarksRemoved(id("world_data"), (world, worldLandmarks, landmarks) -> {
-            if (MinecraftClient.getInstance().world != null) WorldAtlasData.get(MinecraftClient.getInstance().world).onLandmarksRemoved(MinecraftClient.getInstance().world, worldLandmarks, landmarks);
+            if (WorldAtlasData.exists(world)) WorldAtlasData.get(world).onLandmarksRemoved(world, worldLandmarks, landmarks);
         });
-        ClientTickEvents.END_WORLD_TICK.register((world -> WorldAtlasData.get(world).tick(world)));
+        ClientTickEvents.END_WORLD_TICK.register((world -> {
+            if (WorldAtlasData.exists(world)) WorldAtlasData.get(world).tick(world);
+        }));
         CommonLifecycleEvents.TAGS_LOADED.register(((manager, client) -> BiomeTileProviders.getInstance().registerFallbacks(manager.get(RegistryKeys.BIOME))));
         ClientPlayConnectionEvents.DISCONNECT.register(((handler, client) -> BiomeTileProviders.getInstance().clearFallbacks()));
     }

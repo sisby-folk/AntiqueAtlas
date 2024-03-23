@@ -17,7 +17,6 @@ import folk.sisby.surveyor.terrain.WorldTerrainSummary;
 import folk.sisby.surveyor.util.MapUtil;
 import it.unimi.dsi.fastutil.Pair;
 import net.minecraft.client.MinecraftClient;
-import net.minecraft.client.world.ClientWorld;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.registry.RegistryKey;
 import net.minecraft.text.MutableText;
@@ -44,6 +43,10 @@ public class WorldAtlasData {
 
     public static WorldAtlasData getOrCreate(World world, PlayerEntity player) {
         return WorldAtlasData.WORLDS.computeIfAbsent(world.getRegistryKey(), k -> new WorldAtlasData(world, player));
+    }
+
+    public static boolean exists(World world) {
+        return world != null && WorldAtlasData.WORLDS.containsKey(world.getRegistryKey());
     }
 
     public static WorldAtlasData get(World world) {
@@ -163,7 +166,7 @@ public class WorldAtlasData {
         refreshLandmarkMarkers(world);
     }
 
-    public void onLandmarksRemoved(ClientWorld world, WorldLandmarks ignored, Multimap<LandmarkType<?>, BlockPos> ignored2) {
+    public void onLandmarksRemoved(World world, WorldLandmarks ignored, Multimap<LandmarkType<?>, BlockPos> ignored2) {
         refreshLandmarkMarkers(world);
     }
 
