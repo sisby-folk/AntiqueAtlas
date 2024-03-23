@@ -154,6 +154,8 @@ public class TerrainTiling {
             return Pair.of(BiomeTileProviders.getInstance().getTileProvider(CUSTOM_TILES.get(defaultTile)), null);
         }
 
+        int SEA_DEPTH = world.getTopY() - 31;
+
         if (lowSummary == null) {
             for (int i = 0; i < fullSummary.depths().length; i++) {
                 if (!fullSummary.exists().get(i)) {
@@ -165,7 +167,7 @@ public class TerrainTiling {
             }
         } else {
             for (int i = 0; i < lowSummary.depths().length; i++) {
-                if (!lowSummary.exists().get(i)) {
+                if (!lowSummary.exists().get(i) || lowSummary.depths()[i] > SEA_DEPTH) {
                     Biome biome = biomePalette.get(fullSummary.biomes()[i]);
                     possibleTiles[elevationSize][fullSummary.biomes()[i]] += priorityForBiome(biomeRegistry, biome);
                 } else {

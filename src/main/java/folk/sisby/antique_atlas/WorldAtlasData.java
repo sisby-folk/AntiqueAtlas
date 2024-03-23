@@ -129,7 +129,8 @@ public class WorldAtlasData {
     }
 
     public TileTexture getTile(ChunkPos pos) {
-        return structureTiles.containsKey(pos) ? structureTiles.get(pos) : biomeTiles.getOrDefault(pos, null);
+        if (!biomeTiles.containsKey(pos)) return null;
+        return structureTiles.getOrDefault(pos, biomeTiles.get(pos));
     }
 
     public Identifier getProvider(ChunkPos pos) {

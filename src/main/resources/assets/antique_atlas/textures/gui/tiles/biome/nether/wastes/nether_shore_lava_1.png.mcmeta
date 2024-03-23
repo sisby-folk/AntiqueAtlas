@@ -2,7 +2,7 @@
   "antique_atlas:tiling": {
     "borderType": "inner",
     "tags": [
-      "antique_atlas:lava"
+      "antique_atlas:shore_lava"
     ],
     "tilesTo": [
       "#antique_atlas:lava"

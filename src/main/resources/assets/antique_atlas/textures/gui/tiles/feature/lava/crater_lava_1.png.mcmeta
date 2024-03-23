@@ -4,7 +4,8 @@
       "antique_atlas:lava"
     ],
     "tilesTo": [
-      "#antique_atlas:lava"
+      "#antique_atlas:lava",
+      "#antique_atlas:shore_lava"
     ]
   }
 }
