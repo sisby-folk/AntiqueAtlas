@@ -20,19 +20,19 @@ import java.util.Objects;
 import java.util.Set;
 import java.util.function.Function;
 
-public record StructureTileProvider(Identifier id, Map<ChunkMatcher, List<TileTexture>> matchers) {
+public record StructureTileProvider(Identifier id, int priority, Map<ChunkMatcher, List<TileTexture>> matchers) {
     public static final BiMap<Identifier, ChunkMatcher> CHUNK_MATCHERS = HashBiMap.create();
 
     public static ChunkMatcher getChunkMatcher(Identifier id) {
         return CHUNK_MATCHERS.get(id);
     }
 
-    public StructureTileProvider(Identifier id, List<TileTexture> textures) {
-        this(id, Map.of(ChunkMatcher::center, textures));
+    public StructureTileProvider(Identifier id, int priority, List<TileTexture> textures) {
+        this(id, priority, Map.of(ChunkMatcher::center, textures));
     }
 
-    public StructureTileProvider(Identifier id, ChunkMatcher matcher, List<TileTexture> textures) {
-        this(id, Map.of(matcher, textures));
+    public StructureTileProvider(Identifier id, int priority, ChunkMatcher matcher, List<TileTexture> textures) {
+        this(id, priority, Map.of(matcher, textures));
     }
 
     private Map<ChunkPos, TileTexture> getTextures(Function<ChunkMatcher, Collection<ChunkPos>> matcherFunction, Map<ChunkPos, String> tilePredicates) {

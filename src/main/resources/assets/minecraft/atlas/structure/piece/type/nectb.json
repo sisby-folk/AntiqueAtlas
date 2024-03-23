@@ -1,4 +1,5 @@
 {
   "displayId": "minecraft:nether_fortress_corridor_balcony",
+  "priority": 70,
   "textures": "antique_atlas:structure/fortress/nether/nether_fortress_corridor"
 }

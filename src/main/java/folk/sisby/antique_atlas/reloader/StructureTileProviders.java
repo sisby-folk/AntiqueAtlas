@@ -100,6 +100,7 @@ public class StructureTileProviders extends JsonDataLoader implements Identifiab
             if (pieceJigsawSingleTiles.containsKey(jigsawPiece.getId())) {
                 StructureTileProvider provider = (jigsawPiece.getElementType() == StructurePoolElementType.FEATURE_POOL_ELEMENT ? pieceJigsawFeatureTiles : pieceJigsawSingleTiles).get(jigsawPiece.getId());
                 provider.getTextures(world, jigsawPiece.getBoundingBox(), jigsawPiece.getJunctions(), tilePredicates).forEach((pos, texture) -> {
+                    if (structureProviders.containsKey(pos) && structureProviders.get(pos).priority() < provider.priority()) return;
                     outTiles.put(pos, texture);
                     structureProviders.put(pos, provider);
                 });
@@ -110,6 +111,7 @@ public class StructureTileProviders extends JsonDataLoader implements Identifiab
             if (pieceTypeTiles.containsKey(pieceTypeId)) {
                 StructureTileProvider provider = pieceTypeTiles.get(pieceTypeId);
                 provider.getTextures(world, piece.getBoundingBox(), tilePredicates).forEach((pos, texture) -> {
+                    if (structureProviders.containsKey(pos) && structureProviders.get(pos).priority() < provider.priority()) return;
                     outTiles.put(pos, texture);
                     structureProviders.put(pos, provider);
                 });
@@ -118,7 +120,7 @@ public class StructureTileProviders extends JsonDataLoader implements Identifiab
         return outTiles;
     }
 
-    public void resolve(Map<ChunkPos, TileTexture> outTiles, Map<ChunkPos, StructureTileProvider> debugStructures, Map<ChunkPos, String> debugPredicates, Map<Landmark<?>, MarkerTexture> outMarkers, World world, RegistryKey<Structure> key, ChunkPos pos, StructureStartSummary summary, RegistryKey<StructureType<?>> type, Collection<TagKey<Structure>> tags) {
+    public void resolve(Map<ChunkPos, TileTexture> outTiles, Map<ChunkPos, StructureTileProvider> structureProviders, Map<ChunkPos, String> debugPredicates, Map<Landmark<?>, MarkerTexture> outMarkers, World world, RegistryKey<Structure> key, ChunkPos pos, StructureStartSummary summary, RegistryKey<StructureType<?>> type, Collection<TagKey<Structure>> tags) {
         if (startMarkers.containsKey(key.getValue())) {
             MarkerTexture texture = startMarkers.get(key.getValue());
             outMarkers.put(new AtlasStructureLandmark(pos.getCenterAtY(0), ProviderType.START, key.getValue()), texture);
@@ -134,26 +136,29 @@ public class StructureTileProviders extends JsonDataLoader implements Identifiab
         if (startTiles.containsKey(key.getValue())) {
             StructureTileProvider provider = startTiles.get(key.getValue());
             provider.getTextures(world, summary.getBoundingBox(), debugPredicates).forEach((pos2, texture) -> {
+                if (structureProviders.containsKey(pos) && structureProviders.get(pos).priority() < provider.priority()) return;
                 outTiles.put(pos2, texture);
-                debugStructures.put(pos2, provider);
+                structureProviders.put(pos2, provider);
             });
         } else if (typeTiles.containsKey(type.getValue())) {
             StructureTileProvider provider = typeTiles.get(key.getValue());
             provider.getTextures(world, summary.getBoundingBox(), debugPredicates).forEach((pos2, texture) -> {
+                if (structureProviders.containsKey(pos) && structureProviders.get(pos).priority() < provider.priority()) return;
                 outTiles.put(pos2, texture);
-                debugStructures.put(pos2, provider);
+                structureProviders.put(pos2, provider);
             });
         } else {
             tags.stream().filter(t -> tagTiles.containsKey(t.id())).findFirst().ifPresent(tag -> {
                 StructureTileProvider provider = tagTiles.get(tag.id());
                 provider.getTextures(world, summary.getBoundingBox(), debugPredicates).forEach((pos2, texture) -> {
+                    if (structureProviders.containsKey(pos) && structureProviders.get(pos).priority() < provider.priority()) return;
                     outTiles.put(pos2, texture);
-                    debugStructures.put(pos2, provider);
+                    structureProviders.put(pos2, provider);
                 });
             });
         }
 
-        summary.getChildren().forEach(p -> resolve(outTiles, debugStructures, debugPredicates, p, world));
+        summary.getChildren().forEach(p -> resolve(outTiles, structureProviders, debugPredicates, p, world));
     }
 
     @Override
@@ -174,9 +179,10 @@ public class StructureTileProviders extends JsonDataLoader implements Identifiab
                         JsonObject fileJson = fileEntry.getValue().getAsJsonObject();
                         if (fileJson.has("textures")) {
                             JsonElement textureJson = fileJson.get("textures");
+                            int priority = fileJson.has("priority") ? fileJson.get("priority").getAsInt() : Integer.MAX_VALUE;
                             List<TileTexture> defaultTextures = resolveTextureJson(textures, textureJson);
                             if (defaultTextures != null) {
-                                StructureTileProvider provider = new StructureTileProvider(id, defaultTextures);
+                                StructureTileProvider provider = new StructureTileProvider(id, priority, defaultTextures);
                                 providerMap.put(provider.id(), provider);
                                 unusedTextures.removeAll(provider.allTextures());
                             } else {
@@ -194,7 +200,7 @@ public class StructureTileProviders extends JsonDataLoader implements Identifiab
                                 if (matchers.isEmpty()) {
                                     throw new IllegalStateException("No matcher keys were found in the textures object!");
                                 }
-                                StructureTileProvider provider = new StructureTileProvider(id, matchers);
+                                StructureTileProvider provider = new StructureTileProvider(id, priority, matchers);
                                 providerMap.put(provider.id(), provider);
                                 unusedTextures.removeAll(provider.allTextures());
                             }

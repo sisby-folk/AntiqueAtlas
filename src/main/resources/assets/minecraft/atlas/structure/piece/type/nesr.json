@@ -1,4 +1,5 @@
 {
   "displayId": "minecraft:nether_fortress_bridge_stairs",
+  "priority": 50,
   "textures": "antique_atlas:structure/fortress/nether/nether_fortress_bridge_stairs"
 }

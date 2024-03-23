@@ -1,5 +1,6 @@
 {
   "displayId": "minecraft:nether_fortress_bridge",
+  "priority": 100,
   "textures": {
     "bridge_horizontal": "antique_atlas:structure/fortress/nether/nether_fortress_bridge_horizontal",
     "bridge_vertical": "antique_atlas:structure/fortress/nether/nether_fortress_bridge_vertical"
