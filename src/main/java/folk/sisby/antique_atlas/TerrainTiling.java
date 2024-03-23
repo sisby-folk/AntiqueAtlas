@@ -111,7 +111,7 @@ public class TerrainTiling {
         int[][] possibleTiles = new int[elevationCount][baseTileCount];
 
         for (int i = 0; i < summary.depths().length; i++) {
-            if (summary.depths()[i] == -1) {
+            if (!summary.exists().get(i)) {
                 possibleTiles[elevationSize][defaultTile] += EMPTY_PRIORITY;
                 continue;
             }
@@ -156,7 +156,7 @@ public class TerrainTiling {
 
         if (lowSummary == null) {
             for (int i = 0; i < fullSummary.depths().length; i++) {
-                if (fullSummary.depths()[i] == -1) {
+                if (!fullSummary.exists().get(i)) {
                     possibleTiles[elevationSize][defaultTile] += EMPTY_PRIORITY;
                 } else {
                     Biome biome = biomePalette.get(i);
@@ -165,7 +165,7 @@ public class TerrainTiling {
             }
         } else {
             for (int i = 0; i < lowSummary.depths().length; i++) {
-                if (lowSummary.depths()[i] == -1) {
+                if (!lowSummary.exists().get(i)) {
                     Biome biome = biomePalette.get(fullSummary.biomes()[i]);
                     possibleTiles[elevationSize][fullSummary.biomes()[i]] += priorityForBiome(biomeRegistry, biome);
                 } else {

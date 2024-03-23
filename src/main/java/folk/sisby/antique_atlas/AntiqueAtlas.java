@@ -5,6 +5,7 @@ import folk.sisby.antique_atlas.reloader.MarkerTextures;
 import folk.sisby.antique_atlas.reloader.StructureTileProviders;
 import folk.sisby.antique_atlas.reloader.TileTextures;
 import folk.sisby.surveyor.SurveyorEvents;
+import folk.sisby.surveyor.client.SurveyorClientEvents;
 import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayConnectionEvents;
@@ -38,7 +39,7 @@ public class AntiqueAtlas implements ClientModInitializer {
         ResourceManagerHelper.get(ResourceType.CLIENT_RESOURCES).registerReloadListener(BiomeTileProviders.getInstance());
         ResourceManagerHelper.get(ResourceType.CLIENT_RESOURCES).registerReloadListener(MarkerTextures.getInstance());
 
-        SurveyorEvents.Register.clientWorldLoad(id("world_data"), (world, ws) -> WorldAtlasData.get(world));
+        SurveyorClientEvents.Register.clientPlayerLoad(id("world_data"), (world, ws, player) -> WorldAtlasData.getOrCreate(world, player));
         SurveyorEvents.Register.terrainUpdated(id("world_data"), (world, terrain, chunks) -> {
             if (MinecraftClient.getInstance().world != null) WorldAtlasData.get(MinecraftClient.getInstance().world).onTerrainUpdated(MinecraftClient.getInstance().world, terrain, chunks);
         });

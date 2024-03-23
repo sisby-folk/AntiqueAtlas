@@ -5,6 +5,7 @@ import folk.sisby.antique_atlas.reloader.MarkerTextures;
 import folk.sisby.antique_atlas.reloader.StructureTileProviders;
 import folk.sisby.antique_atlas.util.Rect;
 import folk.sisby.surveyor.SurveyorWorld;
+import folk.sisby.surveyor.client.SurveyorClient;
 import folk.sisby.surveyor.landmark.Landmark;
 import folk.sisby.surveyor.landmark.LandmarkType;
 import folk.sisby.surveyor.landmark.NetherPortalLandmark;
@@ -17,6 +18,7 @@ import folk.sisby.surveyor.util.MapUtil;
 import it.unimi.dsi.fastutil.Pair;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.world.ClientWorld;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.registry.RegistryKey;
 import net.minecraft.text.MutableText;
 import net.minecraft.text.Text;
@@ -40,8 +42,12 @@ import java.util.concurrent.ConcurrentLinkedDeque;
 public class WorldAtlasData {
     public static final Map<RegistryKey<World>, WorldAtlasData> WORLDS = new HashMap<>();
 
+    public static WorldAtlasData getOrCreate(World world, PlayerEntity player) {
+        return WorldAtlasData.WORLDS.computeIfAbsent(world.getRegistryKey(), k -> new WorldAtlasData(world, player));
+    }
+
     public static WorldAtlasData get(World world) {
-        return WorldAtlasData.WORLDS.computeIfAbsent(world.getRegistryKey(), k -> new WorldAtlasData(world));
+        return WorldAtlasData.WORLDS.get(world.getRegistryKey());
     }
 
     private final Map<ChunkPos, TileTexture> biomeTiles = new HashMap<>();
@@ -59,9 +65,9 @@ public class WorldAtlasData {
     private final Map<ChunkPos, TerrainTileProvider> debugBiomes = new HashMap<>();
     private final Map<ChunkPos, StructureTileProvider> debugStructures = new HashMap<>();
 
-    public WorldAtlasData(World world) {
-        ((SurveyorWorld) world).surveyor$getWorldSummary().terrain().keySet().forEach(terrainDeque::addLast);
-        ((SurveyorWorld) world).surveyor$getWorldSummary().structures().asMap().forEach((key, map) -> onStructuresAdded(world, ((SurveyorWorld) world).surveyor$getWorldSummary().structures(), MapUtil.hashMultiMapOf(Map.of(key, map.keySet()))));
+    public WorldAtlasData(World world, PlayerEntity player) {
+        ((SurveyorWorld) world).surveyor$getWorldSummary().terrain().keySet(SurveyorClient.getExploration()).forEach(terrainDeque::addLast);
+        ((SurveyorWorld) world).surveyor$getWorldSummary().structures().asMap(SurveyorClient.getExploration()).forEach((key, map) -> onStructuresAdded(world, ((SurveyorWorld) world).surveyor$getWorldSummary().structures(), MapUtil.hashMultiMapOf(Map.of(key, map.keySet()))));
         refreshLandmarkMarkers(world);
         AntiqueAtlas.LOGGER.info("[Antique Atlas] Beginning to load terrain for {} - {} chunks available.", world.getRegistryKey().getValue(), terrainDeque.size());
     }
@@ -124,7 +130,7 @@ public class WorldAtlasData {
 
     public void refreshLandmarkMarkers(World world) {
         landmarkMarkers.clear();
-        ((SurveyorWorld) world).surveyor$getWorldSummary().landmarks().keySet().forEach(((landmarkType, pos) -> {
+        ((SurveyorWorld) world).surveyor$getWorldSummary().landmarks().keySet(SurveyorClient.getExploration()).forEach(((landmarkType, pos) -> {
             if (landmarkType == NetherPortalLandmark.TYPE) {
                 NetherPortalLandmark landmark = (NetherPortalLandmark) ((SurveyorWorld) world).surveyor$getWorldSummary().landmarks().get(landmarkType, pos);
                 landmarkMarkers.put(landmark, MarkerTextures.getInstance().get(AntiqueAtlas.id("custom/nether_portal")));

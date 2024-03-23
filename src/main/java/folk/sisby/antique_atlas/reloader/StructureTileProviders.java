@@ -11,7 +11,7 @@ import folk.sisby.antique_atlas.TileTexture;
 import folk.sisby.surveyor.landmark.Landmark;
 import folk.sisby.surveyor.structure.JigsawPieceSummary;
 import folk.sisby.surveyor.structure.StructurePieceSummary;
-import folk.sisby.surveyor.structure.StructureSummary;
+import folk.sisby.surveyor.structure.StructureStartSummary;
 import it.unimi.dsi.fastutil.Pair;
 import net.fabricmc.fabric.api.resource.IdentifiableResourceReloadListener;
 import net.minecraft.registry.Registries;
@@ -118,7 +118,7 @@ public class StructureTileProviders extends JsonDataLoader implements Identifiab
         return outTiles;
     }
 
-    public void resolve(Map<ChunkPos, TileTexture> outTiles, Map<ChunkPos, StructureTileProvider> debugStructures, Map<ChunkPos, String> debugPredicates, Map<Landmark<?>, MarkerTexture> outMarkers, World world, RegistryKey<Structure> key, ChunkPos pos, StructureSummary summary, RegistryKey<StructureType<?>> type, Collection<TagKey<Structure>> tags) {
+    public void resolve(Map<ChunkPos, TileTexture> outTiles, Map<ChunkPos, StructureTileProvider> debugStructures, Map<ChunkPos, String> debugPredicates, Map<Landmark<?>, MarkerTexture> outMarkers, World world, RegistryKey<Structure> key, ChunkPos pos, StructureStartSummary summary, RegistryKey<StructureType<?>> type, Collection<TagKey<Structure>> tags) {
         if (startMarkers.containsKey(key.getValue())) {
             MarkerTexture texture = startMarkers.get(key.getValue());
             outMarkers.put(new AtlasStructureLandmark(pos.getCenterAtY(0), ProviderType.START, key.getValue()), texture);
