@@ -13,6 +13,7 @@ import folk.sisby.surveyor.landmark.PlayerDeathLandmark;
 import folk.sisby.surveyor.landmark.SimplePointLandmark;
 import folk.sisby.surveyor.landmark.WorldLandmarks;
 import folk.sisby.surveyor.structure.WorldStructureSummary;
+import folk.sisby.surveyor.terrain.RegionSummary;
 import folk.sisby.surveyor.terrain.WorldTerrainSummary;
 import folk.sisby.surveyor.util.MapUtil;
 import it.unimi.dsi.fastutil.Pair;
@@ -31,6 +32,7 @@ import net.minecraft.world.World;
 import net.minecraft.world.gen.structure.Structure;
 
 import java.util.Collection;
+import java.util.Comparator;
 import java.util.Deque;
 import java.util.HashMap;
 import java.util.Map;
@@ -69,7 +71,8 @@ public class WorldAtlasData {
     private final Map<ChunkPos, StructureTileProvider> debugStructures = new HashMap<>();
 
     public WorldAtlasData(World world, PlayerEntity player) {
-        ((SurveyorWorld) world).surveyor$getWorldSummary().terrain().keySet(SurveyorClient.getExploration()).forEach(terrainDeque::addLast);
+        ChunkPos playerRegion = new ChunkPos(player.getChunkPos().getRegionX(), player.getChunkPos().getRegionZ());
+        ((SurveyorWorld) world).surveyor$getWorldSummary().terrain().bitSet(SurveyorClient.getExploration()).entrySet().stream().sorted(Comparator.comparingInt(e -> e.getKey().getChebyshevDistance(playerRegion))).forEach(e -> e.getValue().stream().forEach(i -> terrainDeque.addLast(new ChunkPos(e.getKey().x << RegionSummary.REGION_POWER + i / RegionSummary.REGION_SIZE,  e.getKey().z << RegionSummary.REGION_POWER + i % RegionSummary.REGION_SIZE))));
         ((SurveyorWorld) world).surveyor$getWorldSummary().structures().asMap(SurveyorClient.getExploration()).forEach((key, map) -> onStructuresAdded(world, ((SurveyorWorld) world).surveyor$getWorldSummary().structures(), MapUtil.hashMultiMapOf(Map.of(key, map.keySet()))));
         refreshLandmarkMarkers(world);
         AntiqueAtlas.LOGGER.info("[Antique Atlas] Beginning to load terrain for {} - {} chunks available.", world.getRegistryKey().getValue(), terrainDeque.size());
