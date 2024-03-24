@@ -94,7 +94,7 @@ public class WorldAtlasData {
 
     public void onTerrainUpdated(World world, WorldTerrainSummary ignored2, Collection<ChunkPos> chunks) {
         for (ChunkPos pos : chunks) {
-            if (!terrainDeque.contains(pos)) terrainDeque.add(pos);
+            if (!biomeTiles.containsKey(pos) && !terrainDeque.contains(pos)) terrainDeque.add(pos);
         }
     }
 

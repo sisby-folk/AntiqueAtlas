@@ -4,7 +4,6 @@ import folk.sisby.antique_atlas.reloader.BiomeTileProviders;
 import folk.sisby.antique_atlas.reloader.MarkerTextures;
 import folk.sisby.antique_atlas.reloader.StructureTileProviders;
 import folk.sisby.antique_atlas.reloader.TileTextures;
-import folk.sisby.surveyor.SurveyorEvents;
 import folk.sisby.surveyor.client.SurveyorClientEvents;
 import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
@@ -39,17 +38,17 @@ public class AntiqueAtlas implements ClientModInitializer {
         ResourceManagerHelper.get(ResourceType.CLIENT_RESOURCES).registerReloadListener(BiomeTileProviders.getInstance());
         ResourceManagerHelper.get(ResourceType.CLIENT_RESOURCES).registerReloadListener(MarkerTextures.getInstance());
 
-        SurveyorClientEvents.Register.clientPlayerLoad(id("world_data"), (world, ws, player) -> WorldAtlasData.getOrCreate(world, player));
-        SurveyorEvents.Register.terrainUpdated(id("world_data"), (world, terrain, chunks) -> {
+        SurveyorClientEvents.Register.worldLoad(id("world_data"), (world, ws, player) -> WorldAtlasData.getOrCreate(world, player));
+        SurveyorClientEvents.Register.terrainUpdated(id("world_data"), (world, terrain, chunks) -> {
             if (WorldAtlasData.exists(world)) WorldAtlasData.get(world).onTerrainUpdated(MinecraftClient.getInstance().world, terrain, chunks);
         });
-        SurveyorEvents.Register.structuresAdded(id("world_data"), (world, structures, summaries) -> {
+        SurveyorClientEvents.Register.structuresAdded(id("world_data"), (world, structures, summaries) -> {
             if (WorldAtlasData.exists(world)) WorldAtlasData.get(world).onStructuresAdded(world, structures, summaries);
         });
-        SurveyorEvents.Register.landmarksAdded(id("world_data"), (world, worldLandmarks, landmarks) -> {
+        SurveyorClientEvents.Register.landmarksAdded(id("world_data"), (world, worldLandmarks, landmarks) -> {
             if (WorldAtlasData.exists(world)) WorldAtlasData.get(world).onLandmarksAdded(world, worldLandmarks, landmarks);
         });
-        SurveyorEvents.Register.landmarksRemoved(id("world_data"), (world, worldLandmarks, landmarks) -> {
+        SurveyorClientEvents.Register.landmarksRemoved(id("world_data"), (world, worldLandmarks, landmarks) -> {
             if (WorldAtlasData.exists(world)) WorldAtlasData.get(world).onLandmarksRemoved(world, worldLandmarks, landmarks);
         });
         ClientTickEvents.END_WORLD_TICK.register((world -> {
