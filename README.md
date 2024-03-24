@@ -14,25 +14,27 @@ Press **[M]** at any time to bring up the world map.
 
 The map is abstract, with custom tiles and markers representing terrain, biomes, structures, and waypoints.
 
-### Design
+---
 
-#### Abstract Landscapes
+### Abstract Landscapes
 
 At their smallest, tiles represent an entire chunk - via its biome, elevation, and any fluid or structure features.</br>
 Markers for points of interest (e.g. lit nether portals) only appear once players have explored a chunk.<br/>
 This means players can't "peek" at the map for caves, structures, resources, or player bases.<br/>
 
-#### Lay of the Land
+### Lay of the Land
 
 The Atlas is less of a satellite view of the world, and more like an explorer's memory of where they've been.<br/>
 Exploration progress is not lost on death, and the atlas doesn't occupy a physical slot.<br/>
 
-#### Don't Play the Map
+### Don't Play the Map
 
 Learning to navigate your surroundings and explore a minecraft world by eye is a lot of fun.<br/>
-A lot of minimaps are a little _too_ good at precisely representing the world - and players miss out on the fun.
+A lot of minimaps are a little _too_ good at precisely representing the world - and players miss out on that fun.
 Because Antique Atlas is abstract and on its own screen, it's easier to focus on the world instead.<br/>
 If that's not enough and you (like us) keep using the map as a compass, try [PicoHUD](https://modrinth.com/mod/picohud) as well.
+
+---
 
 ### Configuration
 
@@ -53,6 +55,7 @@ Structures can be similarly [tiled](https://github.com/sisby-folk/antique-atlas/
 Textures in these files are loaded from `textures/gui/tiles` and use an _autotile_-like format.<br/>
 You can also add an [.mcmeta file](https://github.com/sisby-folk/antique-atlas/blob/1.20/src/main/resources/assets/antique_atlas/textures/gui/tiles/structure/fortress/nether/nether_fortress_bridge_crossing.png.mcmeta) to adjust which other textures should "connect" and vice-versa.
 
+---
 
 ### Version History
 
@@ -64,6 +67,8 @@ This is a loveletter rewrite - we want to revitalize interest in antique atlas, 
 
 `2.x` uses fabric and [Surveyor](https://modrinth.com/mod/surveyor) - and is save, API, network, and respack-incompatible with older versions.<br/>
 When upgrading to 2.x, map exploration and markers will be cleared - downgrade and take notes if needed!<br/>
+
+---
 
 ### Afterword
 
