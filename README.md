@@ -3,68 +3,67 @@
 
 <center>
 An always-accessible abstract world map.<br/>
-A shredded up port of <a href="https://modrinth.com/mod/antique-atlas">Antique Atlas</a> by Hunternif, as continued by Kenkron, asiekierkierka, and tyra314.<br/>
-Requires <a href="https://modrinth.com/mod/connector">Connector</a> and <a href="https://modrinth.com/mod/forgified-fabric-api">FFAPI</a> on forge.<br/>
-<i>Colloquially: Tinkerer's Atlas / Lay of the Land / antique-atlas</i>
+A rewrite of <a href="https://modrinth.com/mod/antique-atlas">Antique Atlas</a> by Hunternif, as continued by Kenkron, asiekierkierka, and tyra314.<br/>
+Utilizes <a href="https://modrinth.com/mod/surveyor">Surveyor Map Framework</a>. Requires <a href="https://modrinth.com/mod/connector">Connector</a> and <a href="https://modrinth.com/mod/forgified-fabric-api">FFAPI</a> on forge.<br/>
+<i>Colloquially: Tinkerer's Atlas / antique-atlas</i>
 </center>
 
 ---
 
 Press **[M]** at any time to bring up the world map.
 
-The map is an abstracted view of the world, with tiles representing biomes and structures.
-
-It can be freely zoomed in and out to see as few as 4 chunks across, or as many as 400 chunks across.
-
-Locations can be marked on the map using a selection of icons, and optionally a custom name.
+The map is abstract, with custom tiles and markers representing terrain, biomes, structures, and waypoints.
 
 ### Design
 
-<details>
-<summary>Click to expand design notes</summary>
-
-We didn't make this mod, but we do have opinions about it.
-
 #### Abstract Landscapes
 
-Tiles can reflect the biome, elevation, and water/lava content of that chunk. Structures will only appear once visited.<br/>
-Because individual blocks are not represented, this means players can't "peek" at the map for caves, structures, resources, or player bases.<br/>
+At their smallest, tiles represent an entire chunk - via its biome, elevation, and any fluid or structure features.</br>
+Markers for points of interest (e.g. lit nether portals) only appear once players have explored a chunk.<br/>
+This means players can't "peek" at the map for caves, structures, resources, or player bases.<br/>
 
 #### Lay of the Land
 
 The Atlas is less of a satellite view of the world, and more like an explorer's memory of where they've been.<br/>
 Exploration progress is not lost on death, and the atlas doesn't occupy a physical slot.<br/>
-You can think of this as the player simply redrawing the map from memory - or that the atlas is less of a _physical_ object, and more of a representation of what the player already knows.
 
-#### Personal Rambles: Don't play the map
+#### Don't Play the Map
 
-We're bad at navigation in Minecraft - plain and simple. We get turned around while climbing mountains and wander for ages in the wrong direction.
+Learning to navigate your surroundings and explore a minecraft world by eye is a lot of fun.<br/>
+A lot of minimaps are a little _too_ good at precisely representing the world - and players miss out on the fun.
+Because Antique Atlas is abstract and on its own screen, it's easier to focus on the world instead.<br/>
+If that's not enough and you (like us) keep using the map as a compass, try [PicoHUD](https://modrinth.com/mod/picohud) as well.
 
-Despite this, learning to navigate a procedurally generated world is really fun. Recognizing the shape of a hill or river between a base and a nearby village and being able to travel by eye - that's very satisfying.<br/>
+### Configuration
 
-The problem is often that minimaps, world maps, waypoint compasses, and even vanilla maps - are often _too_ good at helping to navigate from point A to B.</br>
-We spend the entire time making sure we're aligned _exactly_ towards our destination, and miss out on the learning the route, admiring the landscape, and finding new locations in the process!
+Antique Atlas can be configured from `config/antique-atlas.toml`<br/>
 
-The atlas is pretty, but just bad enough at being a map to stop us from opening it every five seconds.
+`structureMarkers` can be edited to toggle markers for structures - this is automatically populated from the respack.<br/>
+`graveStyle` will change the icon and tooltip for player graves - try each out to suit your pack's aesthetics.<br/>
+`fullscreen` can also be enabled at a performance cost.
 
-If that's not enough and you (like us) keep opening the map to use as a compass, try [PicoHUD](https://modrinth.com/mod/picohud) as well.
+### Resource Packs
 
-</details>
+By default, Antique Atlas will use biome tags to approximate a builtin texture for any modded biomes.
 
-### Compatibility
+To improve this, add `namespace/atlas/biome/path.json` with `{ "parent": "minecraft:biome" }` or [custom texturing](https://github.com/sisby-folk/antique-atlas/blob/1.20/src/main/resources/assets/minecraft/atlas/biome/badlands.json).
 
-This project is (attempting to be) a loveletter rewrite - we want to revive interest in antique atlas on modern versions, as well as make the codebase easier for others to maintain after us.
+Structures can be similarly [tiled](https://github.com/sisby-folk/antique-atlas/blob/1.20/src/main/resources/assets/minecraft/atlas/structure/piece/jigsaw/single/pillager_outpost/watchtower.json) or [marked](https://github.com/sisby-folk/antique-atlas/blob/1.20/src/main/resources/assets/minecraft/atlas/structure/type/ocean_monument.json) - provided you're familiar with each type of structure identifier.
 
-`0.8.x` and `0.9.x` have a similar architecture to Antique Atlas for 1.16-1.18.<br/>
-These are itemless ports to 1.19 and 1.20 as-is - They won't receive future updates or fixes.<br/>
+Textures in these files are loaded from `textures/gui/tiles` and use an _autotile_-like format.<br/>
+You can also add an [.mcmeta file](https://github.com/sisby-folk/antique-atlas/blob/1.20/src/main/resources/assets/antique_atlas/textures/gui/tiles/structure/fortress/nether/nether_fortress_bridge_crossing.png.mcmeta) to adjust which other textures should "connect" and vice-versa.
 
-`1.x` Uses the ID `antique-atlas`. Existing addons will not work, and the API should be considered unstable.<br/>
-This is a cleanup of the codebase on fabric 1.20, with a backport to 1.19.<br/>
 
-`2.x` is a rewrite for [Surveyor Map Framework](https://modrinth.com/mod/surveyor) - This changes the save and respack format.<br/>
-Existing saves will work, but map exploration progress and markers will be cleared - take notes before migrating!<br/>
-This version works completely client-side, with structures visible when installed on both sides.<br/>
-Surveyor is being written with this mod in mind, and won't compromise its features or presentation.
+### Version History
+
+This is a loveletter rewrite - we want to revitalize interest in antique atlas, and make it easier for others to maintain and add to.
+
+`0.x` uses arch, keeps the original `antiqueatlas` ID, and should be save/network/API-compatible with [tyra's port](https://modrinth.com/mod/antique-atlas), sans the atlas item.
+
+`1.x` uses fabric, and is API incompatible.
+
+`2.x` uses fabric and [Surveyor](https://modrinth.com/mod/surveyor) - and is save, API, network, and respack-incompatible with older versions.<br/>
+When upgrading to 2.x, map exploration and markers will be cleared - downgrade and take notes if needed!<br/>
 
 ### Afterword
 
@@ -73,7 +72,8 @@ All mods are built on the work of many others.
 The art for antique atlas was created by [Hunternif](https://github.com/Hunternif) ([DA](https://www.deviantart.com/hunternif)) and [lumiscosity](https://github.com/lumiscosity) ([Neocities](https://lumiscosity.neocities.org/)).<br/>
 [Click here](https://github.com/sisby-folk/antique-atlas/blob/1.20/credits.txt) for detailed art credit.
 
-This mod is a fourth-gen offshoot, and relies heavily on contributions of many developers and artists before us.<br/>[We can't draw autotile to save our lives](https://github.com/AntiqueAtlasTeam/AntiqueAtlas/wiki/Editing-Textures) - feel free to contribute!
+This mod is a fourth-gen offshoot, and relies heavily on contributions of many developers and artists before us.<br/>
+[We can't draw autotile to save our lives](https://github.com/AntiqueAtlasTeam/AntiqueAtlas/wiki/Editing-Textures) - feel free to contribute!
 
 This mod is included in [Tinkerer's Quilt Plus](https://modrinth.com/modpack/tinkerers-quilt) - our modpack about rediscovering vanilla.
 
