@@ -55,6 +55,10 @@ Structures can be similarly [tiled](https://github.com/sisby-folk/antique-atlas/
 Textures in these files are loaded from `textures/gui/tiles` and use an _autotile_-like format.<br/>
 You can also add an [.mcmeta file](https://github.com/sisby-folk/antique-atlas/blob/1.20/src/main/resources/assets/antique_atlas/textures/gui/tiles/structure/fortress/nether/nether_fortress_bridge_crossing.png.mcmeta) to adjust which other textures should "connect" and vice-versa.
 
+#### Marker/Landmark API
+
+Check out the [Surveyor](https://modrinth.com/mod/surveyor) readme for landmark integrations!
+
 ---
 
 ### Version History
