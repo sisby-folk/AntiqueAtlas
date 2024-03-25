@@ -64,5 +64,6 @@ public class AntiqueAtlasConfig extends WrappedConfig {
 
     public final Map<String, Boolean> structureMarkers = ValueMap.builder(true)
         .put("minecraft:tag/village", false)
+        .put("minecraft:type/end_city", false)
         .build();
 }
