@@ -2,6 +2,7 @@ package folk.sisby.antique_atlas.gui;
 
 import com.mojang.blaze3d.systems.RenderSystem;
 import folk.sisby.antique_atlas.AntiqueAtlas;
+import folk.sisby.antique_atlas.AntiqueAtlasKeybindings;
 import folk.sisby.antique_atlas.AtlasStructureLandmark;
 import folk.sisby.antique_atlas.MarkerTexture;
 import folk.sisby.antique_atlas.TileTexture;
@@ -431,17 +432,9 @@ public class AtlasScreen extends Component {
             setMapScale(mapScale * 2);
         } else if (keyCode == GLFW.GLFW_KEY_MINUS || keyCode == GLFW.GLFW_KEY_KP_SUBTRACT) {
             setMapScale(mapScale / 2);
-        } else if (keyCode == GLFW.GLFW_KEY_ESCAPE) {
+        } else if (keyCode == GLFW.GLFW_KEY_ESCAPE || (AntiqueAtlasKeybindings.ATLAS_KEYMAPPING.matchesKey(keyCode, scanCode) && this.markerFinalizer.getParent() == null)) {
             close();
         } else {
-            KeyBinding[] hotbarKeys = MinecraftClient.getInstance().options.hotbarKeys;
-            for (KeyBinding bind : hotbarKeys) {
-                if (bind.matchesKey(keyCode, scanCode) && this.markerFinalizer.getParent() == null) {
-                    close();
-                    return false;
-                }
-            }
-
             return super.keyPressed(keyCode, scanCode, modifiers);
         }
 

@@ -5,7 +5,7 @@ import folk.sisby.antique_atlas.reloader.MarkerTextures;
 import folk.sisby.antique_atlas.reloader.StructureTileProviders;
 import folk.sisby.antique_atlas.util.Rect;
 import folk.sisby.surveyor.SurveyorExploration;
-import folk.sisby.surveyor.SurveyorWorld;
+import folk.sisby.surveyor.WorldSummary;
 import folk.sisby.surveyor.client.SurveyorClient;
 import folk.sisby.surveyor.landmark.Landmark;
 import folk.sisby.surveyor.landmark.LandmarkType;
@@ -32,12 +32,10 @@ import net.minecraft.util.math.ChunkPos;
 import net.minecraft.world.World;
 import net.minecraft.world.gen.structure.Structure;
 
-import java.util.BitSet;
 import java.util.Collection;
 import java.util.Comparator;
 import java.util.Deque;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.Random;
 import java.util.concurrent.ConcurrentHashMap;
@@ -80,15 +78,14 @@ public class WorldAtlasData {
     }
 
     public WorldAtlasData(World world, ClientPlayerEntity player) {
-        ChunkPos playerRegion = new ChunkPos(player.getChunkPos().getRegionX(), player.getChunkPos().getRegionZ());
         SurveyorExploration exploration = SurveyorClient.getExploration(player);
-        Map<ChunkPos, BitSet> regions = ((SurveyorWorld) world).surveyor$getWorldSummary().terrain().bitSet(exploration);
-        List<ChunkPos> sortedRegions = regions.keySet().stream().sorted(Comparator.comparingDouble(r -> regionDistance(r, playerRegion))).toList();
-        for (ChunkPos region : sortedRegions) {
-            regions.get(region).stream().forEach(i -> terrainDeque.addLast(new ChunkPos((region.x << RegionSummary.REGION_POWER) + (i / RegionSummary.REGION_SIZE),  (region.z << RegionSummary.REGION_POWER) + (i % RegionSummary.REGION_SIZE))));
-        }
-        ((SurveyorWorld) world).surveyor$getWorldSummary().structures().asMap(exploration).forEach((key, map) -> onStructuresAdded(world, ((SurveyorWorld) world).surveyor$getWorldSummary().structures(), MapUtil.hashMultiMapOf(Map.of(key, map.keySet()))));
-        ((SurveyorWorld) world).surveyor$getWorldSummary().landmarks().asMap(exploration).forEach(((type, map) -> map.values().forEach(this::addLandmark)));
+
+        ChunkPos playerRegion = new ChunkPos(player.getChunkPos().getRegionX(), player.getChunkPos().getRegionZ());
+        WorldSummary.of(world).terrain().bitSet(exploration).entrySet().stream().sorted(Comparator.comparingDouble(e -> regionDistance(e.getKey(), playerRegion))).forEach(e -> {
+            onTerrainUpdated(world, WorldSummary.of(world).terrain(), e.getValue().stream().mapToObj(i -> new ChunkPos((e.getKey().x << RegionSummary.REGION_POWER) + (i / RegionSummary.REGION_SIZE),  (e.getKey().z << RegionSummary.REGION_POWER) + (i % RegionSummary.REGION_SIZE))).toList());
+        });
+        onStructuresAdded(world, WorldSummary.of(world).structures(), MapUtil.hashMultiMapOf(WorldSummary.of(world).structures().keySet(exploration)));
+        onLandmarksAdded(world, WorldSummary.of(world).landmarks(),  WorldSummary.of(world).landmarks().asMap(exploration));
         AntiqueAtlas.LOGGER.info("[Antique Atlas] Beginning to load terrain for {} - {} chunks available.", world.getRegistryKey().getValue(), terrainDeque.size());
     }
 
@@ -198,7 +195,7 @@ public class WorldAtlasData {
     }
 
     public boolean deleteLandmark(World world, Landmark<?> landmark) {
-        ((SurveyorWorld) world).surveyor$getWorldSummary().landmarks().remove(world, landmark.type(), landmark.pos());
+        WorldSummary.of(world).landmarks().remove(world, landmark.type(), landmark.pos());
         return true;
     }
 
@@ -220,7 +217,7 @@ public class WorldAtlasData {
     }
 
     public void placeCustomMarker(World world, MarkerTexture selectedTexture, MutableText label, BlockPos blockPos) {
-        ((SurveyorWorld) world).surveyor$getWorldSummary().landmarks().put(world, new SimplePointLandmark(
+        WorldSummary.of(world).landmarks().put(world, new SimplePointLandmark(
             blockPos,
             Uuids.getUuidFromProfile(MinecraftClient.getInstance().getSession().getProfile()),
             DyeColor.BLUE,
