@@ -383,17 +383,7 @@ public class AtlasScreen extends Component {
 
     @Override
     public boolean mouseClicked(double mouseX, double mouseY, int mouseState) {
-        boolean result = super.mouseClicked(mouseX, mouseY, mouseState);
-
-        if (result) {
-            return true;
-        }
-
-        // close atlas with right-click
-        if (mouseState == 1 && state.is(NORMAL)) {
-            close();
-            return true;
-        }
+        if (super.mouseClicked(mouseX, mouseY, mouseState)) return true;
 
         // If clicked on the map, start dragging
         int mapX = (width - MAP_WIDTH) / 2;
