@@ -4,9 +4,7 @@ import com.google.common.collect.Multimap;
 import folk.sisby.antique_atlas.reloader.MarkerTextures;
 import folk.sisby.antique_atlas.reloader.StructureTileProviders;
 import folk.sisby.antique_atlas.util.Rect;
-import folk.sisby.surveyor.SurveyorExploration;
 import folk.sisby.surveyor.WorldSummary;
-import folk.sisby.surveyor.client.SurveyorClient;
 import folk.sisby.surveyor.landmark.Landmark;
 import folk.sisby.surveyor.landmark.LandmarkType;
 import folk.sisby.surveyor.landmark.NetherPortalLandmark;
@@ -14,12 +12,11 @@ import folk.sisby.surveyor.landmark.PlayerDeathLandmark;
 import folk.sisby.surveyor.landmark.SimplePointLandmark;
 import folk.sisby.surveyor.landmark.WorldLandmarks;
 import folk.sisby.surveyor.structure.WorldStructureSummary;
-import folk.sisby.surveyor.terrain.RegionSummary;
 import folk.sisby.surveyor.terrain.WorldTerrainSummary;
-import folk.sisby.surveyor.util.MapUtil;
 import it.unimi.dsi.fastutil.Pair;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.network.ClientPlayerEntity;
+import net.minecraft.client.world.ClientWorld;
 import net.minecraft.registry.RegistryKey;
 import net.minecraft.text.MutableText;
 import net.minecraft.text.Text;
@@ -32,8 +29,8 @@ import net.minecraft.util.math.ChunkPos;
 import net.minecraft.world.World;
 import net.minecraft.world.gen.structure.Structure;
 
+import java.util.BitSet;
 import java.util.Collection;
-import java.util.Comparator;
 import java.util.Deque;
 import java.util.HashMap;
 import java.util.Map;
@@ -44,8 +41,8 @@ import java.util.concurrent.ConcurrentLinkedDeque;
 public class WorldAtlasData {
     public static final Map<RegistryKey<World>, WorldAtlasData> WORLDS = new HashMap<>();
 
-    public static WorldAtlasData getOrCreate(World world, ClientPlayerEntity player) {
-        return WorldAtlasData.WORLDS.computeIfAbsent(world.getRegistryKey(), k -> new WorldAtlasData(world, player));
+    public static WorldAtlasData create(ClientWorld world, WorldSummary summary, ClientPlayerEntity player, Map<ChunkPos, BitSet> terrain, Multimap<RegistryKey<Structure>, ChunkPos> structures, Multimap<LandmarkType<?>, BlockPos> landmarks) {
+        return WorldAtlasData.WORLDS.computeIfAbsent(world.getRegistryKey(), k -> new WorldAtlasData(world, summary, player, terrain, structures, landmarks));
     }
 
     public static boolean exists(World world) {
@@ -71,21 +68,10 @@ public class WorldAtlasData {
     private final Map<ChunkPos, TerrainTileProvider> debugBiomes = new HashMap<>();
     private final Map<ChunkPos, StructureTileProvider> debugStructures = new HashMap<>();
 
-    private static double regionDistance(ChunkPos r1, ChunkPos r2) {
-        int x = r2.x - r1.x;
-        int z = r2.z - r1.z;
-        return x * x + z * z;
-    }
-
-    public WorldAtlasData(World world, ClientPlayerEntity player) {
-        SurveyorExploration exploration = SurveyorClient.getExploration(player);
-
-        ChunkPos playerRegion = new ChunkPos(player.getChunkPos().getRegionX(), player.getChunkPos().getRegionZ());
-        WorldSummary.of(world).terrain().bitSet(exploration).entrySet().stream().sorted(Comparator.comparingDouble(e -> regionDistance(e.getKey(), playerRegion))).forEach(e -> {
-            onTerrainUpdated(world, WorldSummary.of(world).terrain(), e.getValue().stream().mapToObj(i -> new ChunkPos((e.getKey().x << RegionSummary.REGION_POWER) + (i / RegionSummary.REGION_SIZE),  (e.getKey().z << RegionSummary.REGION_POWER) + (i % RegionSummary.REGION_SIZE))).toList());
-        });
-        onStructuresAdded(world, WorldSummary.of(world).structures(), MapUtil.hashMultiMapOf(WorldSummary.of(world).structures().keySet(exploration)));
-        onLandmarksAdded(world, WorldSummary.of(world).landmarks(),  WorldSummary.of(world).landmarks().asMap(exploration));
+    public WorldAtlasData(World world, WorldSummary summary, ClientPlayerEntity player, Map<ChunkPos, BitSet> terrain, Multimap<RegistryKey<Structure>, ChunkPos> structures, Multimap<LandmarkType<?>, BlockPos> landmarks) {
+        onTerrainUpdated(world, summary.terrain(), WorldTerrainSummary.toKeys(terrain, player.getChunkPos()));
+        onStructuresAdded(world, summary.structures(), structures);
+        onLandmarksAdded(world, summary.landmarks(), landmarks);
         AntiqueAtlas.LOGGER.info("[Antique Atlas] Beginning to load terrain for {} - {} chunks available.", world.getRegistryKey().getValue(), terrainDeque.size());
     }
 
@@ -153,7 +139,7 @@ public class WorldAtlasData {
     private void addLandmark(Landmark<?> baseLandmark) {
         if (baseLandmark.type() == NetherPortalLandmark.TYPE) {
             NetherPortalLandmark landmark = (NetherPortalLandmark) baseLandmark;
-            addLandmarkMarker(landmark, MarkerTextures.getInstance().get(AntiqueAtlas.id("custom/nether_portal")));
+            addLandmarkMarker(landmark, MarkerTextures.getInstance().get(AntiqueAtlas.id("landmark/nether_portal")));
         } else if (baseLandmark.type() == PlayerDeathLandmark.TYPE) {
             PlayerDeathLandmark landmark = (PlayerDeathLandmark) baseLandmark;
 
@@ -177,8 +163,8 @@ public class WorldAtlasData {
         }
     }
 
-    public void onLandmarksAdded(World ignored, WorldLandmarks ignored2, Map<LandmarkType<?>, Map<BlockPos, Landmark<?>>> landmarks) {
-        landmarks.values().stream().flatMap(m -> m.values().stream()).forEach(this::addLandmark);
+    public void onLandmarksAdded(World ignored, WorldLandmarks worldLandmarks, Multimap<LandmarkType<?>, BlockPos> landmarks) {
+        landmarks.forEach((type, pos) -> this.addLandmark(worldLandmarks.get(type, pos)));
     }
 
     public void onLandmarksRemoved(World ignored, WorldLandmarks ignored2, Multimap<LandmarkType<?>, BlockPos> landmarks) {

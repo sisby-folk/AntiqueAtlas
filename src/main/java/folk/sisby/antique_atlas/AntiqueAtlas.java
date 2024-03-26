@@ -38,7 +38,7 @@ public class AntiqueAtlas implements ClientModInitializer {
         ResourceManagerHelper.get(ResourceType.CLIENT_RESOURCES).registerReloadListener(BiomeTileProviders.getInstance());
         ResourceManagerHelper.get(ResourceType.CLIENT_RESOURCES).registerReloadListener(MarkerTextures.getInstance());
 
-        SurveyorClientEvents.Register.worldLoad(id("world_data"), (world, ws, player) -> WorldAtlasData.getOrCreate(world, player));
+        SurveyorClientEvents.Register.worldLoad(id("world_data"), WorldAtlasData::create);
         SurveyorClientEvents.Register.terrainUpdated(id("world_data"), (world, terrain, chunks) -> {
             if (WorldAtlasData.exists(world)) WorldAtlasData.get(world).onTerrainUpdated(MinecraftClient.getInstance().world, terrain, chunks);
         });
