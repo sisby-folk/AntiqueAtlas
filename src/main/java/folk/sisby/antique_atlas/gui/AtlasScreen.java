@@ -593,6 +593,7 @@ public class AtlasScreen extends Component {
      * Set the pixel-to-block ratio, maintaining the current center of the screen with additional offset.
      */
     private void setMapScale(double scale, int addOffsetX, int addOffsetY) {
+        hoveredLandmark = null;
         double oldScale = mapScale;
         mapScale = Math.min(Math.max(scale, AntiqueAtlas.CONFIG.ui.minScale), AntiqueAtlas.CONFIG.ui.maxScale);
 

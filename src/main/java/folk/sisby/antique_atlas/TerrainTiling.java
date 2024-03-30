@@ -52,28 +52,23 @@ public class TerrainTiling {
     public static final Map<Biome, Boolean> swampCache = new Reference2BooleanArrayMap<>();
 
     protected static int priorityForBiome(Registry<Biome> biomeRegistry, Biome biome) {
-        if (!priorityCache.containsKey(biome)) {
+        return priorityCache.computeIfAbsent(biome, b -> {
             RegistryEntry<Biome> biomeEntry = biomeRegistry.getEntry(biome);
             if (biomeEntry.isIn(BiomeTags.IS_BEACH)) {
-                priorityCache.put(biome, BEACH_PRIORITY);
+                return BEACH_PRIORITY;
             } else if (biomeEntry.isIn(BiomeTags.IS_NETHER)) {
-                priorityCache.put(biome, 2);
+                return 2;
             } else {
-                priorityCache.put(biome, 1);
+                return 1;
             }
-        }
-        return priorityCache.get(biome);
+        });
     }
 
     protected static boolean isSwamp(Registry<Biome> biomeRegistry, Biome biome) {
-        if (!swampCache.containsKey(biome)) {
-            RegistryEntry<Biome> biomeEntry = biomeRegistry.getEntry(biome);
-            swampCache.put(biome, biomeEntry.isIn(ConventionalBiomeTags.SWAMP));
-        }
-        return swampCache.get(biome);
+        return swampCache.computeIfAbsent(biome, b -> biomeRegistry.getEntry(b).isIn(ConventionalBiomeTags.SWAMP));
     }
 
-    protected static Pair<TerrainTileProvider, TileElevation> frequencyToTexture(ChunkPos pos, int[][] possibleTiles, Registry<Biome> biomeRegistry, IndexedIterable<Biome> biomePalette) {
+    protected static Pair<TerrainTileProvider, TileElevation> frequencyToTexture(int[][] possibleTiles, Registry<Biome> biomeRegistry, IndexedIterable<Biome> biomePalette) {
         int elevationOrdinal = -1;
         int biomeIndex = -1;
         int bestFrequency = 0;
@@ -131,7 +126,7 @@ public class TerrainTiling {
             possibleTiles[TileElevation.fromBlocksAboveSea(height - world.getSeaLevel()).ordinal()][summary.biomes()[i]] += priorityForBiome(biomeRegistry, biome);
         }
 
-        return frequencyToTexture(pos, possibleTiles, biomeRegistry, biomePalette);
+        return frequencyToTexture(possibleTiles, biomeRegistry, biomePalette);
     }
 
     public static Pair<TerrainTileProvider, TileElevation> terrainToTileNether(World world, ChunkPos pos) {
@@ -181,6 +176,6 @@ public class TerrainTiling {
             }
         }
 
-        return frequencyToTexture(pos, possibleTiles, biomeRegistry, biomePalette);
+        return frequencyToTexture(possibleTiles, biomeRegistry, biomePalette);
     }
 }
