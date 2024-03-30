@@ -11,7 +11,6 @@ import net.fabricmc.fabric.api.client.networking.v1.ClientPlayConnectionEvents;
 import net.fabricmc.fabric.api.event.lifecycle.v1.CommonLifecycleEvents;
 import net.fabricmc.fabric.api.resource.ResourceManagerHelper;
 import net.fabricmc.loader.api.FabricLoader;
-import net.minecraft.client.MinecraftClient;
 import net.minecraft.registry.RegistryKeys;
 import net.minecraft.resource.ResourceType;
 import net.minecraft.util.Identifier;
@@ -38,22 +37,12 @@ public class AntiqueAtlas implements ClientModInitializer {
         ResourceManagerHelper.get(ResourceType.CLIENT_RESOURCES).registerReloadListener(BiomeTileProviders.getInstance());
         ResourceManagerHelper.get(ResourceType.CLIENT_RESOURCES).registerReloadListener(MarkerTextures.getInstance());
 
-        SurveyorClientEvents.Register.worldLoad(id("world_data"), WorldAtlasData::create);
-        SurveyorClientEvents.Register.terrainUpdated(id("world_data"), (world, terrain, chunks) -> {
-            if (WorldAtlasData.exists(world)) WorldAtlasData.get(world).onTerrainUpdated(MinecraftClient.getInstance().world, terrain, chunks);
-        });
-        SurveyorClientEvents.Register.structuresAdded(id("world_data"), (world, structures, summaries) -> {
-            if (WorldAtlasData.exists(world)) WorldAtlasData.get(world).onStructuresAdded(world, structures, summaries);
-        });
-        SurveyorClientEvents.Register.landmarksAdded(id("world_data"), (world, worldLandmarks, landmarks) -> {
-            if (WorldAtlasData.exists(world)) WorldAtlasData.get(world).onLandmarksAdded(world, worldLandmarks, landmarks);
-        });
-        SurveyorClientEvents.Register.landmarksRemoved(id("world_data"), (world, worldLandmarks, landmarks) -> {
-            if (WorldAtlasData.exists(world)) WorldAtlasData.get(world).onLandmarksRemoved(world, worldLandmarks, landmarks);
-        });
-        ClientTickEvents.END_WORLD_TICK.register((world -> {
-            if (WorldAtlasData.exists(world)) WorldAtlasData.get(world).tick(world);
-        }));
+        SurveyorClientEvents.Register.worldLoad(id("world_data"), WorldAtlasData::onLoad);
+        SurveyorClientEvents.Register.terrainUpdated(id("world_data"), (w, s, k) -> WorldAtlasData.getOrCreate(w).onTerrainUpdated(w, s, k));
+        SurveyorClientEvents.Register.structuresAdded(id("world_data"), (w, s, k) -> WorldAtlasData.getOrCreate(w).onStructuresAdded(w, s, k));
+        SurveyorClientEvents.Register.landmarksAdded(id("world_data"), (w, s, k) -> WorldAtlasData.getOrCreate(w).onLandmarksAdded(w, s, k));
+        SurveyorClientEvents.Register.landmarksRemoved(id("world_data"), (w, s, k) -> WorldAtlasData.getOrCreate(w).onLandmarksRemoved(w, s, k));
+        ClientTickEvents.END_WORLD_TICK.register((w -> WorldAtlasData.getOrCreate(w).tick(w)));
         CommonLifecycleEvents.TAGS_LOADED.register(((manager, client) -> BiomeTileProviders.getInstance().registerFallbacks(manager.get(RegistryKeys.BIOME))));
         ClientPlayConnectionEvents.DISCONNECT.register(((handler, client) -> BiomeTileProviders.getInstance().clearFallbacks()));
         ClientPlayConnectionEvents.DISCONNECT.register(((handler, client) -> WorldAtlasData.WORLDS.clear()));

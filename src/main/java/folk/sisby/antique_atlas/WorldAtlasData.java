@@ -16,7 +16,6 @@ import folk.sisby.surveyor.terrain.WorldTerrainSummary;
 import it.unimi.dsi.fastutil.Pair;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.network.ClientPlayerEntity;
-import net.minecraft.client.world.ClientWorld;
 import net.minecraft.registry.RegistryKey;
 import net.minecraft.text.MutableText;
 import net.minecraft.text.Text;
@@ -41,16 +40,16 @@ import java.util.concurrent.ConcurrentLinkedDeque;
 public class WorldAtlasData {
     public static final Map<RegistryKey<World>, WorldAtlasData> WORLDS = new HashMap<>();
 
-    public static WorldAtlasData create(ClientWorld world, WorldSummary summary, ClientPlayerEntity player, Map<ChunkPos, BitSet> terrain, Multimap<RegistryKey<Structure>, ChunkPos> structures, Multimap<LandmarkType<?>, BlockPos> landmarks) {
-        return WorldAtlasData.WORLDS.computeIfAbsent(world.getRegistryKey(), k -> new WorldAtlasData(world, summary, player, terrain, structures, landmarks));
+    public static WorldAtlasData getOrCreate(World world) {
+        return WorldAtlasData.WORLDS.computeIfAbsent(world.getRegistryKey(), k -> new WorldAtlasData());
     }
 
-    public static boolean exists(World world) {
-        return world != null && WorldAtlasData.WORLDS.containsKey(world.getRegistryKey());
-    }
-
-    public static WorldAtlasData get(World world) {
-        return WorldAtlasData.WORLDS.get(world.getRegistryKey());
+    public static void onLoad(World world, WorldSummary summary, ClientPlayerEntity player, Map<ChunkPos, BitSet> terrain, Multimap<RegistryKey<Structure>, ChunkPos> structures, Multimap<LandmarkType<?>, BlockPos> landmarks) {
+        WorldAtlasData data = getOrCreate(world);
+        data.onTerrainUpdated(world, summary.terrain(), WorldTerrainSummary.toKeys(terrain, player.getChunkPos()));
+        data.onStructuresAdded(world, summary.structures(), structures);
+        data.onLandmarksAdded(world, summary.landmarks(), landmarks);
+        AntiqueAtlas.LOGGER.info("[Antique Atlas] Beginning to load terrain for {} - {} chunks available.", world.getRegistryKey().getValue(), data.terrainDeque.size());
     }
 
     private final Map<ChunkPos, TileTexture> biomeTiles = new HashMap<>();
@@ -67,13 +66,6 @@ public class WorldAtlasData {
     private final Map<ChunkPos, String> debugStructurePredicates = new HashMap<>();
     private final Map<ChunkPos, TerrainTileProvider> debugBiomes = new HashMap<>();
     private final Map<ChunkPos, StructureTileProvider> debugStructures = new HashMap<>();
-
-    public WorldAtlasData(World world, WorldSummary summary, ClientPlayerEntity player, Map<ChunkPos, BitSet> terrain, Multimap<RegistryKey<Structure>, ChunkPos> structures, Multimap<LandmarkType<?>, BlockPos> landmarks) {
-        onTerrainUpdated(world, summary.terrain(), WorldTerrainSummary.toKeys(terrain, player.getChunkPos()));
-        onStructuresAdded(world, summary.structures(), structures);
-        onLandmarksAdded(world, summary.landmarks(), landmarks);
-        AntiqueAtlas.LOGGER.info("[Antique Atlas] Beginning to load terrain for {} - {} chunks available.", world.getRegistryKey().getValue(), terrainDeque.size());
-    }
 
     public void onTerrainUpdated(World world, WorldTerrainSummary ignored2, Collection<ChunkPos> chunks) {
         for (ChunkPos pos : chunks) {

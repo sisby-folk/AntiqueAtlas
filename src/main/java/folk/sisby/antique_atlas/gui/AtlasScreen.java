@@ -549,7 +549,7 @@ public class AtlasScreen extends Component {
 
     private void updateAtlasData() {
         if (MinecraftClient.getInstance().world != null) {
-            worldAtlasData = WorldAtlasData.get(MinecraftClient.getInstance().world);
+            worldAtlasData = WorldAtlasData.getOrCreate(MinecraftClient.getInstance().world);
         }
     }
 
