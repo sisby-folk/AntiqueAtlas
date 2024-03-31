@@ -39,14 +39,13 @@ Antique Atlas is designed to feel like your own explorer's memory, or a permanen
 
 - You can only see what you've seen before.
 - You can't "lose" your map in any way.
-- Death markers have a sense of humour.
+- Flavour text is written subjectively:
 
 ![grave style euphemisms](https://cdn.modrinth.com/data/Y5Ve4Ui4/images/199d515c53c2a984eaf21bdc542fb6834c2770ff.png)
 
 #### Don't Play the Map
 
-Antique Atlas is designed to keep your focus on your surroundings, not the map.<br/>
-Learning to navigate your surroundings and explore a minecraft world by eye is a lot of fun!<br/>
+Antique Atlas is designed to keep your focus on your surroundings, not the map.
 
 - The best view of the world is in-game - not the atlas!
 - The atlas stays on its own easily-accessible screen, no distracting minimap.
@@ -70,15 +69,18 @@ To improve this, add `namespace/atlas/biome/path.json` with `{ "parent": "minecr
 
 Structures can be similarly [tiled](https://github.com/sisby-folk/antique-atlas/blob/1.20/src/main/resources/assets/minecraft/atlas/structure/piece/jigsaw/single/pillager_outpost/watchtower.json) or [marked](https://github.com/sisby-folk/antique-atlas/blob/1.20/src/main/resources/assets/minecraft/atlas/structure/type/ocean_monument.json) - provided you're familiar with each type of structure identifier.
 
-Textures in these files are loaded from `textures/gui/tiles` and use an _autotile_-like format.<br/>
+Tile textures are loaded from `textures/gui/tiles` and use an _autotile_-like format.<br/>
 You can also add an [mcmeta file](https://github.com/sisby-folk/antique-atlas/blob/1.20/src/main/resources/assets/antique_atlas/textures/gui/tiles/structure/fortress/nether/nether_fortress_bridge_crossing.png.mcmeta) to adjust which other textures should "connect" and vice-versa.
 
 #### Markers
 
-Textures for markers are loaded from `textures/gui/markers` and are 32x32 by default.<br/>
-You can similarly add an [mcmceta file](https://github.com/sisby-folk/antique-atlas/blob/1.20/src/main/resources/assets/antique_atlas/textures/gui/markers/structure/end_city.png.mcmeta) to adjust size, offsets, and any custom mip levels.
+Marker textures are loaded from `textures/gui/markers` and are 32x32 by default.<br/>
+You can similarly add an [mcmceta file](https://github.com/sisby-folk/antique-atlas/blob/1.20/src/main/resources/assets/antique_atlas/textures/gui/markers/structure/end_city.png.mcmeta) to adjust size, offsets, and any custom mip levels.<br/>
+To add a player-placeable marker, put the texture in the `custom/` subfolder.
 
 To automatically mark a new non-structure point of interest, use Surveyor's [Landmark API](https://modrinth.com/mod/surveyor).
+
+To add a texture for a landmark type, name it `markers/landmark/type/namespace/path.png`, matching the type ID. 
 
 ---
 
