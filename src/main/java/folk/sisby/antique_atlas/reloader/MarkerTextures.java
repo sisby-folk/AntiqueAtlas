@@ -5,6 +5,7 @@ import com.mojang.serialization.codecs.RecordCodecBuilder;
 import folk.sisby.antique_atlas.AntiqueAtlas;
 import folk.sisby.antique_atlas.MarkerTexture;
 import folk.sisby.antique_atlas.util.CodecUtil;
+import folk.sisby.surveyor.landmark.LandmarkType;
 import net.fabricmc.fabric.api.resource.IdentifiableResourceReloadListener;
 import net.minecraft.resource.Resource;
 import net.minecraft.resource.ResourceManager;
@@ -30,18 +31,34 @@ public class MarkerTextures extends SinglePreparationResourceReloader<Map<Identi
     private final Map<Identifier, MarkerTexture> textures = new HashMap<>();
 
     public MarkerTexture get(Identifier id) {
-        return textures.getOrDefault(id, MarkerTexture.DEFAULT);
+        return textures.get(id);
     }
 
-    public Map<Identifier, MarkerTexture> getTextures() {
+    public MarkerTexture getOrDefault(Identifier id) {
+        return getOrDefault(id, MarkerTexture.DEFAULT);
+    }
+
+    public MarkerTexture getOrDefault(Identifier id, MarkerTexture defaultTexture) {
+        return textures.getOrDefault(id, defaultTexture);
+    }
+
+    public MarkerTexture getLandmarkType(LandmarkType<?> type) {
+        return getOrDefault(new Identifier(type.id().getNamespace(), "landmark/type/" + type.id().getPath()));
+    }
+
+    public MarkerTexture getLandmarkType(LandmarkType<?> type, String variant) {
+        return getOrDefault(new Identifier(type.id().getNamespace(), "landmark/type/" + type.id().getPath() + (variant == null ? "" : "/" + variant)));
+    }
+
+    public Map<Identifier, MarkerTexture> asMap() {
         return new HashMap<>(textures);
     }
 
     @Override
     protected Map<Identifier, MarkerTextureMeta> prepare(ResourceManager manager, Profiler profiler) {
         Map<Identifier, MarkerTextures.MarkerTextureMeta> textureMeta = new HashMap<>();
-        for (Map.Entry<Identifier, Resource> e : manager.findResources("textures/gui/markers", id -> id.getPath().endsWith(".png")).entrySet()) {
-            Identifier id = new Identifier(e.getKey().getNamespace(), e.getKey().getPath().substring("textures/gui/markers/".length(), e.getKey().getPath().length() - ".png".length()));
+        for (Map.Entry<Identifier, Resource> e : manager.findResources("textures/atlas/markers", id -> id.getPath().endsWith(".png")).entrySet()) {
+            Identifier id = new Identifier(e.getKey().getNamespace(), e.getKey().getPath().substring("textures/atlas/markers/".length(), e.getKey().getPath().length() - ".png".length()));
             try {
                 ResourceMetadata metadata = e.getValue().getMetadata();
                 textureMeta.put(id, metadata.decode(MarkerTextures.MarkerTextureMeta.METADATA).orElse(MarkerTextureMeta.DEFAULT));

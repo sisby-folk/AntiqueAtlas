@@ -208,7 +208,7 @@ public class StructureTileProviders extends JsonDataLoader implements Identifiab
                         if (fileJson.has("markers")) {
                             JsonElement markerJson = fileJson.get("markers");
                             Identifier markerTextureId = new Identifier(markerJson.getAsString());
-                            MarkerTexture texture = MarkerTextures.getInstance().getTextures().get(markerTextureId);
+                            MarkerTexture texture = MarkerTextures.getInstance().asMap().get(markerTextureId);
                             if (texture == null) throw new IllegalStateException("Marker texture %s does not exist!".formatted(markerTextureId));
                             AntiqueAtlas.CONFIG.structureMarkers.putIfAbsent(fileId.toString(), true);
                             if (AntiqueAtlas.CONFIG.structureMarkers.get(fileId.toString())) {

@@ -84,7 +84,7 @@ public class MarkerModalComponent extends Component {
         this.addChild(scroller);
 
         int typeCount = 0;
-        for (MarkerTexture texture : MarkerTextures.getInstance().getTextures().values()) {
+        for (MarkerTexture texture : MarkerTextures.getInstance().asMap().values()) {
             if (texture.keyId().getPath().startsWith("custom/")) typeCount++;
         }
         int allTypesWidth = typeCount *
@@ -101,7 +101,7 @@ public class MarkerModalComponent extends Component {
             }
         });
         int contentX = 0;
-        for (MarkerTexture texture : MarkerTextures.getInstance().getTextures().values()) {
+        for (MarkerTexture texture : MarkerTextures.getInstance().asMap().values()) {
             if (!texture.keyId().getPath().startsWith("custom/")) continue;
             MarkerTypeSelectorComponent markerGui = new MarkerTypeSelectorComponent(texture);
             typeRadioGroup.addButton(markerGui);

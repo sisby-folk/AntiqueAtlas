@@ -7,7 +7,6 @@ import folk.sisby.antique_atlas.util.Rect;
 import folk.sisby.surveyor.WorldSummary;
 import folk.sisby.surveyor.landmark.Landmark;
 import folk.sisby.surveyor.landmark.LandmarkType;
-import folk.sisby.surveyor.landmark.NetherPortalLandmark;
 import folk.sisby.surveyor.landmark.PlayerDeathLandmark;
 import folk.sisby.surveyor.landmark.SimplePointLandmark;
 import folk.sisby.surveyor.landmark.WorldLandmarks;
@@ -129,10 +128,7 @@ public class WorldAtlasData {
     }
 
     private void addLandmark(Landmark<?> baseLandmark) {
-        if (baseLandmark.type() == NetherPortalLandmark.TYPE) {
-            NetherPortalLandmark landmark = (NetherPortalLandmark) baseLandmark;
-            addLandmarkMarker(landmark, MarkerTextures.getInstance().get(AntiqueAtlas.id("landmark/nether_portal")));
-        } else if (baseLandmark.type() == PlayerDeathLandmark.TYPE) {
+        if (baseLandmark.type() == PlayerDeathLandmark.TYPE) {
             PlayerDeathLandmark landmark = (PlayerDeathLandmark) baseLandmark;
 
             AntiqueAtlasConfig.GraveStyle style = AntiqueAtlas.CONFIG.ui.graveStyle;
@@ -144,14 +140,9 @@ public class WorldAtlasData {
                 case GRAVE, ITEMS, DIED -> Text.translatable(key, Text.translatable("gui.antique_atlas.marker.death.%s.verb".formatted(style.toString().toLowerCase())).formatted(Formatting.RED), timeText).formatted(Formatting.GRAY);
                 case EUPHEMISMS -> Text.translatable(key, Text.translatable("gui.antique_atlas.marker.death.%s.verb.%s".formatted(style.toString().toLowerCase(), new Random(landmark.seed()).nextInt(11))).formatted(Formatting.RED), timeText).formatted(Formatting.GRAY);
             };
-            Identifier icon = switch (style) {
-                case CAUSE, GRAVE, DIED, EUPHEMISMS -> AntiqueAtlas.id("landmark/tomb");
-                case ITEMS -> AntiqueAtlas.id("landmark/bundle");
-            };
-
-            addLandmarkMarker(new PlayerDeathLandmark(landmark.pos(), landmark.owner(), text, landmark.created(), landmark.seed()), MarkerTextures.getInstance().get(icon));
+            addLandmarkMarker(new PlayerDeathLandmark(landmark.pos(), landmark.owner(), text, landmark.created(), landmark.seed()), MarkerTextures.getInstance().getLandmarkType(landmark.type(), style == AntiqueAtlasConfig.GraveStyle.ITEMS ? "items" : null));
         } else {
-            addLandmarkMarker(baseLandmark, MarkerTextures.getInstance().getTextures().getOrDefault(baseLandmark.texture(), MarkerTexture.DEFAULT));
+            addLandmarkMarker(baseLandmark, MarkerTextures.getInstance().getOrDefault(baseLandmark.texture(), MarkerTextures.getInstance().getLandmarkType(baseLandmark.type())));
         }
     }
 
@@ -198,7 +189,7 @@ public class WorldAtlasData {
         WorldSummary.of(world).landmarks().put(world, new SimplePointLandmark(
             blockPos,
             Uuids.getUuidFromProfile(MinecraftClient.getInstance().getSession().getProfile()),
-            DyeColor.BLUE,
+            DyeColor.BROWN,
             label,
             selectedTexture.keyId()
         ));
