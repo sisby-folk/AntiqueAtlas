@@ -79,7 +79,6 @@ if (System.getenv("MODRINTH_TOKEN")) {
         versionName = baseVersion
         versionType = 'release'
         uploadFile = remapJar
-        versionType = "beta"
         gameVersions = [libs.versions.mc.get()]
         loaders = ['quilt', 'fabric', 'forge']
         detectLoaders = false
