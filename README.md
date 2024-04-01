@@ -69,18 +69,18 @@ To improve this, add `namespace/atlas/biome/path.json` with `{ "parent": "minecr
 
 Structures can be similarly [tiled](https://github.com/sisby-folk/antique-atlas/blob/1.20/src/main/resources/assets/minecraft/atlas/structure/piece/jigsaw/single/pillager_outpost/watchtower.json) or [marked](https://github.com/sisby-folk/antique-atlas/blob/1.20/src/main/resources/assets/minecraft/atlas/structure/type/ocean_monument.json) - provided you're familiar with each type of structure identifier.
 
-Tile textures are loaded from `textures/atlas/tiles` and use an _autotile_-like format.<br/>
-You can also add an [mcmeta file](https://github.com/sisby-folk/antique-atlas/blob/1.20/src/main/resources/assets/antique_atlas/textures/atlas/tiles/structure/fortress/nether/nether_fortress_bridge_crossing.png.mcmeta) to adjust which other textures should "connect" and vice-versa.
+Tile textures are loaded from `textures/atlas/tile` and use an _autotile_-like format.<br/>
+You can also add an [mcmeta file](https://github.com/sisby-folk/antique-atlas/blob/1.20/src/main/resources/assets/antique_atlas/textures/atlas/tile/structure/fortress/nether/nether_fortress_bridge_crossing.png.mcmeta) to adjust which other textures should "connect" and vice-versa.
 
 #### Markers
 
-Marker textures are loaded from `textures/atlas/markers` and are 32x32 by default.<br/>
-You can similarly add an [mcmceta file](https://github.com/sisby-folk/antique-atlas/blob/1.20/src/main/resources/assets/antique_atlas/textures/atlas/markers/structure/end_city.png.mcmeta) to adjust size, offsets, and any custom mip levels.<br/>
+Marker textures are loaded from `textures/atlas/marker` and are 32x32 by default.<br/>
+You can similarly add an [mcmceta file](https://github.com/sisby-folk/antique-atlas/blob/1.20/src/main/resources/assets/antique_atlas/textures/atlas/marker/structure/end_city.png.mcmeta) to adjust size, offsets, and any custom mip levels.<br/>
 To add a player-placeable marker, put the texture in the `custom/` subfolder.
 
 To automatically mark a new non-structure point of interest, use Surveyor's [Landmark API](https://modrinth.com/mod/surveyor).
 
-Textures for landmark types will be used automatically when named `namespace/textures/atlas/markers/landmark/type/path.png`. 
+Textures for landmark types will be used automatically when named `namespace/textures/atlas/marker/landmark/type/path.png`. 
 
 ---
 

@@ -9,7 +9,7 @@ import java.util.stream.Collectors;
 
 public final class TileTexture {
     public static TileTexture empty(Identifier id, boolean innerBorder) {
-        return new TileTexture(new Identifier(id.getNamespace(), "textures/atlas/tiles/%s.png".formatted(id.getPath())), innerBorder, new ReferenceOpenHashSet<>(), new ReferenceOpenHashSet<>(), new ReferenceOpenHashSet<>());
+        return new TileTexture(new Identifier(id.getNamespace(), "textures/atlas/tile/%s.png".formatted(id.getPath())), innerBorder, new ReferenceOpenHashSet<>(), new ReferenceOpenHashSet<>(), new ReferenceOpenHashSet<>());
     }
 
     public static final TileTexture DEFAULT = empty(AntiqueAtlas.id("test"), false);
@@ -28,7 +28,7 @@ public final class TileTexture {
     }
 
     public String displayId() {
-        String trimmedPath = id.getPath().substring("textures/atlas/tiles/".length(), id.getPath().length() - 4);
+        String trimmedPath = id.getPath().substring("textures/atlas/tile/".length(), id.getPath().length() - 4);
         return id.getNamespace().equals(AntiqueAtlas.ID) ? trimmedPath : new Identifier(id.getNamespace(), trimmedPath).toString();
     }
 
