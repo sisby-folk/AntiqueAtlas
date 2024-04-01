@@ -160,10 +160,11 @@ public class WorldAtlasData {
     }
 
     public static boolean landmarkIsEditable(Landmark<?> landmark) {
-        return !(MinecraftClient.getInstance().isIntegratedServerRunning() ? landmark.owner() == null : !Uuids.getUuidFromProfile(MinecraftClient.getInstance().getSession().getProfile()).equals(landmark.owner()));
+        return landmark.owner() != null && (MinecraftClient.getInstance().isIntegratedServerRunning() || Uuids.getUuidFromProfile(MinecraftClient.getInstance().getSession().getProfile()).equals(landmark.owner()));
     }
 
     public boolean deleteLandmark(World world, Landmark<?> landmark) {
+        if (!landmarkIsEditable(landmark)) return false;
         WorldSummary.of(world).landmarks().remove(world, landmark.type(), landmark.pos());
         return true;
     }
