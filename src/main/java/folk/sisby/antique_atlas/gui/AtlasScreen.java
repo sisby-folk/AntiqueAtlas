@@ -692,7 +692,7 @@ public class AtlasScreen extends Component {
                 int markerY = worldZToScreenY(landmark.pos().getZ());
 
                 double squaredDistance = Vector2i.distanceSquared(markerX + texture.offsetX() + texture.textureWidth() / 2, markerY + texture.offsetY() + texture.textureHeight() / 2, mouseX, mouseY);
-                if (squaredDistance < bestDistance && squaredDistance < (texture.textureWidth() * texture.textureHeight()) / 4.0) {
+                if (squaredDistance > 0 && squaredDistance < bestDistance && squaredDistance < (texture.textureWidth() * texture.textureHeight()) / 4.0) {
                     bestDistance = squaredDistance;
                     hoveredLandmark = landmark;
                 }
