@@ -15,6 +15,11 @@ public class AntiqueAtlasConfig extends WrappedConfig {
         DIED,
         EUPHEMISMS
     }
+    public enum FallbackHandling {
+        TEST,
+        MISSING,
+        CRASH
+    }
 
     public final UISection ui = new UISection();
     public final DebugSection debug = new DebugSection();
@@ -58,6 +63,9 @@ public class AntiqueAtlasConfig extends WrappedConfig {
     }
 
     public static final class DebugSection implements Section {
+        @Comment("How to handle biomes that aren't in any minecraft, conventional, or forge biome tags")
+        public final FallbackHandling fallbackFailHandling = FallbackHandling.MISSING;
+
         @Comment("If true, debug information about hovered tiles and markers will be shown.")
         public final Boolean debugRender = false;
     }

@@ -8,6 +8,7 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonPrimitive;
 import folk.sisby.antique_atlas.AntiqueAtlas;
+import folk.sisby.antique_atlas.AntiqueAtlasConfig;
 import folk.sisby.antique_atlas.TerrainTileProvider;
 import folk.sisby.antique_atlas.TileElevation;
 import folk.sisby.antique_atlas.TileTexture;
@@ -67,6 +68,7 @@ public class BiomeTileProviders extends JsonDataLoader implements IdentifiableRe
                 AntiqueAtlas.LOGGER.error("[Antique Atlas] Fallback biome for {} is {}, which has no defined tile provider.", biomeId, fallbackBiome);
             } else {
                 AntiqueAtlas.LOGGER.error("[Antique Atlas] No fallback could be found for {}. This shouldn't happen! This means the biome is not in ANY conventional or vanilla tag on the client!", biomeId);
+                if (AntiqueAtlas.CONFIG.debug.fallbackFailHandling == AntiqueAtlasConfig.FallbackHandling.CRASH) throw new IllegalStateException("Antique Atlas fallback biome registration failed! Fix the missing biome or change fallbackFailHandling in antique_atlas.toml");
             }
         }
     }
