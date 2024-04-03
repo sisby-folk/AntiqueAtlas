@@ -18,10 +18,12 @@ import folk.sisby.antique_atlas.gui.core.ScrollBoxComponent;
 import folk.sisby.antique_atlas.gui.tiles.SubTile;
 import folk.sisby.antique_atlas.gui.tiles.SubTileQuartet;
 import folk.sisby.antique_atlas.gui.tiles.TileRenderIterator;
+import folk.sisby.antique_atlas.util.DrawBatcher;
 import folk.sisby.antique_atlas.util.DrawUtil;
 import folk.sisby.antique_atlas.util.MathUtil;
 import folk.sisby.antique_atlas.util.Rect;
 import folk.sisby.surveyor.landmark.Landmark;
+import it.unimi.dsi.fastutil.objects.Reference2ObjectArrayMap;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.option.KeyBinding;
@@ -40,6 +42,8 @@ import org.joml.Vector2i;
 import org.lwjgl.glfw.GLFW;
 import org.lwjgl.opengl.GL11;
 
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.Map;
 
@@ -667,12 +671,20 @@ public class AtlasScreen extends Component {
         context.getMatrices().push();
         context.getMatrices().translate(mapStartScreenX, mapStartScreenY, 0);
 
+        Map<TileTexture, Collection<SubTile>> tileTextures = new Reference2ObjectArrayMap<>();
         for (SubTileQuartet subTiles : tiles) {
             for (SubTile subtile : subTiles) {
                 if (subtile == null || subtile.texture == null) continue;
-                context.drawTexture(subtile.texture.id(), subtile.x * tileHalfSize, subtile.y * tileHalfSize, tileHalfSize, tileHalfSize, subtile.getTextureU() * 8, subtile.getTextureV() * 8, 8, 8, 32, 48);
+                tileTextures.computeIfAbsent(subtile.texture, k -> new ArrayList<>()).add(subtile.copy());
             }
         }
+        tileTextures.forEach((texture, subtiles) -> {
+            try (DrawBatcher batcher = new DrawBatcher(context, texture.id(), 32, 48)) {
+                for (SubTile subtile : subtiles) {
+                    batcher.add(subtile.x * tileHalfSize, subtile.y * tileHalfSize, tileHalfSize, tileHalfSize, subtile.getTextureU() * 8, subtile.getTextureV() * 8, 8, 8);
+                }
+            }
+        });
 
         context.getMatrices().pop();
 

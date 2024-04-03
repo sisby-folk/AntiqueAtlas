@@ -53,6 +53,14 @@ public class SubTile {
         };
     }
 
+    public SubTile copy() {
+        SubTile copy = new SubTile(part);
+        copy.x = this.x;
+        copy.y = this.y;
+        copy.shape = this.shape;
+        return copy;
+    }
+
     public enum Shape {
         CONVEX, CONCAVE, HORIZONTAL, VERTICAL, FULL, SINGLE_OBJECT
     }
