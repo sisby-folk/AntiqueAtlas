@@ -163,6 +163,7 @@ public class StructureTileProviders extends JsonDataLoader implements Identifiab
 
     @Override
     protected void apply(Map<Identifier, JsonElement> prepared, ResourceManager manager, Profiler profiler) {
+        AntiqueAtlas.LOGGER.info("[Antique Atlas] Reloading Structure Tile / Marker Providers...");
         Map<Identifier, TileTexture> textures = TileTextures.getInstance().getTextures();
         Set<TileTexture> unusedTextures = new HashSet<>(textures.values().stream().filter(t -> t.id().getPath().startsWith("structure")).toList());
 

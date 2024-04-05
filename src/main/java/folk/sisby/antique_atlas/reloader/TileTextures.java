@@ -61,6 +61,7 @@ public class TileTextures extends SinglePreparationResourceReloader<Map<Identifi
 
     @Override
     protected void apply(Map<Identifier, TileTextureMeta> prepared, ResourceManager manager, Profiler profiler) {
+        AntiqueAtlas.LOGGER.info("[Antique Atlas] Reloading Tile Textures...");
         // Validate IDs
         prepared.forEach((id, meta) -> meta.warnMissing(id, prepared.keySet()));
 

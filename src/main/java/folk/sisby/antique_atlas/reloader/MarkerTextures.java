@@ -72,6 +72,7 @@ public class MarkerTextures extends SinglePreparationResourceReloader<Map<Identi
 
     @Override
     protected void apply(Map<Identifier, MarkerTextureMeta> prepared, ResourceManager manager, Profiler profiler) {
+        AntiqueAtlas.LOGGER.info("[Antique Atlas] Reloading Marker Textures...");
         textures.clear();
         prepared.forEach((id, meta) -> textures.put(id, meta.build(id)));
     }
