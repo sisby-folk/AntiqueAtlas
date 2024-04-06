@@ -1,5 +1,5 @@
 [versions]
-loom = "1.4.+"
+loom = "1.6.+"
 githubRelease = "2.4.1"
 minotaur = "2.6.0"
 
