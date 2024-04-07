@@ -13,6 +13,7 @@ import net.minecraft.client.network.ClientPlayerEntity;
 import net.minecraft.sound.SoundCategory;
 import net.minecraft.sound.SoundEvents;
 import net.minecraft.text.Text;
+import net.minecraft.util.DyeColor;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
@@ -25,12 +26,13 @@ import java.util.List;
  *
  * @author Hunternif
  */
-public class MarkerModalComponent extends Component {
+public class MarkerModal extends Component {
     private World world;
     private int markerX;
     private int markerZ;
 
     MarkerTexture selectedTexture = MarkerTexture.DEFAULT;
+    DyeColor selectedColor = DyeColor.GREEN;
 
     private static final int BUTTON_WIDTH = 100;
     private static final int BUTTON_SPACING = 4;
@@ -41,12 +43,14 @@ public class MarkerModalComponent extends Component {
     private ButtonWidget btnDone;
     private ButtonWidget btnCancel;
     private TextFieldWidget textField;
-    private ScrollBoxComponent scroller;
-    private ToggleButtonRadioGroup<MarkerTypeSelectorComponent> typeRadioGroup;
+    private ScrollBoxComponent textureScrollBox;
+    private ToggleButtonRadioGroup<TexturePreviewButton<MarkerTexture>> textureRadioGroup;
+    private ScrollBoxComponent colorScrollBox;
+    private ToggleButtonRadioGroup<TexturePreviewButton<DyeColor>> colorRadioGroup;
 
     private final List<IMarkerTypeSelectListener> markerListeners = new ArrayList<>();
 
-    MarkerModalComponent() {
+    MarkerModal() {
     }
 
     void setMarkerData(World world, int markerX, int markerZ) {
@@ -64,7 +68,7 @@ public class MarkerModalComponent extends Component {
         super.init();
 
         addDrawableChild(btnDone = ButtonWidget.builder(Text.translatable("gui.done"), (button) -> {
-            ((AtlasScreen) MinecraftClient.getInstance().currentScreen).getworldAtlasData().placeCustomMarker(world, selectedTexture, Text.literal(textField.getText()), new BlockPos(markerX, 0, markerZ));
+            ((AtlasScreen) MinecraftClient.getInstance().currentScreen).getworldAtlasData().placeCustomMarker(world, selectedTexture, selectedColor, Text.literal(textField.getText()), new BlockPos(markerX, 0, markerZ));
             ((AtlasScreen) MinecraftClient.getInstance().currentScreen).updateBookmarkerList();
             ClientPlayerEntity player = MinecraftClient.getInstance().player;
             world.playSound(player, player.getBlockPos(),
@@ -78,46 +82,71 @@ public class MarkerModalComponent extends Component {
         textField.setEditable(true);
         textField.setFocusUnlocked(true);
         textField.setFocused(true);
+        textField.setPlaceholder(Text.translatable("gui.antique_atlas.marker.label"));
 
-        scroller = new ScrollBoxComponent();
-        scroller.setWheelScrollsHorizontally();
-        this.addChild(scroller);
+        textureScrollBox = new ScrollBoxComponent();
+        textureScrollBox.setWheelScrollsHorizontally();
+        this.addChild(textureScrollBox);
 
         int typeCount = 0;
         for (MarkerTexture texture : MarkerTextures.getInstance().asMap().values()) {
             if (texture.keyId().getPath().startsWith("custom/")) typeCount++;
         }
-        int allTypesWidth = typeCount *
-            (MarkerTypeSelectorComponent.FRAME_SIZE + TYPE_SPACING) - TYPE_SPACING;
-        int scrollerWidth = Math.min(allTypesWidth, 240);
-        scroller.setViewportSize(scrollerWidth, MarkerTypeSelectorComponent.FRAME_SIZE + TYPE_SPACING);
-        scroller.setGuiCoords((this.width - scrollerWidth) / 2, this.height / 2 - 25);
+        int scrollerWidth = Math.min(typeCount * (TexturePreviewButton.FRAME_SIZE + TYPE_SPACING) - TYPE_SPACING, 240);
+        textureScrollBox.setViewportSize(scrollerWidth, TexturePreviewButton.FRAME_SIZE + TYPE_SPACING);
+        textureScrollBox.setGuiCoords((this.width - scrollerWidth) / 2, this.height / 2 - 55);
 
-        typeRadioGroup = new ToggleButtonRadioGroup<>();
-        typeRadioGroup.addListener(button -> {
-            selectedTexture = button.getMarkerType();
+        textureRadioGroup = new ToggleButtonRadioGroup<>();
+        textureRadioGroup.addListener(button -> {
+            selectedTexture = button.getValue();
             for (IMarkerTypeSelectListener listener : markerListeners) {
-                listener.onSelectMarkerType(button.getMarkerType());
+                listener.onSelectMarkerType(button.getValue());
             }
         });
         int contentX = 0;
         for (MarkerTexture texture : MarkerTextures.getInstance().asMap().values()) {
             if (!texture.keyId().getPath().startsWith("custom/")) continue;
-            MarkerTypeSelectorComponent markerGui = new MarkerTypeSelectorComponent(texture);
-            typeRadioGroup.addButton(markerGui);
+            TexturePreviewButton<MarkerTexture> markerGui = new TexturePreviewButton<>(texture, texture.id(), texture.textureWidth(), texture.textureHeight(), 0, null);
+            textureRadioGroup.addButton(markerGui);
             if (selectedTexture.equals(texture)) {
-                typeRadioGroup.setSelectedButton(markerGui);
+                textureRadioGroup.setSelectedButton(markerGui);
             }
-            scroller.addContent(markerGui).setRelativeX(contentX);
-            contentX += MarkerTypeSelectorComponent.FRAME_SIZE + TYPE_SPACING;
+            textureScrollBox.addContent(markerGui).setRelativeX(contentX);
+            contentX += TexturePreviewButton.FRAME_SIZE + TYPE_SPACING;
+        }
+        
+        // Color
+
+        colorScrollBox = new ScrollBoxComponent();
+        colorScrollBox.setWheelScrollsHorizontally();
+        this.addChild(colorScrollBox);
+
+        int colorScrollWidth = Math.min(DyeColor.values().length * (TexturePreviewButton.FRAME_SIZE + TYPE_SPACING) - TYPE_SPACING, 240);
+        colorScrollBox.setViewportSize(colorScrollWidth, TexturePreviewButton.FRAME_SIZE + TYPE_SPACING);
+        colorScrollBox.setGuiCoords((this.width - colorScrollWidth) / 2, this.height / 2 - 5);
+
+        colorRadioGroup = new ToggleButtonRadioGroup<>();
+        colorRadioGroup.addListener(button -> selectedColor = button.getValue());
+        int colorContentX = 0;
+        for (DyeColor color : DyeColor.values()) {
+            TexturePreviewButton<DyeColor> colorGui = new TexturePreviewButton<>(color, BookmarkButton.TEXTURE_LEFT, BookmarkButton.WIDTH, BookmarkButton.HEIGHT, BookmarkButton.HEIGHT, color.getColorComponents());
+            colorRadioGroup.addButton(colorGui);
+            if (selectedColor.equals(color)) {
+                colorRadioGroup.setSelectedButton(colorGui);
+            }
+            colorScrollBox.addContent(colorGui).setRelativeX(colorContentX);
+            colorContentX += TexturePreviewButton.FRAME_SIZE + TYPE_SPACING;
         }
     }
 
     @Override
     public void closeChild() {
         super.closeChild();
-        if (scroller != null) {
-            scroller.closeChild();
+        if (textureScrollBox != null) {
+            textureScrollBox.closeChild();
+        }
+        if (colorScrollBox != null) {
+            colorScrollBox.closeChild();
         }
     }
 
@@ -139,19 +168,20 @@ public class MarkerModalComponent extends Component {
     @Override
     public void render(DrawContext context, int mouseX, int mouseY, float partialTick) {
         this.renderBackground(context);
-        drawCentered(context, Text.translatable("gui.antique_atlas.marker.label"), this.height / 2 - 97, 0xffffff, true);
         textField.render(context, mouseX, mouseY, partialTick);
-        drawCentered(context, Text.translatable("gui.antique_atlas.marker.type"), this.height / 2 - 44, 0xffffff, true);
-
         // Darker background for marker type selector
-        context.fillGradient(scroller.getGuiX() - TYPE_BG_FRAME, scroller.getGuiY() - TYPE_BG_FRAME,
-            scroller.getGuiX() + scroller.getWidth() + TYPE_BG_FRAME,
-            scroller.getGuiY() + scroller.getHeight() + TYPE_BG_FRAME,
+        context.fillGradient(textureScrollBox.getGuiX() - TYPE_BG_FRAME, textureScrollBox.getGuiY() - TYPE_BG_FRAME,
+            textureScrollBox.getGuiX() + textureScrollBox.getWidth() + TYPE_BG_FRAME,
+            textureScrollBox.getGuiY() + textureScrollBox.getHeight() + TYPE_BG_FRAME,
+            0x88101010, 0x99101010);
+        context.fillGradient(colorScrollBox.getGuiX() - TYPE_BG_FRAME, colorScrollBox.getGuiY() - TYPE_BG_FRAME,
+            colorScrollBox.getGuiX() + colorScrollBox.getWidth() + TYPE_BG_FRAME,
+            colorScrollBox.getGuiY() + colorScrollBox.getHeight() + TYPE_BG_FRAME,
             0x88101010, 0x99101010);
         super.render(context, mouseX, mouseY, partialTick);
     }
 
     interface IMarkerTypeSelectListener {
-        void onSelectMarkerType(MarkerTexture markerTexture);
+        void onSelectMarkerType(MarkerTexture texture);
     }
 }

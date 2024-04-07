@@ -17,7 +17,7 @@ import java.util.Map;
  * A scale bar that displays pixel-to-block ratio. To fit into the overall
  * Atlas style it is rendered at half-scale.
  */
-public class BarScaleComponent extends Component {
+public class ScaleBar extends Component {
     public static final Identifier SCALEBAR_4 = AntiqueAtlas.id("textures/gui/scalebar/scalebar_4.png");
     public static final Identifier SCALEBAR_8 = AntiqueAtlas.id("textures/gui/scalebar/scalebar_8.png");
     public static final Identifier SCALEBAR_16 = AntiqueAtlas.id("textures/gui/scalebar/scalebar_16.png");
@@ -49,7 +49,7 @@ public class BarScaleComponent extends Component {
      */
     private double mapScale = 1;
 
-    BarScaleComponent() {
+    ScaleBar() {
         setSize(WIDTH, HEIGHT);
     }
 

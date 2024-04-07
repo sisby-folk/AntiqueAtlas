@@ -5,11 +5,10 @@
   "gui.antique_atlas.followPlayer": "Привязать к игроку",
   "gui.antique_atlas.hideMarkers": "Скрыть метки",
   "gui.antique_atlas.showMarkers": "Показать метки",
-  "gui.antique_atlas.marker.label": "Метка:",
-  "gui.antique_atlas.marker.type": "Тип:",
-  "gui.antique_atlas.marker.structure.tag.village": "Деревня",
-  "gui.antique_atlas.marker.structure.type.ocean_monument": "Морской монумент",
-  "gui.antique_atlas.marker.structure.type.woodland_mansion": "Лесной особняк",
+  "gui.antique_atlas.marker.label": "Метка",
+  "structure.tag.minecraft.village": "Деревня",
+  "structure.type.minecraft.ocean_monument": "Морской монумент",
+  "structure.type.minecraft.woodland_mansion": "Лесной особняк",
   "key.antique_atlas.open": "Открыть атлас",
   "key.antique_atlas.category": "Antique Atlas"
 }

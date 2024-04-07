@@ -11,12 +11,12 @@ import org.lwjgl.opengl.GL11;
 
 import java.util.Collections;
 
-public class FollowButtonComponent extends ButtonComponent {
+public class PlayerFollowButton extends ButtonComponent {
     public static final Identifier BTN_POSITION = AntiqueAtlas.id("textures/gui/position.png");
     public static final int WIDTH = 11;
     public static final int HEIGHT = 11;
 
-    public FollowButtonComponent() {
+    public PlayerFollowButton() {
         setSize(WIDTH, HEIGHT);
     }
 

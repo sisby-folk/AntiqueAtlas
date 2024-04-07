@@ -5,9 +5,8 @@
   "gui.antique_atlas.followPlayer": "Følg spiller",
   "gui.antique_atlas.hideMarkers": "Skjul markører",
   "gui.antique_atlas.showMarkers": "Vis markører",
-  "gui.antique_atlas.marker.label": "Mærkat:",
-  "gui.antique_atlas.marker.type": "Type:",
-  "gui.antique_atlas.marker.structure.tag.village": "Landsby",
+  "gui.antique_atlas.marker.label": "Mærkat",
+  "structure.tag.minecraft.village": "Landsby",
   "key.antique_atlas.open": "Åben Atlas",
   "key.antique_atlas.category": "Antique Atlas"
 }

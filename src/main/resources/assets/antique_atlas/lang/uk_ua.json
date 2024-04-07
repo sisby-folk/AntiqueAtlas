@@ -5,11 +5,10 @@
   "gui.antique_atlas.followPlayer": "Сфокусуватися на гравці",
   "gui.antique_atlas.hideMarkers": "Приховати мітки",
   "gui.antique_atlas.showMarkers": "Показати мітки",
-  "gui.antique_atlas.marker.label": "Ярлик:",
-  "gui.antique_atlas.marker.type": "Тип:",
-  "gui.antique_atlas.marker.structure.tag.village": "Село",
-  "gui.antique_atlas.marker.structure.type.ocean_monument": "Океанічний монумент",
-  "gui.antique_atlas.marker.structure.type.woodland_mansion": "Лісовий маєток",
+  "gui.antique_atlas.marker.label": "Ярлик",
+  "structure.tag.minecraft.village": "Село",
+  "structure.type.minecraft.ocean_monument": "Океанічний монумент",
+  "structure.type.minecraft.woodland_mansion": "Лісовий маєток",
   "key.antique_atlas.open": "Відкрити атлас",
   "key.antique_atlas.category": "Антикварний атлас"
 }

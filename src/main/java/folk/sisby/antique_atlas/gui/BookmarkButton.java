@@ -14,8 +14,8 @@ import java.util.Collections;
 public class BookmarkButton extends ToggleButtonComponent {
     public static final Identifier TEXTURE_LEFT = AntiqueAtlas.id("textures/gui/bookmark_left.png");
     public static final Identifier TEXTURE_RIGHT = AntiqueAtlas.id("textures/gui/bookmark_right.png");
-    private static final int WIDTH = 24;
-    private static final int HEIGHT = 18;
+    public static final int WIDTH = 24;
+    public static final int HEIGHT = 18;
 
     private Text title;
     private Identifier iconTexture;

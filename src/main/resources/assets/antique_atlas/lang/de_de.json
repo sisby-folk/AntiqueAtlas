@@ -5,9 +5,8 @@
   "gui.antique_atlas.followPlayer": "Spieler folgen",
   "gui.antique_atlas.hideMarkers": "Markierungen verstecken",
   "gui.antique_atlas.showMarkers": "Markierungen zeigen",
-  "gui.antique_atlas.marker.label": "Bezeichnung:",
-  "gui.antique_atlas.marker.type": "Typ:",
-  "gui.antique_atlas.marker.structure.tag.village": "Dorf",
+  "gui.antique_atlas.marker.label": "Bezeichnung",
+  "structure.tag.minecraft.village": "Dorf",
   "key.antique_atlas.open": "Atlas öffnen",
   "key.antique_atlas.category": "Antique Atlas"
 }

@@ -5,9 +5,8 @@
   "gui.antique_atlas.followPlayer": "Seguir jugador",
   "gui.antique_atlas.hideMarkers": "Ocultar marcadores",
   "gui.antique_atlas.showMarkers": "Mostrar marcadores",
-  "gui.antique_atlas.marker.label": "Etiqueta:",
-  "gui.antique_atlas.marker.type": "Tipo:",
-  "gui.antique_atlas.marker.structure.tag.village": "Aldea",
+  "gui.antique_atlas.marker.label": "Etiqueta",
+  "structure.tag.minecraft.village": "Aldea",
   "key.antique_atlas.open": "Abrir Atlas",
   "key.antique_atlas.category": "Antique Atlas"
 }

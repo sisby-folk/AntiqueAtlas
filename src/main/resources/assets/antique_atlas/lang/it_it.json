@@ -5,7 +5,6 @@
   "gui.antique_atlas.followPlayer": "Segui giocatore",
   "gui.antique_atlas.hideMarkers": "Nascondi marcatori",
   "gui.antique_atlas.showMarkers": "Mostra marcatori",
-  "gui.antique_atlas.marker.label": "Etichetta:",
-  "gui.antique_atlas.marker.type": "Tipo:",
-  "gui.antique_atlas.marker.structure.tag.village": "Villaggio"
+  "gui.antique_atlas.marker.label": "Etichetta",
+  "structure.tag.minecraft.village": "Villaggio"
 }

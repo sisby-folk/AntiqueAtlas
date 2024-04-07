@@ -161,7 +161,7 @@ public class AtlasScreen extends Component {
     /**
      * Button for restoring player's position at the center of the Atlas.
      */
-    private final FollowButtonComponent btnPosition;
+    private final PlayerFollowButton btnPosition;
 
 
     // Navigation ==============================================================
@@ -204,7 +204,7 @@ public class AtlasScreen extends Component {
      */
     private boolean followPlayer;
 
-    private final BarScaleComponent scaleBar = new BarScaleComponent();
+    private final ScaleBar scaleBar = new ScaleBar();
 
     private final ScrollBoxComponent markers = new ScrollBoxComponent();
 
@@ -225,11 +225,9 @@ public class AtlasScreen extends Component {
 
     private Landmark<?> hoveredLandmark = null;
 
-    private final MarkerModalComponent markerFinalizer = new MarkerModalComponent();
-    /**
-     * Displayed where the marker is about to be placed when the Finalizer GUI is on.
-     */
-    private final BlinkingMarkerComponent blinkingIcon = new BlinkingMarkerComponent();
+    private final MarkerModal markerModal = new MarkerModal();
+
+    private final BlinkingMarkerComponent markerCursor = new BlinkingMarkerComponent();
 
     // Misc stuff ==============================================================
 
@@ -262,9 +260,9 @@ public class AtlasScreen extends Component {
         setMapScale(0.5);
         followPlayer = true;
 
-        btnPosition = new FollowButtonComponent();
+        btnPosition = new PlayerFollowButton();
         btnPosition.setEnabled(!followPlayer);
-        addChild(btnPosition).offsetGuiCoords(WIDTH - MAP_BORDER_WIDTH - FollowButtonComponent.WIDTH + (AntiqueAtlas.CONFIG.ui.fullscreen ? 0 : 1), HEIGHT - MAP_BORDER_HEIGHT - FollowButtonComponent.HEIGHT + (AntiqueAtlas.CONFIG.ui.fullscreen ? 0 : -2));
+        addChild(btnPosition).offsetGuiCoords(WIDTH - MAP_BORDER_WIDTH - PlayerFollowButton.WIDTH + (AntiqueAtlas.CONFIG.ui.fullscreen ? 0 : 1), HEIGHT - MAP_BORDER_HEIGHT - PlayerFollowButton.HEIGHT + (AntiqueAtlas.CONFIG.ui.fullscreen ? 0 : -2));
         IButtonListener positionListener = button -> {
             selectedButton = button;
             if (button.equals(btnPosition)) {
@@ -288,11 +286,11 @@ public class AtlasScreen extends Component {
 
                 // While holding shift, we create a marker on the player's position
                 if (hasShiftDown()) {
-                    markerFinalizer.setMarkerData(player.getEntityWorld(), player.getBlockX(), player.getBlockZ());
-                    addChild(markerFinalizer);
+                    markerModal.setMarkerData(player.getEntityWorld(), player.getBlockX(), player.getBlockZ());
+                    addChild(markerModal);
 
-                    blinkingIcon.setTexture(markerFinalizer.selectedTexture.id(), markerFinalizer.selectedTexture.textureWidth(), markerFinalizer.selectedTexture.textureHeight());
-                    addChildBehind(markerFinalizer, blinkingIcon).setRelativeCoords(worldXToScreenX((int) player.getX()) - getGuiX() - MARKER_SIZE / 2, worldZToScreenY((int) player.getZ()) - getGuiY() - MARKER_SIZE / 2);
+                    markerCursor.setTexture(markerModal.selectedTexture.id(), markerModal.selectedTexture.textureWidth(), markerModal.selectedTexture.textureHeight());
+                    addChildBehind(markerModal, markerCursor).setRelativeCoords(worldXToScreenX((int) player.getX()) - getGuiX() - MARKER_SIZE / 2, worldZToScreenY((int) player.getZ()) - getGuiY() - MARKER_SIZE / 2);
 
                     // Un-press all keys to prevent player from walking infinitely:
                     KeyBinding.unpressAll();
@@ -325,14 +323,14 @@ public class AtlasScreen extends Component {
             }
         });
 
-        addChild(scaleBar).offsetGuiCoords(MAP_BORDER_WIDTH - 1 + (AntiqueAtlas.CONFIG.ui.fullscreen ? 0 : 4), HEIGHT - MAP_BORDER_HEIGHT - BarScaleComponent.HEIGHT + 1 + (AntiqueAtlas.CONFIG.ui.fullscreen ? 0 : -2));
+        addChild(scaleBar).offsetGuiCoords(MAP_BORDER_WIDTH - 1 + (AntiqueAtlas.CONFIG.ui.fullscreen ? 0 : 4), HEIGHT - MAP_BORDER_HEIGHT - ScaleBar.HEIGHT + 1 + (AntiqueAtlas.CONFIG.ui.fullscreen ? 0 : -2));
         scaleBar.setMapScale(1);
 
         addChild(markers).setRelativeCoords(-14, 14);
         markers.setViewportSize(24, 180);
         markers.setWheelScrollsVertically();
 
-        markerFinalizer.addMarkerListener(blinkingIcon);
+        markerModal.addMarkerListener(markerCursor);
 
         eraser.setTexture(ERASER, 12, 14, 2, 11);
 
@@ -401,11 +399,11 @@ public class AtlasScreen extends Component {
         boolean isMouseOverMap = mouseX >= mapX && mouseX <= mapX + MAP_WIDTH && mouseY >= mapY && mouseY <= mapY + MAP_HEIGHT;
         if (!state.is(NORMAL) && !state.is(HIDING_MARKERS)) {
             if (state.is(PLACING_MARKER) && isMouseOverMap && mouseState == 0 /* left click */) {
-                markerFinalizer.setMarkerData(player.getEntityWorld(), screenXToWorldX((int) mouseX), screenYToWorldZ((int) mouseY));
-                addChild(markerFinalizer);
+                markerModal.setMarkerData(player.getEntityWorld(), screenXToWorldX((int) mouseX), screenYToWorldZ((int) mouseY));
+                addChild(markerModal);
 
-                blinkingIcon.setTexture(markerFinalizer.selectedTexture.id(), MARKER_SIZE, MARKER_SIZE);
-                addChildBehind(markerFinalizer, blinkingIcon).setRelativeCoords((int) mouseX - getGuiX() - MARKER_SIZE / 2, (int) mouseY - getGuiY() - MARKER_SIZE / 2);
+                markerCursor.setTexture(markerModal.selectedTexture.id(), MARKER_SIZE, MARKER_SIZE);
+                addChildBehind(markerModal, markerCursor).setRelativeCoords((int) mouseX - getGuiX() - MARKER_SIZE / 2, (int) mouseY - getGuiY() - MARKER_SIZE / 2);
 
                 // Un-press all keys to prevent player from walking infinitely:
                 KeyBinding.unpressAll();
@@ -441,7 +439,7 @@ public class AtlasScreen extends Component {
             setMapScale(mapScale * 2);
         } else if (keyCode == GLFW.GLFW_KEY_MINUS || keyCode == GLFW.GLFW_KEY_KP_SUBTRACT) {
             setMapScale(mapScale / 2);
-        } else if (keyCode == GLFW.GLFW_KEY_ESCAPE || (AntiqueAtlasKeybindings.ATLAS_KEYMAPPING.matchesKey(keyCode, scanCode) && this.markerFinalizer.getParent() == null)) {
+        } else if (keyCode == GLFW.GLFW_KEY_ESCAPE || (AntiqueAtlasKeybindings.ATLAS_KEYMAPPING.matchesKey(keyCode, scanCode) && this.markerModal.getParent() == null)) {
             close();
         } else {
             return super.keyPressed(keyCode, scanCode, modifiers);
@@ -737,12 +735,12 @@ public class AtlasScreen extends Component {
         RenderSystem.blendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
         if (state.is(PLACING_MARKER)) {
             RenderSystem.setShaderColor(1, 1, 1, 0.5f);
-            context.drawTexture(markerFinalizer.selectedTexture.id(), mouseX + markerFinalizer.selectedTexture.offsetX(), mouseY + markerFinalizer.selectedTexture.offsetY(), 0, 0, markerFinalizer.selectedTexture.textureWidth(), markerFinalizer.selectedTexture.textureHeight(), markerFinalizer.selectedTexture.textureWidth(), markerFinalizer.selectedTexture.textureHeight());
+            context.drawTexture(markerModal.selectedTexture.id(), mouseX + markerModal.selectedTexture.offsetX(), mouseY + markerModal.selectedTexture.offsetY(), 0, 0, markerModal.selectedTexture.textureWidth(), markerModal.selectedTexture.textureHeight(), markerModal.selectedTexture.textureWidth(), markerModal.selectedTexture.textureHeight());
             RenderSystem.setShaderColor(1, 1, 1, 1);
         }
         RenderSystem.disableBlend();
 
-        if (AntiqueAtlas.CONFIG.debug.debugRender && !isDragging && isMouseOver) {
+        if (AntiqueAtlas.CONFIG.debug.debugRender && !isDragging && isMouseOver && markerModal.getParent() == null) {
             int x = screenXToWorldX((int) getMouseX());
             int z = screenYToWorldZ((int) getMouseY());
             ChunkPos pos = new ChunkPos(new BlockPos(x, 0, z));
@@ -869,8 +867,8 @@ public class AtlasScreen extends Component {
     @Override
     public void close() {
         super.close();
-        markerFinalizer.closeChild();
-        removeChild(blinkingIcon);
+        markerModal.closeChild();
+        removeChild(markerCursor);
     }
 
     /**
@@ -897,8 +895,8 @@ public class AtlasScreen extends Component {
 
     @Override
     protected void onChildClosed(Component child) {
-        if (child.equals(markerFinalizer)) {
-            removeChild(blinkingIcon);
+        if (child.equals(markerModal)) {
+            removeChild(markerCursor);
         }
     }
 

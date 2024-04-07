@@ -6,8 +6,7 @@
   "gui.antique_atlas.hideMarkers": "隐藏标记",
   "gui.antique_atlas.showMarkers": "显示标记",
   "gui.antique_atlas.marker.label": "标签：",
-  "gui.antique_atlas.marker.type": "类型：",
-  "gui.antique_atlas.marker.structure.tag.village": "村庄",
+  "structure.tag.minecraft.village": "村庄",
   "key.antique_atlas.open": "打开古式地图",
   "key.antique_atlas.category": "古式地图"
 }

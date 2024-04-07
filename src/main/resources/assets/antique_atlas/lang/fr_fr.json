@@ -5,9 +5,8 @@
   "gui.antique_atlas.followPlayer": "Suivre le joueur",
   "gui.antique_atlas.hideMarkers": "Masquer les marques",
   "gui.antique_atlas.showMarkers": "Afficher les marques",
-  "gui.antique_atlas.marker.label": "Marques:",
-  "gui.antique_atlas.marker.type": "Type:",
-  "gui.antique_atlas.marker.structure.tag.village": "Village",
+  "gui.antique_atlas.marker.label": "Marques",
+  "structure.tag.minecraft.village": "Village",
   "key.antique_atlas.open": "Ouvrir l'Atlas",
   "key.antique_atlas.category": "Antique Atlas"
 }

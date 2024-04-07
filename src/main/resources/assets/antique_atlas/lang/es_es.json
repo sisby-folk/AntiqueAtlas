@@ -5,11 +5,10 @@
   "gui.antique_atlas.followPlayer": "Seguir jugador",
   "gui.antique_atlas.hideMarkers": "Ocultar marcadores",
   "gui.antique_atlas.showMarkers": "Mostrar marcadores",
-  "gui.antique_atlas.marker.label": "Etiqueta:",
-  "gui.antique_atlas.marker.type": "Tipo:",
-  "gui.antique_atlas.marker.structure.tag.village": "Aldea",
-  "gui.antique_atlas.marker.structure.type.ocean_monument": "Monumento oceánico",
-  "gui.antique_atlas.marker.structure.type.woodland_mansion": "Mansión del bosque",
+  "gui.antique_atlas.marker.label": "Etiqueta",
+  "structure.tag.minecraft.village": "Aldea",
+  "structure.type.minecraft.ocean_monument": "Monumento oceánico",
+  "structure.type.minecraft.woodland_mansion": "Mansión del bosque",
   "key.antique_atlas.open": "Abrir atlas",
   "key.antique_atlas.category": "Atlas Antiguo"
 }

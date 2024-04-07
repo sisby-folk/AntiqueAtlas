@@ -186,11 +186,11 @@ public class WorldAtlasData {
         return landmarkMarkers.containsKey(landmark.type()) && landmarkMarkers.get(landmark.type()).containsKey(landmark.pos()) ? landmarkMarkers.get(landmark.type()).get(landmark.pos()).right() : structureMarkers.get(landmark);
     }
 
-    public void placeCustomMarker(World world, MarkerTexture selectedTexture, MutableText label, BlockPos blockPos) {
+    public void placeCustomMarker(World world, MarkerTexture selectedTexture, DyeColor color, MutableText label, BlockPos blockPos) {
         WorldSummary.of(world).landmarks().put(world, new SimplePointLandmark(
             blockPos,
             Uuids.getUuidFromProfile(MinecraftClient.getInstance().getSession().getProfile()),
-            DyeColor.BROWN,
+            color,
             label,
             selectedTexture.keyId()
         ));

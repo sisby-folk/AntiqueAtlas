@@ -5,7 +5,6 @@
   "gui.antique_atlas.followPlayer": "跟隨玩家",
   "gui.antique_atlas.hideMarkers": "隱藏標記",
   "gui.antique_atlas.showMarkers": "顯示標記",
-  "gui.antique_atlas.marker.label": "標籤:",
-  "gui.antique_atlas.marker.type": "類型:",
-  "gui.antique_atlas.marker.structure.tag.village": "村莊"
+  "gui.antique_atlas.marker.label": "標籤",
+  "structure.tag.minecraft.village": "村莊"
 }

@@ -5,9 +5,8 @@
   "gui.antique_atlas.followPlayer": "プレイヤーに焦点を当てる",
   "gui.antique_atlas.hideMarkers": "印を隠す",
   "gui.antique_atlas.showMarkers": "印を表す",
-  "gui.antique_atlas.marker.label": "ラベル:",
-  "gui.antique_atlas.marker.type": "タイプ:",
-  "gui.antique_atlas.marker.structure.tag.village": "村",
+  "gui.antique_atlas.marker.label": "ラベル",
+  "structure.tag.minecraft.village": "村",
   "key.antique_atlas.open": "アトラスを開く",
   "key.antique_atlas.category": "アンティークアトラスの"
 }

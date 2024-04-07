@@ -7,8 +7,7 @@
   "gui.antique_atlas.followPlayer": "Follow player",
   "gui.antique_atlas.hideMarkers": "Hide markers",
   "gui.antique_atlas.showMarkers": "Show markers",
-  "gui.antique_atlas.marker.label": "Label:",
-  "gui.antique_atlas.marker.type": "Type:",
+  "gui.antique_atlas.marker.label": "Label",
 
   "structure.start.minecraft.bastion_remnant": "Bastion Remnant",
   "structure.start.minecraft.village_plains": "Plains Village",

@@ -5,9 +5,8 @@
   "gui.antique_atlas.followPlayer": "Centralizar no jogador",
   "gui.antique_atlas.hideMarkers": "Ocultar marcadores",
   "gui.antique_atlas.showMarkers": "Mostrar marcadores",
-  "gui.antique_atlas.marker.label": "Título:",
-  "gui.antique_atlas.marker.type": "Tipo:",
-  "gui.antique_atlas.marker.structure.tag.village": "Vila",
+  "gui.antique_atlas.marker.label": "Título",
+  "structure.tag.minecraft.village": "Vila",
   "key.antique_atlas.open": "Abrir atlas",
   "key.antique_atlas.category": "Antique Atlas"
 }
