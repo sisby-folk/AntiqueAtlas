@@ -146,17 +146,17 @@ public class AtlasScreen extends Component {
     /**
      * Button for placing a marker at current position, local to this Atlas instance.
      */
-    private final BookmarkComponent btnMarker;
+    private final BookmarkButton btnMarker;
 
     /**
      * Button for deleting local markers.
      */
-    private final BookmarkComponent btnDelMarker;
+    private final BookmarkButton btnDelMarker;
 
     /**
      * Button for showing/hiding all markers.
      */
-    private final BookmarkComponent btnShowMarkers;
+    private final BookmarkButton btnShowMarkers;
 
     /**
      * Button for restoring player's position at the center of the Atlas.
@@ -276,7 +276,7 @@ public class AtlasScreen extends Component {
         };
         btnPosition.addListener(positionListener);
 
-        btnMarker = new BookmarkComponent(0, ICON_ADD_MARKER, Text.translatable("gui.antique_atlas.addMarker"));
+        btnMarker = new BookmarkButton(Text.translatable("gui.antique_atlas.addMarker"), ICON_ADD_MARKER, 0xAA2400, 0xFFFFFF, 16, false);
         addChild(btnMarker).offsetGuiCoords(WIDTH - 10, 14);
         btnMarker.addListener(button -> {
             if (state.is(PLACING_MARKER)) {
@@ -302,7 +302,7 @@ public class AtlasScreen extends Component {
                 }
             }
         });
-        btnDelMarker = new BookmarkComponent(2, ICON_DELETE_MARKER, Text.translatable("gui.antique_atlas.delMarker"));
+        btnDelMarker = new BookmarkButton(Text.translatable("gui.antique_atlas.delMarker"), ICON_DELETE_MARKER, 0xE1B212, 0xFFFFFF, 16, false);
         addChild(btnDelMarker).offsetGuiCoords(WIDTH - 10, 33);
         btnDelMarker.addListener(button -> {
             if (state.is(DELETING_MARKER)) {
@@ -313,7 +313,7 @@ public class AtlasScreen extends Component {
                 state.switchTo(DELETING_MARKER);
             }
         });
-        btnShowMarkers = new BookmarkComponent(3, ICON_HIDE_MARKERS, Text.translatable("gui.antique_atlas.hideMarkers"));
+        btnShowMarkers = new BookmarkButton(Text.translatable("gui.antique_atlas.hideMarkers"), ICON_HIDE_MARKERS, 0x479335, 0xFFFFFF, 16, false);
         addChild(btnShowMarkers).offsetGuiCoords(WIDTH - 10, 52);
         btnShowMarkers.addListener(button -> {
             selectedButton = null;
@@ -328,8 +328,8 @@ public class AtlasScreen extends Component {
         addChild(scaleBar).offsetGuiCoords(MAP_BORDER_WIDTH - 1 + (AntiqueAtlas.CONFIG.ui.fullscreen ? 0 : 4), HEIGHT - MAP_BORDER_HEIGHT - BarScaleComponent.HEIGHT + 1 + (AntiqueAtlas.CONFIG.ui.fullscreen ? 0 : -2));
         scaleBar.setMapScale(1);
 
-        addChild(markers).setRelativeCoords(-10, 14);
-        markers.setViewportSize(21, 180);
+        addChild(markers).setRelativeCoords(-14, 14);
+        markers.setViewportSize(24, 180);
         markers.setWheelScrollsVertically();
 
         markerFinalizer.addMarkerListener(blinkingIcon);
@@ -366,7 +366,12 @@ public class AtlasScreen extends Component {
 
         final int[] contentY = {0};
         worldAtlasData.getEditableLandmarks().forEach((landmark, texture) -> {
-            MarkerBookmarkComponent bookmark = new MarkerBookmarkComponent(landmark, texture);
+            Integer color = null;
+            if (landmark.color() != null) {
+                float[] components = landmark.color().getColorComponents();
+                color = ((int) (components[0] * 255) << 16) | ((int) (components[1] * 255) << 8) | ((int) (components[2] * 255));
+            }
+            BookmarkButton bookmark = new BookmarkButton(landmark.name(), texture.id(), color != null ? color : 0xFFFFFF, (texture == MarkerTexture.DEFAULT && color != null) ? color : 0xFFFFFF, 32, true);
 
             bookmark.addListener(button -> {
                 if (state.is(NORMAL)) {
