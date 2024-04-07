@@ -392,6 +392,7 @@ public class AtlasScreen extends Component {
     @Override
     public boolean mouseClicked(double mouseX, double mouseY, int mouseState) {
         if (super.mouseClicked(mouseX, mouseY, mouseState)) return true;
+        if (markerModal.getParent() != null) return true;
 
         // If clicked on the map, start dragging
         int mapX = (width - MAP_WIDTH) / 2;
@@ -454,7 +455,7 @@ public class AtlasScreen extends Component {
 
         boolean handled = super.mouseScrolled(mx, my, origWheelMove);
 
-        if (!handled && wheelMove != 0) {
+        if (!handled && markerModal.getParent() == null && wheelMove != 0) {
             wheelMove = wheelMove > 0 ? 1 : -1;
             if (AntiqueAtlas.CONFIG.ui.reverseZoom) {
                 wheelMove *= -1;
@@ -713,7 +714,7 @@ public class AtlasScreen extends Component {
                 }
             }
             worldAtlasData.getAllMarkers().forEach((landmark, texture) -> {
-                renderMarker(context, landmark, texture, WorldAtlasData.landmarkIsEditable(landmark), hoveredLandmark == landmark);
+                renderMarker(context, landmark, texture, WorldAtlasData.landmarkIsEditable(landmark), hoveredLandmark == landmark && markerModal.getParent() == null);
             });
         }
 

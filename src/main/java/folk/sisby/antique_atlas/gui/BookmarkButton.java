@@ -57,7 +57,7 @@ public class BookmarkButton extends ToggleButtonComponent {
 
         RenderSystem.setShaderColor(ColorHelper.Argb.getRed(iconTint) / 255.0F, ColorHelper.Argb.getGreen(iconTint) / 255.0F, ColorHelper.Argb.getBlue(iconTint) / 255.0F, 1.0F);
 
-        int iconX = getGuiX() + 10 - iconSize / 2 + (isExtended ? (left ? 2 : 1) : (left ? 3 : 0));
+        int iconX = getGuiX() + 10 - iconSize / 2 + (isExtended ? (left ? 3 : 1) : (left ? 4 : 0));
         int iconY = getGuiY() + 9 - iconSize / 2;
         context.drawTexture(iconTexture, iconX, iconY, 0, 0, iconSize, iconSize, iconSize, iconSize);
 

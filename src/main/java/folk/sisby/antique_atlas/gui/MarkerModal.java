@@ -75,9 +75,9 @@ public class MarkerModal extends Component {
                 SoundEvents.ENTITY_VILLAGER_WORK_CARTOGRAPHER, SoundCategory.AMBIENT,
                 1F, 1F);
             closeChild();
-        }).dimensions(this.width / 2 - BUTTON_WIDTH - BUTTON_SPACING / 2, this.height / 2 + 40, BUTTON_WIDTH, 20).build());
+        }).dimensions(this.width / 2 - BUTTON_WIDTH - BUTTON_SPACING / 2, this.height / 2 + 80, BUTTON_WIDTH, 20).build());
         addDrawableChild(btnCancel = ButtonWidget.builder(Text.translatable("gui.cancel"), (button) -> closeChild())
-            .dimensions(this.width / 2 + BUTTON_SPACING / 2, this.height / 2 + 40, BUTTON_WIDTH, 20).build());
+            .dimensions(this.width / 2 + BUTTON_SPACING / 2, this.height / 2 + 80, BUTTON_WIDTH, 20).build());
         textField = new TextFieldWidget(MinecraftClient.getInstance().textRenderer, (this.width - 200) / 2, this.height / 2 - 81, 200, 20, Text.translatable("gui.antique_atlas.marker.label"));
         textField.setEditable(true);
         textField.setFocusUnlocked(true);
@@ -94,7 +94,7 @@ public class MarkerModal extends Component {
         }
         int scrollerWidth = Math.min(typeCount * (TexturePreviewButton.FRAME_SIZE + TYPE_SPACING) - TYPE_SPACING, 240);
         textureScrollBox.setViewportSize(scrollerWidth, TexturePreviewButton.FRAME_SIZE + TYPE_SPACING);
-        textureScrollBox.setGuiCoords((this.width - scrollerWidth) / 2, this.height / 2 - 55);
+        textureScrollBox.setGuiCoords((this.width - scrollerWidth) / 2, this.height / 2 - 45);
 
         textureRadioGroup = new ToggleButtonRadioGroup<>();
         textureRadioGroup.addListener(button -> {
@@ -123,7 +123,7 @@ public class MarkerModal extends Component {
 
         int colorScrollWidth = Math.min(DyeColor.values().length * (TexturePreviewButton.FRAME_SIZE + TYPE_SPACING) - TYPE_SPACING, 240);
         colorScrollBox.setViewportSize(colorScrollWidth, TexturePreviewButton.FRAME_SIZE + TYPE_SPACING);
-        colorScrollBox.setGuiCoords((this.width - colorScrollWidth) / 2, this.height / 2 - 5);
+        colorScrollBox.setGuiCoords((this.width - colorScrollWidth) / 2, this.height / 2 + 15);
 
         colorRadioGroup = new ToggleButtonRadioGroup<>();
         colorRadioGroup.addListener(button -> selectedColor = button.getValue());
@@ -168,6 +168,7 @@ public class MarkerModal extends Component {
     @Override
     public void render(DrawContext context, int mouseX, int mouseY, float partialTick) {
         this.renderBackground(context);
+        drawCentered(context, Text.translatable("gui.antique_atlas.marker.label"), this.height / 2 - 94, 0xDDDDDD, true);
         textField.render(context, mouseX, mouseY, partialTick);
         // Darker background for marker type selector
         context.fillGradient(textureScrollBox.getGuiX() - TYPE_BG_FRAME, textureScrollBox.getGuiY() - TYPE_BG_FRAME,
