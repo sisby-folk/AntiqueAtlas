@@ -71,7 +71,7 @@ public class ScaleBar extends Component {
 
         context.drawTexture(texture, getGuiX(), getGuiY(), 0, 0, WIDTH, HEIGHT, WIDTH, HEIGHT);
 
-        if (isMouseOver) {
+        if (isMouseOver(mouseX, mouseY)) {
             drawTooltip(Collections.singletonList(Text.translatable("gui.antique_atlas.scalebar")), MinecraftClient.getInstance().textRenderer);
         }
     }

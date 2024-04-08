@@ -5,7 +5,12 @@ package folk.sisby.antique_atlas.gui.core;
  * a different ToggleButton.
  */
 public class ToggleButtonComponent extends ButtonComponent {
+    private final boolean canToggle;
     private boolean selected;
+
+    protected ToggleButtonComponent(boolean canToggle) {
+        this.canToggle = canToggle;
+    }
 
     /**
      * Sets the button selected state. If the button is part of a RadioGroup,
@@ -21,9 +26,7 @@ public class ToggleButtonComponent extends ButtonComponent {
 
     @Override
     protected void onClick() {
-        if (isEnabled()) {
-            setSelected(!isSelected());
-        }
+        if (!isSelected() || canToggle) setSelected(!isSelected());
         super.onClick();
     }
 }

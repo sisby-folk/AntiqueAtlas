@@ -644,7 +644,6 @@ public class AtlasScreen extends Component {
             context.fill(getGuiX(), getGuiY(), getGuiX() + BOOK_WIDTH, getGuiY() + BOOK_HEIGHT, 0xFFEAD2A5);
             context.drawBorder(getGuiX(), getGuiY(), BOOK_WIDTH, BOOK_HEIGHT, 0xFF4C1A0B);
             context.drawBorder(getGuiX() + MAP_BORDER_WIDTH - 1, getGuiY() + MAP_BORDER_HEIGHT - 1, MAP_WIDTH + 2, MAP_HEIGHT + 2, 0xFF4C1A0B);
-            context.drawBorder(getGuiX() + (BOOK_WIDTH / 2) - 8, getGuiY() + (BOOK_HEIGHT / 2) - 8, 16, 16, 0xFF4C1A0B);
         } else {
             context.drawTexture(BOOK, getGuiX(), getGuiY(), 0, 0, 310, 218, 310, 218);
         }
@@ -855,7 +854,7 @@ public class AtlasScreen extends Component {
 
         RenderSystem.setShaderColor(1, 1, 1, 1);
 
-        if (isMouseOver && hovering && landmark.name() != null && !landmark.name().getString().isEmpty()) {
+        if (hovering && landmark.name() != null && !landmark.name().getString().isEmpty()) {
             drawTooltip(Collections.singletonList(landmark.name()), textRenderer);
         }
     }

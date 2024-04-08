@@ -44,10 +44,6 @@ public class Component extends Screen {
      * If true, this GUI will not be rendered.
      */
     private boolean isClipped = false;
-    /**
-     * This flag is updated on every mouse event.
-     */
-    protected boolean isMouseOver = false;
 
     /**
      * guiX and guiY are absolute coordinates on the screen.
@@ -261,16 +257,7 @@ public class Component extends Screen {
     }
 
     boolean iterateMouseInput(UiCall callMethod) {
-        isMouseOver = isMouseInRegion(getGuiX(), getGuiY(), getWidth(), getHeight());
-        if (!iterateInput((c) -> {
-            c.isMouseOver = c.isMouseInRegion(c.getGuiX(), c.getGuiY(), c.getWidth(), c.getHeight());
-            return callMethod.call(c);
-        })) {
-            return false;
-        } else {
-            isMouseOver = false;
-            return true;
-        }
+        return iterateInput(callMethod);
     }
 
     /**
@@ -470,14 +457,9 @@ public class Component extends Screen {
         sizeIsInvalid = false;
     }
 
-    /**
-     * Returns true, if the mouse cursor is within the specified bounds.
-     * Note: left and top are absolute.
-     */
-    boolean isMouseInRegion(int left, int top, int width, int height) {
-        double mouseX = getMouseX();
-        double mouseY = getMouseY();
-        return mouseX >= left && mouseX < left + width && mouseY >= top && mouseY < top + height;
+    @Override
+    public boolean isMouseOver(double mouseX, double mouseY) {
+        return mouseX >= getGuiX() && mouseX < getGuiX() + getWidth() && mouseY >= getGuiY() && mouseY < getGuiY() + getHeight();
     }
 
     /**

@@ -15,20 +15,11 @@ import java.util.List;
 public class ButtonComponent extends Component {
     private final List<IButtonListener> listeners = new ArrayList<>();
 
-    private boolean enabled = true;
     private final SoundEvent clickSound = SoundEvents.UI_BUTTON_CLICK.value();
-
-    public void setEnabled(boolean value) {
-        enabled = value;
-    }
-
-    public boolean isEnabled() {
-        return enabled;
-    }
 
     @Override
     public boolean mouseClicked(double x, double y, int mouseButton) {
-        if (mouseButton == 0 /*left-click*/ && enabled && isMouseOver) {
+        if (mouseButton == 0 && isMouseOver(x, y)) {
             onClick();
             return true;
         }

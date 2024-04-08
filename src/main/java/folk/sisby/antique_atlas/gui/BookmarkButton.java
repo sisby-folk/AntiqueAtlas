@@ -27,6 +27,7 @@ public class BookmarkButton extends ToggleButtonComponent {
     private final boolean left;
 
     BookmarkButton(Text title, Identifier iconTexture, DyeColor backgroundTint, @Nullable DyeColor iconTint, int iconWidth, int iconHeight, boolean left) {
+        super(false);
         this.title = title;
         this.iconTexture = iconTexture;
         this.backgroundTint = backgroundTint == null ? null : backgroundTint.getColorComponents();
@@ -52,7 +53,8 @@ public class BookmarkButton extends ToggleButtonComponent {
 
     @Override
     public void render(DrawContext context, int mouseX, int mouseY, float partialTick) {
-        boolean isExtended = isMouseOver || isSelected();
+        boolean mouseOver = isMouseOver(mouseX, mouseY);
+        boolean isExtended = mouseOver || isSelected();
 
         RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
         if (backgroundTint != null) RenderSystem.setShaderColor(backgroundTint[0], backgroundTint[1], backgroundTint[2], 1.0F);
@@ -66,7 +68,7 @@ public class BookmarkButton extends ToggleButtonComponent {
 
         RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
 
-        if (isMouseOver && !title.getString().isEmpty()) {
+        if (mouseOver && !title.getString().isEmpty()) {
             drawTooltip(Collections.singletonList(title), MinecraftClient.getInstance().textRenderer);
         }
     }

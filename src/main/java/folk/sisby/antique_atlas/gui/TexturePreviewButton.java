@@ -20,6 +20,7 @@ public class TexturePreviewButton<T> extends ToggleButtonComponent {
     private final float[] tint;
 
     public TexturePreviewButton(T value, Identifier texture, int textureWidth, int textureHeight, int v, float[] tint) {
+        super(false);
         this.value = value;
         this.texture = texture;
         this.textureWidth = textureWidth;
