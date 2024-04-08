@@ -3,6 +3,7 @@
   "key.antique_atlas.open": "Open Atlas",
   "gui.antique_atlas.scalebar": "Scale in blocks",
   "gui.antique_atlas.addMarker": "Add marker",
+  "gui.antique_atlas.addMarkerHere": "Add marker here",
   "gui.antique_atlas.delMarker": "Delete marker",
   "gui.antique_atlas.followPlayer": "Player",
   "gui.antique_atlas.hideMarkers": "Hide markers",

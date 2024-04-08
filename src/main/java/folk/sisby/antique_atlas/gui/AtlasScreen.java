@@ -59,6 +59,8 @@ public class AtlasScreen extends Component {
     public static final Identifier ICON_DELETE_MARKER = AntiqueAtlas.id("textures/gui/icons/del_marker.png");
     public static final Identifier ICON_SHOW_MARKERS = AntiqueAtlas.id("textures/gui/icons/show_markers.png");
     public static final Identifier ICON_HIDE_MARKERS = AntiqueAtlas.id("textures/gui/icons/hide_markers.png");
+    private static final Text TEXT_ADD_MARKER = Text.translatable("gui.antique_atlas.addMarker");
+    private static final Text TEXT_ADD_MARKER_HERE = Text.translatable("gui.antique_atlas.addMarkerHere");
 
     public final int BOOK_WIDTH;
     public final int BOOK_HEIGHT;
@@ -256,7 +258,7 @@ public class AtlasScreen extends Component {
         };
         playerBookmark.addListener(positionListener);
 
-        addMarkerBookmark = new BookmarkButton(Text.translatable("gui.antique_atlas.addMarker"), ICON_ADD_MARKER, DyeColor.RED, null, 16, 16, false);
+        addMarkerBookmark = new BookmarkButton(TEXT_ADD_MARKER, ICON_ADD_MARKER, DyeColor.RED, null, 16, 16, false);
         addChild(addMarkerBookmark).offsetGuiCoords(BOOK_WIDTH - 10, 14);
         addMarkerBookmark.addListener(button -> {
             if (state.is(PLACING_MARKER)) {
@@ -739,6 +741,8 @@ public class AtlasScreen extends Component {
             RenderSystem.setShaderColor(1, 1, 1, 1);
         }
         RenderSystem.disableBlend();
+
+        addMarkerBookmark.setTitle(hasShiftDown() ? TEXT_ADD_MARKER_HERE : TEXT_ADD_MARKER);
 
         if (AntiqueAtlas.CONFIG.debug.debugRender && !isDragging && isMouseOverMap && markerModal.getParent() == null) {
             int x = screenXToWorldX((int) getMouseX());
