@@ -84,16 +84,14 @@ public class MarkerModal extends Component {
         textField.setFocused(true);
         textField.setPlaceholder(Text.translatable("gui.antique_atlas.marker.label"));
 
-        textureScrollBox = new ScrollBoxComponent(false);
+        textureScrollBox = new ScrollBoxComponent(false, (TexturePreviewButton.FRAME_SIZE + TYPE_SPACING));
         this.addChild(textureScrollBox);
 
-        int typeCount = 0;
-        for (MarkerTexture texture : MarkerTextures.getInstance().asMap().values()) {
-            if (texture.keyId().getPath().startsWith("custom/")) typeCount++;
-        }
-        int scrollerWidth = Math.min(typeCount * (TexturePreviewButton.FRAME_SIZE + TYPE_SPACING) - TYPE_SPACING, 240);
-        textureScrollBox.setViewportSize(scrollerWidth, TexturePreviewButton.FRAME_SIZE + TYPE_SPACING);
-        textureScrollBox.setGuiCoords((this.width - scrollerWidth) / 2, this.height / 2 - 45);
+        int typeCount = (int) MarkerTextures.getInstance().asMap().values().stream().filter(t -> t.keyId().getPath().startsWith("custom/")).count();
+        int typesOnScreen = Math.min(typeCount, 7);
+        int typeScrollWidth = typesOnScreen * (TexturePreviewButton.FRAME_SIZE + TYPE_SPACING) - TYPE_SPACING;
+        textureScrollBox.setViewportSize(typeScrollWidth, TexturePreviewButton.FRAME_SIZE + TYPE_SPACING);
+        textureScrollBox.setGuiCoords((this.width - typeScrollWidth) / 2, this.height / 2 - 45);
 
         textureRadioGroup = new ToggleButtonRadioGroup<>();
         textureRadioGroup.addListener(button -> {
@@ -116,10 +114,11 @@ public class MarkerModal extends Component {
         
         // Color
 
-        colorScrollBox = new ScrollBoxComponent(false);
+        colorScrollBox = new ScrollBoxComponent(false, (TexturePreviewButton.FRAME_SIZE + TYPE_SPACING));
         this.addChild(colorScrollBox);
 
-        int colorScrollWidth = Math.min(DyeColor.values().length * (TexturePreviewButton.FRAME_SIZE + TYPE_SPACING) - TYPE_SPACING, 240);
+        int colorsOnScreen = Math.min(DyeColor.values().length, 7);
+        int colorScrollWidth = colorsOnScreen * (TexturePreviewButton.FRAME_SIZE + TYPE_SPACING) - TYPE_SPACING;
         colorScrollBox.setViewportSize(colorScrollWidth, TexturePreviewButton.FRAME_SIZE + TYPE_SPACING);
         colorScrollBox.setGuiCoords((this.width - colorScrollWidth) / 2, this.height / 2 + 15);
 

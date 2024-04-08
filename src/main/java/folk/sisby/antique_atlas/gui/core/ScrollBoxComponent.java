@@ -4,11 +4,11 @@ import folk.sisby.antique_atlas.AntiqueAtlas;
 import net.minecraft.util.Identifier;
 
 public class ScrollBoxComponent extends Component {
-    private static final int scrollStep = 18;
     public static final Identifier ARROW = AntiqueAtlas.id("textures/gui/arrow.png");
 
-    private final ViewportComponent viewport;
+    private final int scrollStep;
     private final boolean vertical;
+    private final ViewportComponent viewport;
 
     /**
      * How much the content of the viewport is displaced.
@@ -16,8 +16,9 @@ public class ScrollBoxComponent extends Component {
     int scrollPos = 0;
 
 
-    public ScrollBoxComponent(boolean vertical) {
+    public ScrollBoxComponent(boolean vertical, int scrollStep) {
         this.vertical = vertical;
+        this.scrollStep = scrollStep;
         this.viewport = new ViewportComponent();
         this.addChild(viewport);
     }

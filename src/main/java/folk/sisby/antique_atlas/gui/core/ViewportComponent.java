@@ -46,9 +46,12 @@ public class ViewportComponent extends Component {
 
     @Override
     public void render(DrawContext context, int mouseX, int mouseY, float par3) {
-        RenderSystem.enableScissor((int) (getGuiX() * screenScale),
+        RenderSystem.enableScissor(
+            (int) (getGuiX() * screenScale),
             (int) (MinecraftClient.getInstance().getWindow().getFramebufferHeight() - (getGuiY() + properHeight) * screenScale),
-            (int) (properWidth * screenScale), (int) (properHeight * screenScale));
+            (int) ((properWidth + 1) * screenScale),
+            (int) ((properHeight + 1) * screenScale)
+        );
 
         // Draw the content (child GUIs):
         super.render(context, mouseX, mouseY, par3);

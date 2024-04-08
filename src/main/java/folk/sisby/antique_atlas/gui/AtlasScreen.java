@@ -69,6 +69,7 @@ public class AtlasScreen extends Component {
     private static final float PLAYER_ROTATION_STEPS = 16;
     private static final int PLAYER_ICON_WIDTH = 7;
     private static final int PLAYER_ICON_HEIGHT = 8;
+    private static final int BOOKMARK_SPACING = 2;
 
     public static final int MARKER_SIZE = 32;
 
@@ -206,7 +207,7 @@ public class AtlasScreen extends Component {
 
     private final ScaleBar scaleBar = new ScaleBar();
 
-    private final ScrollBoxComponent markers = new ScrollBoxComponent(true);
+    private final ScrollBoxComponent markerBookmarks = new ScrollBoxComponent(true, BookmarkButton.HEIGHT + BOOKMARK_SPACING);
 
     /**
      * Pixel-to-block ratio.
@@ -326,8 +327,9 @@ public class AtlasScreen extends Component {
         addChild(scaleBar).offsetGuiCoords(MAP_BORDER_WIDTH - 1 + (AntiqueAtlas.CONFIG.ui.fullscreen ? 0 : 4), HEIGHT - MAP_BORDER_HEIGHT - ScaleBar.HEIGHT + 1 + (AntiqueAtlas.CONFIG.ui.fullscreen ? 0 : -2));
         scaleBar.setMapScale(1);
 
-        addChild(markers).setRelativeCoords(-14, 14);
-        markers.setViewportSize(24, 180);
+        addChild(markerBookmarks).setRelativeCoords(-14, MAP_BORDER_HEIGHT);
+        int markersOnScreen = MAP_HEIGHT / ((BookmarkButton.HEIGHT + BOOKMARK_SPACING) - BOOKMARK_SPACING);
+        markerBookmarks.setViewportSize(BookmarkButton.WIDTH, markersOnScreen * (BookmarkButton.HEIGHT + BOOKMARK_SPACING) - BOOKMARK_SPACING);
 
         markerModal.addMarkerListener(markerCursor);
 
@@ -356,8 +358,8 @@ public class AtlasScreen extends Component {
     }
 
     public void updateBookmarkerList() {
-        markers.removeAllContent();
-        markers.setScrollPos(0);
+        markerBookmarks.removeAllContent();
+        markerBookmarks.setScrollPos(0);
 
         if (worldAtlasData == null) return;
 
@@ -383,8 +385,8 @@ public class AtlasScreen extends Component {
                 }
             });
 
-            markers.addContent(bookmark).setRelativeY(contentY[0]);
-            contentY[0] += 18 + 2;
+            markerBookmarks.addContent(bookmark).setRelativeY(contentY[0]);
+            contentY[0] += BookmarkButton.HEIGHT + BOOKMARK_SPACING;
         });
     }
 
