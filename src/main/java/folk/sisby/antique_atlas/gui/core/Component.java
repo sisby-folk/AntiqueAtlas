@@ -409,7 +409,7 @@ public class Component extends Screen {
      * Width of the GUI or its contents. This method may be called often so it
      * should be fast.
      */
-    protected int getWidth() {
+    public int getWidth() {
         return contentWidth;
     }
 
@@ -417,7 +417,7 @@ public class Component extends Screen {
      * Height of the GUI or its contents. This method may be called often so it
      * should be fast.
      */
-    protected int getHeight() {
+    public int getHeight() {
         return contentHeight;
     }
 

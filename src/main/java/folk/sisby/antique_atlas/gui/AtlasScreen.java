@@ -206,7 +206,7 @@ public class AtlasScreen extends Component {
 
     private final ScaleBar scaleBar = new ScaleBar();
 
-    private final ScrollBoxComponent markers = new ScrollBoxComponent();
+    private final ScrollBoxComponent markers = new ScrollBoxComponent(true);
 
     /**
      * Pixel-to-block ratio.
@@ -328,7 +328,6 @@ public class AtlasScreen extends Component {
 
         addChild(markers).setRelativeCoords(-14, 14);
         markers.setViewportSize(24, 180);
-        markers.setWheelScrollsVertically();
 
         markerModal.addMarkerListener(markerCursor);
 
@@ -358,7 +357,7 @@ public class AtlasScreen extends Component {
 
     public void updateBookmarkerList() {
         markers.removeAllContent();
-        markers.scrollTo(0, 0);
+        markers.setScrollPos(0);
 
         if (worldAtlasData == null) return;
 

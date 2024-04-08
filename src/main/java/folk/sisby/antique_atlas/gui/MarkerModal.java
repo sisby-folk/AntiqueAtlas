@@ -84,8 +84,7 @@ public class MarkerModal extends Component {
         textField.setFocused(true);
         textField.setPlaceholder(Text.translatable("gui.antique_atlas.marker.label"));
 
-        textureScrollBox = new ScrollBoxComponent();
-        textureScrollBox.setWheelScrollsHorizontally();
+        textureScrollBox = new ScrollBoxComponent(false);
         this.addChild(textureScrollBox);
 
         int typeCount = 0;
@@ -117,8 +116,7 @@ public class MarkerModal extends Component {
         
         // Color
 
-        colorScrollBox = new ScrollBoxComponent();
-        colorScrollBox.setWheelScrollsHorizontally();
+        colorScrollBox = new ScrollBoxComponent(false);
         this.addChild(colorScrollBox);
 
         int colorScrollWidth = Math.min(DyeColor.values().length * (TexturePreviewButton.FRAME_SIZE + TYPE_SPACING) - TYPE_SPACING, 240);
