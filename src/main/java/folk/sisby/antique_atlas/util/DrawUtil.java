@@ -5,7 +5,7 @@ import net.minecraft.util.Identifier;
 import net.minecraft.util.math.RotationAxis;
 
 public class DrawUtil {
-    public static void drawCenteredWithRotation(DrawContext context, Identifier texture, int x, int y, float scale, int textureWidth, int textureHeight, float rotation) {
+    public static void drawCenteredWithRotation(DrawContext context, Identifier texture, double x, double y, float scale, int textureWidth, int textureHeight, float rotation) {
         context.getMatrices().push();
         context.getMatrices().translate(x, y, 0);
         context.getMatrices().scale(scale, scale, 0);
