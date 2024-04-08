@@ -1,5 +1,7 @@
 package folk.sisby.antique_atlas;
 
+import folk.sisby.antique_atlas.gui.AtlasScreen;
+import folk.sisby.antique_atlas.gui.core.ScreenState;
 import folk.sisby.antique_atlas.reloader.BiomeTileProviders;
 import folk.sisby.antique_atlas.reloader.MarkerTextures;
 import folk.sisby.antique_atlas.reloader.StructureTileProviders;
@@ -24,6 +26,7 @@ public class AntiqueAtlas implements ClientModInitializer {
     public static final Logger LOGGER = LogManager.getLogger(NAME);
 
     public static final AntiqueAtlasConfig CONFIG = AntiqueAtlasConfig.createToml(FabricLoader.getInstance().getConfigDir(), "", "antique-atlas", AntiqueAtlasConfig.class);
+    public static ScreenState<AtlasScreen> lastState = new ScreenState<>();
 
     public static Identifier id(String path) {
         return path.contains(":") ? new Identifier(path) : new Identifier(ID, path);

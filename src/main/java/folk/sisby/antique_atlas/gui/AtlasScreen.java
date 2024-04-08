@@ -33,6 +33,7 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.sound.SoundCategory;
 import net.minecraft.sound.SoundEvents;
 import net.minecraft.text.Text;
+import net.minecraft.util.DyeColor;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.ChunkPos;
@@ -45,6 +46,7 @@ import org.lwjgl.opengl.GL11;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.List;
 import java.util.Map;
 
 public class AtlasScreen extends Component {
@@ -81,88 +83,75 @@ public class AtlasScreen extends Component {
 
     // States ==================================================================
 
-    private final ScreenState state = new ScreenState();
+    private final ScreenState<AtlasScreen> state = new ScreenState<>((oldState, newState) -> AntiqueAtlas.lastState.switchTo(newState, this));
 
-    /**
-     * If on, navigate the map normally.
-     */
-    private final IState NORMAL = new SimpleState();
+    public static final IState<AtlasScreen> NORMAL = new SimpleState<>();
 
-    /**
-     * If on, all markers as well as the player icon are hidden.
-     */
-    private final IState HIDING_MARKERS = new IState() {
+    public static final IState<AtlasScreen> HIDING_MARKERS = new IState<>() {
         @Override
-        public void onEnterState() {
+        public void onEnterState(AtlasScreen screen) {
             // Set the button as not selected so that it can be clicked again:
-            btnShowMarkers.setSelected(false);
-            btnShowMarkers.setTitle(Text.translatable("gui.antique_atlas.showMarkers"));
-            btnShowMarkers.setIconTexture(ICON_SHOW_MARKERS);
+            screen.markerVisibilityBookmark.setSelected(false);
+            screen.markerVisibilityBookmark.setTitle(Text.translatable("gui.antique_atlas.showMarkers"));
+            screen.markerVisibilityBookmark.setIconTexture(ICON_SHOW_MARKERS);
         }
 
         @Override
-        public void onExitState() {
-            btnShowMarkers.setSelected(false);
-            btnShowMarkers.setTitle(Text.translatable("gui.antique_atlas.hideMarkers"));
-            btnShowMarkers.setIconTexture(ICON_HIDE_MARKERS);
+        public void onExitState(AtlasScreen screen) {
+            screen.clearTargetBookmarks(screen.playerBookmark);
+            screen.markerVisibilityBookmark.setSelected(false);
+            screen.markerVisibilityBookmark.setTitle(Text.translatable("gui.antique_atlas.hideMarkers"));
+            screen.markerVisibilityBookmark.setIconTexture(ICON_HIDE_MARKERS);
         }
     };
 
-    /**
-     * If on, a semi-transparent marker is attached to the cursor, and the
-     * player's icon becomes semi-transparent as well.
-     */
-    private final IState PLACING_MARKER = new IState() {
+    public static final IState<AtlasScreen> PLACING_MARKER = new IState<>() {
         @Override
-        public void onEnterState() {
-            btnMarker.setSelected(true);
+        public void onEnterState(AtlasScreen screen) {
+            screen.addMarkerBookmark.setSelected(true);
         }
 
         @Override
-        public void onExitState() {
-            btnMarker.setSelected(false);
+        public void onExitState(AtlasScreen screen) {
+            screen.addMarkerBookmark.setSelected(false);
         }
     };
 
-    /**
-     * If on, the closest marker will be deleted upon mouseclick.
-     */
-    private final IState DELETING_MARKER = new IState() {
+    public static final IState<AtlasScreen> DELETING_MARKER = new IState<>() {
         @Override
-        public void onEnterState() {
-            addChild(eraser);
-            btnDelMarker.setSelected(true);
+        public void onEnterState(AtlasScreen screen) {
+            screen.addChild(screen.eraser);
+            screen.deleteMarkerBookmark.setSelected(true);
         }
 
         @Override
-        public void onExitState() {
-            removeChild(eraser);
-            btnDelMarker.setSelected(false);
+        public void onExitState(AtlasScreen screen) {
+            screen.removeChild(screen.eraser);
+            screen.deleteMarkerBookmark.setSelected(false);
         }
     };
-    private final CursorComponent eraser = new CursorComponent();
 
     // Buttons =================================================================
 
     /**
      * Button for placing a marker at current position, local to this Atlas instance.
      */
-    private final BookmarkButton btnMarker;
+    private final BookmarkButton addMarkerBookmark;
 
     /**
      * Button for deleting local markers.
      */
-    private final BookmarkButton btnDelMarker;
+    private final BookmarkButton deleteMarkerBookmark;
 
     /**
      * Button for showing/hiding all markers.
      */
-    private final BookmarkButton btnShowMarkers;
+    private final BookmarkButton markerVisibilityBookmark;
 
     /**
      * Button for restoring player's position at the center of the Atlas.
      */
-    private final PlayerFollowButton btnPosition;
+    private final BookmarkButton playerBookmark;
 
 
     // Navigation ==============================================================
@@ -197,17 +186,11 @@ public class AtlasScreen extends Component {
     private double mapOffsetDeltaX, mapOffsetDeltaY;
 
     private Integer targetOffsetX, targetOffsetY;
-    /**
-     * If true, the player's icon will be in the center of the GUI, and the
-     * offset of the tiles will be calculated accordingly. Otherwise it's the
-     * position of the player that will be calculated with respect to the
-     * offset.
-     */
-    private boolean followPlayer;
 
     private final ScaleBar scaleBar = new ScaleBar();
 
-    private final ScrollBoxComponent markerBookmarks = new ScrollBoxComponent(true, BookmarkButton.HEIGHT + BOOKMARK_SPACING);
+    private final List<BookmarkButton> markerBookmarks = new ArrayList<>();
+    private final ScrollBoxComponent markerScrollBox = new ScrollBoxComponent(true, BookmarkButton.HEIGHT + BOOKMARK_SPACING);
 
     /**
      * Pixel-to-block ratio.
@@ -229,6 +212,8 @@ public class AtlasScreen extends Component {
     private final MarkerModal markerModal = new MarkerModal();
 
     private final BlinkingMarkerComponent markerCursor = new BlinkingMarkerComponent();
+
+    private final CursorComponent eraser = new CursorComponent();
 
     // Misc stuff ==============================================================
 
@@ -259,31 +244,26 @@ public class AtlasScreen extends Component {
         MAP_WIDTH = WIDTH - MAP_BORDER_WIDTH * 2;
         MAP_HEIGHT = HEIGHT - MAP_BORDER_HEIGHT * 2;
         setMapScale(0.5);
-        followPlayer = true;
 
-        btnPosition = new PlayerFollowButton();
-        btnPosition.setEnabled(!followPlayer);
-        addChild(btnPosition).offsetGuiCoords(WIDTH - MAP_BORDER_WIDTH - PlayerFollowButton.WIDTH + (AntiqueAtlas.CONFIG.ui.fullscreen ? 0 : 1), HEIGHT - MAP_BORDER_HEIGHT - PlayerFollowButton.HEIGHT + (AntiqueAtlas.CONFIG.ui.fullscreen ? 0 : -2));
+        playerBookmark = new BookmarkButton(Text.translatable("gui.antique_atlas.followPlayer"), AntiqueAtlas.id("textures/gui/player.png"), DyeColor.GRAY, null, 7, 8, false);
+        playerBookmark.setSelected(true);
+        addChild(playerBookmark).offsetGuiCoords(WIDTH - 10, HEIGHT - MAP_BORDER_HEIGHT - BookmarkButton.HEIGHT - 10);
         IButtonListener positionListener = button -> {
-            selectedButton = button;
-            if (button.equals(btnPosition)) {
-                followPlayer = true;
-                targetOffsetX = null;
-                targetOffsetY = null;
-                btnPosition.setEnabled(false);
-            }
+            selectedButton = playerBookmark;
+            clearTargetBookmarks(playerBookmark);
+            playerBookmark.setSelected(true);
         };
-        btnPosition.addListener(positionListener);
+        playerBookmark.addListener(positionListener);
 
-        btnMarker = new BookmarkButton(Text.translatable("gui.antique_atlas.addMarker"), ICON_ADD_MARKER, 0xAA2400, 0xFFFFFF, 16, false);
-        addChild(btnMarker).offsetGuiCoords(WIDTH - 10, 14);
-        btnMarker.addListener(button -> {
+        addMarkerBookmark = new BookmarkButton(Text.translatable("gui.antique_atlas.addMarker"), ICON_ADD_MARKER, DyeColor.RED, null, 16, 16, false);
+        addChild(addMarkerBookmark).offsetGuiCoords(WIDTH - 10, 14);
+        addMarkerBookmark.addListener(button -> {
             if (state.is(PLACING_MARKER)) {
                 selectedButton = null;
-                state.switchTo(NORMAL);
+                state.switchTo(NORMAL, this);
             } else {
                 selectedButton = button;
-                state.switchTo(PLACING_MARKER);
+                state.switchTo(PLACING_MARKER, this);
 
                 // While holding shift, we create a marker on the player's position
                 if (hasShiftDown()) {
@@ -297,45 +277,45 @@ public class AtlasScreen extends Component {
                     KeyBinding.unpressAll();
 
                     selectedButton = null;
-                    state.switchTo(NORMAL);
+                    state.switchTo(NORMAL, this);
                 }
             }
         });
-        btnDelMarker = new BookmarkButton(Text.translatable("gui.antique_atlas.delMarker"), ICON_DELETE_MARKER, 0xE1B212, 0xFFFFFF, 16, false);
-        addChild(btnDelMarker).offsetGuiCoords(WIDTH - 10, 33);
-        btnDelMarker.addListener(button -> {
+        deleteMarkerBookmark = new BookmarkButton(Text.translatable("gui.antique_atlas.delMarker"), ICON_DELETE_MARKER, DyeColor.YELLOW, null, 16, 16, false);
+        addChild(deleteMarkerBookmark).offsetGuiCoords(WIDTH - 10, 33);
+        deleteMarkerBookmark.addListener(button -> {
             if (state.is(DELETING_MARKER)) {
                 selectedButton = null;
-                state.switchTo(NORMAL);
+                state.switchTo(NORMAL, this);
             } else {
                 selectedButton = button;
-                state.switchTo(DELETING_MARKER);
+                state.switchTo(DELETING_MARKER, this);
             }
         });
-        btnShowMarkers = new BookmarkButton(Text.translatable("gui.antique_atlas.hideMarkers"), ICON_HIDE_MARKERS, 0x479335, 0xFFFFFF, 16, false);
-        addChild(btnShowMarkers).offsetGuiCoords(WIDTH - 10, 52);
-        btnShowMarkers.addListener(button -> {
+        markerVisibilityBookmark = new BookmarkButton(Text.translatable("gui.antique_atlas.hideMarkers"), ICON_HIDE_MARKERS, DyeColor.GREEN, null, 16, 16, false);
+        addChild(markerVisibilityBookmark).offsetGuiCoords(WIDTH - 10, 52);
+        markerVisibilityBookmark.addListener(button -> {
             selectedButton = null;
             if (state.is(HIDING_MARKERS)) {
-                state.switchTo(NORMAL);
+                state.switchTo(NORMAL, this);
             } else {
                 selectedButton = null;
-                state.switchTo(HIDING_MARKERS);
+                state.switchTo(HIDING_MARKERS, this);
             }
         });
 
         addChild(scaleBar).offsetGuiCoords(MAP_BORDER_WIDTH - 1 + (AntiqueAtlas.CONFIG.ui.fullscreen ? 0 : 4), HEIGHT - MAP_BORDER_HEIGHT - ScaleBar.HEIGHT + 1 + (AntiqueAtlas.CONFIG.ui.fullscreen ? 0 : -2));
         scaleBar.setMapScale(1);
 
-        addChild(markerBookmarks).setRelativeCoords(-14, MAP_BORDER_HEIGHT);
-        int markersOnScreen = MAP_HEIGHT / ((BookmarkButton.HEIGHT + BOOKMARK_SPACING) - BOOKMARK_SPACING);
-        markerBookmarks.setViewportSize(BookmarkButton.WIDTH, markersOnScreen * (BookmarkButton.HEIGHT + BOOKMARK_SPACING) - BOOKMARK_SPACING);
+        addChild(markerScrollBox).setRelativeCoords(-14, MAP_BORDER_HEIGHT + 8);
+        int markersOnScreen = (MAP_HEIGHT - 20) / ((BookmarkButton.HEIGHT + BOOKMARK_SPACING) - BOOKMARK_SPACING);
+        markerScrollBox.getViewport().setSize(BookmarkButton.WIDTH, markersOnScreen * (BookmarkButton.HEIGHT + BOOKMARK_SPACING) - BOOKMARK_SPACING);
 
         markerModal.addMarkerListener(markerCursor);
 
         eraser.setTexture(ERASER, 12, 14, 2, 11);
 
-        state.switchTo(NORMAL);
+        state.switchTo(AntiqueAtlas.lastState.is(HIDING_MARKERS) ? HIDING_MARKERS : NORMAL, this);
     }
 
     public AtlasScreen prepareToOpen() {
@@ -343,6 +323,7 @@ public class AtlasScreen extends Component {
 
         this.player = MinecraftClient.getInstance().player;
         updateAtlasData();
+        setMapPosition(player.getBlockX(), player.getBlockZ());
 
         return this;
     }
@@ -358,36 +339,42 @@ public class AtlasScreen extends Component {
     }
 
     public void updateBookmarkerList() {
-        markerBookmarks.removeAllContent();
-        markerBookmarks.setScrollPos(0);
+        markerScrollBox.getViewport().removeAllContent();
+        markerScrollBox.setScrollPos(0);
+        markerBookmarks.clear();
 
         if (worldAtlasData == null) return;
 
-        final int[] contentY = {0};
         worldAtlasData.getEditableLandmarks().forEach((landmark, texture) -> {
-            Integer color = null;
-            if (landmark.color() != null) {
-                float[] components = landmark.color().getColorComponents();
-                color = ((int) (components[0] * 255) << 16) | ((int) (components[1] * 255) << 8) | ((int) (components[2] * 255));
-            }
-            BookmarkButton bookmark = new BookmarkButton(landmark.name(), texture.id(), color != null ? color : 0xFFFFFF, (texture == MarkerTexture.DEFAULT && color != null) ? color : 0xFFFFFF, 32, true);
+            BookmarkButton bookmark = new BookmarkButton(landmark.name(), texture.id(), landmark.color(), (texture == MarkerTexture.DEFAULT && landmark.color() != null) ? landmark.color() : null, 32, 32, true);
 
             bookmark.addListener(button -> {
                 if (state.is(NORMAL)) {
+                    clearTargetBookmarks(bookmark);
                     setTargetPosition(new ColumnPos(landmark.pos().getX(), landmark.pos().getZ()));
-                    followPlayer = false;
-                    btnPosition.setEnabled(true);
                 } else if (state.is(DELETING_MARKER)) {
                     if (!worldAtlasData.deleteLandmark(player.getEntityWorld(), landmark)) return;
                     updateBookmarkerList();
                     player.getEntityWorld().playSound(player, player.getBlockPos(), SoundEvents.UI_CARTOGRAPHY_TABLE_TAKE_RESULT, SoundCategory.AMBIENT, 1F, 0.5F);
-                    state.switchTo(NORMAL);
+                    state.switchTo(NORMAL, this);
                 }
             });
 
-            markerBookmarks.addContent(bookmark).setRelativeY(contentY[0]);
-            contentY[0] += BookmarkButton.HEIGHT + BOOKMARK_SPACING;
+            markerBookmarks.add(bookmark);
         });
+
+        final int[] contentY = {0};
+        for (BookmarkButton bookmark : markerBookmarks) {
+            markerScrollBox.getViewport().addContent(bookmark).setRelativeY(contentY[0]);
+            contentY[0] += BookmarkButton.HEIGHT + BOOKMARK_SPACING;
+        }
+    }
+
+    public void clearTargetBookmarks(BookmarkButton except) {
+        if (playerBookmark != except) playerBookmark.setSelected(false);
+        for (BookmarkButton bookmark : markerBookmarks) {
+            if (bookmark != except) bookmark.setSelected(false);
+        }
     }
 
     @Override
@@ -410,7 +397,7 @@ public class AtlasScreen extends Component {
                 // Un-press all keys to prevent player from walking infinitely:
                 KeyBinding.unpressAll();
 
-                state.switchTo(NORMAL);
+                state.switchTo(NORMAL, this);
                 return true;
             } else if (state.is(DELETING_MARKER) && hoveredLandmark != null && isMouseOverMap && mouseState == 0) {
                 if (worldAtlasData.deleteLandmark(player.getEntityWorld(), hoveredLandmark)) {
@@ -418,7 +405,7 @@ public class AtlasScreen extends Component {
                     player.getEntityWorld().playSound(player, player.getBlockPos(), SoundEvents.UI_CARTOGRAPHY_TABLE_TAKE_RESULT, SoundCategory.AMBIENT, 1F, 0.5F);
                 }
             }
-            state.switchTo(NORMAL);
+            state.switchTo(NORMAL, this);
         } else if (isMouseOverMap && selectedButton == null) {
             isDragging = true;
             return true;
@@ -504,8 +491,7 @@ public class AtlasScreen extends Component {
     public boolean mouseDragged(double mouseX, double mouseY, int lastMouseButton, double deltaX, double deltaY) {
         boolean result = false;
         if (isDragging) {
-            followPlayer = false;
-            btnPosition.setEnabled(true);
+            clearTargetBookmarks(null);
 
             mapOffsetDeltaX += deltaX;
             mapOffsetDeltaY += deltaY;
@@ -533,13 +519,13 @@ public class AtlasScreen extends Component {
         super.tick();
         if (player == null) return;
 
-        if (followPlayer) {
-            setMapPosition(player.getBlockX(), player.getBlockZ());
+        if (playerBookmark.isSelected()) {
+            setTargetPosition(new ColumnPos(player.getBlockX(), player.getBlockZ()));
         }
 
         if (targetOffsetX != null) {
             if (Math.abs(getTargetPositionX() - mapOffsetX) > navigateStep) {
-                navigateMap(getTargetPositionX() > mapOffsetX ? navigateStep : -navigateStep, 0);
+                softNavigateMap(getTargetPositionX() > mapOffsetX ? navigateStep : -navigateStep, 0);
             } else {
                 mapOffsetX = getTargetPositionX();
                 targetOffsetX = null;
@@ -548,7 +534,7 @@ public class AtlasScreen extends Component {
 
         if (targetOffsetY != null) {
             if (Math.abs(getTargetPositionY() - mapOffsetY) > navigateStep) {
-                navigateMap(0, getTargetPositionY() > mapOffsetY ? navigateStep : -navigateStep);
+                softNavigateMap(0, getTargetPositionY() > mapOffsetY ? navigateStep : -navigateStep);
             } else {
                 mapOffsetY = getTargetPositionY();
                 targetOffsetY = null;
@@ -562,14 +548,15 @@ public class AtlasScreen extends Component {
         }
     }
 
-    /**
-     * Offset the map view by given values, in blocks.
-     */
     private void navigateMap(int dx, int dy) {
         mapOffsetX += dx;
         mapOffsetY += dy;
-        followPlayer = false;
-        btnPosition.setEnabled(true);
+        clearTargetBookmarks(null);
+    }
+
+    private void softNavigateMap(int dx, int dy) {
+        mapOffsetX += dx;
+        mapOffsetY += dy;
     }
 
     private void setMapPosition(int x, int z) {
@@ -627,9 +614,8 @@ public class AtlasScreen extends Component {
         zoomLevel = -scaleClipIndex + zoomLevelOne;
         scaleAlpha = 255;
 
-        if (followPlayer && (addOffsetX != 0 || addOffsetY != 0)) {
-            followPlayer = false;
-            btnPosition.setEnabled(true);
+        if (addOffsetX != 0 || addOffsetY != 0) {
+            clearTargetBookmarks(null);
         }
     }
 
@@ -727,7 +713,8 @@ public class AtlasScreen extends Component {
 
         renderScaleOverlay(context, deltaMillis);
 
-        if (!state.is(HIDING_MARKERS)) {
+        markerScrollBox.getViewport().setHidden(state.is(HIDING_MARKERS));
+        if (!state.is(HIDING_MARKERS) || playerBookmark.isSelected()) {
             renderPlayer(context, 1);
         }
 

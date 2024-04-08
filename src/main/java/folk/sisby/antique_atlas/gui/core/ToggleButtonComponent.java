@@ -15,7 +15,7 @@ public class ToggleButtonComponent extends ButtonComponent {
         this.selected = value;
     }
 
-    protected boolean isSelected() {
+    public boolean isSelected() {
         return selected;
     }
 

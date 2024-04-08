@@ -15,7 +15,6 @@ public class ScrollBoxComponent extends Component {
      */
     int scrollPos = 0;
 
-
     public ScrollBoxComponent(boolean vertical, int scrollStep) {
         this.vertical = vertical;
         this.scrollStep = scrollStep;
@@ -69,15 +68,7 @@ public class ScrollBoxComponent extends Component {
         return vertical ? viewport.getHeight() : viewport.getWidth();
     }
 
-    public Component addContent(Component child) {
-        return viewport.addContent(child);
-    }
-
-    public void removeAllContent() {
-        viewport.removeAllContent();
-    }
-
-    public void setViewportSize(int width, int height) {
-        viewport.setSize(width, height);
+    public ViewportComponent getViewport() {
+        return viewport;
     }
 }

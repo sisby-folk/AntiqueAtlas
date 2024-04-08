@@ -32,7 +32,7 @@ public class MarkerModal extends Component {
     private int markerZ;
 
     MarkerTexture selectedTexture = MarkerTexture.DEFAULT;
-    DyeColor selectedColor = DyeColor.GREEN;
+    DyeColor selectedColor = DyeColor.WHITE;
 
     private static final int BUTTON_WIDTH = 100;
     private static final int BUTTON_SPACING = 4;
@@ -90,7 +90,7 @@ public class MarkerModal extends Component {
         int typeCount = (int) MarkerTextures.getInstance().asMap().values().stream().filter(t -> t.keyId().getPath().startsWith("custom/")).count();
         int typesOnScreen = Math.min(typeCount, 7);
         int typeScrollWidth = typesOnScreen * (TexturePreviewButton.FRAME_SIZE + TYPE_SPACING) - TYPE_SPACING;
-        textureScrollBox.setViewportSize(typeScrollWidth, TexturePreviewButton.FRAME_SIZE + TYPE_SPACING);
+        textureScrollBox.getViewport().setSize(typeScrollWidth, TexturePreviewButton.FRAME_SIZE + TYPE_SPACING);
         textureScrollBox.setGuiCoords((this.width - typeScrollWidth) / 2, this.height / 2 - 45);
 
         textureRadioGroup = new ToggleButtonRadioGroup<>();
@@ -103,12 +103,13 @@ public class MarkerModal extends Component {
         int contentX = 0;
         for (MarkerTexture texture : MarkerTextures.getInstance().asMap().values()) {
             if (!texture.keyId().getPath().startsWith("custom/")) continue;
+            if (selectedTexture == MarkerTexture.DEFAULT) selectedTexture = texture;
             TexturePreviewButton<MarkerTexture> markerGui = new TexturePreviewButton<>(texture, texture.id(), texture.textureWidth(), texture.textureHeight(), 0, null);
             textureRadioGroup.addButton(markerGui);
             if (selectedTexture.equals(texture)) {
                 textureRadioGroup.setSelectedButton(markerGui);
             }
-            textureScrollBox.addContent(markerGui).setRelativeX(contentX);
+            textureScrollBox.getViewport().addContent(markerGui).setRelativeX(contentX);
             contentX += TexturePreviewButton.FRAME_SIZE + TYPE_SPACING;
         }
         
@@ -119,7 +120,7 @@ public class MarkerModal extends Component {
 
         int colorsOnScreen = Math.min(DyeColor.values().length, 7);
         int colorScrollWidth = colorsOnScreen * (TexturePreviewButton.FRAME_SIZE + TYPE_SPACING) - TYPE_SPACING;
-        colorScrollBox.setViewportSize(colorScrollWidth, TexturePreviewButton.FRAME_SIZE + TYPE_SPACING);
+        colorScrollBox.getViewport().setSize(colorScrollWidth, TexturePreviewButton.FRAME_SIZE + TYPE_SPACING);
         colorScrollBox.setGuiCoords((this.width - colorScrollWidth) / 2, this.height / 2 + 15);
 
         colorRadioGroup = new ToggleButtonRadioGroup<>();
@@ -131,7 +132,7 @@ public class MarkerModal extends Component {
             if (selectedColor.equals(color)) {
                 colorRadioGroup.setSelectedButton(colorGui);
             }
-            colorScrollBox.addContent(colorGui).setRelativeX(colorContentX);
+            colorScrollBox.getViewport().addContent(colorGui).setRelativeX(colorContentX);
             colorContentX += TexturePreviewButton.FRAME_SIZE + TYPE_SPACING;
         }
     }

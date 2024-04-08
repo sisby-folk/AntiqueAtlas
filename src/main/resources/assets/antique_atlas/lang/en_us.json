@@ -4,7 +4,7 @@
   "gui.antique_atlas.scalebar": "Scale in blocks",
   "gui.antique_atlas.addMarker": "Add marker",
   "gui.antique_atlas.delMarker": "Delete marker",
-  "gui.antique_atlas.followPlayer": "Follow player",
+  "gui.antique_atlas.followPlayer": "Player",
   "gui.antique_atlas.hideMarkers": "Hide markers",
   "gui.antique_atlas.showMarkers": "Show markers",
   "gui.antique_atlas.marker.label": "Label",

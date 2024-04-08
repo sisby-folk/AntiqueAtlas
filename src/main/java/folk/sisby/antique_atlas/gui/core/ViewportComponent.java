@@ -20,6 +20,7 @@ public class ViewportComponent extends Component {
      * Coordinate scale factor relative to the actual screen size.
      */
     private double screenScale;
+    private boolean hidden;
 
     public ViewportComponent() {
         this.addChild(content);
@@ -46,6 +47,7 @@ public class ViewportComponent extends Component {
 
     @Override
     public void render(DrawContext context, int mouseX, int mouseY, float par3) {
+        if (hidden) return;
         RenderSystem.enableScissor(
             (int) (getGuiX() * screenScale),
             (int) (MinecraftClient.getInstance().getWindow().getFramebufferHeight() - (getGuiY() + properHeight) * screenScale),
@@ -85,5 +87,9 @@ public class ViewportComponent extends Component {
                     child.getGuiX() + child.getWidth() < getGuiX()
             );
         }
+    }
+
+    public void setHidden(boolean hidden) {
+        this.hidden = hidden;
     }
 }

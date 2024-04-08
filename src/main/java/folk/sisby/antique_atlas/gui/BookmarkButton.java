@@ -6,8 +6,9 @@ import folk.sisby.antique_atlas.gui.core.ToggleButtonComponent;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.DrawContext;
 import net.minecraft.text.Text;
+import net.minecraft.util.DyeColor;
 import net.minecraft.util.Identifier;
-import net.minecraft.util.math.ColorHelper;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.Collections;
 
@@ -19,17 +20,19 @@ public class BookmarkButton extends ToggleButtonComponent {
 
     private Text title;
     private Identifier iconTexture;
-    private final int backgroundTint;
-    private final int iconTint;
-    private final int iconSize;
+    private final float[] backgroundTint;
+    private final float[] iconTint;
+    private final int iconWidth;
+    private final int iconHeight;
     private final boolean left;
 
-    BookmarkButton(Text title, Identifier iconTexture, int backgroundTint, int iconTint, int iconSize, boolean left) {
+    BookmarkButton(Text title, Identifier iconTexture, DyeColor backgroundTint, @Nullable DyeColor iconTint, int iconWidth, int iconHeight, boolean left) {
         this.title = title;
         this.iconTexture = iconTexture;
-        this.backgroundTint = backgroundTint;
-        this.iconSize = iconSize;
-        this.iconTint = iconTint;
+        this.backgroundTint = backgroundTint == null ? null : backgroundTint.getColorComponents();
+        this.iconWidth = iconWidth;
+        this.iconHeight = iconHeight;
+        this.iconTint = iconTint == null ? null : iconTint.getColorComponents();
         this.left = left;
         setTitle(title);
         setSize(WIDTH, HEIGHT);
@@ -49,17 +52,17 @@ public class BookmarkButton extends ToggleButtonComponent {
 
     @Override
     public void render(DrawContext context, int mouseX, int mouseY, float partialTick) {
-        RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
-        boolean isExtended = isMouseOver || (!left && isSelected());
+        boolean isExtended = isMouseOver || isSelected();
 
-        RenderSystem.setShaderColor(ColorHelper.Argb.getRed(backgroundTint) / 255.0F, ColorHelper.Argb.getGreen(backgroundTint) / 255.0F, ColorHelper.Argb.getBlue(backgroundTint) / 255.0F, 1.0F);
+        RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
+        if (backgroundTint != null) RenderSystem.setShaderColor(backgroundTint[0], backgroundTint[1], backgroundTint[2], 1.0F);
         context.drawTexture(left ? TEXTURE_LEFT : TEXTURE_RIGHT, getGuiX(), getGuiY(), 0, isExtended ? 0 : HEIGHT, WIDTH, HEIGHT, WIDTH, HEIGHT * 2);
 
-        RenderSystem.setShaderColor(ColorHelper.Argb.getRed(iconTint) / 255.0F, ColorHelper.Argb.getGreen(iconTint) / 255.0F, ColorHelper.Argb.getBlue(iconTint) / 255.0F, 1.0F);
-
-        int iconX = getGuiX() + 10 - iconSize / 2 + (isExtended ? (left ? 3 : 1) : (left ? 4 : 0));
-        int iconY = getGuiY() + 9 - iconSize / 2;
-        context.drawTexture(iconTexture, iconX, iconY, 0, 0, iconSize, iconSize, iconSize, iconSize);
+        RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
+        if (iconTint != null) RenderSystem.setShaderColor(iconTint[0], iconTint[1], iconTint[2], 1.0F);
+        int iconX = getGuiX() + 10 - iconWidth / 2 + (isExtended ? (left ? 3 : 1) : (left ? 4 : 0));
+        int iconY = getGuiY() + 9 - iconHeight / 2;
+        context.drawTexture(iconTexture, iconX, iconY, 0, 0, iconWidth, iconHeight, iconWidth, iconHeight);
 
         RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
 
