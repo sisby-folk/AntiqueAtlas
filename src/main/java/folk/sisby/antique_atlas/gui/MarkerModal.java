@@ -34,11 +34,10 @@ public class MarkerModal extends Component {
     MarkerTexture selectedTexture = MarkerTexture.DEFAULT;
     DyeColor selectedColor = DyeColor.WHITE;
 
-    private static final int BUTTON_WIDTH = 100;
-    private static final int BUTTON_SPACING = 4;
+    private static final int BUTTON_WIDTH = 80;
+    private static final int BUTTON_SPACING = 8;
 
     private static final int TYPE_SPACING = 1;
-    private static final int TYPE_BG_FRAME = 4;
 
     private ButtonWidget btnDone;
     private ButtonWidget btnCancel;
@@ -75,10 +74,10 @@ public class MarkerModal extends Component {
                 SoundEvents.ENTITY_VILLAGER_WORK_CARTOGRAPHER, SoundCategory.AMBIENT,
                 1F, 1F);
             closeChild();
-        }).dimensions(this.width / 2 - BUTTON_WIDTH - BUTTON_SPACING / 2, this.height / 2 + 80, BUTTON_WIDTH, 20).build());
+        }).dimensions(this.width / 2 - BUTTON_WIDTH - BUTTON_SPACING / 2, this.height / 2 + 70, BUTTON_WIDTH, 20).build());
         addDrawableChild(btnCancel = ButtonWidget.builder(Text.translatable("gui.cancel"), (button) -> closeChild())
-            .dimensions(this.width / 2 + BUTTON_SPACING / 2, this.height / 2 + 80, BUTTON_WIDTH, 20).build());
-        textField = new TextFieldWidget(MinecraftClient.getInstance().textRenderer, (this.width - 200) / 2, this.height / 2 - 81, 200, 20, Text.translatable("gui.antique_atlas.marker.label"));
+            .dimensions(this.width / 2 + BUTTON_SPACING / 2, this.height / 2 + 70, BUTTON_WIDTH, 20).build());
+        textField = new TextFieldWidget(MinecraftClient.getInstance().textRenderer, (this.width - 200) / 2, this.height / 2 - 65, 200, 20, Text.translatable("gui.antique_atlas.marker.label"));
         textField.setEditable(true);
         textField.setFocusUnlocked(true);
         textField.setFocused(true);
@@ -91,7 +90,7 @@ public class MarkerModal extends Component {
         int typesOnScreen = Math.min(typeCount, 7);
         int typeScrollWidth = typesOnScreen * (TexturePreviewButton.FRAME_SIZE + TYPE_SPACING) - TYPE_SPACING;
         textureScrollBox.getViewport().setSize(typeScrollWidth, TexturePreviewButton.FRAME_SIZE + TYPE_SPACING);
-        textureScrollBox.setGuiCoords((this.width - typeScrollWidth) / 2, this.height / 2 - 45);
+        textureScrollBox.setGuiCoords((this.width - typeScrollWidth) / 2, this.height / 2 - 35);
 
         textureRadioGroup = new ToggleButtonRadioGroup<>();
         textureRadioGroup.addListener(button -> {
@@ -121,7 +120,7 @@ public class MarkerModal extends Component {
         int colorsOnScreen = Math.min(DyeColor.values().length, 7);
         int colorScrollWidth = colorsOnScreen * (TexturePreviewButton.FRAME_SIZE + TYPE_SPACING) - TYPE_SPACING;
         colorScrollBox.getViewport().setSize(colorScrollWidth, TexturePreviewButton.FRAME_SIZE + TYPE_SPACING);
-        colorScrollBox.setGuiCoords((this.width - colorScrollWidth) / 2, this.height / 2 + 15);
+        colorScrollBox.setGuiCoords((this.width - colorScrollWidth) / 2, this.height / 2 + 10);
 
         colorRadioGroup = new ToggleButtonRadioGroup<>();
         colorRadioGroup.addListener(button -> selectedColor = button.getValue());
@@ -166,16 +165,16 @@ public class MarkerModal extends Component {
     @Override
     public void render(DrawContext context, int mouseX, int mouseY, float partialTick) {
         this.renderBackground(context);
-        drawCentered(context, Text.translatable("gui.antique_atlas.marker.label"), this.height / 2 - 94, 0xDDDDDD, true);
+        drawCentered(context, Text.translatable("gui.antique_atlas.marker.label"), this.height / 2 - 80, 0xDDDDDD, true);
         textField.render(context, mouseX, mouseY, partialTick);
         // Darker background for marker type selector
-        context.fillGradient(textureScrollBox.getGuiX() - TYPE_BG_FRAME, textureScrollBox.getGuiY() - TYPE_BG_FRAME,
-            textureScrollBox.getGuiX() + textureScrollBox.getWidth() + TYPE_BG_FRAME,
-            textureScrollBox.getGuiY() + textureScrollBox.getHeight() + TYPE_BG_FRAME,
+        context.fillGradient(textureScrollBox.getGuiX() + 1, textureScrollBox.getGuiY() + 1,
+            textureScrollBox.getGuiX() + textureScrollBox.getWidth(),
+            textureScrollBox.getGuiY() + textureScrollBox.getHeight(),
             0x88101010, 0x99101010);
-        context.fillGradient(colorScrollBox.getGuiX() - TYPE_BG_FRAME, colorScrollBox.getGuiY() - TYPE_BG_FRAME,
-            colorScrollBox.getGuiX() + colorScrollBox.getWidth() + TYPE_BG_FRAME,
-            colorScrollBox.getGuiY() + colorScrollBox.getHeight() + TYPE_BG_FRAME,
+        context.fillGradient(colorScrollBox.getGuiX() + 1, colorScrollBox.getGuiY() + 1,
+            colorScrollBox.getGuiX() + colorScrollBox.getWidth(),
+            colorScrollBox.getGuiY() + colorScrollBox.getHeight(),
             0x88101010, 0x99101010);
         super.render(context, mouseX, mouseY, partialTick);
     }
