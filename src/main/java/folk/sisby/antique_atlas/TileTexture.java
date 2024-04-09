@@ -12,7 +12,7 @@ public final class TileTexture {
         return new TileTexture(new Identifier(id.getNamespace(), "textures/atlas/tile/%s.png".formatted(id.getPath())), innerBorder, new ReferenceOpenHashSet<>(), new ReferenceOpenHashSet<>(), new ReferenceOpenHashSet<>());
     }
 
-    public static final TileTexture DEFAULT = empty(AntiqueAtlas.id(AntiqueAtlas.CONFIG.debug.fallbackFailHandling == AntiqueAtlasConfig.FallbackHandling.TEST ? "test": "missing"), false);
+    public static final TileTexture DEFAULT = empty(AntiqueAtlas.id(AntiqueAtlas.CONFIG.fallbackFailHandling == AntiqueAtlasConfig.FallbackHandling.TEST ? "test": "missing"), false);
     private final Identifier id;
     private final boolean innerBorder;
     private final Set<TileTexture> tilesTo;

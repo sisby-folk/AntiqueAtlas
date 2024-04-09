@@ -116,18 +116,6 @@ public class Component extends Screen {
     }
 
     /**
-     * Position this component in the center of its parent.
-     */
-    protected final void setCentered() {
-        validateSize();
-        if (parent == null) {
-            setGuiCoords((this.width - getWidth()) / 2, (this.height - getHeight()) / 2);
-        } else {
-            setRelativeCoords((parent.getWidth() - getWidth()) / 2, (parent.getHeight() - getHeight()) / 2);
-        }
-    }
-
-    /**
      * Absolute X coordinate on the screen.
      */
     public int getGuiX() {
@@ -470,7 +458,10 @@ public class Component extends Screen {
     private void drawHoveringText2(DrawContext context, List<Text> lines, double x, double y, TextRenderer font) {
         boolean stencilEnabled = GL11.glIsEnabled(GL11.GL_STENCIL_TEST);
         if (stencilEnabled) GL11.glDisable(GL11.GL_STENCIL_TEST);
-        context.drawTooltip(font, lines, (int) x, (int) y);
+        context.getMatrices().push();
+        context.getMatrices().translate(x, y, 0);
+        context.drawTooltip(font, lines, 0, 0);
+        context.getMatrices().pop();
         if (stencilEnabled) GL11.glEnable(GL11.GL_STENCIL_TEST);
     }
 

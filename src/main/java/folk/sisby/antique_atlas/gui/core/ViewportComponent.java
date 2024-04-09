@@ -1,7 +1,6 @@
 package folk.sisby.antique_atlas.gui.core;
 
 import com.mojang.blaze3d.systems.RenderSystem;
-import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.DrawContext;
 
 /**
@@ -16,10 +15,6 @@ public class ViewportComponent extends Component {
      */
     final Component content = new Component();
 
-    /**
-     * Coordinate scale factor relative to the actual screen size.
-     */
-    private double screenScale;
     private boolean hidden;
 
     public ViewportComponent() {
@@ -42,28 +37,23 @@ public class ViewportComponent extends Component {
     @Override
     public void init() {
         super.init();
-        screenScale = client.getWindow().getScaleFactor();
     }
 
     @Override
     public void render(DrawContext context, int mouseX, int mouseY, float par3) {
         if (hidden) return;
+        double guiScale = client.getWindow().getScaleFactor();
         RenderSystem.enableScissor(
-            (int) (getGuiX() * screenScale),
-            (int) (MinecraftClient.getInstance().getWindow().getFramebufferHeight() - (getGuiY() + properHeight) * screenScale),
-            (int) ((properWidth + 1) * screenScale),
-            (int) ((properHeight + 1) * screenScale)
+            (int) (guiScale * getGuiX()),
+            (int) (guiScale * getGuiY()),
+            (int) (guiScale * (properWidth + 1)),
+            (int) (guiScale * (properHeight + 1))
         );
 
         // Draw the content (child GUIs):
         super.render(context, mouseX, mouseY, par3);
 
         RenderSystem.disableScissor();
-    }
-
-    @Override
-    boolean iterateMouseInput(UiCall callMethod) {
-        return iterateInput(callMethod);
     }
 
     @Override

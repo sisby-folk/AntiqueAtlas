@@ -77,7 +77,7 @@ public class WorldAtlasData {
     }
 
     public void tick(World world) {
-        for (int i = 0; i < AntiqueAtlas.CONFIG.performance.chunkTickLimit; i++) {
+        for (int i = 0; i < AntiqueAtlas.CONFIG.chunkTickLimit; i++) {
             ChunkPos pos = terrainDeque.pollFirst();
             if (pos == null) break;
             Pair<TerrainTileProvider, TileElevation> tile = world.getRegistryKey() == World.NETHER ? TerrainTiling.terrainToTileNether(world, pos) : TerrainTiling.terrainToTile(world, pos);
@@ -131,7 +131,7 @@ public class WorldAtlasData {
         if (baseLandmark.type() == PlayerDeathLandmark.TYPE) {
             PlayerDeathLandmark landmark = (PlayerDeathLandmark) baseLandmark;
 
-            AntiqueAtlasConfig.GraveStyle style = AntiqueAtlas.CONFIG.ui.graveStyle;
+            AntiqueAtlasConfig.GraveStyle style = AntiqueAtlas.CONFIG.graveStyle;
             if (landmark.name() == null && style == AntiqueAtlasConfig.GraveStyle.CAUSE) style = AntiqueAtlasConfig.GraveStyle.DIED;
             MutableText timeText = Text.literal(String.valueOf(1 + (landmark.created() / 24000))).formatted(Formatting.WHITE);
             String key = "gui.antique_atlas.marker.death.%s".formatted(style.toString().toLowerCase());

@@ -1,6 +1,8 @@
 package folk.sisby.antique_atlas.gui.core;
 
 import java.util.function.BiConsumer;
+import java.util.function.Consumer;
+import java.util.function.Function;
 
 /**
  * A mechanism to encapsulate actions that need to be done every time a GUI
@@ -9,31 +11,40 @@ import java.util.function.BiConsumer;
  * @author Hunternif
  */
 public class ScreenState<T> {
-    private final BiConsumer<IState<T>, IState<T>> onChangedState;
+    private final BiConsumer<State<T>, State<T>> onChangedState;
 
     /**
      * Meant to declare anonymous classes.
      */
-    public interface IState<T> {
+    public interface State<T> {
         void onEnterState(T screen);
 
         void onExitState(T screen);
     }
 
-    /**
-     * A simple state that does nothing upon enter or exit.
-     */
-    public static class SimpleState<T> implements IState<T> {
+    public record ToggleState<T>(Function<T, ToggleButtonComponent> toggleButton, Consumer<T> onEnterState, Consumer<T> onExitState) implements State<T> {
+        public ToggleState(Function<T, ToggleButtonComponent> toggleButton) {
+            this(toggleButton, null,  null);
+        }
+
+        public ToggleState() {
+            this(null, null, null);
+        }
+
         @Override
         public void onEnterState(T screen) {
+            if (toggleButton != null) toggleButton.apply(screen).setSelected(true);
+            if (onEnterState != null) onEnterState.accept(screen);
         }
 
         @Override
         public void onExitState(T screen) {
+            if (toggleButton != null) toggleButton.apply(screen).setSelected(false);
+            if (onExitState != null) onExitState.accept(screen);
         }
     }
 
-    public ScreenState(BiConsumer<IState<T>, IState<T>> onChangedState) {
+    public ScreenState(BiConsumer<State<T>, State<T>> onChangedState) {
         this.onChangedState = onChangedState;
     }
 
@@ -41,17 +52,17 @@ public class ScreenState<T> {
         this.onChangedState = null;
     }
 
-    private volatile IState<T> currentState;
+    private volatile State<T> currentState;
 
-    public IState<T> current() {
+    public State<T> current() {
         return currentState;
     }
 
-    public boolean is(IState<T> state) {
+    public boolean is(State<T> state) {
         return current() == state;
     }
 
-    public void switchTo(IState<T> state, T screen) {
+    public void switchTo(State<T> state, T screen) {
         if (currentState != null) {
             currentState.onExitState(screen);
         }

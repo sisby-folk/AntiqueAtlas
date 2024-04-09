@@ -2,7 +2,7 @@ package folk.sisby.antique_atlas;
 
 import folk.sisby.kaleido.api.WrappedConfig;
 import folk.sisby.kaleido.lib.quiltconfig.api.annotations.Comment;
-import folk.sisby.kaleido.lib.quiltconfig.api.annotations.FloatRange;
+import folk.sisby.kaleido.lib.quiltconfig.api.annotations.IntegerRange;
 import folk.sisby.kaleido.lib.quiltconfig.api.values.ValueMap;
 
 import java.util.Map;
@@ -15,63 +15,42 @@ public class AntiqueAtlasConfig extends WrappedConfig {
         DIED,
         EUPHEMISMS
     }
+
     public enum FallbackHandling {
         TEST,
         MISSING,
         CRASH
     }
 
-    public final UISection ui = new UISection();
-    public final DebugSection debug = new DebugSection();
-    public final PerformanceSection performance = new PerformanceSection();
+    @Comment("The maximum number of chunks to represent as a tile, as a power of 2")
+    @Comment("Effectively the 'minimum zoom'")
+    @Comment("0: 1 chunk = 1 tile | 6: 64 chunks = 1 tile")
+    @IntegerRange(min = 0, max = 6)
+    public final Integer maxTileChunks = 5;
 
-    public static final class UISection implements Section {
-        @Comment("Default zoom level")
-        @Comment("The number corresponds to the size of a block on the map relative to the size of a GUI pixel")
-        @Comment("Preferably a power of 2.")
-        @FloatRange(min = 0.001953125, max = 16.0)
-        public final Double defaultScale = 0.5;
+    @Comment("The maximum size to render a tile at, as a power of 2 multiplier")
+    @Comment("Effectively the 'maximum zoom'")
+    @Comment("1: 1 tile = 16x16 | 3: 1 tile = 128x128")
+    @IntegerRange(min = 0, max = 3)
+    public final Integer maxTilePixels = 0;
 
-        @Comment("Minimum zoom level")
-        @Comment("The number corresponds to the size of a block on the map relative to the size of a GUI pixel")
-        @Comment("Preferably a power of 2")
-        @Comment("Smaller values may decrease performance!")
-        @FloatRange(min = 0.001953125, max = 16.0)
-        public final Double minScale = 1.0 / 32.0;
+    @Comment("How to depict player death locations.")
+    public final GraveStyle graveStyle = GraveStyle.EUPHEMISMS;
 
-        @Comment("Maximum zoom level")
-        @Comment("The number corresponds to the size of a block on the map relative to the size of a GUI pixel")
-        @Comment("Preferably a power of 2.")
-        @FloatRange(min = 0.001953125, max = 16.0)
-        public final Double maxScale = 4.0;
+    @Comment("Whether to display the map in full-screen")
+    @Comment("The background is simplistic, but more tiles can be shown")
+    public final Boolean fullscreen = false;
 
-        @Comment("If false (by default), then mousewheel up is zoom in, mousewheel down is zoom out.")
-        @Comment("If true, then the direction is reversed.")
-        public final Boolean reverseZoom = false;
+    @Comment("The maximum number of chunks to load onto the map per tick after entering a world")
+    public final Integer chunkTickLimit = 100;
 
-        @Comment("How to depict player death locations.")
-        public final GraveStyle graveStyle = GraveStyle.EUPHEMISMS;
+    @Comment("How to handle biomes that aren't in any minecraft, conventional, or forge biome tags")
+    public final FallbackHandling fallbackFailHandling = FallbackHandling.MISSING;
 
-        @Comment("Whether to display the map in full-screen")
-        @Comment("Full screen mode uses a simplistic background texture, and is more performance intensive")
-        public final Boolean fullscreen = false;
-    }
-
-    public static final class PerformanceSection implements Section {
-        @Comment("The maximum number of chunks to load onto the map per tick after entering a world.")
-        public final Integer chunkTickLimit = 100;
-    }
-
-    public static final class DebugSection implements Section {
-        @Comment("How to handle biomes that aren't in any minecraft, conventional, or forge biome tags")
-        public final FallbackHandling fallbackFailHandling = FallbackHandling.MISSING;
-
-        @Comment("If true, debug information about hovered tiles and markers will be shown.")
-        public final Boolean debugRender = false;
-    }
+    @Comment("Whether to show debug information about hovered tiles and markers")
+    public final Boolean debugRender = false;
 
     public final Map<String, Boolean> structureMarkers = ValueMap.builder(true)
-        .put("minecraft:tag/village", false)
         .put("minecraft:type/end_city", false)
         .build();
 }

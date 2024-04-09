@@ -21,7 +21,6 @@ public class AntiqueAtlasKeybindings {
             if (client.currentScreen == null) {
                 AtlasScreen screen = new AtlasScreen();
                 screen.init();
-                screen.setMapScale(AntiqueAtlas.CONFIG.ui.defaultScale);
                 screen.prepareToOpen();
                 screen.tick();
                 client.setScreen(screen);

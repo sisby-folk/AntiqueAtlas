@@ -8,8 +8,8 @@ import net.minecraft.util.Identifier;
 
 
 public class TexturePreviewButton<T> extends ToggleButtonComponent {
-    public static final Identifier FRAME_SELECTED = AntiqueAtlas.id("textures/gui/marker_frame_on.png");
-    public static final Identifier FRAME_UNSELECTED = AntiqueAtlas.id("textures/gui/marker_frame_off.png");
+    public static final Identifier FRAME_SELECTED = AntiqueAtlas.id("textures/gui/frame_selected.png");
+    public static final Identifier FRAME_UNSELECTED = AntiqueAtlas.id("textures/gui/frame.png");
     public static final int FRAME_SIZE = 34;
 
     private final T value;
