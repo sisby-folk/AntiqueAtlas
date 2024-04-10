@@ -487,11 +487,11 @@ public class AtlasScreen extends Component {
         if (subTilePixels == 8) {
             if (tileChunks >= maxTileChunks) return false;
             tileChunks <<= 1;
-            resetScaleBookmark.setLabel(Text.literal("%dc".formatted(tileChunks)).formatted(tileChunks == 1 ? Formatting.BLACK : Formatting.DARK_BLUE));
+            resetScaleBookmark.setLabel(Text.literal("%dc".formatted(tileChunks)).formatted(Formatting.DARK_BLUE));
             if (playSound) MinecraftClient.getInstance().getSoundManager().play(PositionedSoundInstance.master(SoundEvents.ITEM_BOOK_PAGE_TURN, 1.0F));
         } else {
             subTilePixels >>= 1;
-            resetScaleBookmark.setLabel(Text.literal("%db".formatted(128 / subTilePixels)).formatted(Formatting.DARK_RED));
+            resetScaleBookmark.setLabel(subTilePixels == 8 ? Text.literal("%dc".formatted(tileChunks)) : Text.literal("%db".formatted(128 / subTilePixels)).formatted(Formatting.DARK_RED));
             if (playSound) MinecraftClient.getInstance().getSoundManager().play(PositionedSoundInstance.master(SoundEvents.ITEM_SPYGLASS_USE, 1.0F));
         }
         mapOffsetX /= 2;
