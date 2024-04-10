@@ -25,9 +25,11 @@ public class BookmarkButton extends ToggleButtonComponent {
     private final int iconWidth;
     private final int iconHeight;
     private final boolean left;
+    private final Identifier backgroundTexture;
 
-    BookmarkButton(Text title, Identifier iconTexture, DyeColor backgroundTint, @Nullable DyeColor iconTint, int iconWidth, int iconHeight, boolean left) {
+    protected BookmarkButton(Identifier backgroundTexture, Text title, Identifier iconTexture, DyeColor backgroundTint, @Nullable DyeColor iconTint, int iconWidth, int iconHeight, boolean left) {
         super(false);
+        this.backgroundTexture = backgroundTexture;
         this.title = title;
         this.iconTexture = iconTexture;
         this.backgroundTint = backgroundTint == null ? null : backgroundTint.getColorComponents();
@@ -37,6 +39,10 @@ public class BookmarkButton extends ToggleButtonComponent {
         this.left = left;
         setTitle(title);
         setSize(WIDTH, HEIGHT);
+    }
+
+    BookmarkButton(Text title, Identifier iconTexture, DyeColor backgroundTint, @Nullable DyeColor iconTint, int iconWidth, int iconHeight, boolean left) {
+        this(left ? TEXTURE_LEFT : TEXTURE_RIGHT, title, iconTexture, backgroundTint, iconTint, iconWidth, iconHeight, left);
     }
 
     void setIconTexture(Identifier iconTexture) {
@@ -58,16 +64,22 @@ public class BookmarkButton extends ToggleButtonComponent {
 
         RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
         if (backgroundTint != null) RenderSystem.setShaderColor(backgroundTint[0], backgroundTint[1], backgroundTint[2], 1.0F);
-        context.drawTexture(left ? TEXTURE_LEFT : TEXTURE_RIGHT, getGuiX(), getGuiY(), 0, isExtended ? 0 : HEIGHT, WIDTH, HEIGHT, WIDTH, HEIGHT * 2);
+        context.drawTexture(backgroundTexture, getGuiX(), getGuiY(), 0, isExtended ? 0 : HEIGHT, WIDTH, HEIGHT, WIDTH, HEIGHT * 2);
+
+        if (iconTexture != null) {
+            RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
+            if (iconTint != null) RenderSystem.setShaderColor(iconTint[0], iconTint[1], iconTint[2], 1.0F);
+            int iconX = getGuiX() + 10 - iconWidth / 2 + (isExtended ? (left ? 3 : 1) : (left ? 4 : 0));
+            int iconY = getGuiY() + 9 - iconHeight / 2;
+            context.drawTexture(iconTexture, iconX, iconY, 0, 0, iconWidth, iconHeight, iconWidth, iconHeight);
+        }
 
         RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
-        if (iconTint != null) RenderSystem.setShaderColor(iconTint[0], iconTint[1], iconTint[2], 1.0F);
-        int iconX = getGuiX() + 10 - iconWidth / 2 + (isExtended ? (left ? 3 : 1) : (left ? 4 : 0));
-        int iconY = getGuiY() + 9 - iconHeight / 2;
-        context.drawTexture(iconTexture, iconX, iconY, 0, 0, iconWidth, iconHeight, iconWidth, iconHeight);
 
-        RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
+        renderTooltip(context, mouseX, mouseY, partialTick, mouseOver);
+    }
 
+    public void renderTooltip(DrawContext context, int mouseX, int mouseY, float partialTick, boolean mouseOver) {
         if (mouseOver && !title.getString().isEmpty()) {
             drawTooltip(Collections.singletonList(title), MinecraftClient.getInstance().textRenderer);
         }

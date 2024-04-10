@@ -5,6 +5,7 @@
   "gui.antique_atlas.addMarker": "Add marker",
   "gui.antique_atlas.addMarkerHere": "Add marker here",
   "gui.antique_atlas.delMarker": "Delete marker",
+  "gui.antique_atlas.resetScale": "Reset scale",
   "gui.antique_atlas.followPlayer": "Player",
   "gui.antique_atlas.hideMarkers": "Hide markers",
   "gui.antique_atlas.showMarkers": "Show markers",

@@ -32,6 +32,7 @@ import net.minecraft.sound.SoundCategory;
 import net.minecraft.sound.SoundEvents;
 import net.minecraft.text.Text;
 import net.minecraft.util.DyeColor;
+import net.minecraft.util.Formatting;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.ChunkPos;
@@ -106,6 +107,10 @@ public class AtlasScreen extends Component {
      * Button for showing/hiding all markers.
      */
     private final BookmarkButton markerVisibilityBookmark;
+    /**
+     * Button for displaying the scale, and setting the scale to 1 chunk / 1 tile / 16px.
+     */
+    private final TextBookmarkButton resetScaleBookmark;
     /**
      * Button for restoring player's position at the center of the Atlas.
      */
@@ -205,6 +210,12 @@ public class AtlasScreen extends Component {
                 selectedButton = null;
                 state.switchTo(HIDING_MARKERS, this);
             }
+        });
+        resetScaleBookmark = new TextBookmarkButton(Text.translatable("gui.antique_atlas.resetScale"), Text.of("1c"));
+        addChild(resetScaleBookmark).offsetGuiCoords(BOOK_WIDTH - 10, 71);
+        resetScaleBookmark.addListener(button -> {
+            resetZoom();
+            resetScaleBookmark.setSelected(false);
         });
 
         addChild(markerScrollBox).setRelativeCoords(-14, MAP_BORDER_HEIGHT + 8);
@@ -334,9 +345,9 @@ public class AtlasScreen extends Component {
         } else if (keyCode == GLFW.GLFW_KEY_RIGHT) {
             navigateMap(-NAVIGATE_STEP, 0);
         } else if (keyCode == GLFW.GLFW_KEY_EQUAL || keyCode == GLFW.GLFW_KEY_KP_ADD) {
-            zoomIn();
+            zoomIn(true, (8 << AntiqueAtlas.CONFIG.maxTilePixels));
         } else if (keyCode == GLFW.GLFW_KEY_MINUS || keyCode == GLFW.GLFW_KEY_KP_SUBTRACT) {
-            zoomOut();
+            zoomOut(true, (1 << AntiqueAtlas.CONFIG.maxTileChunks));
         } else if (keyCode == GLFW.GLFW_KEY_ESCAPE || (AntiqueAtlasKeybindings.ATLAS_KEYMAPPING.matchesKey(keyCode, scanCode) && this.markerModal.getParent() == null)) {
             close();
         } else {
@@ -356,7 +367,7 @@ public class AtlasScreen extends Component {
         if (super.mouseScrolled(mouseX, mouseY, wheelMove)) return true;
         if (markerModal.getParent() == null && wheelMove != 0) {
             int direction = wheelMove > 0 ? 1 : -1;
-            if ((wheelMove > 0 ? zoomIn() : zoomOut()) && (isMouseOverMap || isDragging)) { // Keep mouse over the same block.
+            if ((wheelMove > 0 ? zoomIn(true, (8 << AntiqueAtlas.CONFIG.maxTilePixels)) : zoomOut(true, 1 << AntiqueAtlas.CONFIG.maxTileChunks)) && (isMouseOverMap || isDragging)) { // Keep mouse over the same block.
                 double xOffset = (getGuiX() + MAP_BORDER_WIDTH + (double) MAP_WIDTH / 2 - mouseX) * direction;
                 double yOffset = (getGuiY() + MAP_BORDER_HEIGHT + (double) MAP_HEIGHT / 2 - mouseY) * direction;
                 if (Math.abs(xOffset) > 10 || Math.abs(yOffset) > 10) {
@@ -456,32 +467,41 @@ public class AtlasScreen extends Component {
         return (int) (-targetOffsetY * getPixelsPerBlock());
     }
 
-    private boolean zoomIn() {
+    private boolean zoomIn(boolean playSound, int maxTilePixels) {
         if (tileChunks == 1) {
-            if (subTilePixels >= (8 << AntiqueAtlas.CONFIG.maxTilePixels)) return false;
+            if (subTilePixels >= maxTilePixels) return false;
             subTilePixels <<= 1;
-            MinecraftClient.getInstance().getSoundManager().play(PositionedSoundInstance.master(SoundEvents.ITEM_SPYGLASS_USE, 1.0F));
+            resetScaleBookmark.setLabel(Text.literal("%db".formatted(128 / subTilePixels)).formatted(Formatting.DARK_RED));
+            if (playSound) MinecraftClient.getInstance().getSoundManager().play(PositionedSoundInstance.master(SoundEvents.ITEM_SPYGLASS_USE, 1.0F));
         } else {
             tileChunks >>= 1;
-            MinecraftClient.getInstance().getSoundManager().play(PositionedSoundInstance.master(SoundEvents.ITEM_BOOK_PAGE_TURN, 1.0F));
+            resetScaleBookmark.setLabel(Text.literal("%dc".formatted(tileChunks)).formatted(tileChunks == 1 ? Formatting.BLACK : Formatting.DARK_BLUE));
+            if (playSound) MinecraftClient.getInstance().getSoundManager().play(PositionedSoundInstance.master(SoundEvents.ITEM_BOOK_PAGE_TURN, 1.0F));
         }
         mapOffsetX *= 2;
         mapOffsetY *= 2;
         return true;
     }
 
-    private boolean zoomOut() {
+    private boolean zoomOut(boolean playSound, int maxTileChunks) {
         if (subTilePixels == 8) {
-            if (tileChunks >= (1 << AntiqueAtlas.CONFIG.maxTileChunks)) return false;
+            if (tileChunks >= maxTileChunks) return false;
             tileChunks <<= 1;
-            MinecraftClient.getInstance().getSoundManager().play(PositionedSoundInstance.master(SoundEvents.ITEM_BOOK_PAGE_TURN, 1.0F));
+            resetScaleBookmark.setLabel(Text.literal("%dc".formatted(tileChunks)).formatted(tileChunks == 1 ? Formatting.BLACK : Formatting.DARK_BLUE));
+            if (playSound) MinecraftClient.getInstance().getSoundManager().play(PositionedSoundInstance.master(SoundEvents.ITEM_BOOK_PAGE_TURN, 1.0F));
         } else {
             subTilePixels >>= 1;
-            MinecraftClient.getInstance().getSoundManager().play(PositionedSoundInstance.master(SoundEvents.ITEM_SPYGLASS_USE, 1.0F));
+            resetScaleBookmark.setLabel(Text.literal("%db".formatted(128 / subTilePixels)).formatted(Formatting.DARK_RED));
+            if (playSound) MinecraftClient.getInstance().getSoundManager().play(PositionedSoundInstance.master(SoundEvents.ITEM_SPYGLASS_USE, 1.0F));
         }
         mapOffsetX /= 2;
         mapOffsetY /= 2;
         return true;
+    }
+
+    private void resetZoom() {
+        while (zoomOut(false, 1));
+        while (zoomIn(false, 8));
     }
 
     @Override
