@@ -22,24 +22,31 @@ public class AntiqueAtlasConfig extends WrappedConfig {
         CRASH
     }
 
+    @Comment("Whether to display the map in full-screen")
+    @Comment("The background is simplistic, but more tiles can be shown")
+    public final Boolean fullscreen = false;
+
+    @Comment("How to depict player death locations.")
+    public final GraveStyle graveStyle = GraveStyle.EUPHEMISMS;
+
     @Comment("The maximum number of chunks to represent as a tile, as a power of 2")
     @Comment("Effectively the 'minimum zoom'")
-    @Comment("0: 1 chunk = 1 tile | 6: 64 chunks = 1 tile")
+    @Comment("0: 1x1 chunk = 1 tile | 6: 64x64 chunks = 1 tile")
     @IntegerRange(min = 0, max = 6)
     public final Integer maxTileChunks = 5;
 
     @Comment("The maximum size to render a tile at, as a power of 2 multiplier")
     @Comment("Effectively the 'maximum zoom'")
-    @Comment("1: 1 tile = 16x16 | 3: 1 tile = 128x128")
+    @Comment("0: 1 tile = 16x16 | 3: 1 tile = 128x128")
     @IntegerRange(min = 0, max = 3)
-    public final Integer maxTilePixels = 0;
+    public final Integer maxTilePixels = 1;
 
-    @Comment("How to depict player death locations.")
-    public final GraveStyle graveStyle = GraveStyle.EUPHEMISMS;
-
-    @Comment("Whether to display the map in full-screen")
-    @Comment("The background is simplistic, but more tiles can be shown")
-    public final Boolean fullscreen = false;
+    @Comment("The effective GUI scale for tiles and markers - independent of the actual GUI scale setting.")
+    @Comment("0 will match your GUI scale - pixels will be the same size as the background & buttons")
+    @Comment("-1 will use half your GUI scale, rounding up.")
+    @Comment("-2 will use half your GUI scale, rounding down.")
+    @IntegerRange(min = -2, max = 10)
+    public final Integer mapScale = 0;
 
     @Comment("The maximum number of chunks to load onto the map per tick after entering a world")
     public final Integer chunkTickLimit = 100;

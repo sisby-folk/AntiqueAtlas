@@ -69,11 +69,6 @@ public class AtlasScreen extends Component {
     private static final int BOOKMARK_SPACING = 2;
     public static final int MARKER_SIZE = 32;
     /**
-     * If the map scale goes below this value, the tiles will not scale down
-     * visually, but will instead span greater area.
-     */
-    private static final double MIN_SCALE_THRESHOLD = 1;
-    /**
      * How much the map view is offset, in blocks, per click (or per tick).
      */
     private static final int NAVIGATE_STEP = 24;
@@ -90,10 +85,11 @@ public class AtlasScreen extends Component {
         s.markerVisibilityBookmark.setIconTexture(ICON_HIDE_MARKERS);
     });
 
-    public final int BOOK_WIDTH;
-    public final int BOOK_HEIGHT;
-    private final int MAP_WIDTH;
-    private final int MAP_HEIGHT;
+    public final int bookWidth;
+    public final int bookHeight;
+    private final int mapWidth;
+    private final int mapHeight;
+    private final int mapScale;
 
     /**
      * Button for placing a marker at current position, local to this Atlas instance.
@@ -139,24 +135,30 @@ public class AtlasScreen extends Component {
     private double mapOffsetX;
     private double mapOffsetY;
 
-    private int subTilePixels = 8;
+    private int tilePixels = 16;
     private int tileChunks = 1;
 
     public AtlasScreen() {
         if (AntiqueAtlas.CONFIG.fullscreen) {
-            BOOK_WIDTH = MinecraftClient.getInstance().getWindow().getScaledWidth() - 40;
-            BOOK_HEIGHT = MinecraftClient.getInstance().getWindow().getScaledHeight() - 40;
+            bookWidth = MinecraftClient.getInstance().getWindow().getScaledWidth() - 40;
+            bookHeight = MinecraftClient.getInstance().getWindow().getScaledHeight() - 40;
         } else {
-            BOOK_WIDTH = 310;
-            BOOK_HEIGHT = 218;
+            bookWidth = 310;
+            bookHeight = 218;
         }
-        setSize(BOOK_WIDTH, BOOK_HEIGHT);
-        MAP_WIDTH = BOOK_WIDTH - MAP_BORDER_WIDTH * 2;
-        MAP_HEIGHT = BOOK_HEIGHT - MAP_BORDER_HEIGHT * 2;
+        setSize(bookWidth, bookHeight);
+        mapWidth = bookWidth - MAP_BORDER_WIDTH * 2;
+        mapHeight = bookHeight - MAP_BORDER_HEIGHT * 2;
+        mapScale = switch (AntiqueAtlas.CONFIG.mapScale) {
+            case -2 -> Math.max(1, (int) Math.floor(MinecraftClient.getInstance().getWindow().getScaleFactor() / 2.0));
+            case -1 -> Math.max(1, (int) Math.ceil(MinecraftClient.getInstance().getWindow().getScaleFactor() / 2.0));
+            case 0 -> (int) MinecraftClient.getInstance().getWindow().getScaleFactor();
+            default -> AntiqueAtlas.CONFIG.mapScale;
+        };
 
         playerBookmark = new BookmarkButton(Text.translatable("gui.antique_atlas.followPlayer"), AntiqueAtlas.id("textures/gui/player.png"), DyeColor.GRAY, null, 7, 8, false);
         playerBookmark.setSelected(true);
-        addChild(playerBookmark).offsetGuiCoords(BOOK_WIDTH - 10, BOOK_HEIGHT - MAP_BORDER_HEIGHT - BookmarkButton.HEIGHT - 10);
+        addChild(playerBookmark).offsetGuiCoords(bookWidth - 10, bookHeight - MAP_BORDER_HEIGHT - BookmarkButton.HEIGHT - 10);
         playerBookmark.addListener(b -> {
             selectedButton = playerBookmark;
             clearTargetBookmarks(playerBookmark);
@@ -164,7 +166,7 @@ public class AtlasScreen extends Component {
         });
 
         addMarkerBookmark = new BookmarkButton(TEXT_ADD_MARKER, ICON_ADD_MARKER, DyeColor.RED, null, 16, 16, false);
-        addChild(addMarkerBookmark).offsetGuiCoords(BOOK_WIDTH - 10, 14);
+        addChild(addMarkerBookmark).offsetGuiCoords(bookWidth - 10, 14);
         addMarkerBookmark.addListener(button -> {
             if (state.is(PLACING_MARKER)) {
                 selectedButton = null;
@@ -190,7 +192,7 @@ public class AtlasScreen extends Component {
             }
         });
         deleteMarkerBookmark = new BookmarkButton(Text.translatable("gui.antique_atlas.delMarker"), ICON_DELETE_MARKER, DyeColor.YELLOW, null, 16, 16, false);
-        addChild(deleteMarkerBookmark).offsetGuiCoords(BOOK_WIDTH - 10, 33);
+        addChild(deleteMarkerBookmark).offsetGuiCoords(bookWidth - 10, 33);
         deleteMarkerBookmark.addListener(button -> {
             if (state.is(DELETING_MARKER)) {
                 selectedButton = null;
@@ -201,7 +203,7 @@ public class AtlasScreen extends Component {
             }
         });
         markerVisibilityBookmark = new BookmarkButton(Text.translatable("gui.antique_atlas.hideMarkers"), ICON_HIDE_MARKERS, DyeColor.GREEN, null, 16, 16, false);
-        addChild(markerVisibilityBookmark).offsetGuiCoords(BOOK_WIDTH - 10, 52);
+        addChild(markerVisibilityBookmark).offsetGuiCoords(bookWidth - 10, 52);
         markerVisibilityBookmark.addListener(button -> {
             selectedButton = null;
             if (state.is(HIDING_MARKERS)) {
@@ -212,14 +214,14 @@ public class AtlasScreen extends Component {
             }
         });
         resetScaleBookmark = new TextBookmarkButton(Text.translatable("gui.antique_atlas.resetScale"), Text.of("1c"));
-        addChild(resetScaleBookmark).offsetGuiCoords(BOOK_WIDTH - 10, 71);
+        addChild(resetScaleBookmark).offsetGuiCoords(bookWidth - 10, 71);
         resetScaleBookmark.addListener(button -> {
             resetZoom();
             resetScaleBookmark.setSelected(false);
         });
 
         addChild(markerScrollBox).setRelativeCoords(-14, MAP_BORDER_HEIGHT + 8);
-        int markersOnScreen = (MAP_HEIGHT - 20) / ((BookmarkButton.HEIGHT + BOOKMARK_SPACING) - BOOKMARK_SPACING);
+        int markersOnScreen = (mapHeight - 20) / ((BookmarkButton.HEIGHT + BOOKMARK_SPACING) - BOOKMARK_SPACING);
         markerScrollBox.getViewport().setSize(BookmarkButton.WIDTH, markersOnScreen * (BookmarkButton.HEIGHT + BOOKMARK_SPACING) - BOOKMARK_SPACING);
 
         markerModal.addMarkerListener(markerCursor);
@@ -243,7 +245,7 @@ public class AtlasScreen extends Component {
     public void init() {
         super.init();
 
-        setGuiCoords((this.width - BOOK_WIDTH) / 2, (this.height - BOOK_HEIGHT) / 2);
+        setGuiCoords((this.width - bookWidth) / 2, (this.height - bookHeight) / 2);
 
         updateBookmarkerList();
     }
@@ -290,7 +292,7 @@ public class AtlasScreen extends Component {
     public void updateMouse(double mouseX, double mouseY) {
         double relativeMouseX = mouseX - getGuiX();
         double relativeMouseY = mouseY - getGuiY();
-        isMouseOverMap = relativeMouseX >= MAP_BORDER_WIDTH && relativeMouseX <= MAP_BORDER_WIDTH + MAP_WIDTH && relativeMouseY >= MAP_BORDER_HEIGHT && relativeMouseY <= MAP_BORDER_HEIGHT + MAP_HEIGHT;
+        isMouseOverMap = relativeMouseX >= MAP_BORDER_WIDTH && relativeMouseX <= MAP_BORDER_WIDTH + mapWidth && relativeMouseY >= MAP_BORDER_HEIGHT && relativeMouseY <= MAP_BORDER_HEIGHT + mapHeight;
     }
 
     @Override
@@ -345,7 +347,7 @@ public class AtlasScreen extends Component {
         } else if (keyCode == GLFW.GLFW_KEY_RIGHT) {
             navigateMap(-NAVIGATE_STEP, 0);
         } else if (keyCode == GLFW.GLFW_KEY_EQUAL || keyCode == GLFW.GLFW_KEY_KP_ADD) {
-            zoomIn(true, (8 << AntiqueAtlas.CONFIG.maxTilePixels));
+            zoomIn(true, (16 << AntiqueAtlas.CONFIG.maxTilePixels));
         } else if (keyCode == GLFW.GLFW_KEY_MINUS || keyCode == GLFW.GLFW_KEY_KP_SUBTRACT) {
             zoomOut(true, (1 << AntiqueAtlas.CONFIG.maxTileChunks));
         } else if (keyCode == GLFW.GLFW_KEY_ESCAPE || (AntiqueAtlasKeybindings.ATLAS_KEYMAPPING.matchesKey(keyCode, scanCode) && this.markerModal.getParent() == null)) {
@@ -358,7 +360,7 @@ public class AtlasScreen extends Component {
     }
 
     private double getPixelsPerBlock() {
-        return ((double) subTilePixels * 2.0) / ((double) tileChunks * 16.0);
+        return ((double) tilePixels) / ((double) tileChunks * 16.0);
     }
 
     @Override
@@ -367,10 +369,10 @@ public class AtlasScreen extends Component {
         if (super.mouseScrolled(mouseX, mouseY, wheelMove)) return true;
         if (markerModal.getParent() == null && wheelMove != 0) {
             int direction = wheelMove > 0 ? 1 : -1;
-            if ((wheelMove > 0 ? zoomIn(true, (8 << AntiqueAtlas.CONFIG.maxTilePixels)) : zoomOut(true, 1 << AntiqueAtlas.CONFIG.maxTileChunks)) && (isMouseOverMap || isDragging)) { // Keep mouse over the same block.
-                double xOffset = (getGuiX() + MAP_BORDER_WIDTH + (double) MAP_WIDTH / 2 - mouseX) * direction;
-                double yOffset = (getGuiY() + MAP_BORDER_HEIGHT + (double) MAP_HEIGHT / 2 - mouseY) * direction;
-                if (Math.abs(xOffset) > 10 || Math.abs(yOffset) > 10) {
+            if ((wheelMove > 0 ? zoomIn(true, (16 << AntiqueAtlas.CONFIG.maxTilePixels)) : zoomOut(true, 1 << AntiqueAtlas.CONFIG.maxTileChunks)) && (isMouseOverMap || isDragging)) { // Keep mouse over the same block.
+                double xOffset = (getGuiX() + MAP_BORDER_WIDTH + (double) mapWidth / 2 - mouseX) * direction;
+                double yOffset = (getGuiY() + MAP_BORDER_HEIGHT + (double) mapHeight / 2 - mouseY) * direction;
+                if (Math.abs(xOffset) > 5 || Math.abs(yOffset) > 5) { // Stay centered if mouse is roughly in the center (e.g. on a centered player pin)
                     mapOffsetX += xOffset / (direction < 0 ? 2.0 : 1.0);
                     mapOffsetY += yOffset / (direction < 0 ? 2.0 : 1.0);
                     clearTargetBookmarks(null);
@@ -409,7 +411,7 @@ public class AtlasScreen extends Component {
         super.tick();
         if (player == null) return;
 
-        if (playerBookmark.isSelected()) {
+        if (playerBookmark.isSelected() && (mapOffsetX != -player.getBlockX() * getPixelsPerBlock() || mapOffsetY != -player.getBlockZ() * getPixelsPerBlock())) {
             setTargetPosition(new ColumnPos(player.getBlockX(), player.getBlockZ()));
         }
 
@@ -459,51 +461,58 @@ public class AtlasScreen extends Component {
         targetOffsetY = pos.z();
     }
 
-    private int getTargetPositionX() {
-        return (int) (-targetOffsetX * getPixelsPerBlock());
+    private double getTargetPositionX() {
+        return -targetOffsetX * getPixelsPerBlock();
     }
 
-    private int getTargetPositionY() {
-        return (int) (-targetOffsetY * getPixelsPerBlock());
+    private double getTargetPositionY() {
+        return -targetOffsetY * getPixelsPerBlock();
+    }
+
+    private void updateScaleBookmark() {
+        int tileSizeBlocks = (tileChunks * 16 * 16) / tilePixels;
+        int defaultTileSizeBlocks = 16;
+        resetScaleBookmark.setLabel(Text.literal(
+            tileSizeBlocks >= 16 ? "%dc".formatted(tileSizeBlocks / 16) : "%db".formatted(tileSizeBlocks)).formatted(
+            tileSizeBlocks < defaultTileSizeBlocks ? Formatting.DARK_RED : tileSizeBlocks == defaultTileSizeBlocks ? Formatting.BLACK : Formatting.DARK_BLUE
+        ));
     }
 
     private boolean zoomIn(boolean playSound, int maxTilePixels) {
         if (tileChunks == 1) {
-            if (subTilePixels >= maxTilePixels) return false;
-            subTilePixels <<= 1;
-            resetScaleBookmark.setLabel(Text.literal("%db".formatted(128 / subTilePixels)).formatted(Formatting.DARK_RED));
+            if (tilePixels >= maxTilePixels) return false;
+            tilePixels <<= 1;
             if (playSound) MinecraftClient.getInstance().getSoundManager().play(PositionedSoundInstance.master(SoundEvents.ITEM_SPYGLASS_USE, 1.0F));
         } else {
             tileChunks >>= 1;
-            resetScaleBookmark.setLabel(Text.literal("%dc".formatted(tileChunks)).formatted(tileChunks == 1 ? Formatting.BLACK : Formatting.DARK_BLUE));
             if (playSound) MinecraftClient.getInstance().getSoundManager().play(PositionedSoundInstance.master(SoundEvents.ITEM_BOOK_PAGE_TURN, 1.0F));
         }
         mapOffsetX *= 2;
         mapOffsetY *= 2;
+        updateScaleBookmark();
         return true;
     }
 
     private boolean zoomOut(boolean playSound, int maxTileChunks) {
-        if (subTilePixels == 8) {
+        if (tilePixels == 16) {
             if (tileChunks >= maxTileChunks) return false;
             tileChunks <<= 1;
-            resetScaleBookmark.setLabel(Text.literal("%dc".formatted(tileChunks)).formatted(Formatting.DARK_BLUE));
             if (playSound) MinecraftClient.getInstance().getSoundManager().play(PositionedSoundInstance.master(SoundEvents.ITEM_BOOK_PAGE_TURN, 1.0F));
         } else {
-            subTilePixels >>= 1;
-            resetScaleBookmark.setLabel(subTilePixels == 8 ? Text.literal("%dc".formatted(tileChunks)) : Text.literal("%db".formatted(128 / subTilePixels)).formatted(Formatting.DARK_RED));
+            tilePixels >>= 1;
             if (playSound) MinecraftClient.getInstance().getSoundManager().play(PositionedSoundInstance.master(SoundEvents.ITEM_SPYGLASS_USE, 1.0F));
         }
         mapOffsetX /= 2;
         mapOffsetY /= 2;
+        updateScaleBookmark();
         return true;
     }
 
     private void resetZoom() {
         if (zoomIn(true, 8)) {
-            while (zoomIn(false, 8));
+            while (zoomIn(false, 8)) ;
         } else if (zoomOut(true, 1)) {
-            while (zoomOut(false, 1));
+            while (zoomOut(false, 1)) ;
         }
     }
 
@@ -513,9 +522,9 @@ public class AtlasScreen extends Component {
 
         RenderSystem.setShaderColor(1, 1, 1, 1);
         if (AntiqueAtlas.CONFIG.fullscreen) {
-            context.fill(getGuiX(), getGuiY(), getGuiX() + BOOK_WIDTH, getGuiY() + BOOK_HEIGHT, 0xFFEAD2A5);
-            context.drawBorder(getGuiX(), getGuiY(), BOOK_WIDTH, BOOK_HEIGHT, 0xFF4C1A0B);
-            context.drawBorder(getGuiX() + MAP_BORDER_WIDTH - 1, getGuiY() + MAP_BORDER_HEIGHT - 1, MAP_WIDTH + 2, MAP_HEIGHT + 2, 0xFF4C1A0B);
+            context.fill(getGuiX(), getGuiY(), getGuiX() + bookWidth, getGuiY() + bookHeight, 0xFFEAD2A5);
+            context.drawBorder(getGuiX(), getGuiY(), bookWidth, bookHeight, 0xFF4C1A0B);
+            context.drawBorder(getGuiX() + MAP_BORDER_WIDTH - 1, getGuiY() + MAP_BORDER_HEIGHT - 1, mapWidth + 2, mapHeight + 2, 0xFF4C1A0B);
         } else {
             context.drawTexture(BOOK, getGuiX(), getGuiY(), 0, 0, 310, 218, 310, 218);
         }
@@ -529,28 +538,27 @@ public class AtlasScreen extends Component {
         RenderSystem.enableScissor(
             (int) (guiScale * (getGuiX() + MAP_BORDER_WIDTH)),
             (int) (guiScale * (getGuiY() + MAP_BORDER_HEIGHT)),
-            (int) (guiScale * MAP_WIDTH),
-            (int) (guiScale * MAP_HEIGHT)
+            (int) (guiScale * mapWidth),
+            (int) (guiScale * mapHeight)
         );
         RenderSystem.enableBlend();
         RenderSystem.blendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
-        // Find chunk coordinates of the top left corner of the map.
-        // The 'roundToBase' is required so that when the map scales below the
-        // threshold the tiles don't change when map position changes slightly.
-        // The +-2 at the end provide margin so that tiles at the edges of
-        // the page have their stitched texture correct.
-        int mapStartX = MathUtil.roundToBase((int) Math.floor(-((double) MAP_WIDTH / 2d + mapOffsetX + 2 * subTilePixels) / getPixelsPerBlock() / 16d), tileChunks);
-        int mapStartZ = MathUtil.roundToBase((int) Math.floor(-((double) MAP_HEIGHT / 2d + mapOffsetY + 2 * subTilePixels) / getPixelsPerBlock() / 16d), tileChunks);
-        int mapEndX = MathUtil.roundToBase((int) Math.ceil(((double) MAP_WIDTH / 2d - mapOffsetX + 2 * subTilePixels) / getPixelsPerBlock() / 16d), tileChunks);
-        int mapEndZ = MathUtil.roundToBase((int) Math.ceil(((double) MAP_HEIGHT / 2d - mapOffsetY + 2 * subTilePixels) / getPixelsPerBlock() / 16d), tileChunks);
-        double mapStartScreenX = getGuiX() + MAP_BORDER_WIDTH + (double) MAP_WIDTH / 2 + ((mapStartX << 4) * getPixelsPerBlock()) + mapOffsetX;
-        double mapStartScreenY = getGuiY() + MAP_BORDER_HEIGHT + (double) MAP_HEIGHT / 2 + ((mapStartZ << 4) * getPixelsPerBlock()) + mapOffsetY;
+
+        // 'roundToBase' is required so that when the map scales below the threshold the tiles don't change when map position changes.
+        // The +-2 at the end provide margin so that tiles at the edges of the page have their stitched texture correct.
+        int mapStartChunkX = MathUtil.roundToBase(screenXToWorldX(getGuiX()) >> 4, tileChunks) - 2 * tileChunks;
+        int mapStartChunkZ = MathUtil.roundToBase(screenYToWorldZ(getGuiY()) >> 4, tileChunks) - 2 * tileChunks;
+        int mapEndChunkX = MathUtil.roundToBase(screenXToWorldX(getGuiX() + mapWidth) >> 4, tileChunks) + 2 * tileChunks;
+        int mapEndChunkZ = MathUtil.roundToBase(screenYToWorldZ(getGuiY() + mapHeight) >> 4, tileChunks) + 2 * tileChunks;
+        double mapStartScreenX = worldXToScreenX(mapStartChunkX << 4);
+        double mapStartScreenY = worldZToScreenY(mapStartChunkZ << 4);
         TileRenderIterator tiles = new TileRenderIterator(worldAtlasData);
-        tiles.setScope(new Rect(mapStartX, mapStartZ, mapEndX, mapEndZ));
+        tiles.setScope(new Rect(mapStartChunkX, mapStartChunkZ, mapEndChunkX, mapEndChunkZ));
         tiles.setStep(tileChunks);
 
         context.getMatrices().push();
         context.getMatrices().translate(mapStartScreenX, mapStartScreenY, 0);
+        context.getMatrices().scale((float) ((double) mapScale / guiScale), (float) ((double) mapScale / guiScale), 1.0F);
 
         Map<TileTexture, Collection<SubTile>> tileTextures = new Reference2ObjectArrayMap<>();
         for (SubTileQuartet subTiles : tiles) {
@@ -559,6 +567,7 @@ public class AtlasScreen extends Component {
                 tileTextures.computeIfAbsent(subtile.texture, k -> new ArrayList<>()).add(subtile.copy());
             }
         }
+        int subTilePixels = tilePixels / 2;
         tileTextures.forEach((texture, subtiles) -> {
             try (DrawBatcher batcher = new DrawBatcher(context, texture.id(), 32, 48)) {
                 for (SubTile subtile : subtiles) {
@@ -574,6 +583,10 @@ public class AtlasScreen extends Component {
         if (!AntiqueAtlas.CONFIG.fullscreen) {
             context.drawTexture(BOOK_FRAME, getGuiX(), getGuiY(), 0, 0, 310, 218, 310, 218);
         }
+
+        context.getMatrices().push();
+        context.getMatrices().translate(getGuiX(), getGuiY(), 0);
+        context.getMatrices().scale((float) ((double) mapScale / guiScale), (float) ((double) mapScale / guiScale), 1.0F);
 
         hoveredLandmark = null;
         if (!state.is(HIDING_MARKERS)) {
@@ -591,12 +604,12 @@ public class AtlasScreen extends Component {
                     }
                 }
             }
-            context.getMatrices().push();
             worldAtlasData.getAllMarkers().forEach((landmark, texture) -> {
                 renderMarker(context, landmark, texture, WorldAtlasData.landmarkIsEditable(landmark), hoveredLandmark == landmark && markerModal.getParent() == null);
             });
-            context.getMatrices().pop();
         }
+
+        context.getMatrices().pop();
 
         RenderSystem.disableScissor();
 
@@ -629,17 +642,17 @@ public class AtlasScreen extends Component {
             context.drawText(textRenderer, Text.literal("%d,%d (%d,%d)".formatted(pos.x, pos.z, x, z)), getGuiX(), getGuiY() - 12, 0xFFFFFFFF, true);
             if (hoveredLandmark != null) {
                 MarkerTexture texture = worldAtlasData.getMarkerTexture(hoveredLandmark);
-                context.drawText(textRenderer, Text.literal(hoveredLandmark.type().id().toString()), getGuiX() + BOOK_WIDTH - textRenderer.getWidth(Text.literal(hoveredLandmark.type().id().toString())), getGuiY() - 12, 0xFFFFFFFF, true);
-                if (hoveredLandmark instanceof AtlasStructureLandmark sLandmark) context.drawText(textRenderer, Text.literal(sLandmark.displayId().toString()), getGuiX(), getGuiY() + BOOK_HEIGHT, 0xFFFFFFFF, true);
-                if (texture != null) context.drawText(textRenderer, Text.literal(texture.displayId()), getGuiX() + BOOK_WIDTH - textRenderer.getWidth(Text.literal(texture.displayId())), getGuiY() + BOOK_HEIGHT, 0xFFFFFFFF, true);
+                context.drawText(textRenderer, Text.literal(hoveredLandmark.type().id().toString()), getGuiX() + bookWidth - textRenderer.getWidth(Text.literal(hoveredLandmark.type().id().toString())), getGuiY() - 12, 0xFFFFFFFF, true);
+                if (hoveredLandmark instanceof AtlasStructureLandmark sLandmark) context.drawText(textRenderer, Text.literal(sLandmark.displayId().toString()), getGuiX(), getGuiY() + bookHeight, 0xFFFFFFFF, true);
+                if (texture != null) context.drawText(textRenderer, Text.literal(texture.displayId()), getGuiX() + bookWidth - textRenderer.getWidth(Text.literal(texture.displayId())), getGuiY() + bookHeight, 0xFFFFFFFF, true);
             } else {
                 TileTexture texture = worldAtlasData.getTile(pos);
                 Identifier providerId = worldAtlasData.getProvider(pos);
                 String predicate = worldAtlasData.getTilePredicate(pos);
                 if (texture != null) {
-                    if (predicate != null) context.drawText(textRenderer, Text.literal(predicate), getGuiX() + BOOK_WIDTH - textRenderer.getWidth(Text.literal(predicate)), getGuiY() - 12, 0xFFFFFFFF, true);
-                    context.drawText(textRenderer, Text.literal(providerId.toString()), getGuiX(), getGuiY() + BOOK_HEIGHT, 0xFFFFFFFF, true);
-                    context.drawText(textRenderer, Text.literal(texture.displayId()), getGuiX() + BOOK_WIDTH - textRenderer.getWidth(Text.literal(texture.displayId())), getGuiY() + BOOK_HEIGHT, 0xFFFFFFFF, true);
+                    if (predicate != null) context.drawText(textRenderer, Text.literal(predicate), getGuiX() + bookWidth - textRenderer.getWidth(Text.literal(predicate)), getGuiY() - 12, 0xFFFFFFFF, true);
+                    context.drawText(textRenderer, Text.literal(providerId.toString()), getGuiX(), getGuiY() + bookHeight, 0xFFFFFFFF, true);
+                    context.drawText(textRenderer, Text.literal(texture.displayId()), getGuiX() + bookWidth - textRenderer.getWidth(Text.literal(texture.displayId())), getGuiY() + bookHeight, 0xFFFFFFFF, true);
                 }
             }
         }
@@ -649,8 +662,8 @@ public class AtlasScreen extends Component {
         double playerOffsetX = worldXToScreenX(player.getBlockX());
         double playerOffsetY = worldZToScreenY(player.getBlockZ());
 
-        playerOffsetX = MathHelper.clamp(playerOffsetX, getGuiX() + MAP_BORDER_WIDTH, getGuiX() + MAP_WIDTH + MAP_BORDER_WIDTH);
-        playerOffsetY = MathHelper.clamp(playerOffsetY, getGuiY() + MAP_BORDER_HEIGHT, getGuiY() + MAP_HEIGHT + MAP_BORDER_HEIGHT);
+        playerOffsetX = MathHelper.clamp(playerOffsetX, getGuiX() + MAP_BORDER_WIDTH, getGuiX() + mapWidth + MAP_BORDER_WIDTH);
+        playerOffsetY = MathHelper.clamp(playerOffsetY, getGuiY() + MAP_BORDER_HEIGHT, getGuiY() + mapHeight + MAP_BORDER_HEIGHT);
 
         // Draw the icon:
         RenderSystem.setShaderColor(1, 1, 1, state.is(PLACING_MARKER) ? 0.5f : 1);
@@ -662,8 +675,8 @@ public class AtlasScreen extends Component {
     }
 
     private void renderMarker(DrawContext context, Landmark<?> landmark, MarkerTexture texture, boolean editable, boolean hovering) {
-        double markerX = worldXToScreenX(landmark.pos().getX());
-        double markerY = worldZToScreenY(landmark.pos().getZ());
+        double markerX = worldXToScreenX(landmark.pos().getX()) - getGuiX();
+        double markerY = worldZToScreenY(landmark.pos().getZ()) - getGuiY();
 
         float tint = hovering ? 0.8f : 1.0f;
         float alpha = state.is(PLACING_MARKER) || (state.is(DELETING_MARKER) && !editable) ? 0.5f : 1.0f;
@@ -675,11 +688,11 @@ public class AtlasScreen extends Component {
         }
 
         if (editable) {
-            if (markerX <= getGuiX() + MAP_BORDER_WIDTH || markerX >= getGuiX() + MAP_WIDTH + MAP_BORDER_WIDTH || markerY <= getGuiY() + MAP_BORDER_HEIGHT || markerY >= getGuiY() + MAP_HEIGHT + MAP_BORDER_HEIGHT) {
+            if (markerX <= MAP_BORDER_WIDTH || markerX >= mapWidth + MAP_BORDER_WIDTH || markerY <= MAP_BORDER_HEIGHT || markerY >= mapHeight + MAP_BORDER_HEIGHT) {
                 RenderSystem.setShaderColor(1, 1, 1, 0.5f);
             }
-            markerX = MathHelper.clamp(markerX, getGuiX() + MAP_BORDER_WIDTH, getGuiX() + MAP_WIDTH + MAP_BORDER_WIDTH);
-            markerY = MathHelper.clamp(markerY, getGuiY() + MAP_BORDER_HEIGHT, getGuiY() + MAP_HEIGHT + MAP_BORDER_HEIGHT);
+            markerX = MathHelper.clamp(markerX, MAP_BORDER_WIDTH, mapWidth + MAP_BORDER_WIDTH);
+            markerY = MathHelper.clamp(markerY, MAP_BORDER_HEIGHT, mapHeight + MAP_BORDER_HEIGHT);
         }
 
         texture.draw(context, markerX, markerY);
@@ -705,21 +718,21 @@ public class AtlasScreen extends Component {
 
     private int screenXToWorldX(double mouseX) {
         double mapX = (int) Math.round(mouseX - getGuiX() - MAP_BORDER_WIDTH);
-        return (int) Math.round((mapX - (MAP_WIDTH / 2f) - mapOffsetX) / getPixelsPerBlock());
+        return (int) Math.round((mapX - (mapWidth / 2f) - mapOffsetX) / getPixelsPerBlock());
     }
 
     private int screenYToWorldZ(double mouseY) {
         double mapY = (int) Math.round(mouseY - getGuiY() - MAP_BORDER_HEIGHT);
-        return (int) Math.round((mapY - (MAP_HEIGHT / 2f) - mapOffsetY) / getPixelsPerBlock());
+        return (int) Math.round((mapY - (mapHeight / 2f) - mapOffsetY) / getPixelsPerBlock());
     }
 
     private double worldXToScreenX(double x) {
-        double mapX = x * getPixelsPerBlock() + mapOffsetX + (MAP_WIDTH / 2f);
+        double mapX = x * getPixelsPerBlock() + mapOffsetX + (mapWidth / 2f);
         return mapX + getGuiX() + MAP_BORDER_WIDTH;
     }
 
     private double worldZToScreenY(double z) {
-        double mapY = z * getPixelsPerBlock() + mapOffsetY + (MAP_HEIGHT / 2f);
+        double mapY = z * getPixelsPerBlock() + mapOffsetY + (mapHeight / 2f);
         return mapY + getGuiY() + MAP_BORDER_HEIGHT;
     }
 
