@@ -500,8 +500,11 @@ public class AtlasScreen extends Component {
     }
 
     private void resetZoom() {
-        while (zoomOut(false, 1));
-        while (zoomIn(false, 8));
+        if (zoomIn(true, 8)) {
+            while (zoomIn(false, 8));
+        } else if (zoomOut(true, 1)) {
+            while (zoomOut(false, 1));
+        }
     }
 
     @Override

@@ -15,7 +15,7 @@ import java.util.List;
 public class ButtonComponent extends Component {
     private final List<IButtonListener> listeners = new ArrayList<>();
 
-    private final SoundEvent clickSound = SoundEvents.UI_BUTTON_CLICK.value();
+    protected SoundEvent clickSound  = SoundEvents.UI_BUTTON_CLICK.value();
 
     @Override
     public boolean mouseClicked(double x, double y, int mouseButton) {

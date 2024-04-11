@@ -12,6 +12,7 @@ public class TextBookmarkButton extends BookmarkButton {
 
     TextBookmarkButton(Text title, Text label) {
         super(RULER_TEXTURE_RIGHT, title, null, null, null, 32, 32, false);
+        this.clickSound = null;
         this.label = label;
     }
 
@@ -24,6 +25,6 @@ public class TextBookmarkButton extends BookmarkButton {
         boolean isExtended = mouseOver || isSelected();
         int centerOffsetX = (SHORT_WIDTH - textRenderer.getWidth(label)) / 2;
         context.drawText(textRenderer, label, getGuiX() + centerOffsetX + 1 + (isExtended ? 3 : 0), getGuiY() + 5, 0xFF000000, false);
-        super.renderTooltip(context, mouseX, mouseY, partialTick, mouseOver);
+        if (!label.getString().equals("1c")) super.renderTooltip(context, mouseX, mouseY, partialTick, mouseOver);
     }
 }
