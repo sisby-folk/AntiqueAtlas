@@ -603,8 +603,9 @@ public class AtlasScreen extends Component {
                     MarkerTexture texture = entry.getValue();
                     double markerX = worldXToScreenX(landmark.pos().getX());
                     double markerY = worldZToScreenY(landmark.pos().getZ());
-                    double squaredDistance = Vector2d.distanceSquared(markerX + markerScale * ((double) texture.offsetX() +  (double) texture.textureWidth() / 2.0), markerY + markerScale * ((double) texture.offsetY() + (double) texture.textureHeight() / 2.0), mouseX, mouseY);
-                    if (squaredDistance > 0 && squaredDistance < bestDistance && squaredDistance < (texture.textureWidth() * texture.textureHeight() * markerScale * markerScale) / 4.0) {
+                    Vector2d markerCenter = texture.getCenter(tileChunks);
+                    double squaredDistance = Vector2d.distanceSquared(markerX + markerScale * markerCenter.x, markerY + markerScale * markerCenter.y, mouseX, mouseY);
+                    if (squaredDistance > 0 && squaredDistance < bestDistance && squaredDistance < (texture.getSquaredSize(tileChunks) * markerScale * markerScale) / 4.0) {
                         bestDistance = squaredDistance;
                         hoveredLandmark = landmark;
                     }
@@ -701,7 +702,7 @@ public class AtlasScreen extends Component {
             markerY = MathHelper.clamp(markerY, MAP_BORDER_HEIGHT, mapHeight + MAP_BORDER_HEIGHT);
         }
 
-        texture.draw(context, markerX, markerY, markerScale);
+        texture.draw(context, markerX, markerY, markerScale, tileChunks);
 
         RenderSystem.setShaderColor(1, 1, 1, 1);
 

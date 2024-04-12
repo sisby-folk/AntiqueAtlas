@@ -2,6 +2,8 @@ package folk.sisby.antique_atlas;
 
 import net.minecraft.client.gui.DrawContext;
 import net.minecraft.util.Identifier;
+import net.minecraft.util.math.MathHelper;
+import org.joml.Vector2d;
 
 public record MarkerTexture(Identifier id, int offsetX, int offsetY, int textureWidth, int textureHeight, int mipLevels) {
     public static MarkerTexture ofId(Identifier id, int offsetX, int offsetY, int width, int height, int mipLevels) {
@@ -30,11 +32,36 @@ public record MarkerTexture(Identifier id, int offsetX, int offsetY, int texture
         return width;
     }
 
-    public void draw(DrawContext context, double markerX, double markerY, float markerScale) {
+    public int getU(int mipLevel) {
+        int currentMipLevel = mipLevel - 1;
+        int u = 0;
+        while (currentMipLevel >= 0) {
+            u += textureWidth / (1 << currentMipLevel);
+            currentMipLevel--;
+        }
+        return u;
+    }
+
+    public Vector2d getCenter(int tileChunks) {
+        int mipLevel = MathHelper.clamp(MathHelper.ceilLog2(tileChunks), 0, mipLevels);
+        return new Vector2d(((double) offsetX() + (double) textureWidth() / 2.0) / (double) (1 << mipLevel), ((double) offsetY() + (double) textureHeight() / 2.0) / (double) (1 << mipLevel));
+    }
+
+    public double getSquaredSize(int tileChunks) {
+        int mipLevel = MathHelper.clamp(MathHelper.ceilLog2(tileChunks), 0, mipLevels);
+        return textureWidth * textureWidth / (double) (1 << mipLevel);
+    }
+
+    public void draw(DrawContext context, double markerX, double markerY, float markerScale, int tileChunks) {
         context.getMatrices().push();
         context.getMatrices().translate(markerX, markerY, 0.0);
         context.getMatrices().scale(markerScale, markerScale, 1.0F);
-        context.drawTexture(id(), offsetX(), offsetY(), 0, 0, textureWidth(), textureHeight(), fullTextureWidth(), textureHeight());
+        if (tileChunks > 1 && mipLevels > 0) {
+            int mipLevel = MathHelper.clamp(MathHelper.ceilLog2(tileChunks), 0, mipLevels);
+            context.drawTexture(id(), offsetX() / (1 << mipLevel), offsetY() / (1 << mipLevel), getU(mipLevel), 0, textureWidth / (1 << mipLevel), textureHeight / (1 << mipLevel), fullTextureWidth(), textureHeight());
+        } else {
+            context.drawTexture(id(), offsetX(), offsetY(), 0, 0, textureWidth(), textureHeight(), fullTextureWidth(), textureHeight());
+        }
         context.getMatrices().pop();
     }
 }
