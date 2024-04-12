@@ -1,6 +1,7 @@
 package folk.sisby.antique_atlas.gui.core;
 
 import com.mojang.blaze3d.systems.RenderSystem;
+import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.DrawContext;
 
 /**
@@ -45,7 +46,7 @@ public class ViewportComponent extends Component {
         double guiScale = client.getWindow().getScaleFactor();
         RenderSystem.enableScissor(
             (int) (guiScale * getGuiX()),
-            (int) (guiScale * getGuiY()),
+            (int) (MinecraftClient.getInstance().getWindow().getFramebufferHeight() - (getGuiY() + properHeight) * guiScale),
             (int) (guiScale * (properWidth + 1)),
             (int) (guiScale * (properHeight + 1))
         );
