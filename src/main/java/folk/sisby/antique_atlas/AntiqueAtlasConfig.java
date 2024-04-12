@@ -23,8 +23,8 @@ public class AntiqueAtlasConfig extends WrappedConfig {
     }
 
     @Comment("Whether to display the map in full-screen")
-    @Comment("The background is simplistic, but more tiles can be shown")
-    public final Boolean fullscreen = false;
+    @Comment("The background is slightly less stylish, but more tiles are shown at once")
+    public final Boolean fullscreen = true;
 
     @Comment("How to depict player death locations.")
     public final GraveStyle graveStyle = GraveStyle.EUPHEMISMS;

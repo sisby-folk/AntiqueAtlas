@@ -50,8 +50,14 @@ import java.util.Map;
 
 public class AtlasScreen extends Component {
     public static final Identifier BOOK = AntiqueAtlas.id("textures/gui/book.png");
+    public static final Identifier BOOK_FULLSCREEN = AntiqueAtlas.id("textures/gui/book_fullscreen.png");
+    public static final Identifier BOOK_FULLSCREEN_R = AntiqueAtlas.id("textures/gui/book_fullscreen_r.png");
     public static final Identifier BOOK_FRAME = AntiqueAtlas.id("textures/gui/book_frame.png");
+    public static final Identifier BOOK_FRAME_FULLSCREEN = AntiqueAtlas.id("textures/gui/book_frame_fullscreen.png");
+    public static final Identifier BOOK_FRAME_FULLSCREEN_R = AntiqueAtlas.id("textures/gui/book_frame_fullscreen_r.png");
     public static final Identifier BOOK_FRAME_NARROW = AntiqueAtlas.id("textures/gui/book_frame_narrow.png");
+    public static final Identifier BOOK_FRAME_NARROW_FULLSCREEN = AntiqueAtlas.id("textures/gui/book_frame_narrow_fullscreen.png");
+    public static final Identifier BOOK_FRAME_NARROW_FULLSCREEN_R = AntiqueAtlas.id("textures/gui/book_frame_narrow_fullscreen_r.png");
     public static final Identifier PLAYER = AntiqueAtlas.id("textures/gui/player.png");
     public static final Identifier ERASER = AntiqueAtlas.id("textures/gui/eraser.png");
     public static final Identifier ICON_ADD_MARKER = AntiqueAtlas.id("textures/gui/icons/add_marker.png");
@@ -528,7 +534,10 @@ public class AtlasScreen extends Component {
 
         RenderSystem.setShaderColor(1, 1, 1, 1);
         if (AntiqueAtlas.CONFIG.fullscreen) {
-            context.drawTexture(BOOK, getGuiX(), getGuiY(), bookWidth, bookHeight, 0, 0, 310, 218, 310, 218);
+            int left_width = bookWidth / 2 - 15;
+            context.drawNineSlicedTexture(BOOK_FULLSCREEN, getGuiX(), getGuiY(), left_width, bookHeight, 30, 140, 218, 0, 0);
+            context.drawNineSlicedTexture(BOOK_FULLSCREEN, getGuiX() + left_width, getGuiY(), 29, bookHeight, 30, 29, 218, 140, 0);
+            context.drawNineSlicedTexture(BOOK_FULLSCREEN_R, getGuiX() + left_width + 29, getGuiY(), left_width + 1, bookHeight, 30, 140, 218, 0, 0);
         } else {
             context.drawTexture(BOOK, getGuiX(), getGuiY(), 0, 0, 310, 218, 310, 218);
         }
@@ -585,7 +594,10 @@ public class AtlasScreen extends Component {
         // Overlay the frame so that edges of the map are smooth:
         RenderSystem.setShaderColor(1, 1, 1, 1);
         if (AntiqueAtlas.CONFIG.fullscreen) {
-            context.drawTexture(BOOK_FRAME, getGuiX(), getGuiY(), bookWidth, bookHeight, 0, 0, 310, 218, 310, 218);
+            int left_width = bookWidth / 2 - 15;
+            context.drawNineSlicedTexture(BOOK_FRAME_FULLSCREEN, getGuiX(), getGuiY(), left_width, bookHeight, 30, 140, 218, 0, 0);
+            context.drawNineSlicedTexture(BOOK_FRAME_FULLSCREEN, getGuiX() + left_width, getGuiY(), 29, bookHeight, 30, 29, 218, 140, 0);
+            context.drawNineSlicedTexture(BOOK_FRAME_FULLSCREEN_R, getGuiX() + left_width + 29, getGuiY(), left_width + 1, bookHeight, 30, 140, 218, 0, 0);
         } else {
             context.drawTexture(BOOK_FRAME, getGuiX(), getGuiY(), 0, 0, 310, 218, 310, 218);
         }
@@ -621,7 +633,10 @@ public class AtlasScreen extends Component {
         RenderSystem.disableScissor();
 
         if (AntiqueAtlas.CONFIG.fullscreen) {
-            context.drawTexture(BOOK_FRAME_NARROW, getGuiX(), getGuiY(), bookWidth, bookHeight, 0, 0, 310, 218, 310, 218);
+            int left_width = bookWidth / 2 - 15;
+            context.drawNineSlicedTexture(BOOK_FRAME_NARROW_FULLSCREEN, getGuiX(), getGuiY(), left_width, bookHeight, 30, 140, 218, 0, 0);
+            context.drawNineSlicedTexture(BOOK_FRAME_NARROW_FULLSCREEN, getGuiX() + left_width, getGuiY(), 29, bookHeight, 30, 29, 218, 140, 0);
+            context.drawNineSlicedTexture(BOOK_FRAME_NARROW_FULLSCREEN_R, getGuiX() + left_width + 29, getGuiY(), left_width + 1, bookHeight, 30, 140, 218, 0, 0);
         } else {
             context.drawTexture(BOOK_FRAME_NARROW, getGuiX(), getGuiY(), 0, 0, 310, 218, 310, 218);
         }
