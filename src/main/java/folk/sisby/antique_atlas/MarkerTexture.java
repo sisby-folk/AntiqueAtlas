@@ -30,9 +30,10 @@ public record MarkerTexture(Identifier id, int offsetX, int offsetY, int texture
         return width;
     }
 
-    public void draw(DrawContext context, double markerX, double markerY) {
+    public void draw(DrawContext context, double markerX, double markerY, float markerScale) {
         context.getMatrices().push();
         context.getMatrices().translate(markerX, markerY, 0.0);
+        context.getMatrices().scale(markerScale, markerScale, 1.0F);
         context.drawTexture(id(), offsetX(), offsetY(), 0, 0, textureWidth(), textureHeight(), fullTextureWidth(), textureHeight());
         context.getMatrices().pop();
     }
