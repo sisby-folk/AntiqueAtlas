@@ -528,9 +528,7 @@ public class AtlasScreen extends Component {
 
         RenderSystem.setShaderColor(1, 1, 1, 1);
         if (AntiqueAtlas.CONFIG.fullscreen) {
-            context.fill(getGuiX(), getGuiY(), getGuiX() + bookWidth, getGuiY() + bookHeight, 0xFFEAD2A5);
-            context.drawBorder(getGuiX(), getGuiY(), bookWidth, bookHeight, 0xFF4C1A0B);
-            context.drawBorder(getGuiX() + MAP_BORDER_WIDTH - 1, getGuiY() + MAP_BORDER_HEIGHT - 1, mapWidth + 2, mapHeight + 2, 0xFF4C1A0B);
+            context.drawTexture(BOOK, getGuiX(), getGuiY(), bookWidth, bookHeight, 0, 0, 310, 218, 310, 218);
         } else {
             context.drawTexture(BOOK, getGuiX(), getGuiY(), 0, 0, 310, 218, 310, 218);
         }
@@ -586,7 +584,9 @@ public class AtlasScreen extends Component {
 
         // Overlay the frame so that edges of the map are smooth:
         RenderSystem.setShaderColor(1, 1, 1, 1);
-        if (!AntiqueAtlas.CONFIG.fullscreen) {
+        if (AntiqueAtlas.CONFIG.fullscreen) {
+            context.drawTexture(BOOK_FRAME, getGuiX(), getGuiY(), bookWidth, bookHeight, 0, 0, 310, 218, 310, 218);
+        } else {
             context.drawTexture(BOOK_FRAME, getGuiX(), getGuiY(), 0, 0, 310, 218, 310, 218);
         }
 
@@ -620,7 +620,9 @@ public class AtlasScreen extends Component {
 
         RenderSystem.disableScissor();
 
-        if (!AntiqueAtlas.CONFIG.fullscreen) {
+        if (AntiqueAtlas.CONFIG.fullscreen) {
+            context.drawTexture(BOOK_FRAME_NARROW, getGuiX(), getGuiY(), bookWidth, bookHeight, 0, 0, 310, 218, 310, 218);
+        } else {
             context.drawTexture(BOOK_FRAME_NARROW, getGuiX(), getGuiY(), 0, 0, 310, 218, 310, 218);
         }
 
