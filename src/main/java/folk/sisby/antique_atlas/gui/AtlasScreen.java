@@ -91,10 +91,11 @@ public class AtlasScreen extends Component {
         s.markerVisibilityBookmark.setIconTexture(ICON_HIDE_MARKERS);
     });
 
-    public final int bookWidth;
-    public final int bookHeight;
+    private final int bookWidth;
+    private final int bookHeight;
     private final int mapWidth;
     private final int mapHeight;
+    private final boolean fullscreen;
 
     /**
      * Button for placing a marker at current position, local to this Atlas instance.
@@ -145,9 +146,10 @@ public class AtlasScreen extends Component {
     private int mapScale;
 
     public AtlasScreen() {
-        if (AntiqueAtlas.CONFIG.fullscreen) {
-            bookWidth = MinecraftClient.getInstance().getWindow().getScaledWidth() - 40;
-            bookHeight = MinecraftClient.getInstance().getWindow().getScaledHeight() - 40;
+        fullscreen = AntiqueAtlas.CONFIG.fullscreen;
+        if (fullscreen) {
+            bookWidth = (int) (MinecraftClient.getInstance().getWindow().getScaledWidth() * 0.9 - 40);
+            bookHeight = (int) (MinecraftClient.getInstance().getWindow().getScaledHeight() * 0.9);
         } else {
             bookWidth = 310;
             bookHeight = 218;
@@ -533,11 +535,11 @@ public class AtlasScreen extends Component {
         mapScale = getMapScale();
 
         RenderSystem.setShaderColor(1, 1, 1, 1);
-        if (AntiqueAtlas.CONFIG.fullscreen) {
+        if (fullscreen) {
             int left_width = bookWidth / 2 - 15;
-            context.drawNineSlicedTexture(BOOK_FULLSCREEN, getGuiX(), getGuiY(), left_width, bookHeight, 30, 140, 218, 0, 0);
-            context.drawNineSlicedTexture(BOOK_FULLSCREEN, getGuiX() + left_width, getGuiY(), 29, bookHeight, 30, 29, 218, 140, 0);
-            context.drawNineSlicedTexture(BOOK_FULLSCREEN_R, getGuiX() + left_width + 29, getGuiY(), left_width + 1, bookHeight, 30, 140, 218, 0, 0);
+            context.drawNineSlicedTexture(BOOK_FULLSCREEN, getGuiX(), getGuiY(), left_width, bookHeight, 50, 140, 218, 0, 0);
+            context.drawNineSlicedTexture(BOOK_FULLSCREEN, getGuiX() + left_width, getGuiY(), 29, bookHeight, 50, 29, 218, 140, 0);
+            context.drawNineSlicedTexture(BOOK_FULLSCREEN_R, getGuiX() + left_width + 29, getGuiY(), left_width + 1, bookHeight, 50, 140, 218, 0, 0);
         } else {
             context.drawTexture(BOOK, getGuiX(), getGuiY(), 0, 0, 310, 218, 310, 218);
         }
@@ -593,11 +595,11 @@ public class AtlasScreen extends Component {
 
         // Overlay the frame so that edges of the map are smooth:
         RenderSystem.setShaderColor(1, 1, 1, 1);
-        if (AntiqueAtlas.CONFIG.fullscreen) {
+        if (fullscreen) {
             int left_width = bookWidth / 2 - 15;
-            context.drawNineSlicedTexture(BOOK_FRAME_FULLSCREEN, getGuiX(), getGuiY(), left_width, bookHeight, 30, 140, 218, 0, 0);
-            context.drawNineSlicedTexture(BOOK_FRAME_FULLSCREEN, getGuiX() + left_width, getGuiY(), 29, bookHeight, 30, 29, 218, 140, 0);
-            context.drawNineSlicedTexture(BOOK_FRAME_FULLSCREEN_R, getGuiX() + left_width + 29, getGuiY(), left_width + 1, bookHeight, 30, 140, 218, 0, 0);
+            context.drawNineSlicedTexture(BOOK_FRAME_FULLSCREEN, getGuiX(), getGuiY(), left_width, bookHeight, 50, 140, 218, 0, 0);
+            context.drawNineSlicedTexture(BOOK_FRAME_FULLSCREEN, getGuiX() + left_width, getGuiY(), 29, bookHeight, 50, 29, 218, 140, 0);
+            context.drawNineSlicedTexture(BOOK_FRAME_FULLSCREEN_R, getGuiX() + left_width + 29, getGuiY(), left_width + 1, bookHeight, 50, 140, 218, 0, 0);
         } else {
             context.drawTexture(BOOK_FRAME, getGuiX(), getGuiY(), 0, 0, 310, 218, 310, 218);
         }
@@ -632,11 +634,11 @@ public class AtlasScreen extends Component {
 
         RenderSystem.disableScissor();
 
-        if (AntiqueAtlas.CONFIG.fullscreen) {
+        if (fullscreen) {
             int left_width = bookWidth / 2 - 15;
-            context.drawNineSlicedTexture(BOOK_FRAME_NARROW_FULLSCREEN, getGuiX(), getGuiY(), left_width, bookHeight, 30, 140, 218, 0, 0);
-            context.drawNineSlicedTexture(BOOK_FRAME_NARROW_FULLSCREEN, getGuiX() + left_width, getGuiY(), 29, bookHeight, 30, 29, 218, 140, 0);
-            context.drawNineSlicedTexture(BOOK_FRAME_NARROW_FULLSCREEN_R, getGuiX() + left_width + 29, getGuiY(), left_width + 1, bookHeight, 30, 140, 218, 0, 0);
+            context.drawNineSlicedTexture(BOOK_FRAME_NARROW_FULLSCREEN, getGuiX(), getGuiY(), left_width, bookHeight, 50, 140, 218, 0, 0);
+            context.drawNineSlicedTexture(BOOK_FRAME_NARROW_FULLSCREEN, getGuiX() + left_width, getGuiY(), 29, bookHeight, 50, 29, 218, 140, 0);
+            context.drawNineSlicedTexture(BOOK_FRAME_NARROW_FULLSCREEN_R, getGuiX() + left_width + 29, getGuiY(), left_width + 1, bookHeight, 50, 140, 218, 0, 0);
         } else {
             context.drawTexture(BOOK_FRAME_NARROW, getGuiX(), getGuiY(), 0, 0, 310, 218, 310, 218);
         }
