@@ -41,7 +41,7 @@ public class AntiqueAtlasConfig extends WrappedConfig {
     @IntegerRange(min = 0, max = 3)
     public final Integer maxTilePixels = 1;
 
-    @Comment("The effective GUI scale for tiles and markers - independent of the actual GUI scale setting.")
+    @Comment("The effective GUI scale for tiles and markers - independent of the overall GUI scale.")
     @Comment("0 will match your GUI scale - pixels will be the same size as the background & buttons")
     @Comment("-1 will use half your GUI scale, rounding up.")
     @Comment("-2 will use half your GUI scale, rounding down.")
