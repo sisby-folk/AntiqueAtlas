@@ -5,6 +5,7 @@ import folk.sisby.antique_atlas.reloader.MarkerTextures;
 import folk.sisby.antique_atlas.reloader.StructureTileProviders;
 import folk.sisby.antique_atlas.util.Rect;
 import folk.sisby.surveyor.WorldSummary;
+import folk.sisby.surveyor.client.SurveyorClient;
 import folk.sisby.surveyor.landmark.Landmark;
 import folk.sisby.surveyor.landmark.LandmarkType;
 import folk.sisby.surveyor.landmark.PlayerDeathLandmark;
@@ -21,7 +22,6 @@ import net.minecraft.text.Text;
 import net.minecraft.util.DyeColor;
 import net.minecraft.util.Formatting;
 import net.minecraft.util.Identifier;
-import net.minecraft.util.Uuids;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.ChunkPos;
 import net.minecraft.world.World;
@@ -160,7 +160,7 @@ public class WorldAtlasData {
     }
 
     public static boolean landmarkIsEditable(Landmark<?> landmark) {
-        return landmark.owner() != null && (MinecraftClient.getInstance().isIntegratedServerRunning() || Uuids.getUuidFromProfile(MinecraftClient.getInstance().getSession().getProfile()).equals(landmark.owner()));
+        return landmark.owner() != null && (MinecraftClient.getInstance().isIntegratedServerRunning() || SurveyorClient.getClientUuid().equals(landmark.owner()));
     }
 
     public boolean deleteLandmark(World world, Landmark<?> landmark) {
@@ -189,7 +189,7 @@ public class WorldAtlasData {
     public void placeCustomMarker(World world, MarkerTexture selectedTexture, DyeColor color, MutableText label, BlockPos blockPos) {
         WorldSummary.of(world).landmarks().put(world, new SimplePointLandmark(
             blockPos,
-            Uuids.getUuidFromProfile(MinecraftClient.getInstance().getSession().getProfile()),
+            SurveyorClient.getClientUuid(),
             color,
             label,
             selectedTexture.keyId()
