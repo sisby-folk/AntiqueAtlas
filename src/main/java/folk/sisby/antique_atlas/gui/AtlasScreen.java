@@ -21,6 +21,8 @@ import folk.sisby.antique_atlas.util.DrawBatcher;
 import folk.sisby.antique_atlas.util.DrawUtil;
 import folk.sisby.antique_atlas.util.MathUtil;
 import folk.sisby.antique_atlas.util.Rect;
+import folk.sisby.surveyor.PlayerSummary;
+import folk.sisby.surveyor.client.SurveyorClient;
 import folk.sisby.surveyor.landmark.Landmark;
 import it.unimi.dsi.fastutil.objects.Reference2ObjectArrayMap;
 import net.minecraft.client.MinecraftClient;
@@ -644,8 +646,9 @@ public class AtlasScreen extends Component {
         }
 
         markerScrollBox.getViewport().setHidden(state.is(HIDING_MARKERS));
-        if (!state.is(HIDING_MARKERS) || playerBookmark.isSelected()) {
-            renderPlayer(context, 1);
+        for (PlayerSummary friend : SurveyorClient.getFriends().values()) {
+            if (state.is(HIDING_MARKERS) && (!playerBookmark.isSelected() || !friend.username().equals(player.getGameProfile().getName()))) continue;
+            renderPlayer(context, friend, 1);
         }
 
         super.render(context, mouseX, mouseY, par3);
@@ -684,16 +687,16 @@ public class AtlasScreen extends Component {
         }
     }
 
-    private void renderPlayer(DrawContext context, float iconScale) {
-        double playerOffsetX = worldXToScreenX(player.getBlockX());
-        double playerOffsetY = worldZToScreenY(player.getBlockZ());
+    private void renderPlayer(DrawContext context, PlayerSummary player, float iconScale) {
+        double playerOffsetX = worldXToScreenX(player.pos().getX());
+        double playerOffsetY = worldZToScreenY(player.pos().getZ());
 
         playerOffsetX = MathHelper.clamp(playerOffsetX, getGuiX() + MAP_BORDER_WIDTH, getGuiX() + mapWidth + MAP_BORDER_WIDTH);
         playerOffsetY = MathHelper.clamp(playerOffsetY, getGuiY() + MAP_BORDER_HEIGHT, getGuiY() + mapHeight + MAP_BORDER_HEIGHT);
 
         // Draw the icon:
         RenderSystem.setShaderColor(1, 1, 1, state.is(PLACING_MARKER) ? 0.5f : 1);
-        float playerRotation = (float) Math.round(player.getYaw() / 360f * PLAYER_ROTATION_STEPS) / PLAYER_ROTATION_STEPS * 360f;
+        float playerRotation = (float) Math.round(player.yaw() / 360f * PLAYER_ROTATION_STEPS) / PLAYER_ROTATION_STEPS * 360f;
 
         DrawUtil.drawCenteredWithRotation(context, PLAYER, playerOffsetX, playerOffsetY, iconScale, PLAYER_ICON_WIDTH, PLAYER_ICON_HEIGHT, playerRotation);
 
