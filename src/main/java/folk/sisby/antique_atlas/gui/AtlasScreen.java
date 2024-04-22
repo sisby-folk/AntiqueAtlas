@@ -49,6 +49,7 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 
 public class AtlasScreen extends Component {
     public static final Identifier BOOK = AntiqueAtlas.id("textures/gui/book.png");
@@ -127,6 +128,7 @@ public class AtlasScreen extends Component {
     private final List<BookmarkButton> markerBookmarks = new ArrayList<>();
     private final ScreenState<AtlasScreen> state = new ScreenState<>((oldState, newState) -> AntiqueAtlas.lastState.switchTo(newState, this));
     private Landmark<?> hoveredLandmark = null;
+    private PlayerSummary hoveredFriend = null;
     /**
      * The button which is currently being pressed. Used for continuous
      * navigation using the arrow buttons. Also used to prevent immediate
@@ -610,7 +612,10 @@ public class AtlasScreen extends Component {
         context.getMatrices().translate(getGuiX(), getGuiY(), 0);
         float markerScale = (float) (((double) tilePixels * mapScale / (guiScale * 16.0)));
 
+        Map<UUID, PlayerSummary> friends = SurveyorClient.getFriends();
+
         hoveredLandmark = null;
+        hoveredFriend = null;
         if (!state.is(HIDING_MARKERS)) {
             if (isMouseOverMap) {
                 double bestDistance = Double.MAX_VALUE;
@@ -624,6 +629,17 @@ public class AtlasScreen extends Component {
                     if (squaredDistance > 0 && squaredDistance < bestDistance && squaredDistance < (texture.getSquaredSize(tileChunks) * markerScale * markerScale) / 4.0) {
                         bestDistance = squaredDistance;
                         hoveredLandmark = landmark;
+                    }
+                }
+                for (PlayerSummary friend : friends.values()) {
+                    double markerX = worldXToScreenX(friend.pos().getX());
+                    double markerY = worldZToScreenY(friend.pos().getZ());
+                    Vector2d markerCenter = new Vector2d(3.5, 4);
+                    double squaredDistance = Vector2d.distanceSquared(markerX + markerCenter.x, markerY + markerCenter.y, mouseX, mouseY);
+                    if (squaredDistance > 0 && squaredDistance < bestDistance && squaredDistance < (2 * 10 * 10) / 4.0) {
+                        bestDistance = squaredDistance;
+                        hoveredFriend = friend;
+                        hoveredLandmark = null;
                     }
                 }
             }
@@ -646,9 +662,9 @@ public class AtlasScreen extends Component {
         }
 
         markerScrollBox.getViewport().setHidden(state.is(HIDING_MARKERS));
-        for (PlayerSummary friend : SurveyorClient.getFriends().values()) {
+        for (PlayerSummary friend : friends.values()) {
             if (state.is(HIDING_MARKERS) && (!playerBookmark.isSelected() || !friend.username().equals(player.getGameProfile().getName()))) continue;
-            renderPlayer(context, friend, 1);
+            renderPlayer(context, friend, 1, hoveredFriend == friend && markerModal.getParent() == null);
         }
 
         super.render(context, mouseX, mouseY, par3);
@@ -687,7 +703,7 @@ public class AtlasScreen extends Component {
         }
     }
 
-    private void renderPlayer(DrawContext context, PlayerSummary player, float iconScale) {
+    private void renderPlayer(DrawContext context, PlayerSummary player, float iconScale, boolean hovering) {
         double playerOffsetX = worldXToScreenX(player.pos().getX());
         double playerOffsetY = worldZToScreenY(player.pos().getZ());
 
@@ -695,12 +711,18 @@ public class AtlasScreen extends Component {
         playerOffsetY = MathHelper.clamp(playerOffsetY, getGuiY() + MAP_BORDER_HEIGHT, getGuiY() + mapHeight + MAP_BORDER_HEIGHT);
 
         // Draw the icon:
-        RenderSystem.setShaderColor(1, 1, 1, state.is(PLACING_MARKER) ? 0.5f : 1);
+        float tint = player.online() ? 1 : 0.5f;
+        float greenTint = player.username().equals(this.player.getGameProfile().getName()) ? 1 : 0.7f;
+        RenderSystem.setShaderColor(tint, tint * greenTint, tint, state.is(PLACING_MARKER) ? 0.5f : 1);
         float playerRotation = (float) Math.round(player.yaw() / 360f * PLAYER_ROTATION_STEPS) / PLAYER_ROTATION_STEPS * 360f;
 
         DrawUtil.drawCenteredWithRotation(context, PLAYER, playerOffsetX, playerOffsetY, iconScale, PLAYER_ICON_WIDTH, PLAYER_ICON_HEIGHT, playerRotation);
 
         RenderSystem.setShaderColor(1, 1, 1, 1);
+
+        if (hovering && !player.username().equals(this.player.getGameProfile().getName())) {
+            drawTooltip(Collections.singletonList(Text.literal(player.username()).formatted(player.online() ? Formatting.LIGHT_PURPLE : Formatting.GRAY)), textRenderer);
+        }
     }
 
     private void renderMarker(DrawContext context, Landmark<?> landmark, MarkerTexture texture, boolean editable, boolean hovering, float markerScale) {
