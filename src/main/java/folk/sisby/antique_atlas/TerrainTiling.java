@@ -94,6 +94,7 @@ public class TerrainTiling {
 
         int worldHeight = world.getTopY();
         ChunkSummary chunk = WorldSummary.of(world).terrain().get(pos);
+        if (chunk == null) return null; // Skip events fired for chunks we don't have yet (e.g. new shares)
         @Nullable LayerSummary.Raw summary = chunk.toSingleLayer(null, null, world.getTopY());
         IndexedIterable<Biome> biomePalette = WorldSummary.of(world).terrain().getBiomePalette(pos);
         IndexedIterable<Block> blockPalette = WorldSummary.of(world).terrain().getBlockPalette(pos);
