@@ -634,9 +634,8 @@ public class AtlasScreen extends Component {
                 for (PlayerSummary friend : friends.values()) {
                     double markerX = worldXToScreenX(friend.pos().getX());
                     double markerY = worldZToScreenY(friend.pos().getZ());
-                    Vector2d markerCenter = new Vector2d(3.5, 4);
-                    double squaredDistance = Vector2d.distanceSquared(markerX + markerCenter.x, markerY + markerCenter.y, mouseX, mouseY);
-                    if (squaredDistance > 0 && squaredDistance < bestDistance && squaredDistance < (2 * 10 * 10) / 4.0) {
+                    double squaredDistance = Vector2d.distanceSquared(markerX, markerY, mouseX, mouseY);
+                    if (squaredDistance > 0 && squaredDistance < bestDistance && squaredDistance < (PLAYER_ICON_HEIGHT * PLAYER_ICON_WIDTH * 1.5) / 4.0) {
                         bestDistance = squaredDistance;
                         hoveredFriend = friend;
                         hoveredLandmark = null;
@@ -662,10 +661,14 @@ public class AtlasScreen extends Component {
         }
 
         markerScrollBox.getViewport().setHidden(state.is(HIDING_MARKERS));
+
+        context.getMatrices().push();
+        context.getMatrices().translate(getGuiX(), getGuiY(), 0);
         for (PlayerSummary friend : friends.values()) {
             if (state.is(HIDING_MARKERS) && (!playerBookmark.isSelected() || !friend.username().equals(player.getGameProfile().getName()))) continue;
             renderPlayer(context, friend, 1, hoveredFriend == friend && markerModal.getParent() == null);
         }
+        context.getMatrices().pop();
 
         super.render(context, mouseX, mouseY, par3);
 
@@ -704,14 +707,14 @@ public class AtlasScreen extends Component {
     }
 
     private void renderPlayer(DrawContext context, PlayerSummary player, float iconScale, boolean hovering) {
-        double playerOffsetX = worldXToScreenX(player.pos().getX());
-        double playerOffsetY = worldZToScreenY(player.pos().getZ());
+        double playerOffsetX = worldXToScreenX(player.pos().getX()) - getGuiX();
+        double playerOffsetY = worldZToScreenY(player.pos().getZ()) - getGuiY();
 
-        playerOffsetX = MathHelper.clamp(playerOffsetX, getGuiX() + MAP_BORDER_WIDTH, getGuiX() + mapWidth + MAP_BORDER_WIDTH);
-        playerOffsetY = MathHelper.clamp(playerOffsetY, getGuiY() + MAP_BORDER_HEIGHT, getGuiY() + mapHeight + MAP_BORDER_HEIGHT);
+        playerOffsetX = MathHelper.clamp(playerOffsetX, MAP_BORDER_WIDTH, mapWidth + MAP_BORDER_WIDTH);
+        playerOffsetY = MathHelper.clamp(playerOffsetY, MAP_BORDER_HEIGHT, mapHeight + MAP_BORDER_HEIGHT);
 
         // Draw the icon:
-        float tint = player.online() ? 1 : 0.5f;
+        float tint = (player.online() ? 1 : 0.5f) * (hovering ? 0.9f : 1);
         float greenTint = player.username().equals(this.player.getGameProfile().getName()) ? 1 : 0.7f;
         RenderSystem.setShaderColor(tint, tint * greenTint, tint, state.is(PLACING_MARKER) ? 0.5f : 1);
         float playerRotation = (float) Math.round(player.yaw() / 360f * PLAYER_ROTATION_STEPS) / PLAYER_ROTATION_STEPS * 360f;

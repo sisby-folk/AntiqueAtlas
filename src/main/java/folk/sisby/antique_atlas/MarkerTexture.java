@@ -49,7 +49,7 @@ public record MarkerTexture(Identifier id, int offsetX, int offsetY, int texture
 
     public double getSquaredSize(int tileChunks) {
         int mipLevel = MathHelper.clamp(MathHelper.ceilLog2(tileChunks), 0, mipLevels);
-        return textureWidth * textureWidth / (double) (1 << mipLevel);
+        return textureWidth * textureHeight / (double) (1 << mipLevel);
     }
 
     public void draw(DrawContext context, double markerX, double markerY, float markerScale, int tileChunks) {
