@@ -664,8 +664,11 @@ public class AtlasScreen extends Component {
 
         context.getMatrices().push();
         context.getMatrices().translate(getGuiX(), getGuiY(), 0);
-        for (PlayerSummary friend : friends.values()) {
-            if (state.is(HIDING_MARKERS) && (!playerBookmark.isSelected() || !friend.username().equals(player.getGameProfile().getName()))) continue;
+        PlayerSummary playerSummary = friends.remove(player.getUuid());
+        List<PlayerSummary> orderedFriends = new ArrayList<>(friends.values());
+        if (playerSummary != null) orderedFriends.add(playerSummary);
+        for (PlayerSummary friend : orderedFriends) {
+            if (state.is(HIDING_MARKERS)) continue;
             renderPlayer(context, friend, 1, hoveredFriend == friend && markerModal.getParent() == null);
         }
         context.getMatrices().pop();
