@@ -1,5 +1,5 @@
 <!--suppress HtmlDeprecatedTag, XmlDeprecatedElement -->
-<center><img alt="mod preview" src="https://cdn.modrinth.com/data/Y5Ve4Ui4/images/278bd4bd11e1bfca43de4b41969aacfbe7acfc5b.png" /></center>
+<center><img alt="mod preview" src="https://cdn.modrinth.com/data/Y5Ve4Ui4/images/14513bf9172fa0d058e9486958de4884408ed4e4.png" /></center>
 
 <center>
 A hand-drawn client-side world map with biomes, structures, waypoints, and less!<br/>
@@ -21,15 +21,19 @@ Drag the map to pan, scroll to zoom, and use the bookmark buttons to create, rem
 - Totally server-optional - installing AA (or just [surveyor](https://modrinth.com/mod/surveyor)) on the server only enables structures.
 - Structures only appear on the map after you've stood in or looked at them in-game:
 
-![structure discovery](https://cdn.modrinth.com/data/Y5Ve4Ui4/images/5dc0df1ef749b666bfd86140133b7c14c5193954.gif)
+![structure discovery](https://cdn.modrinth.com/data/Y5Ve4Ui4/images/86054c7949fed59341cef60d0d9f27aee86ae6ef.gif)
 
 - Markers for waypoints come in a variety of styles:
 
-![marker styles](https://cdn.modrinth.com/data/Y5Ve4Ui4/images/88f10f9321b2c2d0e082f7b2813fa5ffd59de9f3.png)
+![marker styles](https://cdn.modrinth.com/data/Y5Ve4Ui4/images/f22a29ce8a00847e5a49d74d4c32f7b076a57692.png)
 
 - Markers are automatically added for notable structures, player graves, and active nether portals:
 
-![structure markers](https://cdn.modrinth.com/data/Y5Ve4Ui4/images/30e49ca4f2d36d422de13efcae88e7a9c2c9a5c9.png)
+![structure markers](https://cdn.modrinth.com/data/Y5Ve4Ui4/images/190cc4eaa2e8784dd0f46bee9c225228a05f191a.png)
+
+- Map exploration can be shared with `/surveyor share [player]`, also revealing their position on the map:
+
+![map sharing](https://cdn.modrinth.com/data/Y5Ve4Ui4/images/4422049c395a856c35bbc361c52e8bcd30e89523.png)
 
 - All of the above is data-driven using resource packs.
 
@@ -41,7 +45,7 @@ Antique Atlas is designed to feel like your own explorer's memory, or a permanen
 - You can't "lose" your map in any way.
 - Flavour text is written subjectively:
 
-![grave style euphemisms](https://cdn.modrinth.com/data/Y5Ve4Ui4/images/199d515c53c2a984eaf21bdc542fb6834c2770ff.png)
+![grave style euphemisms](https://cdn.modrinth.com/data/Y5Ve4Ui4/images/c6f5e20bcef2c26c40390e888e540dcdd89a1818.png)
 
 #### Don't Play the Map
 
