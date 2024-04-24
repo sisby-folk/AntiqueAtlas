@@ -2,7 +2,6 @@ package folk.sisby.antique_atlas;
 
 import com.mojang.blaze3d.systems.RenderSystem;
 import net.minecraft.client.gui.DrawContext;
-import net.minecraft.util.DyeColor;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.math.MathHelper;
 import org.joml.Vector2d;
@@ -58,7 +57,16 @@ public record MarkerTexture(Identifier id, Identifier accentId, int offsetX, int
         return textureWidth * textureHeight / (double) (1 << mipLevel);
     }
 
-    public void draw(DrawContext context, double markerX, double markerY, float markerScale, int tileChunks, DyeColor accent, float tint, float alpha) {
+    public void drawIcon(DrawContext context, int x, int y, float[] accent) {
+        context.drawTexture(id, x, y, 0, 0, textureWidth, textureHeight, fullTextureWidth(), textureHeight);
+        if (accentId != null && accent != null) {
+            RenderSystem.setShaderColor(accent[0], accent[1], accent[2], 1F);
+            context.drawTexture(accentId, x, y, 0, 0, textureWidth, textureHeight, fullTextureWidth(), textureHeight);
+            RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
+        }
+    }
+
+    public void draw(DrawContext context, double markerX, double markerY, float markerScale, int tileChunks, float[] accent, float tint, float alpha) {
         context.getMatrices().push();
         context.getMatrices().translate(markerX, markerY, 0.0);
         context.getMatrices().scale(markerScale, markerScale, 1.0F);
@@ -66,16 +74,14 @@ public record MarkerTexture(Identifier id, Identifier accentId, int offsetX, int
             int mipLevel = MathHelper.clamp(MathHelper.ceilLog2(tileChunks), 0, mipLevels);
             context.drawTexture(id, offsetX / (1 << mipLevel), offsetY / (1 << mipLevel), getU(mipLevel), 0, textureWidth / (1 << mipLevel), textureHeight / (1 << mipLevel), fullTextureWidth(), textureHeight);
             if (accentId != null && accent != null) {
-                float[] rgb = accent.getColorComponents();
-                RenderSystem.setShaderColor(tint * rgb[0], tint * rgb[1], tint * rgb[2], alpha);
+                RenderSystem.setShaderColor(tint * accent[0], tint * accent[1], tint * accent[2], alpha);
                 context.drawTexture(accentId, offsetX / (1 << mipLevel), offsetY / (1 << mipLevel), getU(mipLevel), 0, textureWidth / (1 << mipLevel), textureHeight / (1 << mipLevel), fullTextureWidth(), textureHeight);
                 RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
             }
         } else {
             context.drawTexture(id, offsetX, offsetY, 0, 0, textureWidth, textureHeight, fullTextureWidth(), textureHeight);
             if (accentId != null && accent != null) {
-                float[] rgb = accent.getColorComponents();
-                RenderSystem.setShaderColor(tint * rgb[0], tint * rgb[1], tint * rgb[2], alpha);
+                RenderSystem.setShaderColor(tint * accent[0], tint * accent[1], tint * accent[2], alpha);
                 context.drawTexture(accentId, offsetX, offsetY, 0, 0, textureWidth, textureHeight, fullTextureWidth(), textureHeight);
                 RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
             }

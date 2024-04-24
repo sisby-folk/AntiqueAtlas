@@ -18,14 +18,14 @@ public class BookmarkButton extends ToggleButtonComponent {
     public static final int WIDTH = 24;
     public static final int HEIGHT = 18;
 
-    private Text title;
-    private Identifier iconTexture;
-    private final float[] backgroundTint;
-    private final float[] iconTint;
-    private final int iconWidth;
-    private final int iconHeight;
-    private final boolean left;
-    private final Identifier backgroundTexture;
+    protected Text title;
+    protected Identifier iconTexture;
+    protected final float[] backgroundTint;
+    protected final float[] iconTint;
+    protected final int iconWidth;
+    protected final int iconHeight;
+    protected final boolean left;
+    protected final Identifier backgroundTexture;
 
     protected BookmarkButton(Identifier backgroundTexture, Text title, Identifier iconTexture, DyeColor backgroundTint, @Nullable DyeColor iconTint, int iconWidth, int iconHeight, boolean left) {
         super(false);
@@ -57,6 +57,12 @@ public class BookmarkButton extends ToggleButtonComponent {
         this.title = title;
     }
 
+    public void drawIcon(DrawContext context, int x, int y) {
+        if (iconTint != null) RenderSystem.setShaderColor(iconTint[0], iconTint[1], iconTint[2], 1.0F);
+        context.drawTexture(iconTexture, x, y, 0, 0, iconWidth, iconHeight, iconWidth, iconHeight);
+        RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
+    }
+
     @Override
     public void render(DrawContext context, int mouseX, int mouseY, float partialTick) {
         boolean mouseOver = isMouseOver(mouseX, mouseY);
@@ -65,16 +71,13 @@ public class BookmarkButton extends ToggleButtonComponent {
         RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
         if (backgroundTint != null) RenderSystem.setShaderColor(backgroundTint[0], backgroundTint[1], backgroundTint[2], 1.0F);
         context.drawTexture(backgroundTexture, getGuiX(), getGuiY(), 0, isExtended ? 0 : HEIGHT, WIDTH, HEIGHT, WIDTH, HEIGHT * 2);
+        RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
 
         if (iconTexture != null) {
-            RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
-            if (iconTint != null) RenderSystem.setShaderColor(iconTint[0], iconTint[1], iconTint[2], 1.0F);
             int iconX = getGuiX() + 10 - iconWidth / 2 + (isExtended ? (left ? 3 : 1) : (left ? 4 : 0));
             int iconY = getGuiY() + 9 - iconHeight / 2;
-            context.drawTexture(iconTexture, iconX, iconY, 0, 0, iconWidth, iconHeight, iconWidth, iconHeight);
+            drawIcon(context, iconX, iconY);
         }
-
-        RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
 
         renderTooltip(context, mouseX, mouseY, partialTick, mouseOver);
     }

@@ -12,12 +12,12 @@ public class TexturePreviewButton<T> extends ToggleButtonComponent {
     public static final Identifier FRAME_UNSELECTED = AntiqueAtlas.id("textures/gui/frame.png");
     public static final int FRAME_SIZE = 34;
 
-    private final T value;
-    public final Identifier texture;
-    private final int textureWidth;
-    private final int textureHeight;
-    private final int v;
-    private float[] tint;
+    protected final T value;
+    protected final Identifier texture;
+    protected final int textureWidth;
+    protected final int textureHeight;
+    protected final int v;
+    protected float[] tint;
 
     public TexturePreviewButton(T value, Identifier texture, int textureWidth, int textureHeight, int v, float[] tint) {
         super(false);
@@ -38,6 +38,12 @@ public class TexturePreviewButton<T> extends ToggleButtonComponent {
         if (this.tint != null) this.tint = tint;
     }
 
+    protected void drawTexture(DrawContext context, int x, int y) {
+        if (tint != null) RenderSystem.setShaderColor(tint[0], tint[1], tint[2], 1.0F);
+        context.drawTexture(texture,  x, y, 0, v, textureWidth, textureHeight, textureWidth, textureHeight + v);
+        RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
+    }
+
     @Override
     public void render(DrawContext context, int mouseX, int mouseY, float partialTick) {
         Identifier frameTexture = isSelected() ? FRAME_SELECTED : FRAME_UNSELECTED;
@@ -45,9 +51,7 @@ public class TexturePreviewButton<T> extends ToggleButtonComponent {
 
         int centerX = getGuiX() + (FRAME_SIZE - textureWidth) / 2;
         int centerY = getGuiY() + (FRAME_SIZE - textureHeight) / 2;
-        if (tint != null) RenderSystem.setShaderColor(tint[0], tint[1], tint[2], 1.0F);
-        context.drawTexture(texture,  centerX, centerY, 0, v, textureWidth, textureHeight, textureWidth, textureHeight + v);
-        RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
+        drawTexture(context, centerX, centerY);
 
         super.render(context, mouseX, mouseY, partialTick);
     }

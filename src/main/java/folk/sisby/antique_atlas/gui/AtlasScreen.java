@@ -274,7 +274,7 @@ public class AtlasScreen extends Component {
         if (worldAtlasData == null) return;
 
         worldAtlasData.getEditableLandmarks().forEach((landmark, texture) -> {
-            BookmarkButton bookmark = new BookmarkButton(landmark.name(), texture.id(), landmark.color(), (texture == MarkerTexture.DEFAULT && landmark.color() != null) ? landmark.color() : null, 32, 32, true);
+            BookmarkButton bookmark = new MarkerBookmarkButton(landmark.name(), texture, landmark.color(), true);
 
             bookmark.addListener(button -> {
                 if (state.is(NORMAL)) {
@@ -744,7 +744,8 @@ public class AtlasScreen extends Component {
             markerY = MathHelper.clamp(markerY, MAP_BORDER_HEIGHT, mapHeight + MAP_BORDER_HEIGHT);
         }
 
-        texture.draw(context, markerX, markerY, markerScale, tileChunks, landmark.color(), tint, alpha);
+        DyeColor color = landmark.color();
+        texture.draw(context, markerX, markerY, markerScale, tileChunks, color == null ? null : color.getColorComponents(), tint, alpha);
 
         RenderSystem.setShaderColor(1, 1, 1, 1);
 
