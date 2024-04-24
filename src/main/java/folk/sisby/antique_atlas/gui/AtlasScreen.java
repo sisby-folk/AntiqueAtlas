@@ -736,23 +736,15 @@ public class AtlasScreen extends Component {
         double markerY = worldZToScreenY(landmark.pos().getZ()) - getGuiY();
 
         float tint = hovering ? 0.8f : 1.0f;
-        float alpha = state.is(PLACING_MARKER) || (state.is(DELETING_MARKER) && !editable) ? 0.5f : 1.0f;
-        if (texture == MarkerTexture.DEFAULT && landmark.color() != null) {
-            float[] rgb = landmark.color().getColorComponents();
-            RenderSystem.setShaderColor(tint * rgb[0], tint * rgb[1], tint * rgb[2], alpha);
-        } else {
-            RenderSystem.setShaderColor(tint, tint, tint, alpha);
-        }
+        float alpha = state.is(PLACING_MARKER) || (state.is(DELETING_MARKER) && !editable) || (editable && markerX <= MAP_BORDER_WIDTH || markerX >= mapWidth + MAP_BORDER_WIDTH || markerY <= MAP_BORDER_HEIGHT || markerY >= mapHeight + MAP_BORDER_HEIGHT) ? 0.5f : 1.0f;
+        RenderSystem.setShaderColor(tint, tint, tint, alpha);
 
         if (editable) {
-            if (markerX <= MAP_BORDER_WIDTH || markerX >= mapWidth + MAP_BORDER_WIDTH || markerY <= MAP_BORDER_HEIGHT || markerY >= mapHeight + MAP_BORDER_HEIGHT) {
-                RenderSystem.setShaderColor(1, 1, 1, 0.5f);
-            }
             markerX = MathHelper.clamp(markerX, MAP_BORDER_WIDTH, mapWidth + MAP_BORDER_WIDTH);
             markerY = MathHelper.clamp(markerY, MAP_BORDER_HEIGHT, mapHeight + MAP_BORDER_HEIGHT);
         }
 
-        texture.draw(context, markerX, markerY, markerScale, tileChunks);
+        texture.draw(context, markerX, markerY, markerScale, tileChunks, landmark.color(), tint, alpha);
 
         RenderSystem.setShaderColor(1, 1, 1, 1);
 

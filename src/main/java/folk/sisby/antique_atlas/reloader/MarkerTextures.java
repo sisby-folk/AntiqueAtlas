@@ -74,7 +74,22 @@ public class MarkerTextures extends SinglePreparationResourceReloader<Map<Identi
     protected void apply(Map<Identifier, MarkerTextureMeta> prepared, ResourceManager manager, Profiler profiler) {
         AntiqueAtlas.LOGGER.info("[Antique Atlas] Reloading Marker Textures...");
         textures.clear();
-        prepared.forEach((id, meta) -> textures.put(id, meta.build(id)));
+        prepared.forEach((id, meta) -> {
+            if (id.getPath().endsWith("_accent")) {
+                Identifier mainId = id.withPath(s -> s.substring(0, s.length() - "_accent".length()));
+                MarkerTextureMeta main = prepared.get(mainId);
+                if (main != null) {
+                    textures.put(mainId, main.build(mainId, true));
+                } else {
+                    AntiqueAtlas.LOGGER.error("[Antique Atlas] Marker accent {} has no main texture! Discarding.", id);
+                }
+            }
+        });
+        prepared.forEach((id, meta) -> {
+            if (!textures.containsKey(id) && !id.getPath().endsWith("_accent")) {
+                textures.put(id, meta.build(id, false));
+            }
+        });
     }
 
     @Override
@@ -95,13 +110,13 @@ public class MarkerTextures extends SinglePreparationResourceReloader<Map<Identi
 
         public static final ResourceMetadataReader<MarkerTextureMeta> METADATA = new CodecUtil.CodecResourceMetadataSerializer<>(CODEC, AntiqueAtlas.id("marker"));
 
-        public MarkerTexture build(Identifier id) {
+        public MarkerTexture build(Identifier id, boolean accent) {
             int textureWidth = this.textureWidth.orElse(32);
             int textureHeight = this.textureHeight.orElse(32);
             int mipLevels = this.mipLevels.orElse(0);
             int offsetX = this.offsetX.orElse(-textureWidth / 2);
             int offsetY = this.offsetY.orElse(-textureHeight / 2);
-            return MarkerTexture.ofId(id, offsetX, offsetY, textureWidth, textureHeight, mipLevels);
+            return MarkerTexture.ofId(id, offsetX, offsetY, textureWidth, textureHeight, mipLevels, accent);
         }
     }
 }

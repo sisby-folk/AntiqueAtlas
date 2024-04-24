@@ -17,7 +17,7 @@ public class TexturePreviewButton<T> extends ToggleButtonComponent {
     private final int textureWidth;
     private final int textureHeight;
     private final int v;
-    private final float[] tint;
+    private float[] tint;
 
     public TexturePreviewButton(T value, Identifier texture, int textureWidth, int textureHeight, int v, float[] tint) {
         super(false);
@@ -32,6 +32,10 @@ public class TexturePreviewButton<T> extends ToggleButtonComponent {
 
     public T getValue() {
         return value;
+    }
+
+    public void reTint(float[] tint) {
+        if (this.tint != null) this.tint = tint;
     }
 
     @Override
