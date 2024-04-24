@@ -61,9 +61,10 @@ Antique Atlas is designed to keep your focus on your surroundings, not the map.
 
 Antique Atlas can be configured from `config/antique-atlas.toml`<br/>
 
+`fullscreen` can be disabled to lock the size of the map screen based on your GUI scale.<br/>
+`mapScale` can be adjusted to change the effective GUI scale of the tiles on the map.<br/>
 `structureMarkers` can be edited to toggle markers for structures - this is automatically populated from the respack.<br/>
 `graveStyle` will change the icon and tooltip for player graves - try each out to suit your pack's aesthetics.<br/>
-`fullscreen` can be enabled to expand the map to fill the screen.
 
 ### Resource Packs
 
