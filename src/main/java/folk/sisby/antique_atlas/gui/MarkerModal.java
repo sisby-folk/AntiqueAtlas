@@ -103,7 +103,7 @@ public class MarkerModal extends Component {
         for (MarkerTexture texture : MarkerTextures.getInstance().asMap().values()) {
             if (!texture.keyId().getPath().startsWith("custom/")) continue;
             if (selectedTexture == MarkerTexture.DEFAULT) selectedTexture = texture;
-            TexturePreviewButton<MarkerTexture> markerGui = new MarkerPreviewButton(texture, DyeColor.WHITE.getColorComponents());
+            TexturePreviewButton<MarkerTexture> markerGui = new MarkerPreviewButton(texture, selectedColor.getColorComponents());
             textureRadioGroup.addButton(markerGui);
             if (selectedTexture.equals(texture)) {
                 textureRadioGroup.setSelectedButton(markerGui);
