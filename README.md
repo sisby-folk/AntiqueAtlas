@@ -18,7 +18,7 @@ Drag the map to pan, scroll to zoom, and use the bookmark buttons to create, rem
 
 - The map is rendered using hand-drawn "tiles" representing terrain, biomes, and structures.
 - At their smallest, tiles represent an entire chunk - no peeking for resources or player bases!
-- Totally server-optional - installing AA (or just [surveyor](https://modrinth.com/mod/surveyor)) on the server only enables structures.
+- Totally server-optional - installing AA (or just [surveyor](https://modrinth.com/mod/surveyor)) on the server enables structures and sharing.
 - Structures only appear on the map after you've stood in or looked at them in-game:
 
 ![structure discovery](https://cdn.modrinth.com/data/Y5Ve4Ui4/images/86054c7949fed59341cef60d0d9f27aee86ae6ef.gif)
