@@ -83,7 +83,7 @@ Marker textures are loaded from `textures/atlas/marker` and are 32x32 by default
 You can similarly add an [mcmceta file](https://github.com/sisby-folk/antique-atlas/blob/1.20/src/main/resources/assets/antique_atlas/textures/atlas/marker/structure/end_city.png.mcmeta) to adjust size, offsets, and any custom mip levels.<br/>
 To add a player-placeable marker, put the texture in the `custom/` subfolder.
 
-To automatically mark a new non-structure point of interest, use Surveyor's [Landmark API](https://modrinth.com/mod/surveyor).
+To automatically mark a non-structure point of interest, use Surveyor's Landmark API - Like in [Surveystones](https://modrinth.com/mod/surveystones).
 
 Textures for landmark types will be used automatically when named `namespace/textures/atlas/marker/landmark/type/path.png`. 
 
