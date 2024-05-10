@@ -68,6 +68,8 @@ Antique Atlas can be configured from `config/antique-atlas.toml`<br/>
 
 ### Resource Packs
 
+> For more information, check out the [resource pack tutorial](https://github.com/sisby-folk/antique-atlas/wiki/Resource-Packs).
+
 By default, Antique Atlas will use biome tags to approximate a builtin texture for any modded biomes.
 
 To improve this, add `namespace/atlas/biome/path.json` with `{ "parent": "minecraft:biome" }` or [custom texturing](https://github.com/sisby-folk/antique-atlas/blob/1.20/src/main/resources/assets/minecraft/atlas/biome/badlands.json).
