@@ -1,3 +1,4 @@
 {
-  "textures": "antique_atlas:structure/village/desert/weaponsmith"
+  "textures": "antique_atlas:structure/village/desert/weaponsmith",
+  "priority": 800
 }

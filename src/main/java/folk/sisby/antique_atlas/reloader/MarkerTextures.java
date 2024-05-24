@@ -97,15 +97,17 @@ public class MarkerTextures extends SinglePreparationResourceReloader<Map<Identi
         return ID;
     }
 
-    public record MarkerTextureMeta(Optional<Integer> textureWidth, Optional<Integer> textureHeight, Optional<Integer> mipLevels, Optional<Integer> offsetX, Optional<Integer> offsetY) {
-        public static final MarkerTextureMeta DEFAULT = new MarkerTextureMeta(Optional.empty(), Optional.empty(), Optional.empty(), Optional.empty(), Optional.empty());
+    public record MarkerTextureMeta(Optional<Integer> textureWidth, Optional<Integer> textureHeight, Optional<Integer> mipLevels, Optional<Integer> offsetX, Optional<Integer> offsetY, Optional<Integer> nearClip, Optional<Integer> farClip) {
+        public static final MarkerTextureMeta DEFAULT = new MarkerTextureMeta(Optional.empty(), Optional.empty(), Optional.empty(), Optional.empty(), Optional.empty(), Optional.empty(), Optional.empty());
 
         public static final Codec<MarkerTextureMeta> CODEC = RecordCodecBuilder.create(instance -> instance.group(
             Codec.INT.optionalFieldOf("textureWidth").forGetter(MarkerTextureMeta::textureWidth),
             Codec.INT.optionalFieldOf("textureHeight").forGetter(MarkerTextureMeta::textureHeight),
             Codec.INT.optionalFieldOf("mipLevels").forGetter(MarkerTextureMeta::mipLevels),
             Codec.INT.optionalFieldOf("offsetX").forGetter(MarkerTextureMeta::offsetX),
-            Codec.INT.optionalFieldOf("offsetY").forGetter(MarkerTextureMeta::offsetY)
+            Codec.INT.optionalFieldOf("offsetY").forGetter(MarkerTextureMeta::offsetY),
+            Codec.INT.optionalFieldOf("nearClip").forGetter(MarkerTextureMeta::nearClip),
+            Codec.INT.optionalFieldOf("farClip").forGetter(MarkerTextureMeta::farClip)
         ).apply(instance, MarkerTextureMeta::new));
 
         public static final ResourceMetadataReader<MarkerTextureMeta> METADATA = new CodecUtil.CodecResourceMetadataSerializer<>(CODEC, AntiqueAtlas.id("marker"));
@@ -116,7 +118,9 @@ public class MarkerTextures extends SinglePreparationResourceReloader<Map<Identi
             int mipLevels = this.mipLevels.orElse(0);
             int offsetX = this.offsetX.orElse(-textureWidth / 2);
             int offsetY = this.offsetY.orElse(-textureHeight / 2);
-            return MarkerTexture.ofId(id, offsetX, offsetY, textureWidth, textureHeight, mipLevels, accent);
+            int nearClip = this.nearClip.orElse(1);
+            int farClip = this.farClip.orElse(Integer.MAX_VALUE);
+            return MarkerTexture.ofId(id, offsetX, offsetY, textureWidth, textureHeight, mipLevels, nearClip, farClip, accent);
         }
     }
 }

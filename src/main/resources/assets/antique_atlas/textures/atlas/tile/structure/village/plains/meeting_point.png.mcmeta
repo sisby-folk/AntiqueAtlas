@@ -3,10 +3,12 @@
     "borderType": "inner",
     "tags": [
       "antique_atlas:small_land_structures",
+      "antique_atlas:village_path",
       "antique_atlas:village_path_accessible"
     ],
     "tilesTo": [
-      "#antique_atlas:village_path"
+      "#antique_atlas:village_path",
+      "#antique_atlas:village_path_accessible"
     ]
   }
 }

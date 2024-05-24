@@ -180,7 +180,7 @@ public class StructureTileProviders extends JsonDataLoader implements Identifiab
                         JsonObject fileJson = fileEntry.getValue().getAsJsonObject();
                         if (fileJson.has("textures")) {
                             JsonElement textureJson = fileJson.get("textures");
-                            int priority = fileJson.has("priority") ? fileJson.get("priority").getAsInt() : Integer.MAX_VALUE;
+                            int priority = fileJson.has("priority") ? fileJson.get("priority").getAsInt() : 999;
                             List<TileTexture> defaultTextures = resolveTextureJson(textures, textureJson);
                             if (defaultTextures != null) {
                                 StructureTileProvider provider = new StructureTileProvider(id, priority, defaultTextures);

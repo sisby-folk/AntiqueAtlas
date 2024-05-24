@@ -1,3 +1,4 @@
 {
-  "textures": "antique_atlas:structure/village/plains/lamp"
+  "textures": "antique_atlas:structure/village/plains/lamp",
+  "priority": 1100
 }

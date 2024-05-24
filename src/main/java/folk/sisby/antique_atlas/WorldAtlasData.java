@@ -175,10 +175,12 @@ public class WorldAtlasData {
         return map;
     }
 
-    public Map<Landmark<?>, MarkerTexture> getAllMarkers() {
+    public Map<Landmark<?>, MarkerTexture> getAllMarkers(int tileChunks) {
         Map<Landmark<?>, MarkerTexture> map = new HashMap<>();
         landmarkMarkers.forEach((type, landmarks) -> landmarks.forEach((pos, pair) -> map.put(pair.left(), pair.right())));
-        map.putAll(structureMarkers);
+        structureMarkers.forEach((landmark, texture) -> {
+            if (tileChunks >= texture.nearClip() && tileChunks <= texture.farClip()) map.put(landmark, texture);
+        });
         return map;
     }
 

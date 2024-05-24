@@ -618,7 +618,7 @@ public class AtlasScreen extends Component {
         if (!state.is(HIDING_MARKERS)) {
             if (isMouseOverMap) {
                 double bestDistance = Double.MAX_VALUE;
-                for (Map.Entry<Landmark<?>, MarkerTexture> entry : worldAtlasData.getAllMarkers().entrySet()) {
+                for (Map.Entry<Landmark<?>, MarkerTexture> entry : worldAtlasData.getAllMarkers(tileChunks).entrySet()) {
                     Landmark<?> landmark = entry.getKey();
                     MarkerTexture texture = entry.getValue();
                     double markerX = worldXToScreenX(landmark.pos().getX());
@@ -641,7 +641,7 @@ public class AtlasScreen extends Component {
                     }
                 }
             }
-            worldAtlasData.getAllMarkers().forEach((landmark, texture) -> {
+            worldAtlasData.getAllMarkers(tileChunks).forEach((landmark, texture) -> {
                 renderMarker(context, landmark, texture, WorldAtlasData.landmarkIsEditable(landmark), hoveredLandmark == landmark && markerModal.getParent() == null, markerScale);
             });
         }
@@ -667,7 +667,7 @@ public class AtlasScreen extends Component {
         List<PlayerSummary> orderedFriends = new ArrayList<>(friends.values());
         if (playerSummary != null) orderedFriends.add(playerSummary);
         for (PlayerSummary friend : orderedFriends) {
-            if (state.is(HIDING_MARKERS)) continue;
+            if (state.is(HIDING_MARKERS) && (!playerBookmark.isSelected() || friend != playerSummary)) continue;
             renderPlayer(context, friend, 1, hoveredFriend == friend && markerModal.getParent() == null);
         }
         context.getMatrices().pop();
