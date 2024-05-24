@@ -1,15 +1,14 @@
 package folk.sisby.antique_atlas.gui.core;
 
 import net.minecraft.client.MinecraftClient;
-import net.minecraft.client.font.TextRenderer;
 import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.text.Text;
-import org.lwjgl.opengl.GL11;
 
 import java.util.List;
 import java.util.ListIterator;
 import java.util.concurrent.CopyOnWriteArrayList;
+import java.util.function.Predicate;
 
 /**
  * Core visual component class, which facilitates hierarchy. You can add child
@@ -18,11 +17,6 @@ import java.util.concurrent.CopyOnWriteArrayList;
  * parent component.
  */
 public class Component extends Screen {
-    @FunctionalInterface
-    interface UiCall {
-        boolean call(Component c);
-    }
-
     private Component parent = null;
     private final List<Component> children = new CopyOnWriteArrayList<>();
 
@@ -37,10 +31,6 @@ public class Component extends Screen {
     int contentWidth;
     int contentHeight;
     /**
-     * If true, content size will be validated on the next update.
-     */
-    private boolean sizeIsInvalid = false;
-    /**
      * If true, this GUI will not be rendered.
      */
     private boolean isClipped = false;
@@ -50,7 +40,6 @@ public class Component extends Screen {
      */
     private int guiX = 0, guiY = 0;
 
-    // TODO
     public Component() {
         super(Text.literal("component"));
     }
@@ -68,7 +57,7 @@ public class Component extends Screen {
             child.offsetGuiCoords(dx, dy);
         }
         if (parent != null && (dx != 0 || dy != 0)) {
-            parent.invalidateSize();
+            parent.updateSize();
         }
     }
 
@@ -151,7 +140,7 @@ public class Component extends Screen {
         this.properHeight = height;
         this.contentWidth = width;
         this.contentHeight = height;
-        invalidateSize();
+        updateSize();
     }
 
     /**
@@ -198,7 +187,7 @@ public class Component extends Screen {
         if (MinecraftClient.getInstance() != null) {
             child.init(MinecraftClient.getInstance(), width, height);
         }
-        invalidateSize();
+        updateSize();
     }
 
     /**
@@ -208,7 +197,7 @@ public class Component extends Screen {
         if (child != null && children.contains(child)) {
             child.parent = null;
             children.remove(child);
-            invalidateSize();
+            updateSize();
             onChildClosed(child);
         }
         return child;
@@ -216,7 +205,7 @@ public class Component extends Screen {
 
     void removeAllChildren() {
         children.clear();
-        invalidateSize();
+        updateSize();
     }
 
     /**
@@ -230,13 +219,13 @@ public class Component extends Screen {
         return children;
     }
 
-    boolean iterateInput(UiCall callMethod) {
+    boolean iterateInput(Predicate<Component> callMethod) {
         // Traverse children backwards, because the topmost child should be the
         // first to process input:
         ListIterator<Component> iter = children.listIterator(children.size());
         while (iter.hasPrevious()) {
             Component child = iter.previous();
-            if (callMethod.call(child)) {
+            if (callMethod.test(child)) {
                 return true;
             }
         }
@@ -244,7 +233,7 @@ public class Component extends Screen {
         return false;
     }
 
-    boolean iterateMouseInput(UiCall callMethod) {
+    boolean iterateMouseInput(Predicate<Component> callMethod) {
         return iterateInput(callMethod);
     }
 
@@ -338,11 +327,6 @@ public class Component extends Screen {
                 child.render(context, mouseX, mouseY, partialTick);
             }
         }
-        // Draw any hovering text requested by child components:
-        if (hoveringTextInfo.shouldDraw) {
-            drawHoveringText2(context, hoveringTextInfo.lines, hoveringTextInfo.x, hoveringTextInfo.y, hoveringTextInfo.font);
-            hoveringTextInfo.shouldDraw = false;
-        }
     }
 
     /**
@@ -365,11 +349,7 @@ public class Component extends Screen {
         for (Component child : children) {
             child.tick();
         }
-
         super.tick();
-        if (sizeIsInvalid) {
-            validateSize();
-        }
     }
 
     @Override
@@ -403,21 +383,7 @@ public class Component extends Screen {
         this.isClipped = value;
     }
 
-    /**
-     * Cause the size of the component to be recalculate on the next update
-     * tick. If this GUI has a parent, the parent's size will be invalidated too.
-     */
-    private void invalidateSize() {
-        sizeIsInvalid = true;
-        if (parent != null) {
-            parent.invalidateSize();
-        }
-    }
-
-    /**
-     * Recalculate the dimensions of the contents (children) of this GUI.
-     */
-    void validateSize() {
+    void updateSize() {
         int leftmost = Integer.MAX_VALUE;
         int rightmost = Integer.MIN_VALUE;
         int topmost = Integer.MAX_VALUE;
@@ -442,79 +408,11 @@ public class Component extends Screen {
         }
         contentWidth = Math.max(properWidth, rightmost - leftmost);
         contentHeight = Math.max(properHeight, bottommost - topmost);
-        sizeIsInvalid = false;
     }
 
     @Override
     public boolean isMouseOver(double mouseX, double mouseY) {
         return mouseX >= getGuiX() && mouseX < getGuiX() + getWidth() && mouseY >= getGuiY() && mouseY < getGuiY() + getHeight();
-    }
-
-    /**
-     * Draws a standard Minecraft hovering text window, constrained by this
-     * component's dimensions (i.e. if it won't fit in when drawn to the left
-     * of the cursor, it will be drawn to the right instead).
-     */
-    private void drawHoveringText2(DrawContext context, List<Text> lines, double x, double y, TextRenderer font) {
-        boolean stencilEnabled = GL11.glIsEnabled(GL11.GL_STENCIL_TEST);
-        if (stencilEnabled) GL11.glDisable(GL11.GL_STENCIL_TEST);
-        context.getMatrices().push();
-        context.getMatrices().translate(x, y, 0);
-        context.drawTooltip(font, lines, 0, 0);
-        context.getMatrices().pop();
-        if (stencilEnabled) GL11.glEnable(GL11.GL_STENCIL_TEST);
-    }
-
-    /**
-     * Returns the top level parent of this component, or itself if it has no
-     * parent. Useful for correctly drawing hovering text.
-     */
-    private Component getTopLevelParent() {
-        Component component = this;
-        while (component.parent != null) {
-            component = component.parent;
-        }
-        return component;
-    }
-
-    /**
-     * Draws a text tooltip at mouse coordinates.
-     * <p>
-     * Same as {@link #drawHoveringText2(DrawContext, List, double, double, TextRenderer)}, but
-     * the text is drawn on the top level parent component, after all its child
-     * components have finished drawing. This allows the hovering text to be
-     * unobscured by other components.
-     * </p>
-     * <p>
-     * Only one instance of hovering text can be drawn via this method, i.e.
-     * from several components which occupy the same position on the screen.
-     * </p>
-     */
-    protected void drawTooltip(List<Text> lines, TextRenderer font) {
-        Component topLevel = getTopLevelParent();
-        topLevel.hoveringTextInfo.lines = lines;
-        topLevel.hoveringTextInfo.x = getMouseX();
-        topLevel.hoveringTextInfo.y = getMouseY();
-        topLevel.hoveringTextInfo.font = font;
-        topLevel.hoveringTextInfo.shouldDraw = true;
-    }
-
-    /**
-     * Wrapper for data used to draw hovering text at the end of rendering
-     * current frame. It is used by child components that wish to draw hovering
-     * text unobscured by their neighboring components.
-     */
-    private final HoveringTextInfo hoveringTextInfo = new HoveringTextInfo();
-
-    private static class HoveringTextInfo {
-        List<Text> lines;
-        double x, y;
-        TextRenderer font;
-        /**
-         * Whether to draw this hovering text during rendering current frame.
-         * This flag is reset to false after rendering finishes.
-         */
-        boolean shouldDraw = false;
     }
 
     /**

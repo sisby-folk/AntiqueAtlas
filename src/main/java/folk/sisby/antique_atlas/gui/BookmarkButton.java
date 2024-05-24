@@ -3,14 +3,11 @@ package folk.sisby.antique_atlas.gui;
 import com.mojang.blaze3d.systems.RenderSystem;
 import folk.sisby.antique_atlas.AntiqueAtlas;
 import folk.sisby.antique_atlas.gui.core.ToggleButtonComponent;
-import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.DrawContext;
 import net.minecraft.text.Text;
 import net.minecraft.util.DyeColor;
 import net.minecraft.util.Identifier;
 import org.jetbrains.annotations.Nullable;
-
-import java.util.Collections;
 
 public class BookmarkButton extends ToggleButtonComponent {
     public static final Identifier TEXTURE_LEFT = AntiqueAtlas.id("textures/gui/bookmark_left.png");
@@ -84,7 +81,7 @@ public class BookmarkButton extends ToggleButtonComponent {
 
     public void renderTooltip(DrawContext context, int mouseX, int mouseY, float partialTick, boolean mouseOver) {
         if (mouseOver && !title.getString().isEmpty()) {
-            drawTooltip(Collections.singletonList(title), MinecraftClient.getInstance().textRenderer);
+            context.drawTooltip(textRenderer, title, mouseX, mouseY);
         }
     }
 }

@@ -46,7 +46,6 @@ import org.lwjgl.opengl.GL11;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
@@ -727,7 +726,7 @@ public class AtlasScreen extends Component {
         RenderSystem.setShaderColor(1, 1, 1, 1);
 
         if (hovering && !player.username().equals(this.player.getGameProfile().getName())) {
-            drawTooltip(Collections.singletonList(Text.literal(player.username()).formatted(player.online() ? Formatting.LIGHT_PURPLE : Formatting.GRAY)), textRenderer);
+            context.drawTooltip(textRenderer, Text.literal(player.username()).formatted(player.online() ? Formatting.LIGHT_PURPLE : Formatting.GRAY), (int) getMouseX() - getGuiX(), (int) getMouseY() - getGuiY());
         }
     }
 
@@ -750,7 +749,7 @@ public class AtlasScreen extends Component {
         RenderSystem.setShaderColor(1, 1, 1, 1);
 
         if (hovering && landmark.name() != null && !landmark.name().getString().isEmpty()) {
-            drawTooltip(Collections.singletonList(landmark.name()), textRenderer);
+            context.drawTooltip(textRenderer, landmark.name(), (int) getMouseX() - getGuiX(), (int) getMouseY() - getGuiY());
         }
     }
 

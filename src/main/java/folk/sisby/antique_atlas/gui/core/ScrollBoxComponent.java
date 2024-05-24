@@ -85,8 +85,8 @@ public class ScrollBoxComponent extends Component {
      * during initGui().
      */
     public void setScrollPos(int scrollPos) {
-        viewport.content.validateSize();
-        viewport.validateSize();
+        viewport.content.updateSize();
+        viewport.updateSize();
         doSetScrollPos(scrollPos);
     }
 

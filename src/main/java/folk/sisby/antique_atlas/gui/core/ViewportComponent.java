@@ -68,8 +68,8 @@ public class ViewportComponent extends Component {
     }
 
     @Override
-    protected void validateSize() {
-        super.validateSize();
+    protected void updateSize() {
+        super.updateSize();
         // Update the clipping flag on content's child components:
         for (Component child : this.getChildren()) {
             child.setClipped(child.getGuiY() > getGuiY() + properHeight ||
