@@ -408,6 +408,7 @@ public class Component extends Screen {
         }
         contentWidth = Math.max(properWidth, rightmost - leftmost);
         contentHeight = Math.max(properHeight, bottommost - topmost);
+        if (parent != null) parent.updateSize();
     }
 
     @Override
