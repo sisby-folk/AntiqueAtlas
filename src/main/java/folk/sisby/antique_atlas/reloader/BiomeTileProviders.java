@@ -43,6 +43,7 @@ public class BiomeTileProviders extends JsonDataLoader implements IdentifiableRe
 
     private final Map<Identifier, TerrainTileProvider> tileProviders = new HashMap<>();
     private final Map<Identifier, Identifier> biomeFallbacks = new HashMap<>();
+    private boolean hasFallbacks = false;
 
     public BiomeTileProviders() {
         super(new Gson(), "atlas/biome");
@@ -71,10 +72,16 @@ public class BiomeTileProviders extends JsonDataLoader implements IdentifiableRe
                 if (AntiqueAtlas.CONFIG.fallbackFailHandling == AntiqueAtlasConfig.FallbackHandling.CRASH) throw new IllegalStateException("Antique Atlas fallback biome registration failed! Fix the missing biome or change fallbackFailHandling in antique_atlas.toml");
             }
         }
+        hasFallbacks = true;
     }
 
     public void clearFallbacks() {
+        hasFallbacks = false;
         biomeFallbacks.clear();
+    }
+
+    public boolean hasFallbacks() {
+        return hasFallbacks;
     }
 
     private static Identifier getFallbackBiome(RegistryEntry<Biome> biome) {

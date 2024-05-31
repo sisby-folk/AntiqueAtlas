@@ -1,6 +1,7 @@
 package folk.sisby.antique_atlas;
 
 import com.google.common.collect.Multimap;
+import folk.sisby.antique_atlas.reloader.BiomeTileProviders;
 import folk.sisby.antique_atlas.reloader.MarkerTextures;
 import folk.sisby.antique_atlas.reloader.StructureTileProviders;
 import folk.sisby.antique_atlas.util.Rect;
@@ -77,6 +78,7 @@ public class WorldAtlasData {
     }
 
     public void tick(World world) {
+        if (!BiomeTileProviders.getInstance().hasFallbacks()) return;
         for (int i = 0; i < AntiqueAtlas.CONFIG.chunkTickLimit; i++) {
             ChunkPos pos = terrainDeque.pollFirst();
             if (pos == null) break;
