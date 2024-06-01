@@ -26,6 +26,12 @@ public class AntiqueAtlasConfig extends WrappedConfig {
     @Comment("The background is slightly less stylish, but more tiles are shown at once")
     public Boolean fullscreen = true;
 
+    @Comment("Whether to keep scale after closing the map")
+    public Boolean keepZoom = false;
+
+    @Comment("Whether to keep offset after closing the map")
+    public Boolean keepOffset = false;
+
     @Comment("How to depict player death locations.")
     public GraveStyle graveStyle = GraveStyle.EUPHEMISMS;
 
