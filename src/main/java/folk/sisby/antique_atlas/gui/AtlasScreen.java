@@ -141,11 +141,11 @@ public class AtlasScreen extends Component {
 
     private boolean isDragging = false;
 
-    private double mapOffsetX;
-    private double mapOffsetY;
+    private static double mapOffsetX;
+    private static double mapOffsetY;
 
-    private int tilePixels = 16;
-    private int tileChunks = 1;
+    private static int tilePixels = 16;
+    private static int tileChunks = 1;
     private int mapScale;
 
     public AtlasScreen() {
@@ -163,7 +163,6 @@ public class AtlasScreen extends Component {
         mapScale = getMapScale();
 
         playerBookmark = new BookmarkButton(Text.translatable("gui.antique_atlas.followPlayer"), AntiqueAtlas.id("textures/gui/player.png"), DyeColor.GRAY, null, 7, 8, false);
-        playerBookmark.setSelected(true);
         addChild(playerBookmark).offsetGuiCoords(bookWidth - 10, bookHeight - MAP_BORDER_HEIGHT - BookmarkButton.HEIGHT - 10);
         playerBookmark.addListener(b -> {
             selectedButton = playerBookmark;
@@ -251,7 +250,13 @@ public class AtlasScreen extends Component {
 
         this.player = MinecraftClient.getInstance().player;
         updateAtlasData();
-        setMapPosition(player.getBlockX(), player.getBlockZ());
+        if (!AntiqueAtlas.CONFIG.keepOffset) {
+            playerBookmark.setSelected(true);
+            setMapPosition(player.getBlockX(), player.getBlockZ());
+        }
+        if (!AntiqueAtlas.CONFIG.keepZoom) {
+            resetZoom();
+        }
 
         return this;
     }
@@ -262,6 +267,7 @@ public class AtlasScreen extends Component {
 
         setGuiCoords((this.width - bookWidth) / 2, (this.height - bookHeight) / 2);
 
+        updateScaleBookmark();
         updateBookmarkerList();
     }
 
