@@ -7,274 +7,343 @@ Otherwise, individual textures used can be attributed as below.
 
 ---
 
-Attributed to lumiscosity:
-    mangrove.png
-    grass_bamboo.png
-    igloo.png
-    cage.png
-    tent.png
-    watchtower.png
-    desert_pyramid.png
-    shipwreck_beached.png
-    jungle_temple.png
-    swamp_hut.png
-    path.png
+Key:
+============================================
+0       |       Derived from assets distributed under a non-permissive license in good faith.
+H       |       Created by Hunternif.
+L       |       Created by lumiscosity.
+S       |       Created by Sisby folk.
+HL      |       Created by lumiscosity, utilizing existing textures created by Hunternif. ("Created by Hunternif and lumiscosity")
+HS      |       Composited by Sisby folk using textures created by Hunternif. ("Created by Hunternif")
+LS      |       Composited by Sisby folk using textures created by lumiscosity. ("Created by lumiscosity")
+HLS     |       Composited by Sisby folk using textures created by Hunternif and lumiscosity. ("Created by Hunternif and lumiscosity")
+--------------------------------------------
 
-Attributed to lumiscosity and Hunternif (by composite):
-    grass_bamboo_hills.png
-    grass_bamboo_hills_low.png
-    smooth_cherry_mountains.png
-    swamp_water_mangrove.png
-
-Attributed to Hunternif:
-    add_marker.png
-    del_marker.png
-    export.png
-    hide_markers.png
-    show_markers.png
-    end_city.png
-    nether_portal.png
-    ocean_monument.png
-    red_x_large.png
-    red_x_small.png
-    scroll.png
-    skull.png
-    tomb.png
-    tower.png
-    unknown.png
-    house.png
-    woodland_mansion.png
-    scalebar_4.png
-    scalebar_8.png
-    scalebar_16.png
-    scalebar_32.png
-    scalebar_64.png
-    scalebar_128.png
-    scalebar_256.png
-    scalebar_512.png
-    cave.png
-    cliffs.png
-    flat.png
-    floating_island.png
-    grass.png
-    hills.png
-    hills_low.png
-    ice_spikes.png
-    plateau.png
-    plateau_low.png
-    sand.png
-    sky.png
-    smooth_mountains_edge.png
-    snow.png
-    tiered.png
-    sand_shrubs_terracotta_mixed.png
-    sand_terracotta_pillar_small.png
-    terracotta_fingers.png
-    terracotta_fingers_shrubs.png
-    terracotta_pillars.png
-    grass_oak_plateau.png
-    grass_oak_plateau_low.png
-    shrubs_plateau.png
-    shrubs_plateau_low.png
-    terracotta_plateau.png
-    terracotta_plateau_low.png
-    terracotta_shrubs_tiered.png
-    terracotta_tiered.png
-    terracotta_tiered_rough.png
-    terracotta_tiered_separate.png
-    cacti_hills_low.png
-    sand_1.png
-    sand_cacti.png
-    sand_cacti_sparse.png
-    sand_shrubs.png
-    shrubs_hills_low.png
-    grass_acacia_plateau_1.png
-    grass_acacia_plateau_2.png
-    grass_acacia_plateau_3.png
-    grass_plateau_1.png
-    grass_plateau_2.png
-    grass_plateau_3.png
-    acacia_cliffs_1.png
-    acacia_cliffs_2.png
-    acacia_cliffs_3.png
-    acacia_cliffs_clouds_1.png
-    acacia_cliffs_clouds_2.png
-    acacia_cliffs_clouds_3.png
-    cliffs_clouds.png
-    grass_acacia_1.png
-    grass_acacia_2.png
-    grass_acacia_3.png
-    end_chorus_island.png
-    end_chorus_sparse_island.png
-    end_island_1.png
-    end_island_2.png
-    snow_ice_spikes_dense.png
-    snow_ice_spikes_edge.png
-    snow_2.png
-    snow_3.png
-    snow_hills.png
-    snow_hills_low.png
-    snow_pine_sparse_1.png
-    snow_pine_sparse_2.png
-    snow_spruce_sparse_1.png
-    snow_spruce_sparse_2.png
-    sunflowers_1.png
-    sunflowers_2.png
-    grass_3.png
-    grass_hills.png
-    grass_hills_low.png
-    grass_oak_fancy_sparse.png
-    grass_oak_fancy_sparse_hills_low.png
-    grass_oak_fancy_tall_sparse.png
-    grass_oak_fancy_tall_sparse_hills_low.png
-    grass_oak_sparse.png
-    grass_oak_sparse_hills_low.png
-    smooth_spruce_mountains.png
-    grass_daisies_plateau.png
-    grass_dandelions_plateau.png
-    rough_mountains.png
-    sharp_snow_mountains.png
-    smooth_mountains.png
-    snow_cliffs.png
-    rough_oak_mountains.png
-    gravel_hills_low.png
-    stone_hills_low.png
-    grass_cliffs.png
-    basalt_columns_1.png
-    basalt_columns_2.png
-    basalt_columns_3.png
-    basalt_lava_columns.png
-    nether_shore_lava_1.png
-    nether_shore_lava_2.png
-    plateau_square.png
-    mycelium_mushrooms_huge_mixed_dense.png
-    mycelium_mushrooms_huge_red_edge.png
-    water_ice_spikes_1.png
-    water_ice_spikes_2.png
-    ice_ice_spikes.png
-    empty.png
-    snow_shore_water_1.png
-    snow_shore_water_2.png
-    snow_shore_water_3.png
-    sand_shore_water_1.png
-    sand_shore_water_2.png
-    sand_shore_water_3.png
-    stone_spikes_shore_water.png
-    swamp_water.png
-    swamp_water_grass_hills.png
-    swamp_water_grass_oak_swamp_hills_1.png
-    swamp_water_grass_oak_swamp_hills_2.png
-    swamp_water_grass_oak_swamp_hills_3.png
-    swamp_water_grass_oak_swamp_hills_4.png
-    swamp_water_oak_swamp_1.png
-    swamp_water_oak_swamp_2.png
-    swamp_water_oak_swamp_3.png
-    swamp_water_oak_swamp_sparse_1.png
-    swamp_water_oak_swamp_sparse_2.png
-    birch_tall.png
-    birch_tall_hills_low.png
-    grass_birch_tall.png
-    grass_birch_tall_hills_low.png
-    birch.png
-    birch_dense.png
-    birch_hills_low.png
-    grass_birch.png
-    grass_birch_hills_low.png
-    oak_dense.png
-    oak_dense_hills.png
-    oak_fancy_dense.png
-    oak_fancy_dense_hills.png
-    cornflower_oak_hills.png
-    daisies_hills.png
-    dandelion_oak_sparse_hills.png
-    grass_oak_mixed.png
-    grass_oak_mixed_hills_low.png
-    oak_fancy_mixed.png
-    oak_fancy_mixed_hills_low.png
-    oak_mixed.png
-    oak_mixed_hills_low.png
-    grass_oak_swamp_1.png
-    grass_oak_swamp_2.png
-    grass_oak_swamp_hills_1.png
-    grass_oak_swamp_hills_2.png
-    grass_palm.png
-    grass_palm_hills.png
-    bushes_cliffs.png
-    bushes_jungle_mega_cliffs.png
-    bushes_oak_swamp_cliffs.png
-    jungle_mega.png
-    jungle_mega_hills_low.png
-    jungle_mega_palm.png
-    jungle_mega_palm_hills_low.png
-    podzol_mega_pine_mega_spruce.png
-    podzol_mega_pine_mega_spruce_hills_low.png
-    podzol_mega_pine_spruce_hills_low.png
-    podzol_pine_mega_pine.png
-    pine_mega_spruce_hills_low.png
-    podzol_mega_spruce_spruce.png
-    podzol_spruce_mega_spruce.png
-    spruce_mega_spruce_hills_low.png
-    snow_pine.png
-    snow_pine_hills.png
-    snow_pine_spruce.png
-    snow_pine_spruce_hills.png
-    snow_spruce_pine.png
-    snow_spruce_pine_hills.png
-    pine.png
-    pine_hills_low.png
-    pine_spruce_1.png
-    pine_spruce_2.png
-    pine_spruce_hills_low_1.png
-    pine_spruce_hills_low_2.png
-    ice.png
-    crater_lava_1.png
-    crater_lava_2.png
-    andesite_ravine.png
-    stone_ravine.png
-    static_void.png
-    water_1.png
-    water_2.png
-    nether_fortress_bridge_crossing.png
-    nether_fortress_bridge_end_horizontal.png
-    nether_fortress_bridge_end_vertical.png
-    nether_fortress_bridge_horizontal.png
-    nether_fortress_bridge_platform.png
-    nether_fortress_bridge_small_crossing.png
-    nether_fortress_bridge_stairs.png
-    nether_fortress_bridge_vertical.png
-    nether_fortress_corridor.png
-    nether_fortress_corridor_exit.png
-    nether_fortress_corridor_nether_warts_room.png
-    ruined_portal.png
-    small_house.png
-    weaponsmith.png
-    animal_pen.png
-    butcher_shop.png
-    lamp.png
-    large_farm.png
-    medium_house.png
-    medium_house_t.png
-    meeting_point.png
-    small_farm.png
-    temple.png
-    test.png
-    book.png
-    book_frame.png
-    book_frame_narrow.png
-    bookmarks.png
-    bookmarks_l.png
-    eraser.png
-    marker_frame_off.png
-    marker_frame_on.png
-    player.png
-    position.png
-    scrollbar_hor.png
-    scrollbar_ver.png
-
-The following are derived from vanilla assets in good faith, and fall into an unattributed grey area:
-    bed.png
-    bundle.png
-    diamond.png
-    pickaxe.png
-    sword.png
-    brush.png
+Textures:
+============================================
+0         |     bed.png
+S         |     bed_accent.png
+0         |     brush.png
+S         |     brush_accent.png
+0         |     diamond.png
+S         |     diamond_accent.png
+0         |     pickaxe.png
+S         |     pickaxe_accent.png
+S         |     point.png
+S         |     point_accent.png
+H         |     red_x_large.png
+HS        |     red_x_large_accent.png
+H         |     red_x_small.png
+HS        |     red_x_small_accent.png
+H         |     scroll.png
+HS        |     scroll_accent.png
+H         |     skull.png
+HS        |     skull_accent.png
+0         |     stuck_sword.png
+S         |     stuck_sword_accent.png
+0         |     sword.png
+S         |     sword_accent.png
+H         |     tower.png
+HS        |     tower_accent.png
+HS        |     bastion_remnant.png
+HS        |     desert_village.png
+H         |     end_city.png
+H         |     ocean_monument.png
+H         |     plains_village.png
+HLS       |     savanna_village.png
+LS        |     snowy_village.png
+LS        |     taiga_village.png
+H         |     woodland_mansion.png
+H         |     unknown.png
+H         |     cave.png
+H         |     cliffs.png
+H         |     flat.png
+HS        |     floating_island.png
+H         |     grass.png
+HS        |     hills.png
+H         |     hills_low.png
+HS        |     ice_spikes.png
+LS        |     mangrove.png
+HS        |     plateau.png
+HS        |     plateau_low.png
+H         |     plateau_square.png
+H         |     sand.png
+S         |     sky.png
+H         |     smooth_mountains_edge.png
+H         |     snow.png
+HS        |     tiered.png
+H         |     sand_shrubs_terracotta_mixed.png
+H         |     sand_terracotta_pillar_small.png
+H         |     terracotta_fingers.png
+H         |     terracotta_fingers_shrubs.png
+H         |     terracotta_pillars.png
+H         |     grass_oak_plateau.png
+H         |     grass_oak_plateau_low.png
+H         |     shrubs_plateau.png
+H         |     shrubs_plateau_low.png
+H         |     terracotta_plateau.png
+H         |     terracotta_plateau_low.png
+HS        |     terracotta_shrubs_tiered.png
+H         |     terracotta_tiered.png
+HS        |     terracotta_tiered_rough.png
+H         |     terracotta_tiered_separate.png
+H         |     cacti_hills_low.png
+H         |     sand_1.png
+H         |     sand_cacti.png
+H         |     sand_cacti_sparse.png
+H         |     sand_shrubs.png
+H         |     shrubs_hills_low.png
+H         |     grass_acacia_plateau_1.png
+H         |     grass_acacia_plateau_2.png
+H         |     grass_acacia_plateau_3.png
+H         |     grass_plateau_1.png
+H         |     grass_plateau_2.png
+H         |     grass_plateau_3.png
+H         |     acacia_cliffs_1.png
+H         |     acacia_cliffs_2.png
+H         |     acacia_cliffs_3.png
+H         |     acacia_cliffs_clouds_1.png
+H         |     acacia_cliffs_clouds_2.png
+H         |     acacia_cliffs_clouds_3.png
+H         |     cliffs_clouds.png
+H         |     grass_acacia_1.png
+H         |     grass_acacia_2.png
+H         |     grass_acacia_3.png
+H         |     end_chorus_island.png
+H         |     end_chorus_sparse_island.png
+H         |     end_island_1.png
+H         |     end_island_2.png
+H         |     snow_ice_spikes_dense.png
+H         |     snow_ice_spikes_edge.png
+H         |     snow_2.png
+H         |     snow_3.png
+H         |     snow_hills.png
+HS        |     snow_hills_low.png
+H         |     snow_pine_sparse_1.png
+H         |     snow_pine_sparse_2.png
+H         |     snow_spruce_sparse_1.png
+H         |     snow_spruce_sparse_2.png
+H         |     sunflowers_1.png
+H         |     sunflowers_2.png
+H         |     grass_3.png
+H         |     grass_hills.png
+HS        |     grass_hills_low.png
+H         |     grass_oak_fancy_sparse.png
+H         |     grass_oak_fancy_sparse_hills_low.png
+H         |     grass_oak_fancy_tall_sparse.png
+H         |     grass_oak_fancy_tall_sparse_hills_low.png
+H         |     grass_oak_sparse.png
+H         |     grass_oak_sparse_hills_low.png
+HL        |     smooth_cherry_mountains.png
+H         |     smooth_spruce_mountains.png
+HS        |     grass_daisies_plateau.png
+HS        |     grass_dandelions_plateau.png
+H         |     rough_mountains.png
+H         |     sharp_snow_mountains.png
+H         |     smooth_mountains.png
+HS        |     snow_cliffs.png
+H         |     rough_oak_mountains.png
+HS        |     gravel_hills_low.png
+HS        |     stone_hills_low.png
+HS        |     grass_cliffs.png
+H         |     basalt_columns_1.png
+H         |     basalt_columns_2.png
+H         |     basalt_columns_3.png
+H         |     basalt_lava_columns.png
+H         |     nether_shore_lava_1.png
+H         |     nether_shore_lava_2.png
+H         |     mycelium_mushrooms_huge_mixed_dense.png
+H         |     mycelium_mushrooms_huge_red_edge.png
+HS        |     water_ice_spikes_1.png
+HS        |     water_ice_spikes_2.png
+HS        |     ice_ice_spikes.png
+S         |     empty.png
+HS        |     snow_shore_water_1.png
+HS        |     snow_shore_water_2.png
+HS        |     snow_shore_water_3.png
+H         |     sand_shore_water_1.png
+H         |     sand_shore_water_2.png
+H         |     sand_shore_water_3.png
+H         |     stone_spikes_shore_water.png
+HL        |     swamp_water_mangrove.png
+H         |     swamp_water.png
+H         |     swamp_water_grass_hills.png
+H         |     swamp_water_grass_oak_swamp_hills_1.png
+H         |     swamp_water_grass_oak_swamp_hills_2.png
+H         |     swamp_water_grass_oak_swamp_hills_3.png
+H         |     swamp_water_grass_oak_swamp_hills_4.png
+H         |     swamp_water_oak_swamp_1.png
+H         |     swamp_water_oak_swamp_2.png
+H         |     swamp_water_oak_swamp_3.png
+H         |     swamp_water_oak_swamp_sparse_1.png
+H         |     swamp_water_oak_swamp_sparse_2.png
+H         |     birch_tall.png
+H         |     birch_tall_hills_low.png
+H         |     grass_birch_tall.png
+H         |     grass_birch_tall_hills_low.png
+H         |     birch.png
+H         |     birch_dense.png
+H         |     birch_hills_low.png
+H         |     grass_birch.png
+H         |     grass_birch_hills_low.png
+H         |     oak_dense.png
+H         |     oak_dense_hills.png
+H         |     oak_fancy_dense.png
+H         |     oak_fancy_dense_hills.png
+H         |     cornflower_oak_hills.png
+H         |     daisies_hills.png
+H         |     dandelion_oak_sparse_hills.png
+H         |     grass_oak_mixed.png
+H         |     grass_oak_mixed_hills_low.png
+H         |     oak_fancy_mixed.png
+H         |     oak_fancy_mixed_hills_low.png
+H         |     oak_mixed.png
+H         |     oak_mixed_hills_low.png
+L         |     grass_bamboo.png
+HL        |     grass_bamboo_hills.png
+HL        |     grass_bamboo_hills_low.png
+H         |     grass_oak_swamp_1.png
+H         |     grass_oak_swamp_2.png
+H         |     grass_oak_swamp_hills_1.png
+H         |     grass_oak_swamp_hills_2.png
+H         |     grass_palm.png
+H         |     grass_palm_hills.png
+H         |     bushes_cliffs.png
+H         |     bushes_jungle_mega_cliffs.png
+H         |     bushes_oak_swamp_cliffs.png
+H         |     jungle_mega.png
+H         |     jungle_mega_hills_low.png
+H         |     jungle_mega_palm.png
+H         |     jungle_mega_palm_hills_low.png
+H         |     podzol_mega_pine_mega_spruce.png
+H         |     podzol_mega_pine_mega_spruce_hills_low.png
+H         |     podzol_mega_pine_spruce_hills_low.png
+H         |     podzol_pine_mega_pine.png
+H         |     pine_mega_spruce_hills_low.png
+H         |     podzol_mega_spruce_spruce.png
+H         |     podzol_spruce_mega_spruce.png
+H         |     spruce_mega_spruce_hills_low.png
+H         |     snow_pine.png
+H         |     snow_pine_hills.png
+H         |     snow_pine_spruce.png
+H         |     snow_pine_spruce_hills.png
+H         |     snow_spruce_pine.png
+H         |     snow_spruce_pine_hills.png
+H         |     pine.png
+H         |     pine_hills_low.png
+H         |     pine_spruce_1.png
+H         |     pine_spruce_2.png
+H         |     pine_spruce_hills_low_1.png
+H         |     pine_spruce_hills_low_2.png
+H         |     ice.png
+H         |     crater_lava_1.png
+H         |     crater_lava_2.png
+HS        |     andesite_ravine.png
+H         |     stone_ravine.png
+S         |     static_void.png
+H         |     water_1.png
+H         |     water_2.png
+H         |     nether_fortress_bridge_crossing.png
+H         |     nether_fortress_bridge_end_horizontal.png
+H         |     nether_fortress_bridge_end_vertical.png
+H         |     nether_fortress_bridge_horizontal.png
+H         |     nether_fortress_bridge_platform.png
+H         |     nether_fortress_bridge_small_crossing.png
+H         |     nether_fortress_bridge_stairs.png
+H         |     nether_fortress_bridge_vertical.png
+H         |     nether_fortress_corridor.png
+H         |     nether_fortress_corridor_exit.png
+H         |     nether_fortress_corridor_nether_warts_room.png
+L         |     igloo.png
+L         |     cage.png
+L         |     tent.png
+L         |     watchtower.png
+L         |     desert_pyramid.png
+H         |     ruined_portal.png
+L         |     shipwreck_beached.png
+L         |     jungle_temple.png
+HS        |     desert/animal_pen.png
+LS        |     desert/fountain.png
+LS        |     desert/lamp.png
+HS        |     desert/large_house.png
+L         |     desert/market_stalls.png
+HS        |     desert/medium_house.png
+L         |     desert/path_corners.png
+L         |     desert/path_crossroad.png
+L         |     desert/path_horizontal.png
+L         |     desert/path_vertical.png
+H         |     desert/small_house.png
+H         |     desert/tall_house.png
+H         |     desert/weaponsmith.png
+LS        |     desert/well_covered.png
+HS        |     plains/animal_pen.png
+H         |     plains/butcher_shop.png
+L         |     plains/double_arch_house.png
+LS        |     plains/fountain.png
+H         |     plains/lamp.png
+H         |     plains/large_farm.png
+HS        |     plains/large_house.png
+L         |     plains/market_stalls.png
+H         |     plains/medium_house.png
+H         |     plains/medium_house_t.png
+H         |     plains/small_farm.png
+H         |     plains/small_house.png
+L         |     plains/tall_house.png
+H         |     plains/temple.png
+HS        |     plains/weaponsmith.png
+H         |     plains/well.png
+L         |     plains/well_covered.png
+HS        |     savanna/animal_pen.png
+HL        |     savanna/double_house.png
+HL        |     savanna/flat_house.png
+HLS       |     savanna/flat_house_stilts.png
+LS        |     savanna/lamp.png
+HS        |     savanna/large_farm.png
+HL        |     savanna/loose_farm.png
+H         |     savanna/small_house.png
+HS        |     snowy/animal_pen.png
+L         |     snowy/igloo_house.png
+S         |     snowy/lamp.png
+L         |     snowy/large_house.png
+LS        |     snowy/large_house_snowy.png
+L         |     snowy/small_house.png
+LS        |     snowy/small_house_snowy.png
+HS        |     taiga/animal_pen.png
+HS        |     taiga/butcher_shop.png
+LS        |     taiga/double_house.png
+S         |     taiga/lamp.png
+LS        |     taiga/large_house.png
+HS        |     taiga/shed.png
+L         |     taiga/small_house.png
+HS        |     taiga/tall_house.png
+L         |     path_corners.png
+L         |     path_crossroad.png
+L         |     path_horizontal.png
+L         |     path_vertical.png
+L         |     swamp_hut.png
+S         |     missing.png
+H         |     test.png
+H         |     add_marker.png
+H         |     del_marker.png
+H         |     export.png
+H         |     hide_markers.png
+H         |     show_markers.png
+0         |     arrow.png
+H         |     book.png
+H         |     book_frame.png
+HS        |     book_frame_fullscreen.png
+HS        |     book_frame_fullscreen_r.png
+H         |     book_frame_narrow.png
+HS        |     book_frame_narrow_fullscreen.png
+HS        |     book_frame_narrow_fullscreen_r.png
+HS        |     book_fullscreen.png
+HS        |     book_fullscreen_r.png
+HS        |     bookmark_left.png
+HS        |     bookmark_right.png
+H         |     eraser.png
+H         |     frame.png
+H         |     frame_selected.png
+H         |     player.png
+HS        |     ruler_right.png
+HS        |     icon.png
+--------------------------------------------
