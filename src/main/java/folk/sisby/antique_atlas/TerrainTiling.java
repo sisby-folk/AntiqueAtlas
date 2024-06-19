@@ -157,7 +157,7 @@ public class TerrainTiling {
                 if (!fullSummary.exists().get(i)) {
                     possibleTiles[elevationSize][defaultTile] += EMPTY_PRIORITY;
                 } else {
-                    Biome biome = biomePalette.get(i);
+                    Biome biome = biomePalette.get(fullSummary.biomes()[i]);
                     possibleTiles[elevationSize][fullSummary.biomes()[i]] += priorityForBiome(biomeRegistry, biome);
                 }
             }
