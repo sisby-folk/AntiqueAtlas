@@ -29,10 +29,10 @@ public class BookmarkButton extends ToggleButtonComponent {
         this.backgroundTexture = backgroundTexture;
         this.title = title;
         this.iconTexture = iconTexture;
-        this.backgroundTint = backgroundTint == null ? null : backgroundTint.getColorComponents();
+        this.backgroundTint = backgroundTint == null ? null : backgroundTint.getEntityColor();
         this.iconWidth = iconWidth;
         this.iconHeight = iconHeight;
-        this.iconTint = iconTint == null ? null : iconTint.getColorComponents();
+        this.iconTint = iconTint == null ? null : iconTint.getEntityColor();
         this.left = left;
         setTitle(title);
         setSize(WIDTH, HEIGHT);

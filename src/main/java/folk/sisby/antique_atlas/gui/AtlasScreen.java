@@ -750,7 +750,7 @@ public class AtlasScreen extends Component {
         }
 
         DyeColor color = landmark.color();
-        texture.draw(context, markerX, markerY, markerScale, tileChunks, color == null ? null : color.getColorComponents(), tint, alpha);
+        texture.draw(context, markerX, markerY, markerScale, tileChunks, color == null ? null : color.getEntityColor(), tint, alpha);
 
         RenderSystem.setShaderColor(1, 1, 1, 1);
 

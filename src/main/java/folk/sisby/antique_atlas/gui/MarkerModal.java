@@ -103,7 +103,7 @@ public class MarkerModal extends Component {
         for (MarkerTexture texture : MarkerTextures.getInstance().asMap().values()) {
             if (!texture.keyId().getPath().startsWith("custom/")) continue;
             if (selectedTexture == MarkerTexture.DEFAULT) selectedTexture = texture;
-            TexturePreviewButton<MarkerTexture> markerGui = new MarkerPreviewButton(texture, selectedColor.getColorComponents());
+            TexturePreviewButton<MarkerTexture> markerGui = new MarkerPreviewButton(texture, selectedColor.getEntityColor());
             textureRadioGroup.addButton(markerGui);
             if (selectedTexture.equals(texture)) {
                 textureRadioGroup.setSelectedButton(markerGui);
@@ -126,12 +126,12 @@ public class MarkerModal extends Component {
         colorRadioGroup.addListener(button -> {
             selectedColor = button.getValue();
             for (TexturePreviewButton<MarkerTexture> preview : textureRadioGroup) {
-                preview.reTint(selectedColor.getColorComponents());
+                preview.reTint(selectedColor.getEntityColor());
             }
         });
         int colorContentX = 0;
         for (DyeColor color : DyeColor.values()) {
-            TexturePreviewButton<DyeColor> colorGui = new TexturePreviewButton<>(color, BookmarkButton.TEXTURE_LEFT, BookmarkButton.WIDTH, BookmarkButton.HEIGHT, BookmarkButton.HEIGHT, color.getColorComponents());
+            TexturePreviewButton<DyeColor> colorGui = new TexturePreviewButton<>(color, BookmarkButton.TEXTURE_LEFT, BookmarkButton.WIDTH, BookmarkButton.HEIGHT, BookmarkButton.HEIGHT, color.getEntityColor());
             colorRadioGroup.addButton(colorGui);
             if (selectedColor.equals(color)) {
                 colorRadioGroup.setSelectedButton(colorGui);
