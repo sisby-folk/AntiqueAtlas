@@ -29,7 +29,7 @@ public class AntiqueAtlas implements ClientModInitializer {
     public static ScreenState<AtlasScreen> lastState = new ScreenState<>();
 
     public static Identifier id(String path) {
-        return path.contains(":") ? new Identifier(path) : new Identifier(ID, path);
+        return path.contains(":") ? Identifier.of(path) : Identifier.of(ID, path);
     }
 
     @Override

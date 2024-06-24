@@ -5,6 +5,7 @@ import folk.sisby.antique_atlas.gui.core.Component;
 import folk.sisby.antique_atlas.gui.core.ScrollBoxComponent;
 import folk.sisby.antique_atlas.gui.core.ToggleButtonRadioGroup;
 import folk.sisby.antique_atlas.reloader.MarkerTextures;
+import folk.sisby.antique_atlas.util.ColorUtil;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.gui.widget.ButtonWidget;
@@ -103,7 +104,7 @@ public class MarkerModal extends Component {
         for (MarkerTexture texture : MarkerTextures.getInstance().asMap().values()) {
             if (!texture.keyId().getPath().startsWith("custom/")) continue;
             if (selectedTexture == MarkerTexture.DEFAULT) selectedTexture = texture;
-            TexturePreviewButton<MarkerTexture> markerGui = new MarkerPreviewButton(texture, selectedColor.getEntityColor());
+            TexturePreviewButton<MarkerTexture> markerGui = new MarkerPreviewButton(texture, ColorUtil.getColorFromArgb(selectedColor.getEntityColor()));
             textureRadioGroup.addButton(markerGui);
             if (selectedTexture.equals(texture)) {
                 textureRadioGroup.setSelectedButton(markerGui);
@@ -126,12 +127,12 @@ public class MarkerModal extends Component {
         colorRadioGroup.addListener(button -> {
             selectedColor = button.getValue();
             for (TexturePreviewButton<MarkerTexture> preview : textureRadioGroup) {
-                preview.reTint(selectedColor.getEntityColor());
+                preview.reTint(ColorUtil.getColorFromArgb(selectedColor.getEntityColor()));
             }
         });
         int colorContentX = 0;
         for (DyeColor color : DyeColor.values()) {
-            TexturePreviewButton<DyeColor> colorGui = new TexturePreviewButton<>(color, BookmarkButton.TEXTURE_LEFT, BookmarkButton.WIDTH, BookmarkButton.HEIGHT, BookmarkButton.HEIGHT, color.getEntityColor());
+            TexturePreviewButton<DyeColor> colorGui = new TexturePreviewButton<>(color, BookmarkButton.TEXTURE_LEFT, BookmarkButton.WIDTH, BookmarkButton.HEIGHT, BookmarkButton.HEIGHT, ColorUtil.getColorFromArgb(color.getEntityColor()));
             colorRadioGroup.addButton(colorGui);
             if (selectedColor.equals(color)) {
                 colorRadioGroup.setSelectedButton(colorGui);
@@ -169,7 +170,7 @@ public class MarkerModal extends Component {
 
     @Override
     public void render(DrawContext context, int mouseX, int mouseY, float partialTick) {
-        this.renderBackground(context);
+        this.renderBackground(context, mouseX, mouseY, partialTick);
         drawCentered(context, Text.translatable("gui.antique_atlas.marker.label"), this.height / 2 - 80, 0xDDDDDD, true);
         textField.render(context, mouseX, mouseY, partialTick);
         // Darker background for marker type selector

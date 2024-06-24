@@ -10,12 +10,12 @@ import net.minecraft.util.math.BlockPos;
 
 public record AtlasStructureLandmark(BlockPos pos, StructureTileProviders.ProviderType providerType, Identifier providedId) implements Landmark<AtlasStructureLandmark> {
     public static LandmarkType<AtlasStructureLandmark> TYPE = new SimpleLandmarkType<>(
-        new Identifier(AntiqueAtlas.ID, "structure"),
+        Identifier.of(AntiqueAtlas.ID, "structure"),
         null
     );
 
     public Identifier displayId() {
-        return new Identifier(providedId.getNamespace(), providerType.prefix() + providedId.getPath());
+        return Identifier.of(providedId.getNamespace(), providerType.prefix() + providedId.getPath());
     }
 
     @Override

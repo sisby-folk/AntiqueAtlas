@@ -21,8 +21,7 @@ public class DrawBatcher implements AutoCloseable {
         RenderSystem.setShaderTexture(0, texture);
         RenderSystem.setShader(GameRenderer::getPositionTexProgram);
         this.matrix4f = context.getMatrices().peek().getPositionMatrix();
-        this.bufferBuilder = Tessellator.getInstance().getBuffer();
-        bufferBuilder.begin(VertexFormat.DrawMode.QUADS, VertexFormats.POSITION_TEXTURE);
+        this.bufferBuilder = Tessellator.getInstance().begin(VertexFormat.DrawMode.QUADS, VertexFormats.POSITION_TEXTURE);
         this.textureWidth = textureWidth;
         this.textureHeight = textureHeight;
     }
@@ -37,10 +36,10 @@ public class DrawBatcher implements AutoCloseable {
     }
 
     private void innerAdd(int x1, int x2, int y1, int y2, int z, float u1, float u2, float v1, float v2) {
-        bufferBuilder.vertex(matrix4f, x1, y1, z).texture(u1, v1).next();
-        bufferBuilder.vertex(matrix4f, x1, y2, z).texture(u1, v2).next();
-        bufferBuilder.vertex(matrix4f, x2, y2, z).texture(u2, v2).next();
-        bufferBuilder.vertex(matrix4f, x2, y1, z).texture(u2, v1).next();
+        bufferBuilder.vertex(matrix4f, x1, y1, z).texture(u1, v1);
+        bufferBuilder.vertex(matrix4f, x1, y2, z).texture(u1, v2);
+        bufferBuilder.vertex(matrix4f, x2, y2, z).texture(u2, v2);
+        bufferBuilder.vertex(matrix4f, x2, y1, z).texture(u2, v1);
     }
 
     @Override
