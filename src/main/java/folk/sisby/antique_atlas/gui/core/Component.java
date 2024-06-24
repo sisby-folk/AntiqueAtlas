@@ -317,11 +317,12 @@ public class Component extends Screen {
     }
 
     /**
-     * Render this GUI and its children.
+     * Render this GUI and its Component children.
+     * Drawable children are not rendered.
      */
     @Override
     public void render(DrawContext context, int mouseX, int mouseY, float partialTick) {
-        super.render(context, mouseX, mouseY, partialTick);
+        // Do not call super() as it would render the background
         for (Component child : children) {
             if (!child.isClipped) {
                 child.render(context, mouseX, mouseY, partialTick);

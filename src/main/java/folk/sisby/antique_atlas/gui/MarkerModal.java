@@ -172,6 +172,8 @@ public class MarkerModal extends Component {
     public void render(DrawContext context, int mouseX, int mouseY, float partialTick) {
         this.renderBackground(context, mouseX, mouseY, partialTick);
         drawCentered(context, Text.translatable("gui.antique_atlas.marker.label"), this.height / 2 - 80, 0xDDDDDD, true);
+        btnCancel.render(context, mouseX, mouseY, partialTick);
+        btnDone.render(context, mouseX, mouseY, partialTick);
         textField.render(context, mouseX, mouseY, partialTick);
         // Darker background for marker type selector
         context.fillGradient(textureScrollBox.getGuiX() + 1, textureScrollBox.getGuiY() + 1,
