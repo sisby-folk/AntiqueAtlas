@@ -30,7 +30,6 @@ dependencies {
     implementation libs.kaleidoConfig
     modImplementation libs.surveyor
 
-    include libs.kaleidoConfig
     include libs.surveyor
 }
 
