@@ -4,7 +4,8 @@
 <center>
 A hand-drawn client-side world map with biomes, structures, waypoints, and less!<br/>
 A rewrite of <a href="https://modrinth.com/mod/antique-atlas">Antique Atlas</a> by <a href="https://github.com/Hunternif">Hunternif</a>, as continued by <a href="https://github.com/Kenkron">Kenkron</a>, <a href="https://github.com/asiekierka">asie</a>, and <a href="https://github.com/tyra314">tyra314</a>.<br/>
-Utilizes <a href="https://modrinth.com/mod/surveyor">Surveyor Map Framework</a>. Requires <a href="https://modrinth.com/mod/connector">Connector</a> and <a href="https://modrinth.com/mod/forgified-fabric-api">FFAPI</a> on forge.<br/>
+Utilizes <a href="https://modrinth.com/mod/surveyor">Surveyor Map Framework</a>.
+<b>Requires <a href="https://modrinth.com/mod/connector">Connector</a> and <a href="https://modrinth.com/mod/forgified-fabric-api">FFAPI</a> on forge.</b><br/>
 <i>Colloquially: Tinkerer's Atlas / antique-atlas</i>
 </center>
 

@@ -124,7 +124,7 @@ public class StructureTileProviders extends JsonDataLoader implements Identifiab
         if (startMarkers.containsKey(key.getValue())) {
             MarkerTexture texture = startMarkers.get(key.getValue());
             outMarkers.put(new AtlasStructureLandmark(pos.getCenterAtY(0), ProviderType.START, key.getValue()), texture);
-        } else if (typeMarkers.containsKey(type.getValue())) {
+        } else if (type != null && typeMarkers.containsKey(type.getValue())) {
             MarkerTexture texture = typeMarkers.get(type.getValue());
             outMarkers.put(new AtlasStructureLandmark(pos.getCenterAtY(0), ProviderType.TYPE, type.getValue()), texture);
         } else {
@@ -140,7 +140,7 @@ public class StructureTileProviders extends JsonDataLoader implements Identifiab
                 outTiles.put(pos2, texture);
                 structureProviders.put(pos2, provider);
             });
-        } else if (typeTiles.containsKey(type.getValue())) {
+        } else if (type != null && typeTiles.containsKey(type.getValue())) {
             StructureTileProvider provider = typeTiles.get(key.getValue());
             provider.getTextures(world, summary.getBoundingBox(), debugPredicates).forEach((pos2, texture) -> {
                 if (structureProviders.containsKey(pos) && structureProviders.get(pos).priority() < provider.priority()) return;
@@ -217,7 +217,7 @@ public class StructureTileProviders extends JsonDataLoader implements Identifiab
                             }
                         }
                     } catch (Exception e) {
-                        AntiqueAtlas.LOGGER.error("[Antique Atlas] Error reading structure tile provider " + fileId + "!", e);
+                        AntiqueAtlas.LOGGER.error("[Antique Atlas] Error reading structure tile provider {}!", fileId, e);
                     }
                 }
             });
