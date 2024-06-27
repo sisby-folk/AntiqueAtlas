@@ -4,6 +4,7 @@ import folk.sisby.antique_atlas.reloader.BiomeTileProviders;
 import folk.sisby.surveyor.WorldSummary;
 import folk.sisby.surveyor.terrain.ChunkSummary;
 import folk.sisby.surveyor.terrain.LayerSummary;
+import folk.sisby.surveyor.util.RegistryPalette;
 import it.unimi.dsi.fastutil.Pair;
 import it.unimi.dsi.fastutil.objects.Reference2BooleanArrayMap;
 import it.unimi.dsi.fastutil.objects.Reference2IntArrayMap;
@@ -11,7 +12,6 @@ import net.fabricmc.fabric.api.tag.convention.v1.ConventionalBiomeTags;
 import net.minecraft.block.Block;
 import net.minecraft.block.Blocks;
 import net.minecraft.registry.Registry;
-import net.minecraft.registry.RegistryKeys;
 import net.minecraft.registry.entry.RegistryEntry;
 import net.minecraft.registry.tag.BiomeTags;
 import net.minecraft.util.Identifier;
@@ -84,11 +84,13 @@ public class TerrainTiling {
         if (bestFrequency == 0) return null;
         int customTileIndex = biomeIndex - possibleTiles[0].length + CUSTOM_TILES.size();
         Identifier providerId = customTileIndex >= 0 ? CUSTOM_TILES.get(customTileIndex) : biomeRegistry.getId(biomePalette.get(biomeIndex));
+        if (providerId == null) {
+            throw new RuntimeException(customTileIndex >= 0 ? "Custom tile index %s was out of bounds for size %s!".formatted(customTileIndex, CUSTOM_TILES.size()) : "Biome ID was null at index %s and instance %S!".formatted(biomeIndex, biomePalette.get(biomeIndex)));
+        }
         return Pair.of(BiomeTileProviders.getInstance().getTileProvider(providerId), elevationOrdinal == TileElevation.values().length ? null : TileElevation.values()[elevationOrdinal]);
     }
 
     public static Pair<TerrainTileProvider, TileElevation> terrainToTile(World world, ChunkPos pos) {
-        Registry<Biome> biomeRegistry = world.getRegistryManager().get(RegistryKeys.BIOME);
         int defaultTile = CUSTOM_TILES.indexOf(world.getDimension().hasCeiling() ? FeatureTiles.BEDROCK_ROOF : (world.getRegistryKey() == World.END ? FeatureTiles.END_VOID : FeatureTiles.EMPTY));
         boolean checkRavines = world.getRegistryKey() == World.OVERWORLD;
 
@@ -96,8 +98,9 @@ public class TerrainTiling {
         ChunkSummary chunk = WorldSummary.of(world).terrain().get(pos);
         if (chunk == null) return null; // Skip events fired for chunks we don't have yet (e.g. new shares)
         @Nullable LayerSummary.Raw summary = chunk.toSingleLayer(null, null, world.getTopY());
-        IndexedIterable<Biome> biomePalette = WorldSummary.of(world).terrain().getBiomePalette(pos);
-        IndexedIterable<Block> blockPalette = WorldSummary.of(world).terrain().getBlockPalette(pos);
+        RegistryPalette<Biome>.ValueView biomePalette = WorldSummary.of(world).terrain().getBiomePalette(pos);
+        RegistryPalette<Block>.ValueView blockPalette = WorldSummary.of(world).terrain().getBlockPalette(pos);
+        Registry<Biome> biomeRegistry = biomePalette.registry(); // 1.21: ensures server registry is used in singleplayer
         if (summary == null) return Pair.of(BiomeTileProviders.getInstance().getTileProvider(CUSTOM_TILES.get(defaultTile)), null);
 
         int elevationSize = TileElevation.values().length;
@@ -131,14 +134,14 @@ public class TerrainTiling {
     }
 
     public static Pair<TerrainTileProvider, TileElevation> terrainToTileNether(World world, ChunkPos pos) {
-        Registry<Biome> biomeRegistry = world.getRegistryManager().get(RegistryKeys.BIOME);
         int defaultTile = CUSTOM_TILES.indexOf(world.getDimension().hasCeiling() ? FeatureTiles.BEDROCK_ROOF : (world.getRegistryKey() == World.END ? FeatureTiles.END_VOID : FeatureTiles.EMPTY));
 
         ChunkSummary chunk = WorldSummary.of(world).terrain().get(pos);
         @Nullable LayerSummary.Raw lowSummary = chunk.toSingleLayer(null, NETHER_SCAN_HEIGHT, world.getTopY());
         @Nullable LayerSummary.Raw fullSummary = chunk.toSingleLayer(null, world.getBottomY() + world.getDimension().logicalHeight() - 1, world.getTopY());
-        IndexedIterable<Biome> biomePalette = WorldSummary.of(world).terrain().getBiomePalette(pos);
-        IndexedIterable<Block> blockPalette = WorldSummary.of(world).terrain().getBlockPalette(pos);
+        RegistryPalette<Biome>.ValueView biomePalette = WorldSummary.of(world).terrain().getBiomePalette(pos);
+        RegistryPalette<Block>.ValueView blockPalette = WorldSummary.of(world).terrain().getBlockPalette(pos);
+        Registry<Biome> biomeRegistry = biomePalette.registry(); // 1.21: ensures server registry is used in singleplayer
 
         int elevationSize = TileElevation.values().length;
         int elevationCount = elevationSize + 1;

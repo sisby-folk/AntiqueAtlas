@@ -43,11 +43,11 @@ public class MarkerTextures extends SinglePreparationResourceReloader<Map<Identi
     }
 
     public MarkerTexture getLandmarkType(LandmarkType<?> type) {
-        return getOrDefault(new Identifier(type.id().getNamespace(), "landmark/type/" + type.id().getPath()));
+        return getOrDefault(Identifier.of(type.id().getNamespace(), "landmark/type/" + type.id().getPath()));
     }
 
     public MarkerTexture getLandmarkType(LandmarkType<?> type, String variant) {
-        return getOrDefault(new Identifier(type.id().getNamespace(), "landmark/type/" + type.id().getPath() + (variant == null ? "" : "/" + variant)));
+        return getOrDefault(Identifier.of(type.id().getNamespace(), "landmark/type/" + type.id().getPath() + (variant == null ? "" : "/" + variant)));
     }
 
     public Map<Identifier, MarkerTexture> asMap() {
@@ -58,7 +58,7 @@ public class MarkerTextures extends SinglePreparationResourceReloader<Map<Identi
     protected Map<Identifier, MarkerTextureMeta> prepare(ResourceManager manager, Profiler profiler) {
         Map<Identifier, MarkerTextures.MarkerTextureMeta> textureMeta = new HashMap<>();
         for (Map.Entry<Identifier, Resource> e : manager.findResources("textures/atlas/marker", id -> id.getPath().endsWith(".png")).entrySet()) {
-            Identifier id = new Identifier(e.getKey().getNamespace(), e.getKey().getPath().substring("textures/atlas/marker/".length(), e.getKey().getPath().length() - ".png".length()));
+            Identifier id = Identifier.of(e.getKey().getNamespace(), e.getKey().getPath().substring("textures/atlas/marker/".length(), e.getKey().getPath().length() - ".png".length()));
             try {
                 ResourceMetadata metadata = e.getValue().getMetadata();
                 textureMeta.put(id, metadata.decode(MarkerTextures.MarkerTextureMeta.METADATA).orElse(MarkerTextureMeta.DEFAULT));
