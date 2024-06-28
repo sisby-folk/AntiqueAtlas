@@ -44,6 +44,11 @@ processResources {
 
     inputs.properties(map)
     filesMatching('*.mod.json') { expand(map) }
+    filesMatching('mods.toml') { expand(map) }
+
+    from("src/main/resources/mods.toml") {
+        rename { "META-INF/mods.toml" }
+    }
 }
 
 tasks.withType(JavaCompile).configureEach {
