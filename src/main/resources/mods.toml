@@ -30,4 +30,4 @@ versionRange = "*"
 [[dependencies.antique_atlas]]
 modId = "fabric_api"
 mandatory = true
-versionRange = "${fapi}"
+versionRange = "[${fapi},)"
