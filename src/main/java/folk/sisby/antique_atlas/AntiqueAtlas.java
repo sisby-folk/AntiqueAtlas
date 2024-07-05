@@ -6,6 +6,7 @@ import folk.sisby.antique_atlas.reloader.BiomeTileProviders;
 import folk.sisby.antique_atlas.reloader.MarkerTextures;
 import folk.sisby.antique_atlas.reloader.StructureTileProviders;
 import folk.sisby.antique_atlas.reloader.TileTextures;
+import folk.sisby.surveyor.WorldSummary;
 import folk.sisby.surveyor.client.SurveyorClientEvents;
 import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
@@ -49,5 +50,9 @@ public class AntiqueAtlas implements ClientModInitializer {
         CommonLifecycleEvents.TAGS_LOADED.register(((manager, client) -> BiomeTileProviders.getInstance().registerFallbacks(manager.get(RegistryKeys.BIOME))));
         ClientPlayConnectionEvents.DISCONNECT.register(((handler, client) -> BiomeTileProviders.getInstance().clearFallbacks()));
         ClientPlayConnectionEvents.DISCONNECT.register(((handler, client) -> WorldAtlasData.WORLDS.clear()));
+
+        WorldSummary.enableTerrain();
+        WorldSummary.enableStructures();
+        WorldSummary.enableLandmarks();
     }
 }
