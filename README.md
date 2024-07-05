@@ -67,6 +67,8 @@ Antique Atlas can be configured from `config/antique-atlas.toml`<br/>
 `structureMarkers` can be edited to toggle markers for structures - this is automatically populated from the respack.<br/>
 `graveStyle` will change the icon and tooltip for player graves - try each out to suit your pack's aesthetics.<br/>
 
+Options related to map sharing can be found in `config/surveyor.toml`
+
 ### Resource Packs
 
 > For more information, check out the [resource pack tutorial](https://github.com/sisby-folk/antique-atlas/wiki/Resource-Packs).
