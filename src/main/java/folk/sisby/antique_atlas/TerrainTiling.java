@@ -4,6 +4,7 @@ import folk.sisby.antique_atlas.reloader.BiomeTileProviders;
 import folk.sisby.surveyor.WorldSummary;
 import folk.sisby.surveyor.terrain.ChunkSummary;
 import folk.sisby.surveyor.terrain.LayerSummary;
+import folk.sisby.surveyor.terrain.WorldTerrainSummary;
 import it.unimi.dsi.fastutil.Pair;
 import it.unimi.dsi.fastutil.objects.Reference2BooleanArrayMap;
 import it.unimi.dsi.fastutil.objects.Reference2IntArrayMap;
@@ -93,11 +94,14 @@ public class TerrainTiling {
         boolean checkRavines = world.getRegistryKey() == World.OVERWORLD;
 
         int worldHeight = world.getTopY();
-        ChunkSummary chunk = WorldSummary.of(world).terrain().get(pos);
+
+        WorldTerrainSummary terrain = WorldSummary.of(world).terrain();
+        if (terrain == null) return null;
+        ChunkSummary chunk = terrain.get(pos);
         if (chunk == null) return null; // Skip events fired for chunks we don't have yet (e.g. new shares)
         @Nullable LayerSummary.Raw summary = chunk.toSingleLayer(null, null, world.getTopY());
-        IndexedIterable<Biome> biomePalette = WorldSummary.of(world).terrain().getBiomePalette(pos);
-        IndexedIterable<Block> blockPalette = WorldSummary.of(world).terrain().getBlockPalette(pos);
+        IndexedIterable<Biome> biomePalette = terrain.getBiomePalette(pos);
+        IndexedIterable<Block> blockPalette = terrain.getBlockPalette(pos);
         if (summary == null) return Pair.of(BiomeTileProviders.getInstance().getTileProvider(CUSTOM_TILES.get(defaultTile)), null);
 
         int elevationSize = TileElevation.values().length;
@@ -134,11 +138,13 @@ public class TerrainTiling {
         Registry<Biome> biomeRegistry = world.getRegistryManager().get(RegistryKeys.BIOME);
         int defaultTile = CUSTOM_TILES.indexOf(world.getDimension().hasCeiling() ? FeatureTiles.BEDROCK_ROOF : (world.getRegistryKey() == World.END ? FeatureTiles.END_VOID : FeatureTiles.EMPTY));
 
-        ChunkSummary chunk = WorldSummary.of(world).terrain().get(pos);
+        WorldTerrainSummary terrain = WorldSummary.of(world).terrain();
+        if (terrain == null) return null;
+        ChunkSummary chunk = terrain.get(pos);
         @Nullable LayerSummary.Raw lowSummary = chunk.toSingleLayer(null, NETHER_SCAN_HEIGHT, world.getTopY());
         @Nullable LayerSummary.Raw fullSummary = chunk.toSingleLayer(null, world.getBottomY() + world.getDimension().logicalHeight() - 1, world.getTopY());
-        IndexedIterable<Biome> biomePalette = WorldSummary.of(world).terrain().getBiomePalette(pos);
-        IndexedIterable<Block> blockPalette = WorldSummary.of(world).terrain().getBlockPalette(pos);
+        IndexedIterable<Biome> biomePalette = terrain.getBiomePalette(pos);
+        IndexedIterable<Block> blockPalette = terrain.getBlockPalette(pos);
 
         int elevationSize = TileElevation.values().length;
         int elevationCount = elevationSize + 1;

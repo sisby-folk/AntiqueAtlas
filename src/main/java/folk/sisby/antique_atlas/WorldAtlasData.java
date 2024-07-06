@@ -15,7 +15,6 @@ import folk.sisby.surveyor.landmark.WorldLandmarks;
 import folk.sisby.surveyor.structure.WorldStructureSummary;
 import folk.sisby.surveyor.terrain.WorldTerrainSummary;
 import it.unimi.dsi.fastutil.Pair;
-import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.network.ClientPlayerEntity;
 import net.minecraft.registry.RegistryKey;
 import net.minecraft.text.MutableText;
@@ -162,12 +161,13 @@ public class WorldAtlasData {
     }
 
     public static boolean landmarkIsEditable(Landmark<?> landmark) {
-        return landmark.owner() != null && (MinecraftClient.getInstance().isIntegratedServerRunning() || SurveyorClient.getClientUuid().equals(landmark.owner()));
+        return landmark.owner() != null && SurveyorClient.getClientUuid().equals(landmark.owner());
     }
 
     public boolean deleteLandmark(World world, Landmark<?> landmark) {
-        if (!landmarkIsEditable(landmark)) return false;
-        WorldSummary.of(world).landmarks().remove(world, landmark.type(), landmark.pos());
+        WorldLandmarks summary = WorldSummary.of(world).landmarks();
+        if (summary == null || !landmarkIsEditable(landmark)) return false;
+        summary.remove(world, landmark.type(), landmark.pos());
         return true;
     }
 
@@ -191,7 +191,9 @@ public class WorldAtlasData {
     }
 
     public void placeCustomMarker(World world, MarkerTexture selectedTexture, DyeColor color, MutableText label, BlockPos blockPos) {
-        WorldSummary.of(world).landmarks().put(world, new SimplePointLandmark(
+        WorldLandmarks summary = WorldSummary.of(world).landmarks();
+        if (summary == null) return;
+        summary.put(world, new SimplePointLandmark(
             blockPos,
             SurveyorClient.getClientUuid(),
             color,

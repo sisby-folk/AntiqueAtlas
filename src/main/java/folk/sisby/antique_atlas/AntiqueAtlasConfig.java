@@ -24,13 +24,13 @@ public class AntiqueAtlasConfig extends WrappedConfig {
 
     @Comment("Whether to display the map in full-screen")
     @Comment("The background is slightly less stylish, but more tiles are shown at once")
-    public Boolean fullscreen = true;
+    public boolean fullscreen = true;
 
     @Comment("Whether to keep scale after closing the map")
-    public Boolean keepZoom = false;
+    public boolean keepZoom = false;
 
     @Comment("Whether to keep offset after closing the map")
-    public Boolean keepOffset = false;
+    public boolean keepOffset = false;
 
     @Comment("How to depict player death locations.")
     public GraveStyle graveStyle = GraveStyle.EUPHEMISMS;
@@ -39,29 +39,29 @@ public class AntiqueAtlasConfig extends WrappedConfig {
     @Comment("Effectively the 'minimum zoom'")
     @Comment("0: 1x1 chunk = 1 tile | 6: 64x64 chunks = 1 tile")
     @IntegerRange(min = 0, max = 6)
-    public Integer maxTileChunks = 5;
+    public int maxTileChunks = 5;
 
     @Comment("The maximum size to render a tile at, as a power of 2 multiplier")
     @Comment("Effectively the 'maximum zoom'")
     @Comment("0: 1 tile = 16x16 | 3: 1 tile = 128x128")
     @IntegerRange(min = 0, max = 3)
-    public Integer maxTilePixels = 1;
+    public int maxTilePixels = 1;
 
     @Comment("The effective GUI scale for tiles and markers - independent of the overall GUI scale.")
     @Comment("0 will match your GUI scale - pixels will be the same size as the background & buttons")
     @Comment("-1 will use half your GUI scale, rounding up.")
     @Comment("-2 will use half your GUI scale, rounding down.")
     @IntegerRange(min = -2, max = 10)
-    public Integer mapScale = 0;
+    public int mapScale = 0;
 
     @Comment("The maximum number of chunks to load onto the map per tick after entering a world")
-    public Integer chunkTickLimit = 100;
+    public int chunkTickLimit = 100;
 
     @Comment("How to handle biomes that aren't in any minecraft, conventional, or forge biome tags")
     public FallbackHandling fallbackFailHandling = FallbackHandling.MISSING;
 
     @Comment("Whether to show debug information about hovered tiles and markers")
-    public Boolean debugRender = false;
+    public boolean debugRender = false;
 
     public Map<String, Boolean> structureMarkers = ValueMap.builder(true)
         .put("minecraft:type/end_city", false)
