@@ -672,7 +672,7 @@ public class AtlasScreen extends Component {
 
         context.getMatrices().push();
         context.getMatrices().translate(getGuiX(), getGuiY(), 0);
-        PlayerSummary playerSummary = friends.remove(player.getUuid());
+        PlayerSummary playerSummary = friends.remove(SurveyorClient.getClientUuid());
         List<PlayerSummary> orderedFriends = new ArrayList<>(friends.values());
         if (playerSummary != null) orderedFriends.add(playerSummary);
         for (PlayerSummary friend : orderedFriends) {
