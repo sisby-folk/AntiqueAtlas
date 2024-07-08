@@ -46,6 +46,7 @@ import org.lwjgl.opengl.GL11;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
@@ -670,12 +671,12 @@ public class AtlasScreen extends Component {
         context.getMatrices().push();
         context.getMatrices().translate(getGuiX(), getGuiY(), 0);
         PlayerSummary playerSummary = friends.remove(SurveyorClient.getClientUuid());
-        List<PlayerSummary> orderedFriends = new ArrayList<>(friends.values());
-        if (playerSummary != null) orderedFriends.add(playerSummary);
-        for (PlayerSummary friend : orderedFriends) {
-            if (state.is(HIDING_MARKERS) && (!playerBookmark.isSelected() || friend != playerSummary)) continue;
-            renderPlayer(context, friend, 1, hoveredFriend == friend && markerModal.getParent() == null);
-        }
+        Map<UUID, PlayerSummary> orderedFriends = new LinkedHashMap<>(friends);
+        if (playerSummary != null) orderedFriends.put(SurveyorClient.getClientUuid(), playerSummary);
+        orderedFriends.forEach((uuid, friend) -> {
+            if (state.is(HIDING_MARKERS) && (!playerBookmark.isSelected() || friend != playerSummary)) return;
+            renderPlayer(context, friend, 1, hoveredFriend == friend && markerModal.getParent() == null, friend == playerSummary);
+        });
         context.getMatrices().pop();
 
         super.render(context, mouseX, mouseY, par3);
@@ -714,7 +715,7 @@ public class AtlasScreen extends Component {
         }
     }
 
-    private void renderPlayer(DrawContext context, PlayerSummary player, float iconScale, boolean hovering) {
+    private void renderPlayer(DrawContext context, PlayerSummary player, float iconScale, boolean hovering, boolean self) {
         double playerOffsetX = worldXToScreenX(player.pos().getX()) - getGuiX();
         double playerOffsetY = worldZToScreenY(player.pos().getZ()) - getGuiY();
 
@@ -723,7 +724,7 @@ public class AtlasScreen extends Component {
 
         // Draw the icon:
         float tint = (player.online() ? 1 : 0.5f) * (hovering ? 0.9f : 1);
-        float greenTint = player.username().equals(this.player.getGameProfile().getName()) ? 1 : 0.7f;
+        float greenTint = self ? 1 : 0.7f;
         RenderSystem.setShaderColor(tint, tint * greenTint, tint, state.is(PLACING_MARKER) ? 0.5f : 1);
         float playerRotation = (float) Math.round(player.yaw() / 360f * PLAYER_ROTATION_STEPS) / PLAYER_ROTATION_STEPS * 360f;
 
@@ -731,7 +732,7 @@ public class AtlasScreen extends Component {
 
         RenderSystem.setShaderColor(1, 1, 1, 1);
 
-        if (hovering && !player.username().equals(this.player.getGameProfile().getName())) {
+        if (hovering && !self) {
             context.drawTooltip(textRenderer, Text.literal(player.username()).formatted(player.online() ? Formatting.LIGHT_PURPLE : Formatting.GRAY), (int) getMouseX() - getGuiX(), (int) getMouseY() - getGuiY());
         }
     }
