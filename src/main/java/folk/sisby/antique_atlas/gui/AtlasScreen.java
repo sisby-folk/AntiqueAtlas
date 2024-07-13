@@ -726,7 +726,7 @@ public class AtlasScreen extends Component {
         float tint = (player.online() ? 1 : 0.5f) * (hovering ? 0.9f : 1);
         float greenTint = self ? 1 : 0.7f;
         RenderSystem.setShaderColor(tint, tint * greenTint, tint, state.is(PLACING_MARKER) ? 0.5f : 1);
-        float playerRotation = (float) Math.round(player.yaw() / 360f * PLAYER_ROTATION_STEPS) / PLAYER_ROTATION_STEPS * 360f;
+        float playerRotation = ((float) Math.round(player.yaw() / 360f * PLAYER_ROTATION_STEPS) / PLAYER_ROTATION_STEPS) * 360f;
 
         DrawUtil.drawCenteredWithRotation(context, PLAYER, playerOffsetX, playerOffsetY, iconScale, PLAYER_ICON_WIDTH, PLAYER_ICON_HEIGHT, playerRotation);
 
