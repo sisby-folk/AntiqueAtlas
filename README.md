@@ -11,50 +11,34 @@ Utilizes <a href="https://modrinth.com/mod/surveyor">Surveyor Map Framework</a>.
 
 ---
 
-Press **[M]** at any time to bring up the world map.
+**Antique Atlas 4** is a map mod designed to keep you focused on the world around you!
+
+Press **[M]** at any time to bring up the stylized world map screen, no setup required.
 
 Drag the map to pan, scroll to zoom, and use the bookmark buttons to create, remove, or hide waypoints.
 
-### Basic Features
-
-- The map is rendered using hand-drawn "tiles" representing terrain, biomes, and structures.
-- At their smallest, tiles represent an entire chunk - no peeking for resources or player bases!
-- Totally server-optional - installing AA (or just [surveyor](https://modrinth.com/mod/surveyor)) on the server enables structures and sharing.
-- Structures only appear on the map after you've stood in or looked at them in-game:
-
-![structure discovery](https://cdn.modrinth.com/data/Y5Ve4Ui4/images/86054c7949fed59341cef60d0d9f27aee86ae6ef.gif)
-
+### Base Features
+- **AA4 has _absolutely no items._** This means you can use the map right away, you can't lose it, and can use it on servers without AA4 installed!
+- The map is rendered using hand-drawn "tiles" to represent terrain, biomes, and structures.
+- Tiles represent entire chunks at least - no peeking for caves or bases!
+- Gravestones automatically appear where you die, with customizable flavour text:
+  > ![grave style euphemisms](https://cdn.modrinth.com/data/Y5Ve4Ui4/images/c6f5e20bcef2c26c40390e888e540dcdd89a1818.png)
 - Markers for waypoints come in a variety of styles:
+  > ![marker styles](https://cdn.modrinth.com/data/Y5Ve4Ui4/images/f22a29ce8a00847e5a49d74d4c32f7b076a57692.png)
 
-![marker styles](https://cdn.modrinth.com/data/Y5Ve4Ui4/images/f22a29ce8a00847e5a49d74d4c32f7b076a57692.png)
+### **Mixed-Side Features**
 
-- Markers are automatically added for notable structures, player graves, and active nether portals:
+_These work in singleplayer, or on servers with [Surveyor](https://modrinth.com/mod/surveyor) installed (included)_
 
-![structure markers](https://cdn.modrinth.com/data/Y5Ve4Ui4/images/190cc4eaa2e8784dd0f46bee9c225228a05f191a.png)
+- Markers are automatically added for notable structures and active nether portals:
+  > ![structure markers](https://cdn.modrinth.com/data/Y5Ve4Ui4/images/190cc4eaa2e8784dd0f46bee9c225228a05f191a.png)
+- Structures only appear on the map after you've looked at them or stood on them in-game:
+  > ![structure discovery](https://cdn.modrinth.com/data/Y5Ve4Ui4/images/86054c7949fed59341cef60d0d9f27aee86ae6ef.gif)
+- Map exploration can be shared with `/surveyor share [player]` which will also reveal their position on the map:
+  > ![map sharing](https://cdn.modrinth.com/data/Y5Ve4Ui4/images/4422049c395a856c35bbc361c52e8bcd30e89523.png)
 
-- Map exploration can be shared with `/surveyor share [player]`, also revealing their position on the map:
-
-![map sharing](https://cdn.modrinth.com/data/Y5Ve4Ui4/images/4422049c395a856c35bbc361c52e8bcd30e89523.png)
-
-- All of the above is data-driven using resource packs.
-
-#### Stylized Design
-
-Antique Atlas is designed to feel like your own explorer's memory, or a permanent journal.</br>
-
-- You can only see what you've seen before.
-- You can't "lose" your map in any way.
-- Flavour text is written subjectively:
-
-![grave style euphemisms](https://cdn.modrinth.com/data/Y5Ve4Ui4/images/c6f5e20bcef2c26c40390e888e540dcdd89a1818.png)
-
-#### Don't Play the Map
-
-Antique Atlas is designed to keep your focus on your surroundings, not the map.
-
-- The best view of the world is in-game - not the atlas!
-- The atlas stays on its own easily-accessible screen, no distracting minimap.
-- If you're always using your map as a compass, try [PicoHUD](https://modrinth.com/mod/picohud) as well.
+Tiles, markers, biome detection, and structure detection is fully data-driven via resource packs.<br/>
+If you're always using your map as a compass, we recommend trying [PicoHUD](https://modrinth.com/mod/picohud) as well.
 
 ---
 
@@ -67,43 +51,27 @@ Antique Atlas can be configured from `config/antique-atlas.toml`<br/>
 `structureMarkers` can be edited to toggle markers for structures - this is automatically populated from the respack.<br/>
 `graveStyle` will change the icon and tooltip for player graves - try each out to suit your pack's aesthetics.<br/>
 
-Options related to map sharing can be found in `config/surveyor.toml`
+Further options, including options for map sharing & visibility, are documented in `config/surveyor.toml`
 
 ### Resource Packs
 
-> For more information, check out the [resource pack tutorial](https://github.com/sisby-folk/antique-atlas/wiki/Resource-Packs).
+In AA4, tiles and markers can be freely added or removed by resource packs.<br/>
+Which tiles and markers to display for which biomes and structures is also determined by the resourcepack.<br/>
+**Without this assignment, atlas assigns modded biomes tiles via biome tags, and will show `???` if this fails.<br/>**
+For a how-to on AA4 resource packs, check out the [resource pack tutorial](https://github.com/sisby-folk/antique-atlas/wiki/Resource-Packs).
 
-By default, Antique Atlas will use biome tags to approximate a builtin texture for any modded biomes.
-
-To improve this, add `namespace/atlas/biome/path.json` with `{ "parent": "minecraft:biome" }` or [custom texturing](https://github.com/sisby-folk/antique-atlas/blob/1.20/src/main/resources/assets/minecraft/atlas/biome/badlands.json).
-
-Structures can be similarly [tiled](https://github.com/sisby-folk/antique-atlas/blob/1.20/src/main/resources/assets/minecraft/atlas/structure/piece/jigsaw/single/pillager_outpost/watchtower.json) or [marked](https://github.com/sisby-folk/antique-atlas/blob/1.20/src/main/resources/assets/minecraft/atlas/structure/type/ocean_monument.json) - provided you're familiar with each type of structure identifier.
-
-Tile textures are loaded from `textures/atlas/tile` and use an _autotile_-like format.<br/>
-You can also add an [mcmeta file](https://github.com/sisby-folk/antique-atlas/blob/1.20/src/main/resources/assets/antique_atlas/textures/atlas/tile/structure/fortress/nether/nether_fortress_bridge_crossing.png.mcmeta) to adjust which other textures should "connect" and vice-versa.
-
-#### Markers
-
-Marker textures are loaded from `textures/atlas/marker` and are 32x32 by default.<br/>
-You can similarly add an [mcmceta file](https://github.com/sisby-folk/antique-atlas/blob/1.20/src/main/resources/assets/antique_atlas/textures/atlas/marker/structure/end_city.png.mcmeta) to adjust size, offsets, and any custom mip levels.<br/>
-To add a player-placeable marker, put the texture in the `custom/` subfolder.
-
-To automatically mark a non-structure point of interest, use Surveyor's Landmark API - Like in [Surveystones](https://modrinth.com/mod/surveystones).
-
-Textures for landmark types will be used automatically when named `namespace/textures/atlas/marker/landmark/type/path.png`. 
+To automatically mark non-structure points of interest - instead use Surveyor's Landmark API, as in [Surveystones](https://modrinth.com/mod/surveystones).
 
 ---
 
 ### Version History
 
-This is a loveletter rewrite - we want to revitalize interest in antique atlas, and make it easier for others to maintain and add to.
+This is a loveletter rewrite. We want to introduce new players to atlas, and make it easier to maintain and improve.<br/>
+`0.x` uses arch, keeps the old `antiqueatlas` ID, and is API-compatible with [tyra's port](https://modrinth.com/mod/antique-atlas).<br/>
+`1.x` uses fabric, and is API-incompatible with 0.x.<br/>
+`2.x` uses fabric and [Surveyor](https://modrinth.com/mod/surveyor) - and is save/API/network/respack-incompatible with older versions.<br/>
 
-`0.x` uses arch, keeps the original `antiqueatlas` ID, and should be save/network/API-compatible with [tyra's port](https://modrinth.com/mod/antique-atlas), sans the atlas item.
-
-`1.x` uses fabric, and is API-incompatible with 0.x.
-
-`2.x` uses fabric and [Surveyor](https://modrinth.com/mod/surveyor) - and is save, API, network, and respack-incompatible with older versions.<br/>
-When upgrading to 2.x, map exploration and markers will be cleared - downgrade and take notes if needed!<br/>
+Once stable and feature-complete, we intend to maintain atlas on most modpack versions >=1.18.2 ([more info](https://github.com/sisby-folk/antique-atlas/issues/81))
 
 ---
 
