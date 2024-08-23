@@ -20,9 +20,6 @@ jobs:
         with:
           validate-wrappers: true
 
-      - name: Run datagen with Gradle
-        run: ./gradlew runDatagen
-
       - name: Build with Gradle
         run: ./gradlew build
 
