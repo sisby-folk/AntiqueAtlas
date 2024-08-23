@@ -68,7 +68,7 @@ jar {
 }
 
 githubRelease {
-    token = System.getenv("GITHUB_TOKEN")
+    token = "$System.env.GITHUB_TOKEN"
     owner = project.user
     repo = slug
     tagName = "v${baseVersion}+${tagBranch}"
@@ -81,7 +81,7 @@ githubRelease {
 }
 
 modrinth {
-    token = System.getenv("MODRINTH_TOKEN")
+    token = "$System.env.MODRINTH_TOKEN"
     projectId = modrinthSlug
     versionNumber = project.version
     uploadFile = remapJar
