@@ -81,7 +81,7 @@ githubRelease {
 }
 
 modrinth {
-    token "$System.env.MODRINTH_TOKEN"
+    token = "$System.env.MODRINTH_TOKEN"
     projectId = modrinthSlug
     versionNumber = project.version
     uploadFile = remapJar
