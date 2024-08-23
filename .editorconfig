@@ -1,19 +1,24 @@
 [*]
 indent_size = 4
-indent_style = space
+indent_style = tab
 tab_width = 4
+insert_final_newline = true
+
+[*.yml]
+indent_size = 2
+indent_style = space
 
 [*.java]
 ij_java_block_brace_style = end_of_line
 ij_java_lambda_brace_style = end_of_line
 ij_java_method_brace_style = end_of_line
+ij_java_names_count_to_use_import_on_demand = 999
 
-[{*.gant,*.groovy,*.gy}]
+[{*.gant,*.groovy,*.gy,*.gradle}]
 ij_groovy_block_brace_style = end_of_line
 ij_groovy_class_brace_style = end_of_line
 ij_groovy_lambda_brace_style = end_of_line
 ij_groovy_method_brace_style = end_of_line
 
 [{*.har,*.json,*.png.mcmeta,mcmod.info,pack.mcmeta}]
-indent_size = 2
 ij_json_array_wrapping = split_into_lines
