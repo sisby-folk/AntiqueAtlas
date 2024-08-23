@@ -27,7 +27,7 @@ Drag the map to pan, scroll to zoom, and use the bookmark buttons to create and 
 
 If you need an equally distraction-free compass to substitute a minimap, try [PicoHUD](https://modrinth.com/mod/picohud)!
 
-## **Mixed-Side Features**
+## Mixed-Side Features
 
 _These work in singleplayer, or on servers with [Surveyor](https://modrinth.com/mod/surveyor) installed._
 

@@ -1,0 +1,44 @@
+modLoader = "javafml"
+loaderVersion = "[4,)"
+license = "${license}"
+issueTrackerURL = "${issues}"
+
+[[mods]]
+modId = "${modId}"
+version = "${version}"
+displayName = "${modName}"
+description = '''${modDescription}'''
+authors = "${members}"
+displayURL = "${homepage}"
+logoFile = "assets/${modId}/icon.png"
+
+[properties]
+"connector:placeholder" = true
+
+[[dependencies.${ modId }]]
+modId = "connectormod"
+mandatory = true
+versionRange = "*"
+ordering = "NONE"
+side = "BOTH"
+
+[[dependencies.${ modId }]]
+modId = "forge"
+mandatory = true
+versionRange = "*"
+ordering = "NONE"
+side = "BOTH"
+
+[[dependencies.${ modId }]]
+modId = "minecraft"
+mandatory = true
+versionRange = "[${mc},)"
+ordering = "NONE"
+side = "BOTH"
+
+[[dependencies.${ modId }]]
+modId = "fabric_api"
+mandatory = true
+versionRange = "[${fapi},)"
+ordering = "NONE"
+side = "BOTH"

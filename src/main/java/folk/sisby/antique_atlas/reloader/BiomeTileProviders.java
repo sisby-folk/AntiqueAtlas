@@ -64,11 +64,11 @@ public class BiomeTileProviders extends JsonDataLoader implements IdentifiableRe
             Identifier fallbackBiome = getFallbackBiome(biomeRegistry.getEntry(biome));
             if (fallbackBiome != null && tileProviders.containsKey(fallbackBiome)) {
                 biomeFallbacks.put(biomeId, fallbackBiome);
-                AntiqueAtlas.LOGGER.warn("[Antique Atlas] Set fallback biome for {} to {}. You can set a more fitting texture using a resource pack!", biomeId, fallbackBiome);
+                AntiqueAtlas.LOGGER.info("[Antique Atlas] Set fallback biome for {} to {}. You can set a more fitting texture using a resource pack!", biomeId, fallbackBiome);
             } else if (fallbackBiome != null) {
                 AntiqueAtlas.LOGGER.error("[Antique Atlas] Fallback biome for {} is {}, which has no defined tile provider.", biomeId, fallbackBiome);
             } else {
-                AntiqueAtlas.LOGGER.error("[Antique Atlas] No fallback could be found for {}. This shouldn't happen! This means the biome is not in ANY conventional or vanilla tag on the client!", biomeId);
+                AntiqueAtlas.LOGGER.warn("[Antique Atlas] No fallback could be found for {}. This shouldn't happen! This means the biome is not in ANY conventional or vanilla tag on the client!", biomeId);
                 if (AntiqueAtlas.CONFIG.fallbackFailHandling == AntiqueAtlasConfig.FallbackHandling.CRASH) throw new IllegalStateException("Antique Atlas fallback biome registration failed! Fix the missing biome or change fallbackFailHandling in antique_atlas.toml");
             }
         }
