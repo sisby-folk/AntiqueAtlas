@@ -143,6 +143,7 @@ public class TerrainTiling {
         WorldTerrainSummary terrain = WorldSummary.of(world).terrain();
         if (terrain == null) return null;
         ChunkSummary chunk = terrain.get(pos);
+        if (chunk == null) return null; // Skip events fired for chunks we don't have yet (e.g. new shares)
         @Nullable LayerSummary.Raw lowSummary = chunk.toSingleLayer(null, NETHER_SCAN_HEIGHT, world.getTopY());
         @Nullable LayerSummary.Raw fullSummary = chunk.toSingleLayer(null, world.getBottomY() + world.getDimension().logicalHeight() - 1, world.getTopY());
         RegistryPalette<Biome>.ValueView biomePalette = terrain.getBiomePalette(pos);
