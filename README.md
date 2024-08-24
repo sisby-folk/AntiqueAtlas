@@ -78,7 +78,7 @@ We can't draw autotile to save our lives - feel free to [contribute](https://git
 
 This mod is included in [Tinkerer's Quilt Plus](https://modrinth.com/modpack/tinkerers-quilt) - our modpack about rediscovering vanilla.
 
-We're open to suggestions for how to implement stuff better - if you see something wonky and have an idea - let us know.
+We're open to better ways to implement our mods. If you see something odd and have an idea, let us know!
 
 ---
 
