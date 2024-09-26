@@ -23,7 +23,7 @@ Drag the map to pan, scroll to zoom, and use the bookmark buttons to create and 
 - Gravestones automatically appear where you die, with customizable flavour text:
 > ![grave style euphemisms](https://cdn.modrinth.com/data/Y5Ve4Ui4/images/c6f5e20bcef2c26c40390e888e540dcdd89a1818.png)
 - Waypoint markers come in a variety of styles:
-> ![marker styles](https://cdn.modrinth.com/data/Y5Ve4Ui4/images/f22a29ce8a00847e5a49d74d4c32f7b076a57692.png)
+> ![marker styles](https://cdn.modrinth.com/data/Y5Ve4Ui4/images/b7064c3287c5535cd9ac6d454c10ead984c7a7b3.png)
 
 If you need an equally distraction-free compass to substitute a minimap, try [PicoHUD](https://modrinth.com/mod/picohud)!
 
