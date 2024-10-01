@@ -1,10 +1,10 @@
 {
   "textures": {
-    "valley": [
-      "antique_atlas:biome/arid/desert/sand_1",
-      "antique_atlas:biome/arid/desert/sand_cacti_sparse",
-      "antique_atlas:biome/arid/desert/sand_shrubs"
-    ],
+    "valley": {
+      "antique_atlas:biome/arid/badlands/desert/sand_1": 2,
+      "antique_atlas:biome/arid/badlands/desert/sand_cacti_sparse": 1,
+      "antique_atlas:biome/arid/badlands/desert/sand_shrubs": 4
+    },
     "low": {
       "antique_atlas:biome/arid/badlands/terracotta_shrubs_tiered": 4,
       "antique_atlas:biome/arid/badlands/terracotta_tiered": 2,
