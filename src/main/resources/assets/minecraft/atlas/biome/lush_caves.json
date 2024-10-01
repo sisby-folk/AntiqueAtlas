@@ -1,6 +1,6 @@
 {
-  "textures": [
-    "antique_atlas:feature/ravine/stone_ravine",
-    "antique_atlas:feature/ravine/andesite_ravine"
-  ]
+  "textures": {
+    "antique_atlas:biome/cave/lush_caves": 5,
+    "antique_atlas:biome/cave/lush_caves_aquifier": 1
+  }
 }
