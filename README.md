@@ -5,7 +5,7 @@
 A hand-drawn client-side world map with biomes, structures, waypoints, and less!<br/>
 
 A rewrite of <a href="https://modrinth.com/mod/antique-atlas">Antique Atlas</a> by <a href="https://github.com/Hunternif">Hunternif</a>, as continued by <a href="https://github.com/Kenkron">Kenkron</a>, <a href="https://github.com/asiekierka">asie</a>, and <a href="https://github.com/tyra314">tyra314</a>.<br/>
-Utilizes <a href="https://modrinth.com/mod/surveyor">Surveyor Map Framework</a>.
+<b>Requires <a href="https://modrinth.com/mod/surveyor">Surveyor Map Framework</a>.</b>
 <b>Requires <a href="https://modrinth.com/mod/connector">Connector</a> and <a href="https://modrinth.com/mod/forgified-fabric-api">FFAPI</a> on (neo)forge.</b><br/>
 </center>
 
@@ -47,7 +47,7 @@ Antique Atlas can be configured from `config/antique-atlas.toml`:<br/>
 > `structureMarkers` can be edited to toggle markers for structures - this is populated at runtime.<br/>
 > `graveStyle` will change the icon and tooltip for player graves - try each out to suit your pack's aesthetics.<br/>
 
-Further options, including options for map sharing & visibility, are documented in `config/surveyor.toml`
+Surveyor, which handles features including map sharing & visibility, can be configured from `config/surveyor.toml`
 
 ## Resource Packs
 Tiles, markers, biome detection, and structure detection is fully data-driven via resource packs.<br/>

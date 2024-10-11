@@ -24,7 +24,6 @@ dependencies {
     modImplementation libs.fapi
 
     modImplementation libs.surveyor
-    include libs.surveyor
 }
 
 processResources {
@@ -91,7 +90,7 @@ modrinth {
     syncBodyFrom = rootProject.file("README.md").text
     dependencies {
         required.version libs.fapi.get().getName(), libs.versions.fapi.get()
-        embedded.version libs.surveyor.get().getName(), libs.versions.surveyor.get()
+        required.version libs.surveyor.get().getName(), libs.versions.surveyor.get()
     }
 }
 
