@@ -42,3 +42,10 @@ type = "required"
 versionRange = "[${fapi},)"
 ordering = "NONE"
 side = "BOTH"
+
+[[dependencies.${ modId }]]
+modId = "surveyor"
+mandatory = true
+versionRange = "[${surveyor},)"
+ordering = "NONE"
+side = "BOTH"

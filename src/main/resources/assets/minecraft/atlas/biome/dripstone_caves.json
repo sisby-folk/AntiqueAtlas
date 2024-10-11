@@ -1,6 +1,5 @@
 {
   "textures": [
-    "antique_atlas:feature/ravine/stone_ravine",
-    "antique_atlas:feature/ravine/andesite_ravine"
+    "antique_atlas:biome/cave/dripstone_caves"
   ]
 }

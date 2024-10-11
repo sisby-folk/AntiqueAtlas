@@ -5,7 +5,7 @@
 A hand-drawn client-side world map with biomes, structures, waypoints, and less!<br/>
 
 A rewrite of <a href="https://modrinth.com/mod/antique-atlas">Antique Atlas</a> by <a href="https://github.com/Hunternif">Hunternif</a>, as continued by <a href="https://github.com/Kenkron">Kenkron</a>, <a href="https://github.com/asiekierka">asie</a>, and <a href="https://github.com/tyra314">tyra314</a>.<br/>
-Utilizes <a href="https://modrinth.com/mod/surveyor">Surveyor Map Framework</a>.
+<b>Requires <a href="https://modrinth.com/mod/surveyor">Surveyor Map Framework</a>.</b>
 <b>Requires <a href="https://modrinth.com/mod/connector">Connector</a> and <a href="https://modrinth.com/mod/forgified-fabric-api">FFAPI</a> on (neo)forge.</b><br/>
 </center>
 
@@ -23,7 +23,7 @@ Drag the map to pan, scroll to zoom, and use the bookmark buttons to create and 
 - Gravestones automatically appear where you die, with customizable flavour text:
 > ![grave style euphemisms](https://cdn.modrinth.com/data/Y5Ve4Ui4/images/c6f5e20bcef2c26c40390e888e540dcdd89a1818.png)
 - Waypoint markers come in a variety of styles:
-> ![marker styles](https://cdn.modrinth.com/data/Y5Ve4Ui4/images/f22a29ce8a00847e5a49d74d4c32f7b076a57692.png)
+> ![marker styles](https://cdn.modrinth.com/data/Y5Ve4Ui4/images/b7064c3287c5535cd9ac6d454c10ead984c7a7b3.png)
 
 If you need an equally distraction-free compass to substitute a minimap, try [PicoHUD](https://modrinth.com/mod/picohud)!
 
@@ -47,7 +47,7 @@ Antique Atlas can be configured from `config/antique-atlas.toml`:<br/>
 > `structureMarkers` can be edited to toggle markers for structures - this is populated at runtime.<br/>
 > `graveStyle` will change the icon and tooltip for player graves - try each out to suit your pack's aesthetics.<br/>
 
-Further options, including options for map sharing & visibility, are documented in `config/surveyor.toml`
+Surveyor, which handles features including map sharing & visibility, can be configured from `config/surveyor.toml`
 
 ## Resource Packs
 Tiles, markers, biome detection, and structure detection is fully data-driven via resource packs.<br/>
