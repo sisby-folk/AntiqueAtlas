@@ -5,6 +5,7 @@ import folk.sisby.antique_atlas.AntiqueAtlas;
 import folk.sisby.antique_atlas.gui.core.ToggleButtonComponent;
 import folk.sisby.antique_atlas.util.ColorUtil;
 import net.minecraft.client.gui.DrawContext;
+import net.minecraft.client.render.RenderLayer;
 import net.minecraft.text.Text;
 import net.minecraft.util.DyeColor;
 import net.minecraft.util.Identifier;
@@ -57,7 +58,7 @@ public class BookmarkButton extends ToggleButtonComponent {
 
     public void drawIcon(DrawContext context, int x, int y) {
         if (iconTint != null) RenderSystem.setShaderColor(iconTint[0], iconTint[1], iconTint[2], 1.0F);
-        context.drawTexture(iconTexture, x, y, 0, 0, iconWidth, iconHeight, iconWidth, iconHeight);
+        context.drawTexture(RenderLayer::getGuiTextured, iconTexture, x, y, 0, 0, iconWidth, iconHeight, iconWidth, iconHeight);
         RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
     }
 
@@ -68,7 +69,7 @@ public class BookmarkButton extends ToggleButtonComponent {
 
         RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
         if (backgroundTint != null) RenderSystem.setShaderColor(backgroundTint[0], backgroundTint[1], backgroundTint[2], 1.0F);
-        context.drawTexture(backgroundTexture, getGuiX(), getGuiY(), 0, isExtended ? 0 : HEIGHT, WIDTH, HEIGHT, WIDTH, HEIGHT * 2);
+        context.drawTexture(RenderLayer::getGuiTextured, backgroundTexture, getGuiX(), getGuiY(), 0, isExtended ? 0 : HEIGHT, WIDTH, HEIGHT, WIDTH, HEIGHT * 2);
         RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
 
         if (iconTexture != null) {

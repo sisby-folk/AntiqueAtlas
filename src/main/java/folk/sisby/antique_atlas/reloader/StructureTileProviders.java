@@ -22,6 +22,7 @@ import net.minecraft.resource.JsonDataLoader;
 import net.minecraft.resource.ResourceManager;
 import net.minecraft.structure.pool.StructurePoolElementType;
 import net.minecraft.util.Identifier;
+import net.minecraft.util.dynamic.Codecs;
 import net.minecraft.util.math.ChunkPos;
 import net.minecraft.util.profiler.Profiler;
 import net.minecraft.world.World;
@@ -37,7 +38,7 @@ import java.util.Set;
 
 import static folk.sisby.antique_atlas.reloader.BiomeTileProviders.resolveTextureJson;
 
-public class StructureTileProviders extends JsonDataLoader implements IdentifiableResourceReloadListener {
+public class StructureTileProviders extends JsonDataLoader<JsonElement> implements IdentifiableResourceReloadListener {
     private static final StructureTileProviders INSTANCE = new StructureTileProviders();
 
     public static final Identifier ID = AntiqueAtlas.id("structures");
@@ -59,7 +60,12 @@ public class StructureTileProviders extends JsonDataLoader implements Identifiab
     private final Map<Identifier, MarkerTexture> pieceJigsawSingleMarkers = new HashMap<>();
     private final Map<Identifier, MarkerTexture> pieceJigsawFeatureMarkers = new HashMap<>();
 
-    public enum ProviderType {
+	@Override
+	public String getName() {
+		return super.getName();
+	}
+
+	public enum ProviderType {
         START("start"),
         TAG("tag"),
         TYPE("type"),
@@ -92,10 +98,10 @@ public class StructureTileProviders extends JsonDataLoader implements Identifiab
     );
 
     public StructureTileProviders() {
-        super(new Gson(), "atlas/structure");
+        super(Codecs.JSON_ELEMENT, "atlas/structure");
     }
 
-    public Map<ChunkPos, TileTexture> resolve(Map<ChunkPos, TileTexture> outTiles, Map<ChunkPos, StructureTileProvider> structureProviders, Map<ChunkPos, String> tilePredicates, StructurePieceSummary piece, World world) {
+	public Map<ChunkPos, TileTexture> resolve(Map<ChunkPos, TileTexture> outTiles, Map<ChunkPos, StructureTileProvider> structureProviders, Map<ChunkPos, String> tilePredicates, StructurePieceSummary piece, World world) {
         if (piece instanceof JigsawPieceSummary jigsawPiece) {
             if (pieceJigsawSingleTiles.containsKey(jigsawPiece.getId())) {
                 StructureTileProvider provider = (jigsawPiece.getElementType() == StructurePoolElementType.FEATURE_POOL_ELEMENT ? pieceJigsawFeatureTiles : pieceJigsawSingleTiles).get(jigsawPiece.getId());

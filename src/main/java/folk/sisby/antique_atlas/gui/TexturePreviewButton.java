@@ -4,6 +4,7 @@ import com.mojang.blaze3d.systems.RenderSystem;
 import folk.sisby.antique_atlas.AntiqueAtlas;
 import folk.sisby.antique_atlas.gui.core.ToggleButtonComponent;
 import net.minecraft.client.gui.DrawContext;
+import net.minecraft.client.render.RenderLayer;
 import net.minecraft.util.Identifier;
 
 
@@ -40,14 +41,14 @@ public class TexturePreviewButton<T> extends ToggleButtonComponent {
 
     protected void drawTexture(DrawContext context, int x, int y) {
         if (tint != null) RenderSystem.setShaderColor(tint[0], tint[1], tint[2], 1.0F);
-        context.drawTexture(texture,  x, y, 0, v, textureWidth, textureHeight, textureWidth, textureHeight + v);
+        context.drawTexture(RenderLayer::getGuiTextured, texture,  x, y, 0, v, textureWidth, textureHeight, textureWidth, textureHeight + v);
         RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
     }
 
     @Override
     public void render(DrawContext context, int mouseX, int mouseY, float partialTick) {
         Identifier frameTexture = isSelected() ? FRAME_SELECTED : FRAME_UNSELECTED;
-        context.drawTexture(frameTexture, getGuiX() + 1, getGuiY() + 1, 0, 0, FRAME_SIZE, FRAME_SIZE, FRAME_SIZE, FRAME_SIZE);
+        context.drawTexture(RenderLayer::getGuiTextured, frameTexture, getGuiX() + 1, getGuiY() + 1, 0, 0, FRAME_SIZE, FRAME_SIZE, FRAME_SIZE, FRAME_SIZE);
 
         int centerX = getGuiX() + (FRAME_SIZE - textureWidth) / 2;
         int centerY = getGuiY() + (FRAME_SIZE - textureHeight) / 2;

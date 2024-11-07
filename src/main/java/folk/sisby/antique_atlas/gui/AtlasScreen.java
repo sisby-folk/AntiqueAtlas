@@ -29,6 +29,7 @@ import it.unimi.dsi.fastutil.objects.Reference2ObjectArrayMap;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.option.KeyBinding;
+import net.minecraft.client.render.RenderLayer;
 import net.minecraft.client.sound.PositionedSoundInstance;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.sound.SoundCategory;
@@ -551,11 +552,11 @@ public class AtlasScreen extends Component {
         RenderSystem.setShaderColor(1, 1, 1, 1);
         if (fullscreen) {
             int left_width = bookWidth / 2 - 15;
-            context.drawGuiTexture(BOOK_FULLSCREEN, getGuiX(), getGuiY(), left_width, bookHeight);
-            context.drawGuiTexture(BOOK_FULLSCREEN_M, getGuiX() + left_width, getGuiY(), 29, bookHeight);
-            context.drawGuiTexture(BOOK_FULLSCREEN_R, getGuiX() + left_width + 29, getGuiY(), left_width + 1, bookHeight);
+            context.drawGuiTexture(RenderLayer::getGuiTextured, BOOK_FULLSCREEN, getGuiX(), getGuiY(), left_width, bookHeight);
+            context.drawGuiTexture(RenderLayer::getGuiTextured, BOOK_FULLSCREEN_M, getGuiX() + left_width, getGuiY(), 29, bookHeight);
+            context.drawGuiTexture(RenderLayer::getGuiTextured, BOOK_FULLSCREEN_R, getGuiX() + left_width + 29, getGuiY(), left_width + 1, bookHeight);
         } else {
-            context.drawTexture(BOOK, getGuiX(), getGuiY(), 0, 0, 310, 218, 310, 218);
+            context.drawTexture(RenderLayer::getGuiTextured, BOOK, getGuiX(), getGuiY(), 0, 0, 310, 218, 310, 218);
         }
 
         if (worldAtlasData == null) return;
@@ -611,11 +612,11 @@ public class AtlasScreen extends Component {
         RenderSystem.setShaderColor(1, 1, 1, 1);
         if (fullscreen) {
             int left_width = bookWidth / 2 - 15;
-            context.drawGuiTexture(BOOK_FRAME_FULLSCREEN, getGuiX(), getGuiY(), left_width, bookHeight);
-            context.drawGuiTexture(BOOK_FRAME_FULLSCREEN_M, getGuiX() + left_width, getGuiY(), 29, bookHeight);
-            context.drawGuiTexture(BOOK_FRAME_FULLSCREEN_R, getGuiX() + left_width + 29, getGuiY(), left_width + 1, bookHeight);
+            context.drawGuiTexture(RenderLayer::getGuiTextured, BOOK_FRAME_FULLSCREEN, getGuiX(), getGuiY(), left_width, bookHeight);
+            context.drawGuiTexture(RenderLayer::getGuiTextured, BOOK_FRAME_FULLSCREEN_M, getGuiX() + left_width, getGuiY(), 29, bookHeight);
+            context.drawGuiTexture(RenderLayer::getGuiTextured, BOOK_FRAME_FULLSCREEN_R, getGuiX() + left_width + 29, getGuiY(), left_width + 1, bookHeight);
         } else {
-            context.drawTexture(BOOK_FRAME, getGuiX(), getGuiY(), 0, 0, 310, 218, 310, 218);
+            context.drawTexture(RenderLayer::getGuiTextured, BOOK_FRAME, getGuiX(), getGuiY(), 0, 0, 310, 218, 310, 218);
         }
         context.getMatrices().push();
         context.getMatrices().translate(getGuiX(), getGuiY(), 0);
@@ -662,11 +663,11 @@ public class AtlasScreen extends Component {
 
         if (fullscreen) {
             int left_width = bookWidth / 2 - 15;
-            context.drawGuiTexture(BOOK_FRAME_NARROW_FULLSCREEN, getGuiX(), getGuiY(), left_width, bookHeight);
-            context.drawGuiTexture(BOOK_FRAME_NARROW_FULLSCREEN_M, getGuiX() + left_width, getGuiY(), 29, bookHeight);
-            context.drawGuiTexture(BOOK_FRAME_NARROW_FULLSCREEN_R, getGuiX() + left_width + 29, getGuiY(), left_width + 1, bookHeight);
+            context.drawGuiTexture(RenderLayer::getGuiTextured, BOOK_FRAME_NARROW_FULLSCREEN, getGuiX(), getGuiY(), left_width, bookHeight);
+            context.drawGuiTexture(RenderLayer::getGuiTextured, BOOK_FRAME_NARROW_FULLSCREEN_M, getGuiX() + left_width, getGuiY(), 29, bookHeight);
+            context.drawGuiTexture(RenderLayer::getGuiTextured, BOOK_FRAME_NARROW_FULLSCREEN_R, getGuiX() + left_width + 29, getGuiY(), left_width + 1, bookHeight);
         } else {
-            context.drawTexture(BOOK_FRAME_NARROW, getGuiX(), getGuiY(), 0, 0, 310, 218, 310, 218);
+            context.drawTexture(RenderLayer::getGuiTextured, BOOK_FRAME_NARROW, getGuiX(), getGuiY(), 0, 0, 310, 218, 310, 218);
         }
 
         markerScrollBox.getViewport().setHidden(state.is(HIDING_MARKERS));
@@ -688,7 +689,7 @@ public class AtlasScreen extends Component {
         RenderSystem.blendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
         if (state.is(PLACING_MARKER)) {
             RenderSystem.setShaderColor(1, 1, 1, 0.5f);
-            context.drawTexture(markerModal.selectedTexture.id(), mouseX + markerModal.selectedTexture.offsetX(), mouseY + markerModal.selectedTexture.offsetY(), 0, 0, markerModal.selectedTexture.textureWidth(), markerModal.selectedTexture.textureHeight(), markerModal.selectedTexture.textureWidth(), markerModal.selectedTexture.textureHeight());
+            context.drawTexture(RenderLayer::getGuiTextured, markerModal.selectedTexture.id(), mouseX + markerModal.selectedTexture.offsetX(), mouseY + markerModal.selectedTexture.offsetY(), 0, 0, markerModal.selectedTexture.textureWidth(), markerModal.selectedTexture.textureHeight(), markerModal.selectedTexture.textureWidth(), markerModal.selectedTexture.textureHeight());
             RenderSystem.setShaderColor(1, 1, 1, 1);
         }
         RenderSystem.disableBlend();

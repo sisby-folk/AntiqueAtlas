@@ -1,6 +1,7 @@
 package folk.sisby.antique_atlas.util;
 
 import com.mojang.blaze3d.systems.RenderSystem;
+import net.minecraft.client.gl.ShaderProgramKeys;
 import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.render.BufferBuilder;
 import net.minecraft.client.render.BufferRenderer;
@@ -19,7 +20,7 @@ public class DrawBatcher implements AutoCloseable {
 
     public DrawBatcher(DrawContext context, Identifier texture, int textureWidth, int textureHeight) {
         RenderSystem.setShaderTexture(0, texture);
-        RenderSystem.setShader(GameRenderer::getPositionTexProgram);
+        RenderSystem.setShader(ShaderProgramKeys.POSITION_TEX);
         this.matrix4f = context.getMatrices().peek().getPositionMatrix();
         this.bufferBuilder = Tessellator.getInstance().begin(VertexFormat.DrawMode.QUADS, VertexFormats.POSITION_TEXTURE);
         this.textureWidth = textureWidth;
