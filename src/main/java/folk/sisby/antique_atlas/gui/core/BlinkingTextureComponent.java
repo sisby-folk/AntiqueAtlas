@@ -2,6 +2,7 @@ package folk.sisby.antique_atlas.gui.core;
 
 import com.mojang.blaze3d.systems.RenderSystem;
 import net.minecraft.client.gui.DrawContext;
+import net.minecraft.client.render.RenderLayer;
 import net.minecraft.util.Identifier;
 import org.lwjgl.opengl.GL11;
 
@@ -63,6 +64,6 @@ public class BlinkingTextureComponent extends Component {
     }
 
     private void drawImage(DrawContext context) {
-        context.drawTexture(texture, getGuiX(), getGuiY(), 0, 0, getWidth(), getHeight(), getWidth(), getHeight());
+        context.drawTexture(RenderLayer::getGuiTextured, texture, getGuiX(), getGuiY(), 0, 0, getWidth(), getHeight(), getWidth(), getHeight());
     }
 }

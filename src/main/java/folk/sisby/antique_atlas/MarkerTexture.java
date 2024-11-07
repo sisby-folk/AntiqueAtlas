@@ -2,6 +2,7 @@ package folk.sisby.antique_atlas;
 
 import com.mojang.blaze3d.systems.RenderSystem;
 import net.minecraft.client.gui.DrawContext;
+import net.minecraft.client.render.RenderLayer;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.math.MathHelper;
 import org.joml.Vector2d;
@@ -58,10 +59,10 @@ public record MarkerTexture(Identifier id, Identifier accentId, int offsetX, int
     }
 
     public void drawIcon(DrawContext context, int x, int y, float[] accent) {
-        context.drawTexture(id, x, y, 0, 0, textureWidth, textureHeight, fullTextureWidth(), textureHeight);
+        context.drawTexture(RenderLayer::getGuiTextured, id, x, y, 0, 0, textureWidth, textureHeight, fullTextureWidth(), textureHeight);
         if (accentId != null && accent != null) {
             RenderSystem.setShaderColor(accent[0], accent[1], accent[2], 1F);
-            context.drawTexture(accentId, x, y, 0, 0, textureWidth, textureHeight, fullTextureWidth(), textureHeight);
+            context.drawTexture(RenderLayer::getGuiTextured, accentId, x, y, 0, 0, textureWidth, textureHeight, fullTextureWidth(), textureHeight);
             RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
         }
     }
@@ -72,17 +73,17 @@ public record MarkerTexture(Identifier id, Identifier accentId, int offsetX, int
         context.getMatrices().scale(markerScale, markerScale, 1.0F);
         if (tileChunks > 1 && mipLevels > 0) {
             int mipLevel = MathHelper.clamp(MathHelper.ceilLog2(tileChunks), 0, mipLevels);
-            context.drawTexture(id, offsetX / (1 << mipLevel), offsetY / (1 << mipLevel), getU(mipLevel), 0, textureWidth / (1 << mipLevel), textureHeight / (1 << mipLevel), fullTextureWidth(), textureHeight);
+            context.drawTexture(RenderLayer::getGuiTextured, id, offsetX / (1 << mipLevel), offsetY / (1 << mipLevel), getU(mipLevel), 0, textureWidth / (1 << mipLevel), textureHeight / (1 << mipLevel), fullTextureWidth(), textureHeight);
             if (accentId != null && accent != null) {
                 RenderSystem.setShaderColor(tint * accent[0], tint * accent[1], tint * accent[2], alpha);
-                context.drawTexture(accentId, offsetX / (1 << mipLevel), offsetY / (1 << mipLevel), getU(mipLevel), 0, textureWidth / (1 << mipLevel), textureHeight / (1 << mipLevel), fullTextureWidth(), textureHeight);
+                context.drawTexture(RenderLayer::getGuiTextured, accentId, offsetX / (1 << mipLevel), offsetY / (1 << mipLevel), getU(mipLevel), 0, textureWidth / (1 << mipLevel), textureHeight / (1 << mipLevel), fullTextureWidth(), textureHeight);
                 RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
             }
         } else {
-            context.drawTexture(id, offsetX, offsetY, 0, 0, textureWidth, textureHeight, fullTextureWidth(), textureHeight);
+            context.drawTexture(RenderLayer::getGuiTextured, id, offsetX, offsetY, 0, 0, textureWidth, textureHeight, fullTextureWidth(), textureHeight);
             if (accentId != null && accent != null) {
                 RenderSystem.setShaderColor(tint * accent[0], tint * accent[1], tint * accent[2], alpha);
-                context.drawTexture(accentId, offsetX, offsetY, 0, 0, textureWidth, textureHeight, fullTextureWidth(), textureHeight);
+                context.drawTexture(RenderLayer::getGuiTextured, accentId, offsetX, offsetY, 0, 0, textureWidth, textureHeight, fullTextureWidth(), textureHeight);
                 RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
             }
         }

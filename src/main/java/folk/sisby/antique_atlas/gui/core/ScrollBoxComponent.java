@@ -3,6 +3,7 @@ package folk.sisby.antique_atlas.gui.core;
 import folk.sisby.antique_atlas.AntiqueAtlas;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.DrawContext;
+import net.minecraft.client.render.RenderLayer;
 import net.minecraft.client.sound.PositionedSoundInstance;
 import net.minecraft.client.util.math.Rect2i;
 import net.minecraft.sound.SoundEvents;
@@ -36,7 +37,7 @@ public class ScrollBoxComponent extends Component {
         boolean hovered = new Rect2i(x, y, ARROW_SIZE, ARROW_SIZE).contains(mouseX, mouseY);
         int u = (prev ? 0 : ARROW_SIZE);
         int v = (vertical ? 0 : ARROW_SIZE) + (hovered ? ARROW_SIZE * 2 : 0);
-        context.drawTexture(ARROW, x, y, u, v, ARROW_SIZE, ARROW_SIZE, ARROW_TEXTURE_WIDTH, ARROW_TEXTURE_HEIGHT);
+        context.drawTexture(RenderLayer::getGuiTextured, ARROW, x, y, u, v, ARROW_SIZE, ARROW_SIZE, ARROW_TEXTURE_WIDTH, ARROW_TEXTURE_HEIGHT);
     }
 
     @Override

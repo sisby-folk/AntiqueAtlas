@@ -95,13 +95,13 @@ public class TerrainTiling {
         int defaultTile = CUSTOM_TILES.indexOf(world.getDimension().hasCeiling() ? FeatureTiles.BEDROCK_ROOF : (world.getRegistryKey() == World.END ? FeatureTiles.END_VOID : FeatureTiles.EMPTY));
         boolean checkRavines = world.getRegistryKey() == World.OVERWORLD;
 
-        int worldHeight = world.getTopY();
+        int worldHeight = world.getTopYInclusive();
 
         WorldTerrainSummary terrain = WorldSummary.of(world).terrain();
         if (terrain == null) return null;
         ChunkSummary chunk = terrain.get(pos);
         if (chunk == null) return null; // Skip events fired for chunks we don't have yet (e.g. new shares)
-        @Nullable LayerSummary.Raw summary = chunk.toSingleLayer(null, null, world.getTopY());
+        @Nullable LayerSummary.Raw summary = chunk.toSingleLayer(null, null, world.getTopYInclusive());
         RegistryPalette<Biome>.ValueView biomePalette = terrain.getBiomePalette(pos);
         RegistryPalette<Block>.ValueView blockPalette = terrain.getBlockPalette(pos);
         Registry<Biome> biomeRegistry = biomePalette.registry(); // 1.21: ensures server registry is used in singleplayer
@@ -144,8 +144,8 @@ public class TerrainTiling {
         if (terrain == null) return null;
         ChunkSummary chunk = terrain.get(pos);
         if (chunk == null) return null; // Skip events fired for chunks we don't have yet (e.g. new shares)
-        @Nullable LayerSummary.Raw lowSummary = chunk.toSingleLayer(null, NETHER_SCAN_HEIGHT, world.getTopY());
-        @Nullable LayerSummary.Raw fullSummary = chunk.toSingleLayer(null, world.getBottomY() + world.getDimension().logicalHeight() - 1, world.getTopY());
+        @Nullable LayerSummary.Raw lowSummary = chunk.toSingleLayer(null, NETHER_SCAN_HEIGHT, world.getTopYInclusive());
+        @Nullable LayerSummary.Raw fullSummary = chunk.toSingleLayer(null, world.getBottomY() + world.getDimension().logicalHeight() - 1, world.getTopYInclusive());
         RegistryPalette<Biome>.ValueView biomePalette = terrain.getBiomePalette(pos);
         RegistryPalette<Block>.ValueView blockPalette = terrain.getBlockPalette(pos);
         Registry<Biome> biomeRegistry = biomePalette.registry(); // 1.21: ensures server registry is used in singleplayer
@@ -160,7 +160,7 @@ public class TerrainTiling {
             return Pair.of(BiomeTileProviders.getInstance().getTileProvider(CUSTOM_TILES.get(defaultTile)), null);
         }
 
-        int SEA_DEPTH = world.getTopY() - 31;
+        int SEA_DEPTH = world.getTopYInclusive() - 31;
 
         if (lowSummary == null) {
             for (int i = 0; i < fullSummary.depths().length; i++) {
