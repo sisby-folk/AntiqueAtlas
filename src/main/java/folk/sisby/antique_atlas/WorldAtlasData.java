@@ -31,8 +31,10 @@ import java.util.BitSet;
 import java.util.Collection;
 import java.util.Deque;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
 import java.util.Random;
+import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentLinkedDeque;
 
@@ -57,6 +59,7 @@ public class WorldAtlasData {
     private final Map<Landmark<?>, MarkerTexture> structureMarkers = new ConcurrentHashMap<>();
 
     private final Rect tileScope = new Rect(0, 0, 0, 0);
+    private final Set<ChunkPos> terrainDequeHash = new HashSet<>();
     private final Deque<ChunkPos> terrainDeque = new ConcurrentLinkedDeque<>();
     boolean isFinished = false;
 
@@ -68,7 +71,10 @@ public class WorldAtlasData {
 
     public void onTerrainUpdated(World world, WorldTerrainSummary ignored2, Collection<ChunkPos> chunks) {
         for (ChunkPos pos : chunks) {
-            if (!biomeTiles.containsKey(pos) && !terrainDeque.contains(pos)) terrainDeque.add(pos);
+            if (!biomeTiles.containsKey(pos) && !terrainDequeHash.contains(pos)) {
+	            terrainDequeHash.add(pos);
+				terrainDeque.add(pos);
+            }
         }
     }
 
@@ -80,6 +86,7 @@ public class WorldAtlasData {
         if (!BiomeTileProviders.getInstance().hasFallbacks()) return;
         for (int i = 0; i < AntiqueAtlas.CONFIG.chunkTickLimit; i++) {
             ChunkPos pos = terrainDeque.pollFirst();
+			terrainDequeHash.remove(pos);
             if (pos == null) break;
             Pair<TerrainTileProvider, TileElevation> tile = world.getRegistryKey() == World.NETHER ? TerrainTiling.terrainToTileNether(world, pos) : TerrainTiling.terrainToTile(world, pos);
             if (tile != null) {
