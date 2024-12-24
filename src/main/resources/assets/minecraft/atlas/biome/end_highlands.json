@@ -1,7 +1,7 @@
 {
-  "textures": {
-    "antique_atlas:biome/end/islands/end_island_1": 1,
-    "antique_atlas:biome/end/highlands/end_chorus_island": 1,
-    "antique_atlas:biome/end/highlands/end_chorus_sparse_island": 1
-  }
+	"textures": {
+		"antique_atlas:biome/end/islands/end_island_1": 1,
+		"antique_atlas:biome/end/highlands/end_chorus_island": 1,
+		"antique_atlas:biome/end/highlands/end_chorus_sparse_island": 1
+	}
 }

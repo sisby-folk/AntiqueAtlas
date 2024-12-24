@@ -1,5 +1,5 @@
 {
-  "displayId": "minecraft:nether_fortress_corridor_left_turn",
-  "priority": 70,
-  "textures": "antique_atlas:structure/fortress/nether/nether_fortress_corridor"
+	"displayId": "minecraft:nether_fortress_corridor_left_turn",
+	"priority": 70,
+	"textures": "antique_atlas:structure/fortress/nether/nether_fortress_corridor"
 }

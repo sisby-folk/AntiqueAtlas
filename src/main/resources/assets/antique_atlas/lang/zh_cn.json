@@ -1,12 +1,12 @@
 {
-  "gui.antique_atlas.scalebar": "以方块缩放",
-  "gui.antique_atlas.addMarker": "添加标记",
-  "gui.antique_atlas.delMarker": "删除标记",
-  "gui.antique_atlas.followPlayer": "跟随该玩家",
-  "gui.antique_atlas.hideMarkers": "隐藏标记",
-  "gui.antique_atlas.showMarkers": "显示标记",
-  "gui.antique_atlas.marker.label": "标签：",
-  "structure.tag.minecraft.village": "村庄",
-  "key.antique_atlas.open": "打开古式地图",
-  "key.antique_atlas.category": "古式地图"
+	"gui.antique_atlas.scalebar": "以方块缩放",
+	"gui.antique_atlas.addMarker": "添加标记",
+	"gui.antique_atlas.delMarker": "删除标记",
+	"gui.antique_atlas.followPlayer": "跟随该玩家",
+	"gui.antique_atlas.hideMarkers": "隐藏标记",
+	"gui.antique_atlas.showMarkers": "显示标记",
+	"gui.antique_atlas.marker.label": "标签：",
+	"structure.tag.minecraft.village": "村庄",
+	"key.antique_atlas.open": "打开古式地图",
+	"key.antique_atlas.category": "古式地图"
 }

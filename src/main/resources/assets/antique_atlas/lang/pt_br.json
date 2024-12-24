@@ -1,12 +1,12 @@
 {
-  "gui.antique_atlas.scalebar": "Escala em blocos",
-  "gui.antique_atlas.addMarker": "Adicionar marcador",
-  "gui.antique_atlas.delMarker": "Excluir marcador",
-  "gui.antique_atlas.followPlayer": "Centralizar no jogador",
-  "gui.antique_atlas.hideMarkers": "Ocultar marcadores",
-  "gui.antique_atlas.showMarkers": "Mostrar marcadores",
-  "gui.antique_atlas.marker.label": "Título",
-  "structure.tag.minecraft.village": "Vila",
-  "key.antique_atlas.open": "Abrir atlas",
-  "key.antique_atlas.category": "Antique Atlas"
+	"gui.antique_atlas.scalebar": "Escala em blocos",
+	"gui.antique_atlas.addMarker": "Adicionar marcador",
+	"gui.antique_atlas.delMarker": "Excluir marcador",
+	"gui.antique_atlas.followPlayer": "Centralizar no jogador",
+	"gui.antique_atlas.hideMarkers": "Ocultar marcadores",
+	"gui.antique_atlas.showMarkers": "Mostrar marcadores",
+	"gui.antique_atlas.marker.label": "Título",
+	"structure.tag.minecraft.village": "Vila",
+	"key.antique_atlas.open": "Abrir atlas",
+	"key.antique_atlas.category": "Antique Atlas"
 }

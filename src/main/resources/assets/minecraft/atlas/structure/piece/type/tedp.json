@@ -1,6 +1,6 @@
 {
-  "displayId": "minecraft:desert_pyramid",
-  "textures": {
-    "center_above_ground": "antique_atlas:structure/pyramid/desert/desert_pyramid"
-  }
+	"displayId": "minecraft:desert_pyramid",
+	"textures": {
+		"center_above_ground": "antique_atlas:structure/pyramid/desert/desert_pyramid"
+	}
 }

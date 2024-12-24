@@ -1,15 +1,15 @@
 {
-  "textures": {
-    "valley": {
-      "antique_atlas:biome/arid/badlands/eroded/sand_shrubs_terracotta_mixed": 3,
-      "antique_atlas:biome/arid/badlands/eroded/sand_terracotta_pillar_small": 3,
-      "antique_atlas:biome/arid/badlands/eroded/terracotta_pillars": 1,
-      "antique_atlas:biome/arid/badlands/eroded/terracotta_fingers": 1,
-      "antique_atlas:biome/arid/badlands/eroded/terracotta_fingers_shrubs": 1
-    },
-    "peak": [
-      "antique_atlas:biome/arid/badlands/shrubs_plateau",
-      "antique_atlas:biome/arid/badlands/terracotta_plateau"
-    ]
-  }
+	"textures": {
+		"valley": {
+			"antique_atlas:biome/arid/badlands/eroded/sand_shrubs_terracotta_mixed": 3,
+			"antique_atlas:biome/arid/badlands/eroded/sand_terracotta_pillar_small": 3,
+			"antique_atlas:biome/arid/badlands/eroded/terracotta_pillars": 1,
+			"antique_atlas:biome/arid/badlands/eroded/terracotta_fingers": 1,
+			"antique_atlas:biome/arid/badlands/eroded/terracotta_fingers_shrubs": 1
+		},
+		"peak": [
+			"antique_atlas:biome/arid/badlands/shrubs_plateau",
+			"antique_atlas:biome/arid/badlands/terracotta_plateau"
+		]
+	}
 }

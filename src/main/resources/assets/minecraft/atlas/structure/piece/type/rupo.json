@@ -1,6 +1,6 @@
 {
-  "displayId": "minecraft:ruined_portal",
-  "textures": {
-    "center_above_ground": "antique_atlas:structure/ruined_portal/ruined_portal"
-  }
+	"displayId": "minecraft:ruined_portal",
+	"textures": {
+		"center_above_ground": "antique_atlas:structure/ruined_portal/ruined_portal"
+	}
 }

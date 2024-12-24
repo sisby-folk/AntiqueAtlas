@@ -1,14 +1,14 @@
 {
-  "textures": {
-    "valley": [
-      "antique_atlas:biome/woodland/taiga/snowy/snow_pine",
-      "antique_atlas:biome/woodland/taiga/snowy/snow_spruce_pine",
-      "antique_atlas:biome/woodland/taiga/snowy/snow_pine_spruce"
-    ],
-    "high": [
-      "antique_atlas:biome/woodland/taiga/snowy/snow_pine_hills",
-      "antique_atlas:biome/woodland/taiga/snowy/snow_pine_spruce_hills",
-      "antique_atlas:biome/woodland/taiga/snowy/snow_spruce_pine_hills"
-    ]
-  }
+	"textures": {
+		"valley": [
+			"antique_atlas:biome/woodland/taiga/snowy/snow_pine",
+			"antique_atlas:biome/woodland/taiga/snowy/snow_spruce_pine",
+			"antique_atlas:biome/woodland/taiga/snowy/snow_pine_spruce"
+		],
+		"high": [
+			"antique_atlas:biome/woodland/taiga/snowy/snow_pine_hills",
+			"antique_atlas:biome/woodland/taiga/snowy/snow_pine_spruce_hills",
+			"antique_atlas:biome/woodland/taiga/snowy/snow_spruce_pine_hills"
+		]
+	}
 }

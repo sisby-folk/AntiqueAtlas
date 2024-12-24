@@ -9,22 +9,22 @@ import net.minecraft.util.Identifier;
 import net.minecraft.util.math.BlockPos;
 
 public record AtlasStructureLandmark(BlockPos pos, StructureTileProviders.ProviderType providerType, Identifier providedId) implements Landmark<AtlasStructureLandmark> {
-    public static LandmarkType<AtlasStructureLandmark> TYPE = new SimpleLandmarkType<>(
-        new Identifier(AntiqueAtlas.ID, "structure"),
-        null
-    );
+	public static LandmarkType<AtlasStructureLandmark> TYPE = new SimpleLandmarkType<>(
+		new Identifier(AntiqueAtlas.ID, "structure"),
+		null
+	);
 
-    public Identifier displayId() {
-        return new Identifier(providedId.getNamespace(), providerType.prefix() + providedId.getPath());
-    }
+	public Identifier displayId() {
+		return new Identifier(providedId.getNamespace(), providerType.prefix() + providedId.getPath());
+	}
 
-    @Override
-    public Text name() {
-        return Text.translatable(providerType.translation(providedId));
-    }
+	@Override
+	public Text name() {
+		return Text.translatable(providerType.translation(providedId));
+	}
 
-    @Override
-    public LandmarkType<AtlasStructureLandmark> type() {
-        return TYPE;
-    }
+	@Override
+	public LandmarkType<AtlasStructureLandmark> type() {
+		return TYPE;
+	}
 }

@@ -1,10 +1,10 @@
 {
-  "gui.antique_atlas.scalebar": "Scala in blocchi",
-  "gui.antique_atlas.addMarker": "Aggiungi marcatore",
-  "gui.antique_atlas.delMarker": "Elimina marcatore",
-  "gui.antique_atlas.followPlayer": "Segui giocatore",
-  "gui.antique_atlas.hideMarkers": "Nascondi marcatori",
-  "gui.antique_atlas.showMarkers": "Mostra marcatori",
-  "gui.antique_atlas.marker.label": "Etichetta",
-  "structure.tag.minecraft.village": "Villaggio"
+	"gui.antique_atlas.scalebar": "Scala in blocchi",
+	"gui.antique_atlas.addMarker": "Aggiungi marcatore",
+	"gui.antique_atlas.delMarker": "Elimina marcatore",
+	"gui.antique_atlas.followPlayer": "Segui giocatore",
+	"gui.antique_atlas.hideMarkers": "Nascondi marcatori",
+	"gui.antique_atlas.showMarkers": "Mostra marcatori",
+	"gui.antique_atlas.marker.label": "Etichetta",
+	"structure.tag.minecraft.village": "Villaggio"
 }

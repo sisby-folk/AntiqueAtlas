@@ -1,14 +1,14 @@
 {
-  "gui.antique_atlas.scalebar": "Масштаб в блоках",
-  "gui.antique_atlas.addMarker": "Добавить метку",
-  "gui.antique_atlas.delMarker": "Удалить метку",
-  "gui.antique_atlas.followPlayer": "Привязать к игроку",
-  "gui.antique_atlas.hideMarkers": "Скрыть метки",
-  "gui.antique_atlas.showMarkers": "Показать метки",
-  "gui.antique_atlas.marker.label": "Метка",
-  "structure.tag.minecraft.village": "Деревня",
-  "structure.type.minecraft.ocean_monument": "Морской монумент",
-  "structure.type.minecraft.woodland_mansion": "Лесной особняк",
-  "key.antique_atlas.open": "Открыть атлас",
-  "key.antique_atlas.category": "Antique Atlas"
+	"gui.antique_atlas.scalebar": "Масштаб в блоках",
+	"gui.antique_atlas.addMarker": "Добавить метку",
+	"gui.antique_atlas.delMarker": "Удалить метку",
+	"gui.antique_atlas.followPlayer": "Привязать к игроку",
+	"gui.antique_atlas.hideMarkers": "Скрыть метки",
+	"gui.antique_atlas.showMarkers": "Показать метки",
+	"gui.antique_atlas.marker.label": "Метка",
+	"structure.tag.minecraft.village": "Деревня",
+	"structure.type.minecraft.ocean_monument": "Морской монумент",
+	"structure.type.minecraft.woodland_mansion": "Лесной особняк",
+	"key.antique_atlas.open": "Открыть атлас",
+	"key.antique_atlas.category": "Antique Atlas"
 }

@@ -1,6 +1,6 @@
 {
-  "textures": {
-    "antique_atlas:biome/highland/windswept/hills/gravelly/stone_hills_low": 1,
-    "antique_atlas:biome/highland/windswept/hills/gravelly/gravel_hills_low": 2
-  }
+	"textures": {
+		"antique_atlas:biome/highland/windswept/hills/gravelly/stone_hills_low": 1,
+		"antique_atlas:biome/highland/windswept/hills/gravelly/gravel_hills_low": 2
+	}
 }

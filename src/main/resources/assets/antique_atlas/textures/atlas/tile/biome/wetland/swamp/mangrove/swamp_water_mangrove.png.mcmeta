@@ -1,8 +1,8 @@
 {
-  "antique_atlas:tiling": {
-    "tags": [
-      "antique_atlas:water",
-      "antique_atlas:swamp_water"
-    ]
-  }
+	"antique_atlas:tiling": {
+		"tags": [
+			"antique_atlas:water",
+			"antique_atlas:swamp_water"
+		]
+	}
 }

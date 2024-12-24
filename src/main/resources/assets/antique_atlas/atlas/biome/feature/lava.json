@@ -1,6 +1,6 @@
 {
-  "textures": [
-    "antique_atlas:feature/lava/crater_lava_1",
-    "antique_atlas:feature/lava/crater_lava_2"
-  ]
+	"textures": [
+		"antique_atlas:feature/lava/crater_lava_1",
+		"antique_atlas:feature/lava/crater_lava_2"
+	]
 }

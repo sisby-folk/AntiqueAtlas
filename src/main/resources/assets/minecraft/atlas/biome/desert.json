@@ -1,15 +1,15 @@
 {
-  "textures": {
-    "valley": {
-      "antique_atlas:base/sand": 2,
-      "antique_atlas:biome/arid/desert/sand_1": 2,
-      "antique_atlas:biome/arid/desert/sand_shrubs": 2,
-      "antique_atlas:biome/arid/desert/sand_cacti_sparse": 2,
-      "antique_atlas:biome/arid/desert/sand_cacti": 1
-    },
-    "high": {
-      "antique_atlas:biome/arid/desert/shrubs_hills_low": 5,
-      "antique_atlas:biome/arid/desert/cacti_hills_low": 1
-    }
-  }
+	"textures": {
+		"valley": {
+			"antique_atlas:base/sand": 2,
+			"antique_atlas:biome/arid/desert/sand_1": 2,
+			"antique_atlas:biome/arid/desert/sand_shrubs": 2,
+			"antique_atlas:biome/arid/desert/sand_cacti_sparse": 2,
+			"antique_atlas:biome/arid/desert/sand_cacti": 1
+		},
+		"high": {
+			"antique_atlas:biome/arid/desert/shrubs_hills_low": 5,
+			"antique_atlas:biome/arid/desert/cacti_hills_low": 1
+		}
+	}
 }

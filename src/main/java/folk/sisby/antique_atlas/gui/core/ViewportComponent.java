@@ -11,76 +11,76 @@ import net.minecraft.client.gui.DrawContext;
  * @author Hunternif
  */
 public class ViewportComponent extends Component {
-    /**
-     * The container component for content.
-     */
-    final Component content = new Component();
+	/**
+	 * The container component for content.
+	 */
+	final Component content = new Component();
 
-    private boolean hidden;
+	private boolean hidden;
 
-    public ViewportComponent() {
-        this.addChild(content);
-    }
+	public ViewportComponent() {
+		this.addChild(content);
+	}
 
-    /**
-     * Add scrolling content. Use removeContent to remove it.
-     *
-     * @return the child added
-     */
-    public Component addContent(Component child) {
-        return content.addChild(child);
-    }
+	/**
+	 * Add scrolling content. Use removeContent to remove it.
+	 *
+	 * @return the child added
+	 */
+	public Component addContent(Component child) {
+		return content.addChild(child);
+	}
 
-    public void removeAllContent() {
-        content.removeAllChildren();
-    }
+	public void removeAllContent() {
+		content.removeAllChildren();
+	}
 
-    @Override
-    public void init() {
-        super.init();
-    }
+	@Override
+	public void init() {
+		super.init();
+	}
 
-    @Override
-    public void render(DrawContext context, int mouseX, int mouseY, float par3) {
-        if (hidden) return;
-        double guiScale = client.getWindow().getScaleFactor();
-        RenderSystem.enableScissor(
-            (int) (guiScale * getGuiX()),
-            (int) (MinecraftClient.getInstance().getWindow().getFramebufferHeight() - (getGuiY() + properHeight) * guiScale),
-            (int) (guiScale * (properWidth + 1)),
-            (int) (guiScale * (properHeight + 1))
-        );
+	@Override
+	public void render(DrawContext context, int mouseX, int mouseY, float par3) {
+		if (hidden) return;
+		double guiScale = client.getWindow().getScaleFactor();
+		RenderSystem.enableScissor(
+			(int) (guiScale * getGuiX()),
+			(int) (MinecraftClient.getInstance().getWindow().getFramebufferHeight() - (getGuiY() + properHeight) * guiScale),
+			(int) (guiScale * (properWidth + 1)),
+			(int) (guiScale * (properHeight + 1))
+		);
 
-        // Draw the content (child GUIs):
-        super.render(context, mouseX, mouseY, par3);
+		// Draw the content (child GUIs):
+		super.render(context, mouseX, mouseY, par3);
 
-        RenderSystem.disableScissor();
-    }
+		RenderSystem.disableScissor();
+	}
 
-    @Override
-    public int getWidth() {
-        return properWidth;
-    }
+	@Override
+	public int getWidth() {
+		return properWidth;
+	}
 
-    @Override
-    public int getHeight() {
-        return properHeight;
-    }
+	@Override
+	public int getHeight() {
+		return properHeight;
+	}
 
-    @Override
-    protected void updateSize() {
-        super.updateSize();
-        // Update the clipping flag on content's child components:
-        for (Component child : this.getChildren()) {
-            child.setClipped(child.getGuiY() > getGuiY() + properHeight ||
-                    child.getGuiY() + child.getHeight() < getGuiY() ||
-                    child.getGuiX() > getGuiX() + properWidth ||
-                    child.getGuiX() + child.getWidth() < getGuiX()
-            );
-        }
-    }
+	@Override
+	protected void updateSize() {
+		super.updateSize();
+		// Update the clipping flag on content's child components:
+		for (Component child : this.getChildren()) {
+			child.setClipped(child.getGuiY() > getGuiY() + properHeight ||
+				child.getGuiY() + child.getHeight() < getGuiY() ||
+				child.getGuiX() > getGuiX() + properWidth ||
+				child.getGuiX() + child.getWidth() < getGuiX()
+			);
+		}
+	}
 
-    public void setHidden(boolean hidden) {
-        this.hidden = hidden;
-    }
+	public void setHidden(boolean hidden) {
+		this.hidden = hidden;
+	}
 }

@@ -1,5 +1,5 @@
 {
-  "displayId": "minecraft:nether_fortress_bridge_crossing",
-  "priority": 80,
-  "textures": "antique_atlas:structure/fortress/nether/nether_fortress_bridge_crossing"
+	"displayId": "minecraft:nether_fortress_bridge_crossing",
+	"priority": 80,
+	"textures": "antique_atlas:structure/fortress/nether/nether_fortress_bridge_crossing"
 }

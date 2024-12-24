@@ -1,6 +1,6 @@
 {
-  "textures": {
-    "valley": "antique_atlas:biome/woodland/forest/dark/oak_dense",
-    "high": "antique_atlas:biome/woodland/forest/dark/oak_dense_hills"
-  }
+	"textures": {
+		"valley": "antique_atlas:biome/woodland/forest/dark/oak_dense",
+		"high": "antique_atlas:biome/woodland/forest/dark/oak_dense_hills"
+	}
 }

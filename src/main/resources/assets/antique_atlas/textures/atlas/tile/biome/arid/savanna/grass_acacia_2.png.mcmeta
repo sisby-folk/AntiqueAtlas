@@ -1,5 +1,5 @@
 {
-  "antique_atlas:tiling": {
-    "parent": "antique_atlas:base/grass"
-  }
+	"antique_atlas:tiling": {
+		"parent": "antique_atlas:base/grass"
+	}
 }

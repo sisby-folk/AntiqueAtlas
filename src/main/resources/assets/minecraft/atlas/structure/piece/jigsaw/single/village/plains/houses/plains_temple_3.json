@@ -1,4 +1,4 @@
 {
-  "textures": "antique_atlas:structure/village/plains/double_arch_house",
-  "priority": 800
+	"textures": "antique_atlas:structure/village/plains/double_arch_house",
+	"priority": 800
 }

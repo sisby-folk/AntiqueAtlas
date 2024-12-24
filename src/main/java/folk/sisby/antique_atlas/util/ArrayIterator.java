@@ -8,25 +8,25 @@ import java.util.Iterator;
  * @author Hunternif
  */
 public class ArrayIterator<T> implements Iterator<T> {
-    private final T[] array;
-    private int currentIndex = 0;
+	private final T[] array;
+	private int currentIndex = 0;
 
-    public ArrayIterator(T[] array) {
-        this.array = array;
-    }
+	public ArrayIterator(T[] array) {
+		this.array = array;
+	}
 
-    @Override
-    public boolean hasNext() {
-        return currentIndex < array.length;
-    }
+	@Override
+	public boolean hasNext() {
+		return currentIndex < array.length;
+	}
 
-    @Override
-    public T next() {
-        return array[currentIndex++];
-    }
+	@Override
+	public T next() {
+		return array[currentIndex++];
+	}
 
-    @Override
-    public void remove() {
-        throw new UnsupportedOperationException("cannot remove items from an array");
-    }
+	@Override
+	public void remove() {
+		throw new UnsupportedOperationException("cannot remove items from an array");
+	}
 }
