@@ -1,6 +1,6 @@
 {
-  "displayId": "minecraft:jungle_temple",
-  "textures": {
-    "center_above_ground": "antique_atlas:structure/temple/jungle/jungle_temple"
-  }
+	"displayId": "minecraft:jungle_temple",
+	"textures": {
+		"center_above_ground": "antique_atlas:structure/temple/jungle/jungle_temple"
+	}
 }

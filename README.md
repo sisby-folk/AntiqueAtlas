@@ -17,12 +17,16 @@ Drag the map to pan, scroll to zoom, and use the bookmark buttons to create and 
 **AA4 has _absolutely no items!_** - This means the map works right away, can't be lost, and works on any server!
 
 ## Client-Side Features
+
 - Antique Atlas 4 is designed to let you focus on exploring the world, not get stuck staring at the map!
-  - The map is rendered using hand-drawn "tiles" to represent terrain, biomes, and structures.
-  - Tiles represent entire chunks at least - no peeking for caves or bases!
+	- The map is rendered using hand-drawn "tiles" to represent terrain, biomes, and structures.
+	- Tiles represent entire chunks at least - no peeking for caves or bases!
 - Gravestones automatically appear where you die, with customizable flavour text:
+
 > ![grave style euphemisms](https://cdn.modrinth.com/data/Y5Ve4Ui4/images/c6f5e20bcef2c26c40390e888e540dcdd89a1818.png)
+
 - Waypoint markers come in a variety of styles:
+
 > ![marker styles](https://cdn.modrinth.com/data/Y5Ve4Ui4/images/b7064c3287c5535cd9ac6d454c10ead984c7a7b3.png)
 
 If you need an equally distraction-free compass to substitute a minimap, try [PicoHUD](https://modrinth.com/mod/picohud)!
@@ -32,10 +36,15 @@ If you need an equally distraction-free compass to substitute a minimap, try [Pi
 _These work in singleplayer, or on servers with [Surveyor](https://modrinth.com/mod/surveyor) installed._
 
 - Markers are automatically added for notable structures and active nether portals:
+
 > ![structure markers](https://cdn.modrinth.com/data/Y5Ve4Ui4/images/190cc4eaa2e8784dd0f46bee9c225228a05f191a.png)
+
 - Structures only appear on the map after you've looked at them or stood on them in-game:
+
 > ![structure discovery](https://cdn.modrinth.com/data/Y5Ve4Ui4/images/86054c7949fed59341cef60d0d9f27aee86ae6ef.gif)
+
 - Map exploration can be shared with `/surveyor share [player]` which will also reveal those players' position:
+
 > ![map sharing](https://cdn.modrinth.com/data/Y5Ve4Ui4/images/4422049c395a856c35bbc361c52e8bcd30e89523.png)
 
 ## Configuration
@@ -50,6 +59,7 @@ Antique Atlas can be configured from `config/antique-atlas.toml`:<br/>
 Surveyor, which handles features including map sharing & visibility, can be configured from `config/surveyor.toml`
 
 ## Resource Packs
+
 Tiles, markers, biome detection, and structure detection is fully data-driven via resource packs.<br/>
 **Without defined biomes, atlas "guesses" tiles via tags, and shows `???` if that fails.**
 

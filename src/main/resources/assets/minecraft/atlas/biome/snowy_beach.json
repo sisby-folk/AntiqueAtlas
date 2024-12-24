@@ -1,7 +1,7 @@
 {
-  "textures": {
-    "antique_atlas:biome/wetland/beach/snowy/snow_shore_water_1": 1,
-    "antique_atlas:biome/wetland/beach/snowy/snow_shore_water_2": 1,
-    "antique_atlas:biome/wetland/beach/snowy/snow_shore_water_3": 1
-  }
+	"textures": {
+		"antique_atlas:biome/wetland/beach/snowy/snow_shore_water_1": 1,
+		"antique_atlas:biome/wetland/beach/snowy/snow_shore_water_2": 1,
+		"antique_atlas:biome/wetland/beach/snowy/snow_shore_water_3": 1
+	}
 }

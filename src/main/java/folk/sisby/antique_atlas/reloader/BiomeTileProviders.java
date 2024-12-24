@@ -34,55 +34,55 @@ import java.util.Map;
 import java.util.Set;
 
 public class BiomeTileProviders extends JsonDataLoader implements IdentifiableResourceReloadListener {
-    private static final BiomeTileProviders INSTANCE = new BiomeTileProviders();
-    public static final Identifier ID = AntiqueAtlas.id("tile_provider/biome");
+	private static final BiomeTileProviders INSTANCE = new BiomeTileProviders();
+	public static final Identifier ID = AntiqueAtlas.id("tile_provider/biome");
 
-    public static BiomeTileProviders getInstance() {
-        return INSTANCE;
-    }
+	public static BiomeTileProviders getInstance() {
+		return INSTANCE;
+	}
 
-    private final Map<Identifier, TerrainTileProvider> tileProviders = new HashMap<>();
-    private final Map<Identifier, Identifier> biomeFallbacks = new HashMap<>();
-    private boolean hasFallbacks = false;
+	private final Map<Identifier, TerrainTileProvider> tileProviders = new HashMap<>();
+	private final Map<Identifier, Identifier> biomeFallbacks = new HashMap<>();
+	private boolean hasFallbacks = false;
 
-    public BiomeTileProviders() {
-        super(new Gson(), "atlas/biome");
-    }
+	public BiomeTileProviders() {
+		super(new Gson(), "atlas/biome");
+	}
 
-    public TerrainTileProvider getTileProvider(Identifier providerId) {
-        return tileProviders.getOrDefault(providerId, tileProviders.getOrDefault(biomeFallbacks.get(providerId), TerrainTileProvider.DEFAULT));
-    }
+	public TerrainTileProvider getTileProvider(Identifier providerId) {
+		return tileProviders.getOrDefault(providerId, tileProviders.getOrDefault(biomeFallbacks.get(providerId), TerrainTileProvider.DEFAULT));
+	}
 
-    /**
-     * Register fallbacks for any biomes present in the client world that don't have explicit sets.
-     * Doing this on world join catches data-biomes that might not be registered in other worlds.
-     */
-    public void registerFallbacks(Registry<Biome> biomeRegistry) {
-        for (Biome biome : biomeRegistry) {
-            Identifier biomeId = biomeRegistry.getId(biome);
-            if (tileProviders.containsKey(biomeId)) continue;
-            Identifier fallbackBiome = getFallbackBiome(biomeRegistry.getEntry(biome));
-            if (fallbackBiome != null && tileProviders.containsKey(fallbackBiome)) {
-                biomeFallbacks.put(biomeId, fallbackBiome);
-                AntiqueAtlas.LOGGER.info("[Antique Atlas] Set fallback biome for {} to {}. You can set a more fitting texture using a resource pack!", biomeId, fallbackBiome);
-            } else if (fallbackBiome != null) {
-                AntiqueAtlas.LOGGER.error("[Antique Atlas] Fallback biome for {} is {}, which has no defined tile provider.", biomeId, fallbackBiome);
-            } else {
-                AntiqueAtlas.LOGGER.warn("[Antique Atlas] No fallback could be found for {}. This shouldn't happen! This means the biome is not in ANY conventional or vanilla tag on the client!", biomeId);
-                if (AntiqueAtlas.CONFIG.fallbackFailHandling == AntiqueAtlasConfig.FallbackHandling.CRASH) throw new IllegalStateException("Antique Atlas fallback biome registration failed! Fix the missing biome or change fallbackFailHandling in antique_atlas.toml");
-            }
-        }
-        hasFallbacks = true;
-    }
+	/**
+	 * Register fallbacks for any biomes present in the client world that don't have explicit sets.
+	 * Doing this on world join catches data-biomes that might not be registered in other worlds.
+	 */
+	public void registerFallbacks(Registry<Biome> biomeRegistry) {
+		for (Biome biome : biomeRegistry) {
+			Identifier biomeId = biomeRegistry.getId(biome);
+			if (tileProviders.containsKey(biomeId)) continue;
+			Identifier fallbackBiome = getFallbackBiome(biomeRegistry.getEntry(biome));
+			if (fallbackBiome != null && tileProviders.containsKey(fallbackBiome)) {
+				biomeFallbacks.put(biomeId, fallbackBiome);
+				AntiqueAtlas.LOGGER.info("[Antique Atlas] Set fallback biome for {} to {}. You can set a more fitting texture using a resource pack!", biomeId, fallbackBiome);
+			} else if (fallbackBiome != null) {
+				AntiqueAtlas.LOGGER.error("[Antique Atlas] Fallback biome for {} is {}, which has no defined tile provider.", biomeId, fallbackBiome);
+			} else {
+				AntiqueAtlas.LOGGER.warn("[Antique Atlas] No fallback could be found for {}. This shouldn't happen! This means the biome is not in ANY conventional or vanilla tag on the client!", biomeId);
+				if (AntiqueAtlas.CONFIG.fallbackFailHandling == AntiqueAtlasConfig.FallbackHandling.CRASH) throw new IllegalStateException("Antique Atlas fallback biome registration failed! Fix the missing biome or change fallbackFailHandling in antique_atlas.toml");
+			}
+		}
+		hasFallbacks = true;
+	}
 
-    public void clearFallbacks() {
-        hasFallbacks = false;
-        biomeFallbacks.clear();
-    }
+	public void clearFallbacks() {
+		hasFallbacks = false;
+		biomeFallbacks.clear();
+	}
 
-    public boolean hasFallbacks() {
-        return hasFallbacks;
-    }
+	public boolean hasFallbacks() {
+		return hasFallbacks;
+	}
 
 	private static Identifier getFallbackBiome(RegistryEntry<Biome> biome) {
 		if (biome.isIn(net.fabricmc.fabric.api.tag.convention.v2.ConventionalBiomeTags.IS_VOID) || biome.isIn(ConventionalBiomeTags.VOID) || biome.isIn(ForgeTags.Biomes.IS_VOID)) {
@@ -163,99 +163,99 @@ public class BiomeTileProviders extends JsonDataLoader implements IdentifiableRe
 		return null;
 	}
 
-    public static TileTexture getTexture(Map<Identifier, TileTexture> textures, Identifier id) {
-        if (textures.containsKey(id)) {
-            return textures.get(id);
-        } else {
-            throw new IllegalStateException("texture %s is not present!".formatted(id));
-        }
-    }
+	public static TileTexture getTexture(Map<Identifier, TileTexture> textures, Identifier id) {
+		if (textures.containsKey(id)) {
+			return textures.get(id);
+		} else {
+			throw new IllegalStateException("texture %s is not present!".formatted(id));
+		}
+	}
 
-    public static @Nullable List<TileTexture> resolveTextureJson(Map<Identifier, TileTexture> textures, JsonElement textureJson) {
-        if (textureJson instanceof JsonPrimitive texturePrimitive && texturePrimitive.isString()) {
-            return List.of(getTexture(textures, Identifier.of(texturePrimitive.getAsString())));
-        } else if (textureJson instanceof JsonArray textureArray) {
-            return textureArray.asList().stream().map(je -> getTexture(textures, Identifier.of(je.getAsString()))).toList();
-        } else if (textureJson instanceof JsonObject textureObject && textureObject.keySet().stream().allMatch(k -> textureObject.get(k) instanceof JsonPrimitive jp && jp.isNumber())) {
-            Multiset<TileTexture> outList = HashMultiset.create();
-            textureObject.entrySet().forEach(e -> outList.add(getTexture(textures, Identifier.of(e.getKey())), e.getValue().getAsInt()));
-            return outList.stream().toList();
-        }
-        return null;
-    }
+	public static @Nullable List<TileTexture> resolveTextureJson(Map<Identifier, TileTexture> textures, JsonElement textureJson) {
+		if (textureJson instanceof JsonPrimitive texturePrimitive && texturePrimitive.isString()) {
+			return List.of(getTexture(textures, Identifier.of(texturePrimitive.getAsString())));
+		} else if (textureJson instanceof JsonArray textureArray) {
+			return textureArray.asList().stream().map(je -> getTexture(textures, Identifier.of(je.getAsString()))).toList();
+		} else if (textureJson instanceof JsonObject textureObject && textureObject.keySet().stream().allMatch(k -> textureObject.get(k) instanceof JsonPrimitive jp && jp.isNumber())) {
+			Multiset<TileTexture> outList = HashMultiset.create();
+			textureObject.entrySet().forEach(e -> outList.add(getTexture(textures, Identifier.of(e.getKey())), e.getValue().getAsInt()));
+			return outList.stream().toList();
+		}
+		return null;
+	}
 
-    @Override
-    protected void apply(Map<Identifier, JsonElement> prepared, ResourceManager manager, Profiler profiler) {
-        AntiqueAtlas.LOGGER.info("[Antique Atlas] Reloading Biome Tile Providers...");
-        Map<Identifier, TileTexture> textures = TileTextures.getInstance().getTextures();
-        Set<TileTexture> unusedTextures = new HashSet<>(textures.values().stream().filter(t -> t.id().getPath().startsWith("biome")).toList());
-        Map<Identifier, Identifier> providerParents = new HashMap<>();
-        for (Map.Entry<Identifier, JsonElement> fileEntry : prepared.entrySet()) {
-            Identifier fileId = fileEntry.getKey();
-            try {
-                JsonObject fileJson = fileEntry.getValue().getAsJsonObject();
-                if (fileJson.has("parent")) {
-                    Identifier parentId = Identifier.of(fileJson.getAsJsonPrimitive("parent").getAsString());
-                    providerParents.put(fileId, parentId);
-                    continue;
-                }
-                JsonElement textureJson = fileJson.get("textures");
-                List<TileTexture> defaultTextures = resolveTextureJson(textures, textureJson);
-                if (defaultTextures != null) {
-                    defaultTextures.forEach(unusedTextures::remove);
-                    tileProviders.put(fileId, new TerrainTileProvider(fileId, defaultTextures));
-                } else {
-                    JsonObject textureObject = textureJson.getAsJsonObject();
-                    Map<TileElevation, List<TileTexture>> textureElevations = new HashMap<>();
-                    Set<TileElevation> skippedElevations = new HashSet<>();
-                    List<TileTexture> elevationTextures = null;
-                    for (TileElevation elevation : TileElevation.values()) {
-                        if (textureObject.has(elevation.getName())) {
-                            elevationTextures = resolveTextureJson(textures, textureObject.get(elevation.getName()));
-                            if (elevationTextures == null) throw new IllegalStateException("Malformed object %s in textures object!".formatted(elevation.getName()));
-                            elevationTextures.forEach(unusedTextures::remove);
-                            textureElevations.put(elevation, elevationTextures);
-                            for (TileElevation skipped : skippedElevations) {
-                                textureElevations.put(skipped, elevationTextures);
-                            }
-                            skippedElevations.clear();
-                        } else {
-                            skippedElevations.add(elevation);
-                        }
-                    }
-                    if (textureElevations.isEmpty()) {
-                        throw new IllegalStateException("No elevation keys were found in the textures object!");
-                    }
-                    for (TileElevation elevation : skippedElevations) {
-                        textureElevations.put(elevation, elevationTextures);
-                    }
-                    tileProviders.put(fileId, new TerrainTileProvider(fileId, textureElevations));
-                }
-            } catch (Exception e) {
-                AntiqueAtlas.LOGGER.error("[Antique Atlas] Error reading biome tile provider {}!", fileId, e);
-            }
-        }
-        providerParents.forEach((id, parentId) -> {
-            if (tileProviders.containsKey(parentId)) {
-                tileProviders.put(id, tileProviders.get(parentId));
-            } else {
-                AntiqueAtlas.LOGGER.error("[Antique Atlas] Error reading biome tile provider {}!", id, new IllegalStateException("Parent id %s doesn't exist".formatted(parentId)));
-            }
-        });
+	@Override
+	protected void apply(Map<Identifier, JsonElement> prepared, ResourceManager manager, Profiler profiler) {
+		AntiqueAtlas.LOGGER.info("[Antique Atlas] Reloading Biome Tile Providers...");
+		Map<Identifier, TileTexture> textures = TileTextures.getInstance().getTextures();
+		Set<TileTexture> unusedTextures = new HashSet<>(textures.values().stream().filter(t -> t.id().getPath().startsWith("biome")).toList());
+		Map<Identifier, Identifier> providerParents = new HashMap<>();
+		for (Map.Entry<Identifier, JsonElement> fileEntry : prepared.entrySet()) {
+			Identifier fileId = fileEntry.getKey();
+			try {
+				JsonObject fileJson = fileEntry.getValue().getAsJsonObject();
+				if (fileJson.has("parent")) {
+					Identifier parentId = Identifier.of(fileJson.getAsJsonPrimitive("parent").getAsString());
+					providerParents.put(fileId, parentId);
+					continue;
+				}
+				JsonElement textureJson = fileJson.get("textures");
+				List<TileTexture> defaultTextures = resolveTextureJson(textures, textureJson);
+				if (defaultTextures != null) {
+					defaultTextures.forEach(unusedTextures::remove);
+					tileProviders.put(fileId, new TerrainTileProvider(fileId, defaultTextures));
+				} else {
+					JsonObject textureObject = textureJson.getAsJsonObject();
+					Map<TileElevation, List<TileTexture>> textureElevations = new HashMap<>();
+					Set<TileElevation> skippedElevations = new HashSet<>();
+					List<TileTexture> elevationTextures = null;
+					for (TileElevation elevation : TileElevation.values()) {
+						if (textureObject.has(elevation.getName())) {
+							elevationTextures = resolveTextureJson(textures, textureObject.get(elevation.getName()));
+							if (elevationTextures == null) throw new IllegalStateException("Malformed object %s in textures object!".formatted(elevation.getName()));
+							elevationTextures.forEach(unusedTextures::remove);
+							textureElevations.put(elevation, elevationTextures);
+							for (TileElevation skipped : skippedElevations) {
+								textureElevations.put(skipped, elevationTextures);
+							}
+							skippedElevations.clear();
+						} else {
+							skippedElevations.add(elevation);
+						}
+					}
+					if (textureElevations.isEmpty()) {
+						throw new IllegalStateException("No elevation keys were found in the textures object!");
+					}
+					for (TileElevation elevation : skippedElevations) {
+						textureElevations.put(elevation, elevationTextures);
+					}
+					tileProviders.put(fileId, new TerrainTileProvider(fileId, textureElevations));
+				}
+			} catch (Exception e) {
+				AntiqueAtlas.LOGGER.error("[Antique Atlas] Error reading biome tile provider {}!", fileId, e);
+			}
+		}
+		providerParents.forEach((id, parentId) -> {
+			if (tileProviders.containsKey(parentId)) {
+				tileProviders.put(id, tileProviders.get(parentId));
+			} else {
+				AntiqueAtlas.LOGGER.error("[Antique Atlas] Error reading biome tile provider {}!", id, new IllegalStateException("Parent id %s doesn't exist".formatted(parentId)));
+			}
+		});
 
-        for (TileTexture texture : unusedTextures) {
-            if (texture.displayId().startsWith("test") || texture.displayId().startsWith("base")) continue;
-            AntiqueAtlas.LOGGER.warn("[Antique Atlas] Tile texture {} isn't referenced by any biome tile provider!", texture.displayId());
-        }
-    }
+		for (TileTexture texture : unusedTextures) {
+			if (texture.displayId().startsWith("test") || texture.displayId().startsWith("base")) continue;
+			AntiqueAtlas.LOGGER.warn("[Antique Atlas] Tile texture {} isn't referenced by any biome tile provider!", texture.displayId());
+		}
+	}
 
-    @Override
-    public Identifier getFabricId() {
-        return ID;
-    }
+	@Override
+	public Identifier getFabricId() {
+		return ID;
+	}
 
-    @Override
-    public Collection<Identifier> getFabricDependencies() {
-        return List.of(TileTextures.ID);
-    }
+	@Override
+	public Collection<Identifier> getFabricDependencies() {
+		return List.of(TileTextures.ID);
+	}
 }

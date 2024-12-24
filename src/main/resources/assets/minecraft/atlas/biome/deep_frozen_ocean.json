@@ -1,6 +1,6 @@
 {
-  "textures": {
-    "antique_atlas:biome/nonland/ocean/frozen/deep/water_ice_spikes_1": 1,
-    "antique_atlas:biome/nonland/ocean/frozen/deep/water_ice_spikes_2": 1
-  }
+	"textures": {
+		"antique_atlas:biome/nonland/ocean/frozen/deep/water_ice_spikes_1": 1,
+		"antique_atlas:biome/nonland/ocean/frozen/deep/water_ice_spikes_2": 1
+	}
 }

@@ -1,6 +1,6 @@
 {
-  "textures": {
-    "antique_atlas:biome/cave/lush_caves": 5,
-    "antique_atlas:biome/cave/lush_caves_aquifier": 1
-  }
+	"textures": {
+		"antique_atlas:biome/cave/lush_caves": 5,
+		"antique_atlas:biome/cave/lush_caves_aquifier": 1
+	}
 }

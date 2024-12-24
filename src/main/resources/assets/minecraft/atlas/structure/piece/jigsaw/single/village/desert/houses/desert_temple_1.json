@@ -1,4 +1,4 @@
 {
-  "textures": "antique_atlas:structure/village/desert/large_house",
-  "priority": 800
+	"textures": "antique_atlas:structure/village/desert/large_house",
+	"priority": 800
 }

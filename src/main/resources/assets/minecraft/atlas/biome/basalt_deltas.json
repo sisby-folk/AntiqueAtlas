@@ -1,8 +1,8 @@
 {
-  "textures": {
-    "antique_atlas:biome/nether/basalt/basalt_columns_1": 1,
-    "antique_atlas:biome/nether/basalt/basalt_columns_3": 1,
-    "antique_atlas:biome/nether/basalt/basalt_columns_2": 1,
-    "antique_atlas:biome/nether/basalt/basalt_lava_columns": 1
-  }
+	"textures": {
+		"antique_atlas:biome/nether/basalt/basalt_columns_1": 1,
+		"antique_atlas:biome/nether/basalt/basalt_columns_3": 1,
+		"antique_atlas:biome/nether/basalt/basalt_columns_2": 1,
+		"antique_atlas:biome/nether/basalt/basalt_lava_columns": 1
+	}
 }

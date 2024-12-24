@@ -1,7 +1,7 @@
 {
-  "textures": {
-    "path_straight_horizontal": "antique_atlas:structure/village/desert/path_horizontal",
-    "path_straight_vertical": "antique_atlas:structure/village/desert/path_vertical"
-  },
-  "priority": 1050
+	"textures": {
+		"path_straight_horizontal": "antique_atlas:structure/village/desert/path_horizontal",
+		"path_straight_vertical": "antique_atlas:structure/village/desert/path_vertical"
+	},
+	"priority": 1050
 }

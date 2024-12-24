@@ -1,19 +1,19 @@
 {
-  "textures": {
-    "valley": [
-      "antique_atlas:biome/arid/desert/sand_1",
-      "antique_atlas:biome/arid/desert/sand_cacti_sparse",
-      "antique_atlas:biome/arid/desert/sand_shrubs"
-    ],
-    "low": {
-      "antique_atlas:biome/arid/badlands/terracotta_shrubs_tiered": 4,
-      "antique_atlas:biome/arid/badlands/terracotta_tiered": 2,
-      "antique_atlas:biome/arid/badlands/terracotta_tiered_separate": 1
-    },
-    "high": [
-      "antique_atlas:biome/arid/badlands/shrubs_plateau_low",
-      "antique_atlas:biome/arid/badlands/wooded/grass_oak_plateau_low"
-    ],
-    "peak": "antique_atlas:biome/arid/badlands/wooded/grass_oak_plateau"
-  }
+	"textures": {
+		"valley": [
+			"antique_atlas:biome/arid/desert/sand_1",
+			"antique_atlas:biome/arid/desert/sand_cacti_sparse",
+			"antique_atlas:biome/arid/desert/sand_shrubs"
+		],
+		"low": {
+			"antique_atlas:biome/arid/badlands/terracotta_shrubs_tiered": 4,
+			"antique_atlas:biome/arid/badlands/terracotta_tiered": 2,
+			"antique_atlas:biome/arid/badlands/terracotta_tiered_separate": 1
+		},
+		"high": [
+			"antique_atlas:biome/arid/badlands/shrubs_plateau_low",
+			"antique_atlas:biome/arid/badlands/wooded/grass_oak_plateau_low"
+		],
+		"peak": "antique_atlas:biome/arid/badlands/wooded/grass_oak_plateau"
+	}
 }

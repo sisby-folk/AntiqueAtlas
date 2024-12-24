@@ -1,5 +1,5 @@
 {
-  "antique_atlas:tiling": {
-    "parent": "antique_atlas:biome/wetland/beach/snowy/snow_shore_water_1"
-  }
+	"antique_atlas:tiling": {
+		"parent": "antique_atlas:biome/wetland/beach/snowy/snow_shore_water_1"
+	}
 }

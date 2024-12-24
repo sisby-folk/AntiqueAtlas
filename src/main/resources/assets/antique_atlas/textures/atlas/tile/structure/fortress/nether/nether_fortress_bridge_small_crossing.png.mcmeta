@@ -1,5 +1,5 @@
 {
-  "antique_atlas:tiling": {
-    "parent": "antique_atlas:structure/fortress/nether/nether_fortress_bridge_crossing"
-  }
+	"antique_atlas:tiling": {
+		"parent": "antique_atlas:structure/fortress/nether/nether_fortress_bridge_crossing"
+	}
 }

@@ -13,35 +13,35 @@ import java.util.List;
  */
 @SuppressWarnings("rawtypes")
 public class ButtonComponent extends Component {
-    private final List<IButtonListener> listeners = new ArrayList<>();
+	private final List<IButtonListener> listeners = new ArrayList<>();
 
-    protected SoundEvent clickSound  = SoundEvents.UI_BUTTON_CLICK.value();
+	protected SoundEvent clickSound = SoundEvents.UI_BUTTON_CLICK.value();
 
-    @Override
-    public boolean mouseClicked(double x, double y, int mouseButton) {
-        if (mouseButton == 0 && isMouseOver(x, y)) {
-            onClick();
-            return true;
-        }
+	@Override
+	public boolean mouseClicked(double x, double y, int mouseButton) {
+		if (mouseButton == 0 && isMouseOver(x, y)) {
+			onClick();
+			return true;
+		}
 
-        return super.mouseClicked(x, y, mouseButton);
-    }
+		return super.mouseClicked(x, y, mouseButton);
+	}
 
-    /**
-     * Called when the user left-clicks on this component.
-     */
-    @SuppressWarnings("unchecked")
-    void onClick() {
-        if (clickSound != null) {
-            MinecraftClient.getInstance().getSoundManager().play(PositionedSoundInstance.master(clickSound, 1.0F));
-        }
+	/**
+	 * Called when the user left-clicks on this component.
+	 */
+	@SuppressWarnings("unchecked")
+	void onClick() {
+		if (clickSound != null) {
+			MinecraftClient.getInstance().getSoundManager().play(PositionedSoundInstance.master(clickSound, 1.0F));
+		}
 
-        for (IButtonListener listener : listeners) {
-            listener.onClick(this);
-        }
-    }
+		for (IButtonListener listener : listeners) {
+			listener.onClick(this);
+		}
+	}
 
-    public void addListener(IButtonListener listener) {
-        listeners.add(listener);
-    }
+	public void addListener(IButtonListener listener) {
+		listeners.add(listener);
+	}
 }

@@ -1,15 +1,15 @@
 {
-  "textures": {
-    "valley": [
-      "antique_atlas:biome/arid/savanna/windswept/acacia_cliffs_1",
-      "antique_atlas:biome/arid/savanna/windswept/acacia_cliffs_2",
-      "antique_atlas:biome/arid/savanna/windswept/acacia_cliffs_3"
-    ],
-    "peak": [
-      "antique_atlas:biome/arid/savanna/windswept/cliffs_clouds",
-      "antique_atlas:biome/arid/savanna/windswept/acacia_cliffs_clouds_1",
-      "antique_atlas:biome/arid/savanna/windswept/acacia_cliffs_clouds_2",
-     "antique_atlas:biome/arid/savanna/windswept/acacia_cliffs_clouds_3"
- ]
-  }
+	"textures": {
+		"valley": [
+			"antique_atlas:biome/arid/savanna/windswept/acacia_cliffs_1",
+			"antique_atlas:biome/arid/savanna/windswept/acacia_cliffs_2",
+			"antique_atlas:biome/arid/savanna/windswept/acacia_cliffs_3"
+		],
+		"peak": [
+			"antique_atlas:biome/arid/savanna/windswept/cliffs_clouds",
+			"antique_atlas:biome/arid/savanna/windswept/acacia_cliffs_clouds_1",
+			"antique_atlas:biome/arid/savanna/windswept/acacia_cliffs_clouds_2",
+			"antique_atlas:biome/arid/savanna/windswept/acacia_cliffs_clouds_3"
+		]
+	}
 }

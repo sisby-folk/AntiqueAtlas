@@ -17,30 +17,30 @@ import java.util.Iterator;
  * @author Hunternif
  */
 public class SubTileQuartet implements Iterable<SubTile> {
-    private final SubTile[] array;
+	private final SubTile[] array;
 
-    public SubTileQuartet(SubTile a, SubTile b, SubTile c, SubTile d) {
-        array = new SubTile[]{a, b, c, d};
-    }
+	public SubTileQuartet(SubTile a, SubTile b, SubTile c, SubTile d) {
+		array = new SubTile[]{a, b, c, d};
+	}
 
-    /**
-     * Set the coordinates for the top left subtile, and the rest of them
-     * have their coordinates updated respectively.
-     */
-    public void setCoords(int x, int y) {
-        array[0].x = x;
-        array[1].x = x + 1;
-        array[2].x = x;
-        array[3].x = x + 1;
+	/**
+	 * Set the coordinates for the top left subtile, and the rest of them
+	 * have their coordinates updated respectively.
+	 */
+	public void setCoords(int x, int y) {
+		array[0].x = x;
+		array[1].x = x + 1;
+		array[2].x = x;
+		array[3].x = x + 1;
 
-        array[0].y = y;
-        array[1].y = y;
-        array[2].y = y + 1;
-        array[3].y = y + 1;
-    }
+		array[0].y = y;
+		array[1].y = y;
+		array[2].y = y + 1;
+		array[3].y = y + 1;
+	}
 
-    @Override
-    public @NotNull Iterator<SubTile> iterator() {
-        return new ArrayIterator<>(array);
-    }
+	@Override
+	public @NotNull Iterator<SubTile> iterator() {
+		return new ArrayIterator<>(array);
+	}
 }

@@ -1,8 +1,8 @@
 {
-  "textures": {
-    "antique_atlas:biome/flatland/plains/sunflower/sunflowers_1": 1,
-    "antique_atlas:biome/flatland/plains/sunflower/sunflowers_2": 1,
-    "antique_atlas:base/grass": 1,
-    "antique_atlas:biome/flatland/plains/grass_3": 1
-  }
+	"textures": {
+		"antique_atlas:biome/flatland/plains/sunflower/sunflowers_1": 1,
+		"antique_atlas:biome/flatland/plains/sunflower/sunflowers_2": 1,
+		"antique_atlas:base/grass": 1,
+		"antique_atlas:biome/flatland/plains/grass_3": 1
+	}
 }

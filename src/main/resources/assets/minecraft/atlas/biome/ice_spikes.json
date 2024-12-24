@@ -1,6 +1,6 @@
 {
-  "textures": {
-    "antique_atlas:biome/flatland/ice_spikes/snow_ice_spikes_dense": 1,
-    "antique_atlas:biome/flatland/ice_spikes/snow_ice_spikes_edge": 1
-  }
+	"textures": {
+		"antique_atlas:biome/flatland/ice_spikes/snow_ice_spikes_dense": 1,
+		"antique_atlas:biome/flatland/ice_spikes/snow_ice_spikes_edge": 1
+	}
 }

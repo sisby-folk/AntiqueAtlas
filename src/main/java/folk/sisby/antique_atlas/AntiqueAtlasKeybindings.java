@@ -9,22 +9,22 @@ import net.minecraft.client.util.InputUtil;
 
 
 public class AntiqueAtlasKeybindings {
-    public static final KeyBinding ATLAS_KEYMAPPING = new KeyBinding("key.antique_atlas.open", InputUtil.Type.KEYSYM, 77, "key.antique_atlas.category");
+	public static final KeyBinding ATLAS_KEYMAPPING = new KeyBinding("key.antique_atlas.open", InputUtil.Type.KEYSYM, 77, "key.antique_atlas.category");
 
-    public static void init() {
-        KeyBindingHelper.registerKeyBinding(ATLAS_KEYMAPPING);
-        ClientTickEvents.END_CLIENT_TICK.register(AntiqueAtlasKeybindings::onClientTick);
-    }
+	public static void init() {
+		KeyBindingHelper.registerKeyBinding(ATLAS_KEYMAPPING);
+		ClientTickEvents.END_CLIENT_TICK.register(AntiqueAtlasKeybindings::onClientTick);
+	}
 
-    public static void onClientTick(MinecraftClient client) {
-        while (ATLAS_KEYMAPPING.wasPressed()) {
-            if (client.currentScreen == null) {
-                AtlasScreen screen = new AtlasScreen();
-                screen.init();
-                screen.prepareToOpen();
-                screen.tick();
-                client.setScreen(screen);
-            }
-        }
-    }
+	public static void onClientTick(MinecraftClient client) {
+		while (ATLAS_KEYMAPPING.wasPressed()) {
+			if (client.currentScreen == null) {
+				AtlasScreen screen = new AtlasScreen();
+				screen.init();
+				screen.prepareToOpen();
+				screen.tick();
+				client.setScreen(screen);
+			}
+		}
+	}
 }

@@ -1,5 +1,5 @@
 {
-  "antique_atlas:tiling": {
-    "parent": "antique_atlas:base/plateau"
-  }
+	"antique_atlas:tiling": {
+		"parent": "antique_atlas:base/plateau"
+	}
 }

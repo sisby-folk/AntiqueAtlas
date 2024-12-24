@@ -1,5 +1,5 @@
 {
-  "antique_atlas:tiling": {
-    "parent": "antique_atlas:biome/woodland/forest/birch/birch"
-  }
+	"antique_atlas:tiling": {
+		"parent": "antique_atlas:biome/woodland/forest/birch/birch"
+	}
 }

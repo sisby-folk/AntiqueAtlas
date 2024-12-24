@@ -1,6 +1,6 @@
 {
-  "displayId": "minecraft:igloo",
-  "textures": {
-    "center_top_above_ground": "antique_atlas:structure/igloo/igloo"
-  }
+	"displayId": "minecraft:igloo",
+	"textures": {
+		"center_top_above_ground": "antique_atlas:structure/igloo/igloo"
+	}
 }

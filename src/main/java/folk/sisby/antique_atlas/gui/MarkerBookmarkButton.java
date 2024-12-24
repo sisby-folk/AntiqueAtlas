@@ -6,15 +6,15 @@ import net.minecraft.text.Text;
 import net.minecraft.util.DyeColor;
 
 public class MarkerBookmarkButton extends BookmarkButton {
-    protected final MarkerTexture markerTexture;
+	protected final MarkerTexture markerTexture;
 
-    protected MarkerBookmarkButton(Text title, MarkerTexture markerTexture, DyeColor accent, boolean left) {
-        super(title, markerTexture.id(), accent, accent, markerTexture.textureWidth(), markerTexture.textureHeight(), left);
-        this.markerTexture = markerTexture;
-    }
+	protected MarkerBookmarkButton(Text title, MarkerTexture markerTexture, DyeColor accent, boolean left) {
+		super(title, markerTexture.id(), accent, accent, markerTexture.textureWidth(), markerTexture.textureHeight(), left);
+		this.markerTexture = markerTexture;
+	}
 
-    @Override
-    public void drawIcon(DrawContext context, int x, int y) {
-        markerTexture.drawIcon(context, x, y, iconTint);
-    }
+	@Override
+	public void drawIcon(DrawContext context, int x, int y) {
+		markerTexture.drawIcon(context, x, y, iconTint);
+	}
 }

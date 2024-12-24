@@ -1,6 +1,6 @@
 {
-  "textures": {
-    "antique_atlas:biome/highland/grove/cherry/smooth_cherry_mountains": 2,
-    "antique_atlas:biome/highland/peaks/stony/smooth_mountains": 1
-  }
+	"textures": {
+		"antique_atlas:biome/highland/grove/cherry/smooth_cherry_mountains": 2,
+		"antique_atlas:biome/highland/peaks/stony/smooth_mountains": 1
+	}
 }

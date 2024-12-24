@@ -1,101 +1,101 @@
 //file:noinspection GroovyAssignabilityCheck
 //file:noinspection GroovyAccessibility
 plugins {
-    id "maven-publish"
-    alias libs.plugins.loom
-    alias libs.plugins.githubRelease
-    alias libs.plugins.minotaur
+	id "maven-publish"
+	alias libs.plugins.loom
+	alias libs.plugins.githubRelease
+	alias libs.plugins.minotaur
 }
 
 version = "$baseVersion+$branch"
 archivesBaseName = project.slug
 
 repositories {
-    maven { url "https://repo.sleeping.town/" }
+	maven { url "https://repo.sleeping.town/" }
 }
 
 dependencies {
-    implementation libs.kaleidoConfig
+	implementation libs.kaleidoConfig
 
-    minecraft libs.mc
-    mappings variantOf(libs.yarn) { classifier "v2" }
-    modImplementation libs.fl
+	minecraft libs.mc
+	mappings variantOf(libs.yarn) { classifier "v2" }
+	modImplementation libs.fl
 
-    modImplementation libs.fapi
+	modImplementation libs.fapi
 
-    modImplementation libs.surveyor
+	modImplementation libs.surveyor
 }
 
 processResources {
-    final Map<String, String> meta = [
-        version       : version,
-        modId         : modId,
-        modName       : modName,
-        modDescription: modDescription,
-        homepage      : "https://modrinth.com/mod/${slug}",
-        issues        : "https://github.com/${user}/${slug}/issues",
-        sources       : "https://github.com/${user}/${slug}",
-        license       : license,
-        authors       : authors.split(", ").join("\",\n    \""),
-        contributors  : contributors.split(", ").join("\",\n    \""),
-        members       : "${authors}. Contributions by ${contributors}",
-        mc            : compatibleVersions.split(", ")[0],
-        fl            : libs.versions.fl.get(),
-        fapi          : libs.versions.fapi.get(),
-        surveyor      : libs.versions.surveyor.get(),
-    ]
-    inputs.properties(meta)
-    filesMatching("*.mod.json") { expand(meta) }
-    filesMatching("META-INF/*mods.toml") { expand(meta) }
+	final Map<String, String> meta = [
+		version       : version,
+		modId         : modId,
+		modName       : modName,
+		modDescription: modDescription,
+		homepage      : "https://modrinth.com/mod/${slug}",
+		issues        : "https://github.com/${user}/${slug}/issues",
+		sources       : "https://github.com/${user}/${slug}",
+		license       : license,
+		authors       : authors.split(", ").join("\",\n    \""),
+		contributors  : contributors.split(", ").join("\",\n    \""),
+		members       : "${authors}. Contributions by ${contributors}",
+		mc            : compatibleVersions.split(", ")[0],
+		fl            : libs.versions.fl.get(),
+		fapi          : libs.versions.fapi.get(),
+		surveyor      : libs.versions.surveyor.get(),
+	]
+	inputs.properties(meta)
+	filesMatching("*.mod.json") { expand(meta) }
+	filesMatching("META-INF/*mods.toml") { expand(meta) }
 }
 
 tasks.withType(JavaCompile).configureEach {
-    it.options.encoding = "UTF-8"
-    it.options.release = 17
+	it.options.encoding = "UTF-8"
+	it.options.release = 17
 }
 
 java {
-    withSourcesJar()
-    sourceCompatibility = JavaVersion.VERSION_17
-    targetCompatibility = JavaVersion.VERSION_17
+	withSourcesJar()
+	sourceCompatibility = JavaVersion.VERSION_17
+	targetCompatibility = JavaVersion.VERSION_17
 }
 
 jar {
-    from("LICENSE") {
-        rename { "${it}_${archivesBaseName}" }
-    }
+	from("LICENSE") {
+		rename { "${it}_${archivesBaseName}" }
+	}
 }
 
 githubRelease {
-    token = "$System.env.GITHUB_TOKEN"
-    owner = project.user
-    repo = slug
-    tagName = "v${baseVersion}+${tagBranch}"
-    targetCommitish = tagBranch
-    releaseAssets = remapJar
-    releaseName = "v${baseVersion}"
-    allowUploadToExisting = true
-    generateReleaseNotes = true
-    body = !file("CHANGELOG.md").exists() ? "" : rootProject.file("CHANGELOG.md").text
+	token = "$System.env.GITHUB_TOKEN"
+	owner = project.user
+	repo = slug
+	tagName = "v${baseVersion}+${tagBranch}"
+	targetCommitish = tagBranch
+	releaseAssets = remapJar
+	releaseName = "v${baseVersion}"
+	allowUploadToExisting = true
+	generateReleaseNotes = true
+	body = !file("CHANGELOG.md").exists() ? "" : rootProject.file("CHANGELOG.md").text
 }
 
 modrinth {
-    token = "$System.env.MODRINTH_TOKEN"
-    projectId = modrinthSlug
-    versionNumber = project.version
-    uploadFile = remapJar
-    gameVersions = compatibleVersions.split(", ").toList()
-    loaders = compatibleLoaders.split(", ").toList()
-    changelog = !file("CHANGELOG.md").exists() ? "" : rootProject.file("CHANGELOG.md").text + "\n\nChangelog: https://github.com/${user}/${slug}/releases/tag/v${baseVersion}+${tagBranch}"
-    syncBodyFrom = rootProject.file("README.md").text
-    dependencies {
-        required.version libs.fapi.get().getName(), libs.versions.fapi.get()
-        required.version libs.surveyor.get().getName(), libs.versions.surveyor.get()
-    }
+	token = "$System.env.MODRINTH_TOKEN"
+	projectId = modrinthSlug
+	versionNumber = project.version
+	uploadFile = remapJar
+	gameVersions = compatibleVersions.split(", ").toList()
+	loaders = compatibleLoaders.split(", ").toList()
+	changelog = !file("CHANGELOG.md").exists() ? "" : rootProject.file("CHANGELOG.md").text + "\n\nChangelog: https://github.com/${user}/${slug}/releases/tag/v${baseVersion}+${tagBranch}"
+	syncBodyFrom = rootProject.file("README.md").text
+	dependencies {
+		required.version libs.fapi.get().getName(), libs.versions.fapi.get()
+		required.version libs.surveyor.get().getName(), libs.versions.surveyor.get()
+	}
 }
 
 tasks.register("fullRelease") {
-    group "publishing"
-    dependsOn "githubRelease"
-    dependsOn "modrinth"
+	group "publishing"
+	dependsOn "githubRelease"
+	dependsOn "modrinth"
 }
