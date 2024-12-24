@@ -294,7 +294,9 @@ public class AtlasScreen extends Component {
                     if (!worldAtlasData.deleteLandmark(player.getEntityWorld(), landmark)) return;
                     updateBookmarkerList();
                     player.getEntityWorld().playSound(player, player.getBlockPos(), SoundEvents.UI_CARTOGRAPHY_TABLE_TAKE_RESULT, SoundCategory.AMBIENT, 1F, 0.5F);
-                    state.switchTo(NORMAL, this);
+                    if (!hasShiftDown()) {
+						state.switchTo(NORMAL, this);
+					}
                 }
             });
 
@@ -335,7 +337,7 @@ public class AtlasScreen extends Component {
 
         // If clicked on the map, start dragging
         if (!state.is(NORMAL) && !state.is(HIDING_MARKERS)) {
-            if (state.is(PLACING_MARKER) && isMouseOverMap && mouseState == 0 /* left click */) {
+            if (state.is(PLACING_MARKER) && isMouseOverMap && mouseState == GLFW.GLFW_MOUSE_BUTTON_1) {
                 markerModal.setMarkerData(player.getEntityWorld(), screenXToWorldX(mouseX), screenYToWorldZ(mouseY));
                 addChild(markerModal);
 
@@ -353,7 +355,9 @@ public class AtlasScreen extends Component {
                     player.getEntityWorld().playSound(player, player.getBlockPos(), SoundEvents.UI_CARTOGRAPHY_TABLE_TAKE_RESULT, SoundCategory.AMBIENT, 1F, 0.5F);
                 }
             }
-            state.switchTo(NORMAL, this);
+			if (!hasShiftDown() || !state.is(DELETING_MARKER)) {
+				state.switchTo(NORMAL, this);
+			}
         } else if (isMouseOverMap && selectedButton == null) {
             isDragging = true;
             return true;

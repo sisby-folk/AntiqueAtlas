@@ -71,7 +71,7 @@ Once stable and feature-complete, we intend to maintain atlas on most modpack ve
 All mods are built on the work of many others.
 
 The art for antique atlas was created by [Hunternif](https://github.com/Hunternif) ([DA](https://www.deviantart.com/hunternif)) and [lumiscosity](https://github.com/lumiscosity) ([Neocities](https://lumiscosity.neocities.org/)).<br/>
-[Click here](https://github.com/sisby-folk/antique-atlas/blob/1.20/credits.txt) for detailed art credit.
+[Click here](https://github.com/sisby-folk/antique-atlas/blob/1.20/CREDITS) for detailed art credit.
 
 This mod is a fourth-gen rewrite, and relies heavily on contributions of many developers and artists before us.<br/>
 We can't draw autotile to save our lives - feel free to [contribute](https://github.com/sisby-folk/antique-atlas/issues?q=is%3Aissue+is%3Aopen+label%3Atexturing)!
