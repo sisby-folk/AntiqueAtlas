@@ -5,6 +5,7 @@ import com.mojang.blaze3d.systems.RenderSystem;
 import folk.sisby.antique_atlas.WorldAtlasData;
 import folk.sisby.antique_atlas.gui.AtlasScreen;
 import folk.sisby.antique_atlas.gui.tiles.TileRenderIterator;
+import folk.sisby.antique_atlas.util.ColorUtil;
 import folk.sisby.antique_atlas.util.DrawBatcher;
 import folk.sisby.antique_atlas.util.DrawUtil;
 import folk.sisby.antique_atlas.util.MathUtil;
@@ -103,7 +104,7 @@ public class MixinHeldItemRenderer {
 			DyeColor color = landmark.color();
 			Vector2d markerPoint = new Vector2d(markerX, markerY);
 			float alpha = (float) MathHelper.clamp(MathUtil.innerDistanceToEdge(mapArea, markerPoint) / 32.0, 0, 1);
-			texture.draw(matrices, vertexConsumers, markerX, markerY, 1, tileChunks, color == null ? null : color.getColorComponents(), 1F, alpha, light);
+			texture.draw(matrices, vertexConsumers, markerX, markerY, 1, tileChunks, color == null ? null : ColorUtil.getColorFromArgb(color.getEntityColor()), 1F, alpha, light);
 		});
 		matrices.pop();
 

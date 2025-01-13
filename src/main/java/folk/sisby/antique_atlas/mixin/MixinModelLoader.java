@@ -18,10 +18,10 @@ import java.util.Map;
 
 @Mixin(ModelLoader.class)
 public abstract class MixinModelLoader {
-	@Shadow protected abstract void addModel(ModelIdentifier modelId);
+	@Shadow protected abstract void loadInventoryVariantItemModel(Identifier id);
 
 	@Inject(method = "<init>", at = @At(value = "INVOKE", target = "Ljava/util/Map;values()Ljava/util/Collection;"))
-	private void loadAtlasModel(BlockColors blockColors, Profiler profiler, Map<Identifier, JsonUnbakedModel> jsonUnbakedModels, Map<Identifier, List<ModelLoader.SourceTrackedData>> blockStates, CallbackInfo ci) {
-		addModel(AntiqueAtlas.ATLAS_MODEL);
+	private void loadAtlasModel(BlockColors blockColors, Profiler profiler, Map<?, ?> jsonUnbakedModels, Map<?, ?> blockStates, CallbackInfo ci) {
+		loadInventoryVariantItemModel(AntiqueAtlas.ATLAS_MODEL.id());
 	}
 }

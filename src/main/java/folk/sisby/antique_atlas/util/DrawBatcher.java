@@ -3,6 +3,7 @@ package folk.sisby.antique_atlas.util;
 import com.mojang.blaze3d.systems.RenderSystem;
 import net.minecraft.client.render.BufferBuilder;
 import net.minecraft.client.render.BufferRenderer;
+import net.minecraft.client.render.BuiltBuffer;
 import net.minecraft.client.render.GameRenderer;
 import net.minecraft.client.render.RenderLayer;
 import net.minecraft.client.render.Tessellator;
@@ -57,6 +58,9 @@ public class DrawBatcher implements AutoCloseable {
 
 	@Override
 	public void close() {
-		if (bufferBuilder != null) BufferRenderer.drawWithGlobalProgram(bufferBuilder.end());
+		if (bufferBuilder != null) {
+			BuiltBuffer bb = bufferBuilder.endNullable();
+			if (bb != null) BufferRenderer.drawWithGlobalProgram(bb);
+		}
 	}
 }
