@@ -1,0 +1,15 @@
+{
+	"required": true,
+	"minVersion": "0.8",
+	"package": "folk.sisby.antique_atlas.mixin",
+	"compatibilityLevel": "JAVA_17",
+	"client": [
+		"MixinHeldItemRenderer",
+		"MixinItemModels",
+		"MixinItemStack",
+		"MixinModelLoader"
+	],
+	"injectors": {
+		"defaultRequire": 1
+	}
+}
