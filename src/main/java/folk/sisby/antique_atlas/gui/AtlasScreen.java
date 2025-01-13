@@ -29,7 +29,9 @@ import it.unimi.dsi.fastutil.objects.Reference2ObjectArrayMap;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.option.KeyBinding;
+import net.minecraft.client.render.VertexConsumerProvider;
 import net.minecraft.client.sound.PositionedSoundInstance;
+import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.sound.SoundCategory;
 import net.minecraft.sound.SoundEvents;
@@ -39,6 +41,7 @@ import net.minecraft.util.Formatting;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.ChunkPos;
+import net.minecraft.util.math.ColorHelper;
 import net.minecraft.util.math.ColumnPos;
 import net.minecraft.util.math.MathHelper;
 import org.joml.Vector2d;
@@ -74,11 +77,11 @@ public class AtlasScreen extends Component {
 	private static final Text TEXT_ADD_MARKER = Text.translatable("gui.antique_atlas.addMarker");
 	private static final Text TEXT_ADD_MARKER_HERE = Text.translatable("gui.antique_atlas.addMarkerHere");
 
-	private static final int MAP_BORDER_WIDTH = 17;
-	private static final int MAP_BORDER_HEIGHT = 11;
-	private static final float PLAYER_ROTATION_STEPS = 16;
-	private static final int PLAYER_ICON_WIDTH = 7;
-	private static final int PLAYER_ICON_HEIGHT = 8;
+	public static final int MAP_BORDER_WIDTH = 17;
+	public static final int MAP_BORDER_HEIGHT = 11;
+	public static final float PLAYER_ROTATION_STEPS = 16;
+	public static final int PLAYER_ICON_WIDTH = 7;
+	public static final int PLAYER_ICON_HEIGHT = 8;
 	private static final int BOOKMARK_SPACING = 2;
 	public static final int MARKER_SIZE = 32;
 	/**
@@ -551,22 +554,19 @@ public class AtlasScreen extends Component {
 	public void render(DrawContext context, int mouseX, int mouseY, float partialTick) {
 		super.renderBackground(context, mouseX, mouseY, partialTick);
 		mapScale = getMapScale();
-
 		RenderSystem.setShaderColor(1, 1, 1, 1);
+
 		if (fullscreen) {
 			int left_width = bookWidth / 2 - 15;
 			context.drawGuiTexture(BOOK_FULLSCREEN, getGuiX(), getGuiY(), left_width, bookHeight);
 			context.drawGuiTexture(BOOK_FULLSCREEN_M, getGuiX() + left_width, getGuiY(), 29, bookHeight);
 			context.drawGuiTexture(BOOK_FULLSCREEN_R, getGuiX() + left_width + 29, getGuiY(), left_width + 1, bookHeight);
 		} else {
-			context.drawTexture(BOOK, getGuiX(), getGuiY(), 0, 0, 310, 218, 310, 218);
+			context.drawTexture(BOOK, getGuiX(), getGuiY(), 0, 0, bookWidth, bookHeight, bookWidth, bookHeight);
 		}
 
 		if (worldAtlasData == null) return;
 
-		if (state.is(DELETING_MARKER)) {
-			RenderSystem.setShaderColor(1, 1, 1, 0.5f);
-		}
 		double guiScale = client.getWindow().getScaleFactor();
 		RenderSystem.enableScissor(
 			(int) (guiScale * (getGuiX() + MAP_BORDER_WIDTH)),
@@ -582,44 +582,25 @@ public class AtlasScreen extends Component {
 		int mapStartChunkX = MathUtil.roundToBase(screenXToWorldX(getGuiX()) >> 4, tileChunks) - 2 * tileChunks;
 		int mapStartChunkZ = MathUtil.roundToBase(screenYToWorldZ(getGuiY()) >> 4, tileChunks) - 2 * tileChunks;
 		int mapEndChunkX = MathUtil.roundToBase(screenXToWorldX(getGuiX() + bookWidth) >> 4, tileChunks) + 2 * tileChunks;
-		int mapEndChunkZ = MathUtil.roundToBase(screenYToWorldZ(getGuiY() + bookWidth) >> 4, tileChunks) + 2 * tileChunks;
+		int mapEndChunkZ = MathUtil.roundToBase(screenYToWorldZ(getGuiY() + bookHeight) >> 4, tileChunks) + 2 * tileChunks;
 		double mapStartScreenX = worldXToScreenX(mapStartChunkX << 4);
 		double mapStartScreenY = worldZToScreenY(mapStartChunkZ << 4);
 		TileRenderIterator tiles = new TileRenderIterator(worldAtlasData);
 		tiles.setScope(new Rect(mapStartChunkX, mapStartChunkZ, mapEndChunkX, mapEndChunkZ));
 		tiles.setStep(tileChunks);
-
-		context.getMatrices().push();
-		context.getMatrices().translate(mapStartScreenX, mapStartScreenY, 0);
-		context.getMatrices().scale((float) ((double) mapScale / guiScale), (float) ((double) mapScale / guiScale), 1.0F);
-
-		Map<TileTexture, Collection<SubTile>> tileTextures = new Reference2ObjectArrayMap<>();
-		for (SubTileQuartet subTiles : tiles) {
-			for (SubTile subtile : subTiles) {
-				if (subtile == null || subtile.texture == null) continue;
-				tileTextures.computeIfAbsent(subtile.texture, k -> new ArrayList<>()).add(subtile.copy());
-			}
-		}
-		int subTilePixels = tilePixels / 2;
-		tileTextures.forEach((texture, subtiles) -> {
-			try (DrawBatcher batcher = new DrawBatcher(context, texture.id(), 32, 48)) {
-				for (SubTile subtile : subtiles) {
-					batcher.add(subtile.x * subTilePixels, subtile.y * subTilePixels, subTilePixels, subTilePixels, subtile.getTextureU() * 8, subtile.getTextureV() * 8, 8, 8);
-				}
-			}
-		});
-
-		context.getMatrices().pop();
+		
+		RenderSystem.setShaderColor(1, 1, 1, state.is(DELETING_MARKER) ? 0.5f : 1.0f);
+		renderTiles(context.getMatrices(), null, getGuiX() + MAP_BORDER_WIDTH, getGuiY() + MAP_BORDER_HEIGHT, mapWidth, mapHeight, mapStartScreenX, mapStartScreenY, mapScale, tilePixels, guiScale, 15728640, tiles);
+		RenderSystem.setShaderColor(1, 1, 1, 1);
 
 		// Overlay the frame so that edges of the map are smooth:
-		RenderSystem.setShaderColor(1, 1, 1, 1);
 		if (fullscreen) {
 			int left_width = bookWidth / 2 - 15;
 			context.drawGuiTexture(BOOK_FRAME_FULLSCREEN, getGuiX(), getGuiY(), left_width, bookHeight);
 			context.drawGuiTexture(BOOK_FRAME_FULLSCREEN_M, getGuiX() + left_width, getGuiY(), 29, bookHeight);
 			context.drawGuiTexture(BOOK_FRAME_FULLSCREEN_R, getGuiX() + left_width + 29, getGuiY(), left_width + 1, bookHeight);
 		} else {
-			context.drawTexture(BOOK_FRAME, getGuiX(), getGuiY(), 0, 0, 310, 218, 310, 218);
+			context.drawTexture(BOOK_FRAME, getGuiX(), getGuiY(), 0, 0, bookWidth, bookHeight, bookWidth, bookHeight);
 		}
 		context.getMatrices().push();
 		context.getMatrices().translate(getGuiX(), getGuiY(), 0);
@@ -670,7 +651,7 @@ public class AtlasScreen extends Component {
 			context.drawGuiTexture(BOOK_FRAME_NARROW_FULLSCREEN_M, getGuiX() + left_width, getGuiY(), 29, bookHeight);
 			context.drawGuiTexture(BOOK_FRAME_NARROW_FULLSCREEN_R, getGuiX() + left_width + 29, getGuiY(), left_width + 1, bookHeight);
 		} else {
-			context.drawTexture(BOOK_FRAME_NARROW, getGuiX(), getGuiY(), 0, 0, 310, 218, 310, 218);
+			context.drawTexture(BOOK_FRAME_NARROW, getGuiX(), getGuiY(), 0, 0, bookWidth, bookHeight, bookWidth, bookHeight);
 		}
 
 		markerScrollBox.getViewport().setHidden(state.is(HIDING_MARKERS));
@@ -722,6 +703,34 @@ public class AtlasScreen extends Component {
 		}
 	}
 
+	public static void renderTiles(MatrixStack matrices, VertexConsumerProvider vertexConsumers, int mapX, int mapY, int mapWidth, int mapHeight, double mapStartScreenX, double mapStartScreenY, double mapScale, int pixelsPerTile, double guiScale, int light, TileRenderIterator tiles) {
+		matrices.push();
+		matrices.translate(mapStartScreenX, mapStartScreenY, 0);
+		matrices.scale((float) (mapScale / guiScale), (float) (mapScale / guiScale), 1.0F);
+
+		Map<TileTexture, Collection<SubTile>> tileTextures = new Reference2ObjectArrayMap<>();
+		for (SubTileQuartet subTiles : tiles) {
+			for (SubTile subtile : subTiles) {
+				if (subtile == null || subtile.texture == null) continue;
+				tileTextures.computeIfAbsent(subtile.texture, k -> new ArrayList<>()).add(subtile.copy());
+			}
+		}
+		int subTilePixels = pixelsPerTile / 2;
+		tileTextures.forEach((texture, subtiles) -> {
+			try (DrawBatcher batcher = new DrawBatcher(matrices, vertexConsumers, texture.id(), 32, 48, light)) {
+				for (SubTile subtile : subtiles) {
+					int drawX = subtile.x * subTilePixels;
+					int drawY = subtile.y * subTilePixels;
+					// a non-scope bounds check allows subtile-level accuracy, and keeps border tiling accurate.
+					if (drawX * (guiScale / mapScale) > mapX + mapWidth - mapStartScreenX || drawY * (guiScale / mapScale) > mapY + mapHeight - mapStartScreenY || (drawX + subTilePixels) * (guiScale / mapScale) < mapX - mapStartScreenX || (drawY + subTilePixels) * (guiScale / mapScale) < mapY - mapStartScreenY) continue;
+					batcher.add(drawX, drawY, subTilePixels, subTilePixels, subtile.getTextureU() * 8, subtile.getTextureV() * 8, 8, 8, 0xFFFFFFFF);
+				}
+			}
+		});
+
+		matrices.pop();
+	}
+
 	private void renderPlayer(DrawContext context, PlayerSummary player, float iconScale, boolean hovering, boolean self) {
 		double playerOffsetX = worldXToScreenX(player.pos().getX()) - getGuiX();
 		double playerOffsetY = worldZToScreenY(player.pos().getZ()) - getGuiY();
@@ -732,12 +741,10 @@ public class AtlasScreen extends Component {
 		// Draw the icon:
 		float tint = (player.online() ? 1 : 0.5f) * (hovering ? 0.9f : 1);
 		float greenTint = self ? 1 : 0.7f;
-		RenderSystem.setShaderColor(tint, tint * greenTint, tint, state.is(PLACING_MARKER) ? 0.5f : 1);
+		int argb = ColorHelper.Argb.getArgb(state.is(PLACING_MARKER) ? 127 : 255, (int) (tint * 255), (int) (tint * greenTint * 255), (int) (tint * 255));
 		float playerRotation = ((float) Math.round(player.yaw() / 360f * PLAYER_ROTATION_STEPS) / PLAYER_ROTATION_STEPS) * 360f;
 
-		DrawUtil.drawCenteredWithRotation(context, PLAYER, playerOffsetX, playerOffsetY, iconScale, PLAYER_ICON_WIDTH, PLAYER_ICON_HEIGHT, playerRotation);
-
-		RenderSystem.setShaderColor(1, 1, 1, 1);
+		DrawUtil.drawCenteredWithRotation(context.getMatrices(), null, PLAYER, playerOffsetX, playerOffsetY, iconScale, PLAYER_ICON_WIDTH, PLAYER_ICON_HEIGHT, playerRotation, 15728640, argb);
 
 		if (hovering && !self) {
 			context.drawTooltip(textRenderer, Text.literal(player.username()).formatted(player.online() ? Formatting.LIGHT_PURPLE : Formatting.GRAY), (int) getMouseX() - getGuiX(), (int) getMouseY() - getGuiY());
@@ -750,7 +757,6 @@ public class AtlasScreen extends Component {
 
 		float tint = hovering ? 0.8f : 1.0f;
 		float alpha = state.is(PLACING_MARKER) || (state.is(DELETING_MARKER) && !editable) || (editable && markerX <= MAP_BORDER_WIDTH || markerX >= mapWidth + MAP_BORDER_WIDTH || markerY <= MAP_BORDER_HEIGHT || markerY >= mapHeight + MAP_BORDER_HEIGHT) ? 0.5f : 1.0f;
-		RenderSystem.setShaderColor(tint, tint, tint, alpha);
 
 		if (editable) {
 			markerX = MathHelper.clamp(markerX, MAP_BORDER_WIDTH, mapWidth + MAP_BORDER_WIDTH);
@@ -759,8 +765,6 @@ public class AtlasScreen extends Component {
 
 		DyeColor color = landmark.color();
 		texture.draw(context, markerX, markerY, markerScale, tileChunks, color == null ? null : ColorUtil.getColorFromArgb(color.getEntityColor()), tint, alpha);
-
-		RenderSystem.setShaderColor(1, 1, 1, 1);
 
 		if (hovering && landmark.name() != null && !landmark.name().getString().isEmpty()) {
 			context.drawTooltip(textRenderer, landmark.name(), (int) getMouseX() - getGuiX(), (int) getMouseY() - getGuiY());
@@ -779,24 +783,40 @@ public class AtlasScreen extends Component {
 		removeChild(markerCursor);
 	}
 
-	private int screenXToWorldX(double mouseX) {
-		double mapX = (int) Math.round(mouseX - getGuiX() - MAP_BORDER_WIDTH);
-		return (int) Math.round((mapX - (mapWidth / 2f) - mapOffsetX) / getPixelsPerBlock());
+	private int screenXToWorldX(double screenX) {
+		return screenXToWorldX(screenX, getGuiX(), mapOffsetX, mapWidth, getPixelsPerBlock());
 	}
 
-	private int screenYToWorldZ(double mouseY) {
-		double mapY = (int) Math.round(mouseY - getGuiY() - MAP_BORDER_HEIGHT);
-		return (int) Math.round((mapY - (mapHeight / 2f) - mapOffsetY) / getPixelsPerBlock());
+	private int screenYToWorldZ(double screenY) {
+		return screenYToWorldZ(screenY, getGuiY(), mapOffsetY, mapHeight, getPixelsPerBlock());
 	}
 
 	private double worldXToScreenX(double x) {
-		double mapX = x * getPixelsPerBlock() + mapOffsetX + (mapWidth / 2f);
-		return mapX + getGuiX() + MAP_BORDER_WIDTH;
+		return worldXToScreenX(x, getGuiX(), mapOffsetX, mapWidth, getPixelsPerBlock());
 	}
 
 	private double worldZToScreenY(double z) {
-		double mapY = z * getPixelsPerBlock() + mapOffsetY + (mapHeight / 2f);
-		return mapY + getGuiY() + MAP_BORDER_HEIGHT;
+		return worldZToScreenY(z, getGuiY(), mapOffsetY, mapHeight, getPixelsPerBlock());
+	}
+
+	public static int screenXToWorldX(double screenX, int bookX, double mapOffsetX, int mapWidth, double pixelsPerBlock) {
+		double mapX = (int) Math.round(screenX - bookX - MAP_BORDER_WIDTH);
+		return (int) Math.round((mapX - (mapWidth / 2f) - mapOffsetX) / pixelsPerBlock);
+	}
+
+	public static int screenYToWorldZ(double screenY, int bookY, double mapOffsetY, int mapHeight, double pixelsPerBlock) {
+		double mapY = (int) Math.round(screenY - bookY - MAP_BORDER_HEIGHT);
+		return (int) Math.round((mapY - (mapHeight / 2f) - mapOffsetY) / pixelsPerBlock);
+	}
+
+	public static double worldXToScreenX(double x, int bookX, double mapOffsetX, int mapWidth, double pixelsPerBlock) {
+		double mapX = x * pixelsPerBlock + mapOffsetX + (mapWidth / 2f);
+		return mapX + bookX + MAP_BORDER_WIDTH;
+	}
+
+	public static double worldZToScreenY(double z, int bookY, double mapOffsetY, int mapHeight, double pixelsPerBlock) {
+		double mapY = z * pixelsPerBlock + mapOffsetY + (mapHeight / 2f);
+		return mapY + bookY + MAP_BORDER_HEIGHT;
 	}
 
 	@Override

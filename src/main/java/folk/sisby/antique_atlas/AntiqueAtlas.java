@@ -14,6 +14,9 @@ import net.fabricmc.fabric.api.client.networking.v1.ClientPlayConnectionEvents;
 import net.fabricmc.fabric.api.event.lifecycle.v1.CommonLifecycleEvents;
 import net.fabricmc.fabric.api.resource.ResourceManagerHelper;
 import net.fabricmc.loader.api.FabricLoader;
+import net.minecraft.client.item.ModelPredicateProviderRegistry;
+import net.minecraft.client.util.ModelIdentifier;
+import net.minecraft.item.Items;
 import net.minecraft.registry.RegistryKeys;
 import net.minecraft.resource.ResourceType;
 import net.minecraft.util.Identifier;
@@ -28,6 +31,8 @@ public class AntiqueAtlas implements ClientModInitializer {
 
 	public static final AntiqueAtlasConfig CONFIG = AntiqueAtlasConfig.createToml(FabricLoader.getInstance().getConfigDir(), "", "antique-atlas", AntiqueAtlasConfig.class);
 	public static ScreenState<AtlasScreen> lastState = new ScreenState<>();
+
+	public static final ModelIdentifier ATLAS_MODEL = new ModelIdentifier(AntiqueAtlas.id("atlas"), "inventory");
 
 	public static Identifier id(String path) {
 		return path.contains(":") ? Identifier.of(path) : Identifier.of(ID, path);
@@ -50,6 +55,8 @@ public class AntiqueAtlas implements ClientModInitializer {
 		CommonLifecycleEvents.TAGS_LOADED.register(((manager, client) -> BiomeTileProviders.getInstance().registerFallbacks(manager.get(RegistryKeys.BIOME))));
 		ClientPlayConnectionEvents.DISCONNECT.register(((handler, client) -> BiomeTileProviders.getInstance().clearFallbacks()));
 		ClientPlayConnectionEvents.DISCONNECT.register(((handler, client) -> WorldAtlasData.WORLDS.clear()));
+
+		ModelPredicateProviderRegistry.register(Items.BOOK, AntiqueAtlas.id("atlas"), ((stack, world, entity, seed) -> stack.getName().getString().contains("Antique Atlas") ? 1.0F : 0.0F));
 
 		WorldSummary.enableTerrain();
 		WorldSummary.enableStructures();
