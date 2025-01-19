@@ -1,7 +1,7 @@
 {
 	"textures": {
-		"antique_atlas:base/sand": 1,
-		"antique_atlas:biome/arid/desert/sand_1": 1,
-		"antique_atlas:biome/arid/desert/sand_shrubs": 1
+		"antique_atlas:biome/nether/valley/soul_sand": 9,
+		"antique_atlas:biome/nether/valley/soul_sand_fossil": 1,
+		"antique_atlas:biome/nether/valley/soul_sand_fossil_2": 1
 	}
 }
